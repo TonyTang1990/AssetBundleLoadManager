@@ -1,0 +1,2 @@
+sharematerial
+testscene3prefab

@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 2518018269
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 08543ad195657bed29b6e312e2acd99a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet.png
+Dependencies: []

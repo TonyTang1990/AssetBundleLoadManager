@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 3317383546
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: a3a1266086a8eb63493ad3038928b46d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c2bdabd68c118aabc18c59eaf5951821
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/sharematerials/sharematerial.mat
+Dependencies: []

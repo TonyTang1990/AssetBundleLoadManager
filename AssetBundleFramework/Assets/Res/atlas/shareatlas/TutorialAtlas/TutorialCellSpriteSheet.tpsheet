@@ -1,0 +1,13 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# http://www.codeandweb.com/texturepacker/unity
+#
+# Sprite sheet: TutorialCellSpriteSheet.png (1024 x 1024)
+# $TexturePacker:SmartUpdate:3c1724db2a7b70abb4209f9a3d391875:021af61c33de8de8bbdc3fba3723c85e:0a51116dd404f5bc39566db769975d54$
+#
+
+LightModelShader;2;211;510;550;0.5;0.5
+SimpleShaderBG;514;534;231;227;0.5;0.5
+TextureShader;2;763;810;259;0.5;0.5

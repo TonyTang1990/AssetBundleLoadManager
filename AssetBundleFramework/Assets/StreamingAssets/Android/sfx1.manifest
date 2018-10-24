@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 1435249335
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ccf8880474f06e3697f16b838ed28e16
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/audios/sfx/sfx1/explosion.wav
+- Assets/Res/audios/sfx/sfx1/coins.wav
+- Assets/Res/audios/sfx/sfx1/correct.wav
+Dependencies: []

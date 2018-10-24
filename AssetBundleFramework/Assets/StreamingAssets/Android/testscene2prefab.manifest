@@ -1,0 +1,45 @@
+ManifestFileVersion: 0
+CRC: 1156133349
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 03615795cdde241c3c0bc5f93c728c7c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1133156a654d0fb0e13da810e0eaa18c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 124
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/scenes/sceneprefabs/testscene2prefab.prefab
+Dependencies:
+- G:/Projects/Unity2017Projects/AssetBundleFrameworkStudy/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial

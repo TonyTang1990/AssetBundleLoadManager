@@ -1,0 +1,26 @@
+/*
+ * Description:             StringExtension.cs
+ * Author:                  TONYTANG
+ * Create Date:             2018/08/08
+ */
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// StringExtension.cs
+/// String扩展方法
+/// </summary>
+public static class StringExtension {
+
+    /// <summary>
+    /// 判定字符串是否为null或者""
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public static bool IsNullOrEmpty(this string s)
+    {
+        return string.IsNullOrEmpty(s);
+    }
+}

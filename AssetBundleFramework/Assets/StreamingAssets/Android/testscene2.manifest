@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 3638399207
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c7bf9eae9ae4c0748ac89799c64ade10
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/Res/scenes/TestScene2.unity
+Dependencies:
+- G:/Projects/Unity2017Projects/AssetBundleFrameworkStudy/AssetBundleFramework/Assets/StreamingAssets/Android/testscene2prefab2
+- G:/Projects/Unity2017Projects/AssetBundleFrameworkStudy/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial
+- G:/Projects/Unity2017Projects/AssetBundleFrameworkStudy/AssetBundleFramework/Assets/StreamingAssets/Android/testscene2prefab
