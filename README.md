@@ -124,6 +124,7 @@ AB加载管理相关概念：
 上述资源在窗口销毁后，满足了可回收的三大条件(1. 索引计数为0 2. 绑定对象为空 3. NormalLoad加载方式)，最终被成功回收。
 
 Note:
+
 	读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。
 ```CS
     ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("shaderlist",
