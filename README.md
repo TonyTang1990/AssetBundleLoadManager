@@ -10,11 +10,13 @@
 
 ## 类说明
 中介者解耦Manager的类：
+
     - ModuleManager(单例类)
     - ModuleInterface(模块接口类，面向接口编程)
     - ModuleType(模块枚举类型)
 
 资源加载类：
+
     - ABLoadMethod(资源加载方式枚举类型 -- AB同步 or AB异步)
     - ABLoadState(资源加载状态 -- 错误，加载中，完成之类的)
     - ABLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
