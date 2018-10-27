@@ -11,13 +11,13 @@
 ## 类说明
 中介者解耦Manager的类：
 
-    - ModuleManager(单例类)
-    - ModuleInterface(模块接口类，面向接口编程)
+    - ModuleManager(单例类 Manager of Manager的管理类)
+    - ModuleInterface(模块接口类)
     - ModuleType(模块枚举类型)
 
 资源加载类：
 
-    - ABLoadMethod(资源加载方式枚举类型 -- AB同步 or AB异步)
+    - ABLoadMethod(资源加载方式枚举类型 -- 同步 or 异步)
     - ABLoadState(资源加载状态 -- 错误，加载中，完成之类的)
     - ABLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
     - ResourceModuleManager(资源加载模块统一管理类)
@@ -35,7 +35,7 @@
 5. 判定AB是否满足引用计数为0，绑定对象为空，且为NormalLoad加载方式则卸载该AB(并释放依赖AB的计数减一)(通知资源管理层AB卸载，重用AssetBundleInfo对象)
 6. 切场景，递归判定卸载PreloadLoad加载类型AB资源
 
-AB加载管理相关概念：
+相关设计：
 1. 依赖AB与被依赖者采用同样的加载方式(ABLoadMethod)，但加载方式依赖AB统一采用ABLoadType.NormalLoad
 2. 依赖AB通过索引计数管理，只要原始AB不被卸载，依赖AB就不会被卸载
 3. 已加载的AB资源加载类型只允许从低往高变(NormalLoad -> Preload -> PermanentLoad)，不允许从高往低(PermanentLoad -> Preload -> NormalLoad)
