@@ -27,7 +27,7 @@
     - ABDebugWindow.cs(Editor运行模式下可视化查看AB加载详细信息的辅助工具窗口)
 
 ## AB加载管理方案
-加载方案：
+加载管理方案：
 1. 加载指定资源
 2. 加载自身AB(自身AB加载完通知资源加载层移除该AB加载任务避免重复的加载任务被创建)，自身AB加载完判定是否有依赖AB
 3. 有则加载依赖AB(增加依赖AB的引用计数)(依赖AB采用和自身AB相同的加载方式(ABLoadMethod),但依赖AB统一采用ABLoadType.NormalLoad加载类型)
