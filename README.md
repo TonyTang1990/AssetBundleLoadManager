@@ -21,8 +21,8 @@
     - ABLoadState(资源加载状态 -- 错误，加载中，完成之类的)
     - ABLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
     - ResourceModuleManager(资源加载模块统一管理类)
-    - AssetBundleLoader(AB资源加载父类抽象)
-    - AssetBundleInfo(AB信息以及加载状态抽象类 -- AB访问，索引计数以及AB依赖关系抽象都在这一层)
+    - AssetBundleLoader(AB资源加载任务类)
+    - AssetBundleInfo(AB信息以及加载状态类 -- AB访问，索引计数以及AB依赖关系抽象都在这一层)
     - AssetBundlePath(AB资源路径相关 -- 处理多平台路径问题)
     - ABDebugWindow.cs(Editor运行模式下可视化查看AB加载详细信息的辅助工具窗口)
 
