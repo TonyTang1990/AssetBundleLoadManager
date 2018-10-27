@@ -8,14 +8,47 @@
 4. 底层统一管理AB索引计数，管理资源加载释放
 5. 支持卸载频率，卸载帧率门槛，单次卸载数量等设置。采用Long Time Unused First Unload(越久没用越先卸载)原则卸载。
 
+## 类说明
+中介者解耦Manager的类：
+    - ModuleManager(单例类)
+    - ModuleInterface(模块接口类，面向接口编程)
+    - ModuleType(模块枚举类型)
+
+资源加载类：
+    - ABLoadMethod(资源加载方式枚举类型 -- AB同步 or AB异步)
+    - ABLoadState(资源加载状态 -- 错误，加载中，完成之类的)
+    - ABLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
+    - ResourceModuleManager(资源加载模块统一管理类)
+    - AssetBundleLoader(AB资源加载父类抽象)
+    - AssetBundleInfo(AB信息以及加载状态抽象类 -- AB访问，索引计数以及AB依赖关系抽象都在这一层)
+    - AssetBundlePath(AB资源路径相关 -- 处理多平台路径问题)
+    - ABDebugWindow.cs(Editor运行模式下可视化查看AB加载详细信息的辅助工具窗口)
+
+## AB加载管理方案
+加载方案：
+1. 加载指定资源
+2. 加载自身AB(自身AB加载完通知资源加载层移除该AB加载任务避免重复的加载任务被创建)，自身AB加载完判定是否有依赖AB
+3. 有则加载依赖AB(增加依赖AB的引用计数)(依赖AB采用和自身AB相同的加载方式(ABLoadMethod),但依赖AB统一采用ABLoadType.NormalLoad加载类型)
+4. 自身AB和所有依赖AB加载完回调通知逻辑层可以开始加载Asset资源(AB绑定对象在这一步)
+5. 判定AB是否满足引用计数为0，绑定对象为空，且为NormalLoad加载方式则卸载该AB(并释放依赖AB的计数减一)(通知资源管理层AB卸载，重用AssetBundleInfo对象)
+6. 切场景，递归判定卸载PreloadLoad加载类型AB资源
+
+AB加载管理相关概念：
+1. 依赖AB与被依赖者采用同样的加载方式(ABLoadMethod)，但加载方式依赖AB统一采用ABLoadType.NormalLoad
+2. 依赖AB通过索引计数管理，只要原始AB不被卸载，依赖AB就不会被卸载
+3. 已加载的AB资源加载类型只允许从低往高变(NormalLoad -> Preload -> PermanentLoad)，不允许从高往低(PermanentLoad -> Preload -> NormalLoad)
+
 ## Demo使用说明
 1. AB依赖信息查看界面
+
 ![AssetBundleDepInfoUI](/img/Unity/AssetBundle-Framework/AssetBundleDepInfoUI.png)
 
 2. AB运行时加载管理详细信息界面
+
 ![AssetBundleLoadManagerUI](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png)
 
 3. 测试界面
+
 ![AssetBundleTestUI](/img/Unity/AssetBundle-Framework/AssetBundleTestUI.png)
 
 4. 点击加载窗口预制件按钮后:
@@ -37,7 +70,6 @@
         onLoadWindowPrefab();
     }
 
-    // 测试大批量异步加载资源后立刻同步加载其中一个该源
     var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
     ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("tutorialcellspritesheet",
     (abi) =>
