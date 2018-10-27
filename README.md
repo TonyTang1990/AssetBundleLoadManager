@@ -125,7 +125,7 @@ AB加载管理相关概念：
 
 Note:
 
-	读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。
+读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。
 ```CS
     ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("shaderlist",
     (abi) =>
