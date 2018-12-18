@@ -9,7 +9,7 @@
 5. 支持卸载频率，卸载帧率门槛，单次卸载数量等设置。采用Long Time Unused First Unload(越久没用越先卸载)原则卸载。
 
 ## 类说明
-中介者解耦Manager的类：
+Manager统一管理：
 
     - ModuleManager(单例类 Manager of Manager的管理类)
     - ModuleInterface(模块接口类)
