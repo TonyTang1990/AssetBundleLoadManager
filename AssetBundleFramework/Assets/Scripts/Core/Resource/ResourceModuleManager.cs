@@ -29,52 +29,11 @@ using UnityEngine;
 // 3. 已加载的AB资源加载类型只允许从低往高变(NormalLoad -> Preload -> PermanentLoad)，不允许从高往低(PermanentLoad -> Preload -> NormalLoad)
 
 /// <summary>
-/// AB资源加载方式
-/// </summary>
-public enum ABLoadMethod
-{
-    Sync = 1,          // 同步
-    Async = 2          // 异步
-}
-
-/// <summary>
-/// AB资源加载类型
-/// Note:
-/// 已加载的资源加载类型允许更改，但只允许从低往高变(NormalLoad -> Preload -> PermanentLoad)，不允许从高往低(PermanentLoad -> Preload -> NormalLoad)
-/// </summary>
-public enum ABLoadType
-{
-    NormalLoad = 1,         // 正常加载(可通过Tick检测判定正常卸载)
-    Preload = 2,            // 预加载(切场景才会卸载)
-    PermanentLoad = 3,      // 永久加载(常驻内存永不卸载)
-}
-
-/// <summary>
-/// 重写ABLoadType比较相关接口函数，避免ABLoadType作为Dictionary Key时，
-/// 底层调用默认Equals(object obj)和DefaultCompare.GetHashCode()导致额外的堆内存分配
-/// 参考:
-/// http://gad.qq.com/program/translateview/7194373
-/// </summary>
-public class ABLoadTypeComparer : IEqualityComparer<ABLoadType>
-{
-    public bool Equals(ABLoadType x, ABLoadType y)
-    {
-        return x == y;
-    }
-
-    public int GetHashCode(ABLoadType x)
-    {
-        return (int)x;
-    }
-}
-
-/// <summary>
 /// ResourceModuleManager.cs
 /// 资源加载管理类
-/// TODO: 支持预加载资源
 /// </summary>
-public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModuleManager>, IModuleInterface {
-    
+public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModuleManager>, IModuleInterface
+{
     /// <summary>
     /// 真实的模块名
     /// </summary>
@@ -98,10 +57,6 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
         {
             return mAssetBundleDpMap;
         }
-        private set
-        {
-            mAssetBundleDpMap = value;
-        }
     }
     private Dictionary<string, string[]> mAssetBundleDpMap;
 
@@ -109,9 +64,15 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     /// 加载所有AB依赖信息
     /// </summary>
     /// <returns></returns>
-    private void loadAllDpInfo()
+    public void loadAllDpInfo()
     {
-        // 依赖信息加载完即可释放，不需要常驻
+        if (mAssetBundleDpMap.Count > 0)
+        {
+            //强制卸载一次老的，确保加载的是最新的依赖信息
+            forceUnloadSpecificAB(AssetBundlePath.DependencyFileName);
+            Debug.Log("重新加载依赖文件！");
+        }
+        // 依赖AB加载完即可卸载，所以作为NormalLoad方式加载
         requstResource(AssetBundlePath.DependencyFileName, onLoadAllDpInfoComplete, ABLoadType.NormalLoad, ABLoadMethod.Sync);
     }
 
@@ -181,10 +142,10 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     {
         foreach (var abinfo in mAssetBundleDpMap)
         {
-            Debug.Log(string.Format("AB Name:{0}", abinfo.Key));
+            ResourceLogger.log(string.Format("AB Name:{0}", abinfo.Key));
             foreach (var dpfile in abinfo.Value)
             {
-                Debug.Log(string.Format("       DP AB Name:{0}", dpfile));
+                ResourceLogger.log(string.Format("       DP AB Name:{0}", dpfile));
             }
         }
     }
@@ -200,10 +161,6 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
         get
         {
             return mCurrentFPS;
-        }
-        private set
-        {
-            mCurrentFPS = value;
         }
     }
     private int mCurrentFPS;
@@ -225,7 +182,6 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
 
     void Update()
     {
-        // FPS计算部分
         mTotalDeltaTime += Time.deltaTime;
         mFrameCount++;
         if (mTotalDeltaTime >= mFPSUpdateInterval)
@@ -234,29 +190,18 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
             mTotalDeltaTime = 0f;
             mFrameCount = 0;
         }
-
-        //Update分帧加载的方案导致上层同步逻辑也必须按异步的方式写，这里暂时放弃此方案
-        // AB加载请求部分
-        // 限制每帧最大加载数量
-        //while (mABRequestTaskList.Count > 0)
-        //{
-        //    var currentloadingablnumber = mABLoadingTaskList.Count;
-        //    if (currentloadingablnumber < mMaxmumABLoadingNumberPerFrame)
-        //    {
-        //        var requesttask = mABRequestTaskList[0];
-        //        mABRequestTaskList.RemoveAt(0);
-        //        mABLoadingTaskList.Add(requesttask);
-        //        requesttask.startLoad();
-        //    }
-        //    else
-        //    {
-        //        break;
-        //    }
-        //}
     }
     #endregion
 
     #region AB加载管理部分
+    /// <summary> 逻辑层AB加载完成委托 /// </summary>
+    /// <param name="abinfo"></param>
+    public delegate void LoadABCompleteHandler(AssetBundleInfo abinfo);
+
+    /// <summary> 资源管理层AB加载完成委托 /// </summary>
+    /// <param name="abl">AB加载任务信息</param>
+    public delegate void LoadABCompleteNotifier(AssetBundleLoader abl);
+
     /// <summary>
     /// 是否开启AB回收检测(有些情况下不适合频繁回收创建，比如战斗场景)
     /// </summary>
@@ -267,84 +212,28 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     }
 
     /// <summary>
-    /// AB资源请求任务列表
-    /// </summary>
-    public List<AssetBundleLoader> ABRequestTaskList
-    {
-        get
-        {
-            return mABRequestTaskList;
-        }
-        private set
-        {
-            mABRequestTaskList = value;
-        }
-    }
-    private List<AssetBundleLoader> mABRequestTaskList;
-
-    //Update分帧加载的方案导致上层同步逻辑也必须按异步的方式写，这里暂时放弃此方案
-    /// <summary>
-    /// AB资源加载中任务列表
-    /// </summary>
-    //public List<AssetBundleLoader> ABLoadingTaskList
-    //{
-    //    get
-    //    {
-    //        return mABLoadingTaskList;
-    //    }
-    //    private set
-    //    {
-    //        mABLoadingTaskList = value;
-    //    }
-    //}
-    //private List<AssetBundleLoader> mABLoadingTaskList;
-
-    /// <summary>
-    /// AB资源加载任务映射map(仅用于快速访问AB加载任务，真正的任务列表是mABRequestTaskList)
+    /// AB资源请求任务映射map
     /// Key为资源名，Value为资源加载任务对象
     /// </summary>
-    public Dictionary<string, AssetBundleLoader> AssetBundleLoaderTaskMap
+    public Dictionary<string, AssetBundleLoader> ABRequestTaskMap
     {
         get
         {
-            return mAssetBundleLoaderTaskMap;
-        }
-        private set
-        {
-            mAssetBundleLoaderTaskMap = value;
+            return mABRequestTaskMap;
         }
     }
-    private Dictionary<string, AssetBundleLoader> mAssetBundleLoaderTaskMap;
+    private Dictionary<string, AssetBundleLoader> mABRequestTaskMap;
 
     /// <summary>
     /// 所有已加载的AB的信息映射Map
     /// Key为AB加载类型，Value为该AB加载类型已经加载的AB资源信息映射Map(Key为AB名字，Value为AB加载信息)
     /// </summary>
-    public Dictionary<ABLoadType, Dictionary<string, AssetBundleInfo>> AllLoadedABInfoMap
-    {
-        get
-        {
-            return mAllLoadedABInfoMap;
-        }
-        private set
-        {
-            mAllLoadedABInfoMap = value;
-        }
-    }
     private Dictionary<ABLoadType, Dictionary<string, AssetBundleInfo>> mAllLoadedABInfoMap;
 
     /// <summary>
     /// 已加载AB里不再有有效引用的AB信息列表
     /// </summary>
     private List<AssetBundleInfo> mUnsedABInfoList;
-
-    //Update分帧加载的方案导致上层同步逻辑也必须按异步的方式写，这里暂时放弃此方案
-    /// <summary>
-    /// 单帧最大资源加载请求数量(不区分同步还是异步)
-    /// Note:
-    /// 这里的资源数量不是AB数量，加载指定资源AB与其所有依赖AB算一个资源加载请求(AssetBundleLoader算一个)
-    /// </summary>
-    //private int mMaxmumABLoadingNumberPerFrame;
 
     /// <summary> 检测未使用AB时间间隔(在请求队列为空时才检测未使用AB) /// </summary>
     private float mCheckUnsedABTimeInterval;
@@ -366,13 +255,14 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     /// </summary>
     private int mABRecycleFPSThreshold;
 
-    /// <summary> 逻辑层AB加载完成委托 /// </summary>
-    /// <param name="abinfo"></param>
-    public delegate void LoadABCompleteHandler(AssetBundleInfo abinfo);
-
-    /// <summary> 资源管理层AB加载完成委托 /// </summary>
-    /// <param name="abl">AB加载任务信息</param>
-    public delegate void LoadABCompleteNotifier(AssetBundleLoader abl);
+    /// <summary>
+    /// 资源白名单映射Map(用Dictionary只是为了快速访问)
+    /// Key为资源名，Value也为资源名
+    /// 在白名单里的资源，只要上层加载该资源，一律以PreLoad形式加载资源
+    /// 这里主要是为了避免因为上层逻辑代码导致错误的资源被频繁加载卸载
+    /// 比如: Res.cs    public bool SetImageSprite(UnityEngine.UI.Image image, string spName)
+    /// </summary>
+    private Dictionary<string, string> mABWhileListMap;
 
     protected void Awake()
     {
@@ -385,29 +275,26 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     public void init()
     {
         // 初始化ABLoader和ABInfo可重用的基础数量
-        AssetBundleLoaderFactory.initialize(5);     // 考虑到大部分时候都是用同步，所以AssetBundleLoader不需要太多可直接重用之前的
+        AssetBundleLoaderFactory.initialize(20);             // 考虑到大部分都是采用同步加载，所以AssetBundleLoader并不需要初始化太多
         AssetBundleInfoFactory.initialize(200);
 
         mAssetBundleDpMap = new Dictionary<string, string[]>();
         EnableABUnloadUnsed = true;
-        mABRequestTaskList = new List<AssetBundleLoader>();
-        //mABLoadingTaskList = new List<AssetBundleLoader>();
-        mAssetBundleLoaderTaskMap = new Dictionary<string, AssetBundleLoader>();
+        mABRequestTaskMap = new Dictionary<string, AssetBundleLoader>();
         mAllLoadedABInfoMap = new Dictionary<ABLoadType, Dictionary<string, AssetBundleInfo>>(new ABLoadTypeComparer());
         mAllLoadedABInfoMap.Add(ABLoadType.NormalLoad, new Dictionary<string, AssetBundleInfo>());
         mAllLoadedABInfoMap.Add(ABLoadType.Preload, new Dictionary<string, AssetBundleInfo>());
         mAllLoadedABInfoMap.Add(ABLoadType.PermanentLoad, new Dictionary<string, AssetBundleInfo>());
         mUnsedABInfoList = new List<AssetBundleInfo>();
-        
-        //mMaxmumABLoadingNumberPerFrame = 5;
-        mCheckUnsedABTimeInterval = 5.0f;
-        mMaxUnloadABNumberPerFrame = 10;
-        mABMinimumLifeTime = 10.0f;
-        mABRecycleFPSThreshold = 20;
+        mABWhileListMap = new Dictionary<string, string>();
 
         mFPSUpdateInterval = 1.0f;
 
-        // TODO: 根据设备设定相关参数
+        // TODO: 根据设备设定相关参数，改成读表控制
+        mCheckUnsedABTimeInterval = 5.0f;
+        mMaxUnloadABNumberPerFrame = 10;
+        mABMinimumLifeTime = 20.0f;
+        mABRecycleFPSThreshold = 20;
 
         loadAllDpInfo();
     }
@@ -421,6 +308,22 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     }
 
     /// <summary>
+    /// 添加指定资源到白名单
+    /// </summary>
+    /// <param name="resname">资源名(既AB名)</param>
+    public void addToWhiteList(string resname)
+    {
+        if (!mABWhileListMap.ContainsKey(resname))
+        {
+            mABWhileListMap.Add(resname, resname);
+        }
+        else
+        {
+            ResourceLogger.logErr(string.Format("资源 : {0}重复添加白名单!", resname));
+        }
+    }
+
+    /// <summary>
     /// 请求资源
     /// 资源加载统一入口
     /// </summary>
@@ -431,6 +334,13 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     public void requstResource(string resname, LoadABCompleteHandler completehandler, ABLoadType loadtype = ABLoadType.NormalLoad, ABLoadMethod loadmethod = ABLoadMethod.Sync)
     {
         resname = resname.ToLower();
+        // 在白名单里的资源一律以预加载形式加载，
+        // 避免因为上层逻辑错误加载后被频繁加载卸载
+        if (mABWhileListMap.ContainsKey(resname))
+        {
+            loadtype = ABLoadType.Preload;
+        }
+
         // 如果资源已经加载完成，直接返回
         if (mAllLoadedABInfoMap[ABLoadType.NormalLoad].ContainsKey(resname))
         {
@@ -448,7 +358,7 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
                 updateLoadedABILoadType(resname, ABLoadType.Preload, loadtype);
             }
         }
-        else if(mAllLoadedABInfoMap[ABLoadType.PermanentLoad].ContainsKey(resname))
+        else if (mAllLoadedABInfoMap[ABLoadType.PermanentLoad].ContainsKey(resname))
         {
             completehandler(mAllLoadedABInfoMap[ABLoadType.PermanentLoad][resname]);
         }
@@ -457,9 +367,9 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
             // 确保同一个资源加载的Loader是同一个
             // 保证同一个资源加载完成时上层所有加载该资源的回调正确
             AssetBundleLoader abloader = null;
-            if(mAssetBundleLoaderTaskMap.ContainsKey(resname))
+            if (mABRequestTaskMap.ContainsKey(resname))
             {
-                abloader = mAssetBundleLoaderTaskMap[resname];
+                abloader = mABRequestTaskMap[resname];
                 // 之前有请求resname资源，但还未完成
                 // 比如先异步请求resname，在异步完成前来了一个同步请求resname
                 // 修改加载方式并添加回调，异步会在同步加载完成时一起回调
@@ -475,8 +385,7 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
                 abloader.LoadType = loadtype;
                 abloader.LoadABCompleteCallBack = completehandler;
                 abloader.LoadABCompleteNotifier = onABLoadCompleteNotifier;
-                mAssetBundleLoaderTaskMap.Add(resname, abloader);
-                mABRequestTaskList.Add(abloader);
+                mABRequestTaskMap.Add(resname, abloader);
                 abloader.startLoad();
             }
         }
@@ -524,17 +433,17 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     /// <returns></returns>
     public Dictionary<string, AssetBundleInfo> getSpecificLoadTypeABIMap(ABLoadType loadtype)
     {
-        if(mAllLoadedABInfoMap.ContainsKey(loadtype))
+        if (mAllLoadedABInfoMap.ContainsKey(loadtype))
         {
             return mAllLoadedABInfoMap[loadtype];
         }
         else
         {
-            Debug.LogError(string.Format("找不到资源类型 : {0}的已加载AB信息!", loadtype));
+            ResourceLogger.logErr(string.Format("找不到资源类型 : {0}的已加载AB信息!", loadtype));
             return null;
         }
     }
-        
+
 
     #region Debug
     /// <summary>
@@ -576,19 +485,19 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     /// </summary>
     public void printAllLoadedABOwnersAndRefCount()
     {
-        Debug.Log("Normal Loaded AB Info:");
-        foreach(var abi in mAllLoadedABInfoMap[ABLoadType.NormalLoad])
+        ResourceLogger.log("Normal Loaded AB Info:");
+        foreach (var abi in mAllLoadedABInfoMap[ABLoadType.NormalLoad])
         {
             abi.Value.printAllOwnersNameAndRefCount();
         }
 
-        Debug.Log("Preload Loaded AB Info:");
+        ResourceLogger.log("Preload Loaded AB Info:");
         foreach (var abi in mAllLoadedABInfoMap[ABLoadType.Preload])
         {
             abi.Value.printAllOwnersNameAndRefCount();
         }
 
-        Debug.Log("Permanent Loaded AB Info:");
+        ResourceLogger.log("Permanent Loaded AB Info:");
         foreach (var abi in mAllLoadedABInfoMap[ABLoadType.PermanentLoad])
         {
             abi.Value.printAllOwnersNameAndRefCount();
@@ -621,6 +530,11 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     /// <param name="abi"></param>
     private void onABUnloaded(AssetBundleInfo abi)
     {
+        //AB卸载数据统计
+        if (AssetBundleLoadAnalyse.Singleton.ABLoadAnalyseSwitch)
+        {
+            AssetBundleLoadAnalyse.Singleton.addABUnloadedTime(abi.AssetBundleName);
+        }
         // AB卸载时ABAssetBundleInfo回收时回收重用
         AssetBundleInfoFactory.recycle(abi);
     }
@@ -630,7 +544,7 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     /// </summary>
     private void checkUnsedAssetBundle()
     {
-        if(EnableABUnloadUnsed && mCurrentFPS >= mABRecycleFPSThreshold && isABRequestQueueEmpty())
+        if (EnableABUnloadUnsed && mCurrentFPS >= mABRecycleFPSThreshold && isABRequestQueueEmpty())
         {
             float time = Time.time;
             // 检查正常加载的资源AB，回收不再使用的AB
@@ -650,7 +564,6 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
                 // 根据最近使用时间升序排列
                 mUnsedABInfoList.Sort(ABILastUsedTimeSort);
 
-                // 卸载AB并重用Loader
                 for (int i = 0; i < mUnsedABInfoList.Count; i++)
                 {
                     if (i < mMaxUnloadABNumberPerFrame)
@@ -673,16 +586,19 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     private void onABLoadCompleteNotifier(AssetBundleLoader abl)
     {
         var abname = abl.ABName;
-        if (mAssetBundleLoaderTaskMap.ContainsKey(abname))
+        if (mABRequestTaskMap.ContainsKey(abname))
         {
-            mAssetBundleLoaderTaskMap.Remove(abname);
-            mABRequestTaskList.Remove(abl);
-            //mABLoadingTaskList.Remove(abl);
+            mABRequestTaskMap.Remove(abname);
             mAllLoadedABInfoMap[abl.LoadType].Add(abname, abl.ABInfo);
+            //AB加载数据统计
+            if (AssetBundleLoadAnalyse.Singleton.ABLoadAnalyseSwitch)
+            {
+                AssetBundleLoadAnalyse.Singleton.addABLoadedTime(abname);
+            }
         }
         else
         {
-            Debug.LogError(string.Format("收到不在加载任务请求队列里的AB:{0}加载完成回调!", abname));
+            ResourceLogger.logErr(string.Format("收到不在加载任务请求队列里的AB:{0}加载完成回调!", abname));
         }
     }
 
@@ -692,7 +608,7 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     /// <returns></returns>
     private bool isABRequestQueueEmpty()
     {
-        return mABRequestTaskList.Count == 0;
+        return mABRequestTaskMap.Count == 0;
     }
 
     /// <summary>
@@ -714,16 +630,16 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     /// <param name="newloadtype">新的家在类型</param>
     private void updateLoadedABILoadType(string resname, ABLoadType oldloadtype, ABLoadType newloadtype)
     {
-        if(mAllLoadedABInfoMap[oldloadtype].ContainsKey(resname))
+        if (mAllLoadedABInfoMap[oldloadtype].ContainsKey(resname))
         {
             var abi = mAllLoadedABInfoMap[oldloadtype][resname];
             mAllLoadedABInfoMap[newloadtype].Add(resname, abi);
             mAllLoadedABInfoMap[oldloadtype].Remove(resname);
-            Debug.Log(string.Format("已加载的资源 : {0}从资源类型 : {1}更新到资源类型 : {2}！", resname, oldloadtype, newloadtype));
+            ResourceLogger.log(string.Format("已加载的资源 : {0}从资源类型 : {1}更新到资源类型 : {2}！", resname, oldloadtype, newloadtype));
         }
         else
         {
-            Debug.LogError(string.Format("资源类型 : {0}里找不到已加载的资源 : {1}，无法更新该资源的加载类型！", oldloadtype, resname));
+            ResourceLogger.logErr(string.Format("资源类型 : {0}里找不到已加载的资源 : {1}，无法更新该资源的加载类型！", oldloadtype, resname));
         }
     }
 
@@ -735,7 +651,7 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     {
         if (abloadtype == ABLoadType.PermanentLoad)
         {
-            Debug.LogError("不允许卸载常驻AB资源!");
+            ResourceLogger.logErr("不允许卸载常驻AB资源!");
             return;
         }
 
@@ -767,6 +683,46 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
                 }
                 mUnsedABInfoList.Clear();
             }
+        }
+    }
+    #endregion
+
+    #region 资源调试辅助功能
+    /// <summary>
+    /// 强制卸载指定AB资源(不管AB加载后属于哪一种类型，强制卸载)
+    /// </summary>
+    /// <param name="abname"></param>
+    public void forceUnloadSpecificAB(string abname)
+    {
+        ABLoadType abloadtype = ABLoadType.NormalLoad;
+        AssetBundleInfo abinfo = null;
+        foreach (var loadedabinfomap in mAllLoadedABInfoMap)
+        {
+            if (abinfo != null)
+            {
+                break;
+            }
+
+            foreach (var loadedabinfo in loadedabinfomap.Value)
+            {
+                if (loadedabinfo.Key.Equals(abname))
+                {
+                    abinfo = loadedabinfo.Value;
+                    abloadtype = loadedabinfomap.Key;
+                    break;
+                }
+            }
+        }
+
+        if (abinfo != null)
+        {
+            mAllLoadedABInfoMap[abloadtype].Remove(abinfo.AssetBundleName);
+            abinfo.dispose();
+            ResourceLogger.log(string.Format("AB资源 : {0}已强制卸载！", abname));
+        }
+        else
+        {
+            ResourceLogger.logErr(string.Format("AB资源 : {0}未被加载，无法强制卸载!", abname));
         }
     }
     #endregion

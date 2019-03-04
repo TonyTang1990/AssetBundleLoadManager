@@ -1,0 +1,18 @@
+ABName : allabdep
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 12-33-22
+	ABLastUnloadTime : 12-33-22
+
+ABName : loadingscreen
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 12-33-9
+	ABLastUnloadTime : 12-33-37
+
+ABName : mainwindow
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 12-33-9
+	ABLastUnloadTime : 12-33-32
+

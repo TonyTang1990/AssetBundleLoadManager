@@ -13,7 +13,8 @@ using UnityEngine;
 /// AssetBundleInfo.cs
 /// AB加载信息的抽象，负责AB加载后的信息管理抽象(AB索引计数，Asset缓存都在这一层)
 /// </summary>
-public class AssetBundleInfo : FactoryObj {
+public class AssetBundleInfo : FactoryObj
+{
 
     /// <summary>
     /// AB卸载委托
@@ -71,10 +72,6 @@ public class AssetBundleInfo : FactoryObj {
         {
             return mRefCount;
         }
-        private set
-        {
-            mRefCount = value;
-        }
     }
     private int mRefCount;
 
@@ -87,10 +84,6 @@ public class AssetBundleInfo : FactoryObj {
         get
         {
             return mReferenceOwnerList;
-        }
-        private set
-        {
-            mReferenceOwnerList = value;
         }
     }
     private List<System.WeakReference> mReferenceOwnerList;
@@ -121,7 +114,7 @@ public class AssetBundleInfo : FactoryObj {
     /// <param name="depabi"></param>
     public void addDependency(AssetBundleInfo depabi)
     {
-        if(depabi != null && mDepAssetBundleInfoSets.Add(depabi))
+        if (depabi != null && mDepAssetBundleInfoSets.Add(depabi))
         {
             // 增加依赖AB的引用计数
             // 在当前AB引用计数归零时会一并返还
@@ -137,10 +130,11 @@ public class AssetBundleInfo : FactoryObj {
     public GameObject instantiateAsset(string assetname)
     {
         var goasset = loadAsset<GameObject>(assetname);
-        if(goasset != null)
+        if (goasset != null)
         {
             var goinstance = GameObject.Instantiate<GameObject>(goasset);
-            goinstance.name = goasset.name;
+            //不修改实例化后的名字，避免上层逻辑名字对不上
+            //goinstance.name = goasset.name;
             // 绑定owner对象，用于判定是否还有有效对象引用AB资源
             retainOwner(goinstance);
             updateLastUsedTime();
@@ -148,7 +142,7 @@ public class AssetBundleInfo : FactoryObj {
         }
         else
         {
-            Debug.LogError(string.Format("AB:{0}里加载GameObject Asset:{1}失败!", AssetBundleName, assetname));
+            ResourceLogger.logErr(string.Format("AB:{0}里加载GameObject Asset:{1}失败!", AssetBundleName, assetname));
             return null;
         }
     }
@@ -174,16 +168,16 @@ public class AssetBundleInfo : FactoryObj {
             }
             else
             {
-                Debug.LogWarning(string.Format("AB : {0}里不存在Asset : {1}，获取Asset失败!", AssetBundleName, assetname));
+                ResourceLogger.logWar(string.Format("AB : {0}里不存在Asset : {1}，获取Asset失败!", AssetBundleName, assetname));
                 return null;
             }
         }
         else
         {
-            Debug.LogError(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", AssetBundleName, assetname));
+            ResourceLogger.logErr(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", AssetBundleName, assetname));
             return null;
         }
-    }    
+    }
 
     /// <summary>
     /// 添加引用，引用计数+1
@@ -211,14 +205,14 @@ public class AssetBundleInfo : FactoryObj {
         LastUsedTime = 0.0f;
 
         var enu = mDepAssetBundleInfoSets.GetEnumerator();
-        while(enu.MoveNext())
+        while (enu.MoveNext())
         {
             var dep = enu.Current;
             // 减少依赖的AB的引用计数
             dep.release();
         }
         mDepAssetBundleInfoSets.Clear();
-        if(onUnloadedCallback != null)
+        if (onUnloadedCallback != null)
         {
             onUnloadedCallback(this);
         }
@@ -239,24 +233,24 @@ public class AssetBundleInfo : FactoryObj {
     /// </summary>
     public void printAllOwnersNameAndRefCount()
     {
-        Debug.Log(string.Format("AB Name: {0}", AssetBundleName));
-        Debug.Log(string.Format("Ref Count: {0}", mRefCount));
-        if(mReferenceOwnerList.Count == 0)
+        ResourceLogger.log(string.Format("AB Name: {0}", AssetBundleName));
+        ResourceLogger.log(string.Format("Ref Count: {0}", mRefCount));
+        if (mReferenceOwnerList.Count == 0)
         {
-            Debug.Log("Owners Name : None");
+            ResourceLogger.log("Owners Name : None");
         }
         else
         {
-            Debug.Log("Owners Name :");
+            ResourceLogger.log("Owners Name :");
             for (int i = 0, length = mReferenceOwnerList.Count; i < length; i++)
             {
                 if (mReferenceOwnerList[i].Target != null)
                 {
-                    Debug.Log(string.Format("owner[{0}] : {1}", i, mReferenceOwnerList[i].Target.ToString()));
+                    ResourceLogger.log(string.Format("owner[{0}] : {1}", i, mReferenceOwnerList[i].Target.ToString()));
                 }
             }
         }
-        Debug.Log(string.Format("Last Used Time: {0}", LastUsedTime));
+        ResourceLogger.log(string.Format("Last Used Time: {0}", LastUsedTime));
     }
 
     /// <summary>
@@ -291,7 +285,7 @@ public class AssetBundleInfo : FactoryObj {
     /// <summary>
     /// 加载所有Asset(比如Shader预加载)
     /// Note:
-    /// 加载图集请使用loadAllAsset<Sprite>()
+    /// 加载图集使用loadAllAsset<Sprite>()或者loadAsset<Sprite>
     /// </summary>
     /// <param name="assetname"></param>
     /// <returns></returns>
@@ -304,7 +298,9 @@ public class AssetBundleInfo : FactoryObj {
                 var allassets = Bundle.LoadAllAssets<T>();
                 foreach (var asset in allassets)
                 {
-                    mLoadedAssetMap.Add(asset.name.ToLower(), asset);
+                    // mLoadedAssetMap.Add(asset.name.ToLower(), asset);
+                    mLoadedAssetMap[asset.name.ToLower()] = asset;
+
                 }
                 mIsAllAssetLoaded = true;
             }
@@ -323,16 +319,15 @@ public class AssetBundleInfo : FactoryObj {
     {
         if (mIsReady)
         {
-            assetname = assetname.ToLower();
             if (mLoadedAssetMap.ContainsKey(assetname))
             {
                 return mLoadedAssetMap[assetname] as T;
             }
             else
             {
-                if(Bundle == null)
+                if (Bundle == null)
                 {
-                    Debug.LogError(string.Format("AB : {0}资源丢失，不存在！", AssetBundleName));
+                    ResourceLogger.logErr(string.Format("AB : {0}资源丢失，不存在！", AssetBundleName));
                     return null;
                 }
                 else
@@ -343,23 +338,30 @@ public class AssetBundleInfo : FactoryObj {
                         if (!mIsAllAssetLoaded)
                         {
                             var allassets = Bundle.LoadAllAssets();
-                            // 反向查找加载，遇到第一个Texture2D同名时跳过存储
-                            for(int i = allassets.Length - 1; i >= 0; i--)
+                            // foreach (var asset in allassets)
+                            var count = allassets.Length;
+                            for (int i = count - 1; i >= 0; i--)
                             {
                                 //Note:
                                 //只存储图集的Sprite Asset，不存储Texture2D
                                 //现发现Sprite Asset有和Texture2D同名的情况存在
                                 //TODO：解决Sprite Asset和Texture2D同名问题，满足可加载使用图集的Texture2D Asset
-                                //暂时可以通过Sprite.texture的形式访问Texture2D Asset
-                                var atname = allassets[i].name.ToLower();
-                                if (mLoadedAssetMap.ContainsKey(atname))
+                                //暂时未存储Texture2D，要访问图集Texture2D可以通过Sprite.texture的形式访问
+                                var asset = allassets[i];
+                                if (mLoadedAssetMap.ContainsKey(asset.name.ToLower()))
                                 {
                                     continue;
                                 }
-                                else
+                                if (asset is Sprite)
                                 {
-                                    mLoadedAssetMap.Add(atname, allassets[i]);
+                                    mLoadedAssetMap.Add(asset.name.ToLower(), asset);
                                 }
+                                /*
+                                else if (asset is Texture2D) //修改为同时存储 Sprite 和存储Texture2D对应的Sprite
+                                {
+                                    mLoadedAssetMap.Add(asset.name.ToLower(), (asset as Texture2D).toSprite());
+                                }
+                                */
                             }
                             mIsAllAssetLoaded = true;
                         }
@@ -383,7 +385,7 @@ public class AssetBundleInfo : FactoryObj {
                         }
                         else
                         {
-                            Debug.LogError(string.Format("AB:{0}里找不到Asset:{1}资源!", AssetBundleName, assetname));
+                            ResourceLogger.logErr(string.Format("AB:{0}里找不到Asset:{1}资源!", AssetBundleName, assetname));
                             return null;
                         }
                     }
@@ -392,7 +394,7 @@ public class AssetBundleInfo : FactoryObj {
         }
         else
         {
-            Debug.LogError(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", AssetBundleName, assetname));
+            ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", AssetBundleName, assetname));
             return null;
         }
     }
@@ -406,7 +408,7 @@ public class AssetBundleInfo : FactoryObj {
     {
         if (owner == null)
         {
-            Debug.LogError(string.Format("引用对象不能为空!无法为AB:{0}添加引用!", AssetBundleName));
+            ResourceLogger.logErr(string.Format("引用对象不能为空!无法为AB:{0}添加引用!", AssetBundleName));
             return;
         }
 
@@ -421,7 +423,7 @@ public class AssetBundleInfo : FactoryObj {
         System.WeakReference wr = new System.WeakReference(owner);
         mReferenceOwnerList.Add(wr);
     }
-    
+
     /// <summary>
     /// 获取AB有效的引用对象计数
     /// </summary>
@@ -445,7 +447,7 @@ public class AssetBundleInfo : FactoryObj {
     /// </summary>
     private void unloadAssetBundle()
     {
-        Debug.Log(string.Format("卸载AB:{0}", AssetBundleName));
+        ResourceLogger.log(string.Format("卸载AB:{0}", AssetBundleName));
         if (Bundle != null)
         {
             // 索引计数为零时调用释放AB和Asset
