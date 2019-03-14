@@ -138,7 +138,7 @@ Note:
 ## 个人博客
 详细的博客记录学习:
 
-[TonyTang1990/AssetBundleLoadManager](https://github.com/TonyTang1990/AssetBundleLoadManager)
+[TonyTang1990/AssetBundleLoadManager](http://tonytang1990.github.io/2018/10/24/AssetBundle%E8%B5%84%E6%BA%90%E6%89%93%E5%8C%85%E5%8A%A0%E8%BD%BD%E7%AE%A1%E7%90%86%E5%AD%A6%E4%B9%A0/)
 
 # 鸣谢
 感谢tangzx/ABSystem作者的无私分享，tangzx/ABSystem的Github链接:
