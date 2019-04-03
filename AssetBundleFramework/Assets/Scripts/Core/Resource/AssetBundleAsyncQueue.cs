@@ -1,0 +1,124 @@
+/*
+ * Description:             AssetBundleAsyncQueue.cs
+ * Author:                  TONYTANG
+ * Create Date:             2019//04/02
+ */
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// AssetBundleAsyncQueue.cs
+/// AB异步加载队列
+/// 目的：
+/// 优化原来的每一个异步AB加载都是一个携程的问题
+/// 改成限定AB加载携程数量，模拟队列的形式进行AB异步加载
+/// </summary>
+public class AssetBundleAsyncQueue {
+
+    /// <summary>
+    /// 异步AB加载队列(全局唯一)
+    /// </summary>
+    public static Queue<AssetBundleLoader> ABAsyncQueue = new Queue<AssetBundleLoader>();
+
+    /// <summary>
+    /// 是否开启了AB加载任务携程
+    /// </summary>
+    public bool IsLoadStart
+    {
+        get;
+        private set;
+    }
+
+    /// <summary>
+    /// 当前正在加载的AB加载器
+    /// </summary>
+    public AssetBundleLoader CurrentLoadingAssetBundleLoader
+    {
+        get;
+        private set;
+    }
+    
+    public AssetBundleAsyncQueue()
+    {
+        IsLoadStart = false;
+    }
+
+    /// <summary>
+    /// 启动AB异步加载任务携程
+    /// </summary>
+    public void startABAsyncLoad()
+    {
+        if(IsLoadStart == false)
+        {
+            ModuleManager.Singleton.getModule<ResourceModuleManager>().StartCoroutine(assetBundleLoadAsync());
+            IsLoadStart = true;
+        }
+        else
+        {
+            ResourceLogger.logErr("AB异步加载任务携程已经启动！不能重复开启！");
+        }
+    }
+
+    /// <summary>
+    /// 异步加载任务入队列
+    /// </summary>
+    /// <param name="abl"></param>
+    public static void enqueue(AssetBundleLoader abl)
+    {
+        if(abl.LoadMethod == ABLoadMethod.Async)
+        {
+            ABAsyncQueue.Enqueue(abl);
+        }
+        else
+        {
+            ResourceLogger.logErr(string.Format("严重错误，同步加载资源 : {0} 不应该添加到异步加载队列里！", abl.ABName));
+        }
+    }
+
+    /// <summary>
+    /// AB加载携程
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator assetBundleLoadAsync()
+    {
+        while (true)
+        {
+            if (ABAsyncQueue.Count > 0)
+            {
+                CurrentLoadingAssetBundleLoader = ABAsyncQueue.Dequeue();
+                CurrentLoadingAssetBundleLoader.LoadState = ABLoadState.Loading;
+                var abpath = AssetBundlePath.GetABPath() + CurrentLoadingAssetBundleLoader.ABName;
+                AssetBundleCreateRequest abrequest = null;
+#if UNITY_EDITOR
+                //因为资源不全，很多资源丢失，导致直接报错
+                //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
+                if (System.IO.File.Exists(abpath))
+                {
+                    abrequest = AssetBundle.LoadFromFileAsync(abpath);
+                }
+                else
+                {
+                    Debug.LogError(string.Format("AB : {0}文件不存在！", CurrentLoadingAssetBundleLoader.ABName));
+                }
+#else
+                abrequest = AssetBundle.LoadFromFileAsync(abpath);
+#endif
+                yield return abrequest;
+                var assetbundle = abrequest.assetBundle;
+                if (assetbundle == null)
+                {
+                    ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", CurrentLoadingAssetBundleLoader.ABName));
+                }
+
+                CurrentLoadingAssetBundleLoader.onSelfABLoadComplete(assetbundle);
+                CurrentLoadingAssetBundleLoader = null;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+    }
+}

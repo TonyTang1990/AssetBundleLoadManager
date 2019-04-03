@@ -7,6 +7,7 @@
 3. 基于UnityEngine.Object的AB索引生命周期绑定
 4. 底层统一管理AB索引计数，管理资源加载释放
 5. 支持卸载频率，卸载帧率门槛，单次卸载数量等设置。采用Long Time Unused First Unload(越久没用越先卸载)原则卸载。
+6. 支持最大AB异步加载携程数量配置(采用队列模式)
 
 ## 类说明
 Manager统一管理：
@@ -18,9 +19,10 @@ Manager统一管理：
 资源加载类：
 
     - ABLoadMethod(资源加载方式枚举类型 -- 同步 or 异步)
-    - ABLoadState(资源加载状态 -- 错误，加载中，完成之类的)
+    - ABLoadState(资源加载状态 -- 错误，等待加载， 加载中，完成之类的)
     - ABLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
     - ResourceModuleManager(资源加载模块统一管理类)
+    - AssetBundleAsyncQueue(AB异步加载队列)
     - AssetBundleLoader(AB资源加载任务类)
     - AssetBundleInfo(AB信息以及加载状态类 -- AB访问，索引计数以及AB依赖关系抽象都在这一层)
     - AssetBundlePath(AB资源路径相关 -- 处理多平台路径问题)

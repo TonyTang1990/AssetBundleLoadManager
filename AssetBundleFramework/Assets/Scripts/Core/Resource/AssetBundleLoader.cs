@@ -101,11 +101,11 @@ public class AssetBundleLoader : FactoryObj
         set;
     }
 
-    /// <summary> AB资源加载任务状态 /// </summary>
+    /// <summary> AB资源自身加载任务状态 /// </summary>
     public ABLoadState LoadState
     {
         get;
-        private set;
+        set;
     }
 
     /// <summary> 依赖的AB数量 /// </summary>
@@ -186,12 +186,24 @@ public class AssetBundleLoader : FactoryObj
     {
         if (LoadState == ABLoadState.None)
         {
-            LoadState = ABLoadState.Loading;
+            LoadState = ABLoadState.Waiting;
             loadSelfAssetBundle();
         }
-        else if (LoadState == ABLoadState.Complete)
+        else if(LoadState == ABLoadState.Waiting)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}已经处于完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", ABName));
+            ResourceLogger.logErr(string.Format("AB : {0}处于等待加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", ABName));
+        }
+        else if(LoadState == ABLoadState.Loading)
+        {
+            ResourceLogger.logErr(string.Format("AB : {0}处于加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", ABName));
+        }
+        else if (LoadState == ABLoadState.SelfComplete)
+        {
+            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", ABName));
+        }
+        else if (LoadState == ABLoadState.AllComplete)
+        {
+            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身以及依赖AB加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", ABName));
         }
         else if (LoadState == ABLoadState.Error)
         {
@@ -229,12 +241,14 @@ public class AssetBundleLoader : FactoryObj
         ResourceLogger.log(string.Format("加载AB:{0}", ABName));
         if (LoadMethod == ABLoadMethod.Sync)
         {
+            LoadState = ABLoadState.Loading;
             loadAssetBundleSync();
         }
         else
         {
-            loadAssetBundleAsync();
-            //ResourceModuleManager.Singleton.StartCoroutine(loadAssetBundleAsync());
+            //异步加载AB修改成限制携程数量，入队列的形式
+            //ModuleManager.Singleton.getModule<ResourceModuleManager>().StartCoroutine(loadAssetBundleAsync());
+            AssetBundleAsyncQueue.enqueue(this);
         }
     }
 
@@ -267,12 +281,32 @@ public class AssetBundleLoader : FactoryObj
     /// 异步加载AB
     /// </summary>
     /// <returns></returns>
-    private IEnumerator loadAssetBundleAsync()
+    public IEnumerator loadAssetBundleAsync()
     {
         var abpath = AssetBundlePath.GetABPath() + ABName;
-        var abrequest = AssetBundle.LoadFromFileAsync(abpath);
+        AssetBundleCreateRequest abrequest = null;
+#if UNITY_EDITOR
+        //因为资源不全，很多资源丢失，导致直接报错
+        //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
+        if (System.IO.File.Exists(abpath))
+        {
+            abrequest = AssetBundle.LoadFromFileAsync(abpath);
+        }
+        else
+        {
+            Debug.LogError(string.Format("AB : {0}文件不存在！", ABName));
+        }
+#else
+        abrequest = AssetBundle.LoadFromFileAsync(abpath);
+#endif
         yield return abrequest;
-        onSelfABLoadComplete(abrequest.assetBundle);
+        var assetbundle = abrequest.assetBundle;
+        if (assetbundle == null)
+        {
+            ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", ABName));
+        }
+
+        onSelfABLoadComplete(assetbundle);
     }
 
     /// <summary>
@@ -301,12 +335,14 @@ public class AssetBundleLoader : FactoryObj
     /// <summary>
     /// AB资源加载完成
     /// </summary>
-    private void onSelfABLoadComplete(AssetBundle ab = null)
+    public void onSelfABLoadComplete(AssetBundle ab = null)
     {
         ResourceLogger.log(string.Format("AB:{0}自身加载完成!", ABName));
 
         mABInfo = ResourceModuleManager.getInstance().createAssetBundleInfo(ABName, ab);
         mABInfo.updateLastUsedTime();
+        
+        LoadState = ABLoadState.SelfComplete;
 
         // 通知上层自身AB加载完成，移除加载任务
         LoadABCompleteNotifier(this);
@@ -328,8 +364,7 @@ public class AssetBundleLoader : FactoryObj
             mABInfo.addDependency(dploader);
         }
 
-        // 所有AB加载完成才算完成
-        LoadState = ABLoadState.Complete;
+        LoadState = ABLoadState.AllComplete;
 
         // 所有AB加载完成才算AB Ready可以使用
         mABInfo.mIsReady = true;

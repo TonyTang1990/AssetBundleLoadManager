@@ -1,0 +1,12 @@
+ABName : loadingscreen
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 0-35-7
+	ABLastUnloadTime : 0-35-7
+
+ABName : mainwindow
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 0-35-2
+	ABLastUnloadTime : 0-35-2
+

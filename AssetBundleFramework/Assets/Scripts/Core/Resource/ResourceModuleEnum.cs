@@ -8,33 +8,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// ��Դ���ع�������ö�ٶ���
-
 /// <summary>
-/// AB��Դ���ط�ʽ
+/// AB资源加载方式
 /// </summary>
 public enum ABLoadMethod
 {
-    Sync = 1,          // ͬ��
-    Async = 2          // �첽
+    Sync = 1,          // 同步
+    Async = 2          // 异步
 }
 
 /// <summary>
-/// AB��Դ��������
+/// AB资源加载类型
 /// Note:
-/// �Ѽ��ص���Դ���������������ģ���ֻ�����ӵ����߱�(NormalLoad -> Preload -> PermanentLoad)���������Ӹ�����(PermanentLoad -> Preload -> NormalLoad)
+/// 已加载的资源加载类型允许更改，但只允许从低往高变(NormalLoad -> Preload -> PermanentLoad)，不允许从高往低(PermanentLoad -> Preload -> NormalLoad)
 /// </summary>
 public enum ABLoadType
 {
-    NormalLoad = 1,         // ��������(��ͨ��Tick�����ж�����ж��)
-    Preload = 2,            // Ԥ����(�г����Ż�ж��)
-    PermanentLoad = 3,      // ���ü���(��פ�ڴ�����ж��)
+    NormalLoad = 1,         // 正常加载(可通过Tick检测判定正常卸载)
+    Preload = 2,            // 预加载(切场景才会卸载)
+    PermanentLoad = 3,      // 永久加载(常驻内存永不卸载)
 }
 
 /// <summary>
-/// ��дABLoadType�Ƚ����ؽӿں���������ABLoadType��ΪDictionary Keyʱ��
-/// �ײ�����Ĭ��Equals(object obj)��DefaultCompare.GetHashCode()���¶����Ķ��ڴ�����
-/// �ο�:
+/// 重写ABLoadType比较相关接口函数，避免ABLoadType作为Dictionary Key时，
+/// 底层调用默认Equals(object obj)和DefaultCompare.GetHashCode()导致额外的堆内存分配
+/// 参考:
 /// http://gad.qq.com/program/translateview/7194373
 /// </summary>
 public class ABLoadTypeComparer : IEqualityComparer<ABLoadType>
@@ -51,12 +49,14 @@ public class ABLoadTypeComparer : IEqualityComparer<ABLoadType>
 }
 
 /// <summary>
-/// AB��������״̬
+/// AB加载任务状态
 /// </summary>
 public enum ABLoadState
 {
-    None = 1,             // δ����״̬
-    Loading = 2,          // ������״̬
-    Complete = 3,         // ��������״̬
-    Error = 4             // ����״̬
+    None = 1,             // 未加载状态
+    Waiting = 2,          // 等待加载状态
+    Loading = 3,          // 加载中状态
+    SelfComplete = 4,     // 自身加载完成状态
+    AllComplete = 5,      // 自身以及依赖AB加载完成状态
+    Error = 6             // 出错状态
 }

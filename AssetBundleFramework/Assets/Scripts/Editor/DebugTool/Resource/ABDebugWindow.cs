@@ -23,6 +23,7 @@ public class ABDebugWindow : EditorWindow
     {
         AB_Display_All_Dep = 1,                     // 展示AB依赖文件信息类型
         AB_Display_AB_ReferenceInfo = 2,            // 展示所有AB引用信息类型
+        AB_Display_Async_QueueInfo = 3,             // 展示AB异步加载队列信息类型
     }
 
     /// <summary>
@@ -121,6 +122,11 @@ public class ABDebugWindow : EditorWindow
                 mCurrentABDebugToolType = ABDebugToolType.AB_Display_AB_ReferenceInfo;
                 mFilterTextChanged = true;
             }
+            if (GUILayout.Button("查看AB异步加载信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+            {
+                mCurrentABDebugToolType = ABDebugToolType.AB_Display_Async_QueueInfo;
+                mFilterTextChanged = true;
+            }
             if (GUILayout.Button("生成一份txt的AB依赖信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
             {
                 writeABDepInfoIntoTxt();
@@ -152,6 +158,10 @@ public class ABDebugWindow : EditorWindow
                 else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_AB_ReferenceInfo)
                 {
                     displayABReferenceInfoUI();
+                }
+                else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_Async_QueueInfo)
+                {
+                    displayABAysncQueueInfoUI();
                 }
             }
             GUILayout.EndScrollView();
@@ -311,10 +321,10 @@ public class ABDebugWindow : EditorWindow
             GUILayout.Label("正常已加载资源信息:");
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("正常已加载AB数量 : " + normalloadedabinfomap.Count);
+            GUILayout.Label(string.Format("正常已加载AB数量 : {0}", normalloadedabinfomap.Count));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("可回收正常已加载非常驻AB数量 : " + ResourceModuleManager.getInstance().getNormalUnsedABNumber());
+            GUILayout.Label(string.Format("可回收正常已加载非常驻AB数量 : {0}", ResourceModuleManager.getInstance().getNormalUnsedABNumber()));
             EditorGUILayout.EndHorizontal();
             foreach (var loadedabi in normalloadedabinfomap)
             {
@@ -326,10 +336,10 @@ public class ABDebugWindow : EditorWindow
             GUILayout.Label("预加载已加载资源信息:");
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("预加载已加载AB数量 : " + preloadloadedabinfomap.Count);
+            GUILayout.Label(string.Format("预加载已加载AB数量 : {0}", preloadloadedabinfomap.Count));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("可回收预加载已加载非常驻AB数量 : " + ResourceModuleManager.getInstance().getPreloadUnsedABNumber());
+            GUILayout.Label(string.Format("可回收预加载已加载非常驻AB数量 : {0}", ResourceModuleManager.getInstance().getPreloadUnsedABNumber()));
             EditorGUILayout.EndHorizontal();
             foreach (var loadedabi in preloadloadedabinfomap)
             {
@@ -341,13 +351,38 @@ public class ABDebugWindow : EditorWindow
             GUILayout.Label("常驻已加载资源信息:");
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("已加载常驻AB数量 : " + permanentloadedabinfomap.Count);
+            GUILayout.Label(string.Format("已加载常驻AB数量 : {0}", permanentloadedabinfomap.Count));
             EditorGUILayout.EndHorizontal();
             foreach (var ploadedabi in permanentloadedabinfomap)
             {
                 displayOneAssetBundleInfoUI(ploadedabi.Value);
             }
         }
+        EditorGUILayout.EndVertical();
+    }
+
+    /// <summary>
+    /// 显示AB异步加载队列信息UI
+    /// </summary>
+    private void displayABAysncQueueInfoUI()
+    {
+        EditorGUILayout.BeginVertical();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("当前AB异步加载队列信息 :");
+        EditorGUILayout.EndHorizontal();
+        var abasyncqueue = AssetBundleAsyncQueue.ABAsyncQueue;
+        foreach(var abasync in abasyncqueue)
+        {
+            displayOneAssetBundleLoaderInfoUI(abasync);
+        }
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label(string.Format("当前AB异步加载携程总数量 : {0}", ResourceModuleManager.getInstance().MaxMaximumAsyncCoroutine));
+        EditorGUILayout.EndHorizontal();
+        var abasyncqueuelist = ResourceModuleManager.getInstance().AssetBundleAsyncQueueList;
+        for (int i = 0; i < abasyncqueuelist.Count; i++)
+        {
+            displayOneAssetBundleAsyncQueueInfoUI(abasyncqueuelist[i], i);
+        }        
         EditorGUILayout.EndVertical();
     }
 
@@ -360,11 +395,12 @@ public class ABDebugWindow : EditorWindow
         EditorGUILayout.BeginVertical();
         EditorGUILayout.Space();
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("资源名 : " + abl.ABName, GUILayout.Width(150.0f));
-        EditorGUILayout.LabelField("加载状态 : " + abl.LoadState, GUILayout.Width(150.0f));
-        EditorGUILayout.LabelField("加载方式 : " + abl.LoadType, GUILayout.Width(100.0f));
-        EditorGUILayout.LabelField("依赖资源数量 : " + abl.DepABCount, GUILayout.Width(100.0f));
-        EditorGUILayout.LabelField("已加载依赖资源数量 : " + abl.DepAssetBundleInfoList.Count, GUILayout.Width(150.0f));
+        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abl.ABName), GUILayout.Width(150.0f));
+        EditorGUILayout.LabelField(string.Format("加载状态 : {0}", abl.LoadState), GUILayout.Width(150.0f));
+        EditorGUILayout.LabelField(string.Format("加载方式 : {0}", abl.LoadMethod), GUILayout.Width(150.0f));
+        EditorGUILayout.LabelField(string.Format("加载类型 : {0}", abl.LoadType), GUILayout.Width(150.0f));        
+        EditorGUILayout.LabelField(string.Format("依赖资源数量 : {0}", abl.DepABCount), GUILayout.Width(150.0f));
+        EditorGUILayout.LabelField(string.Format("已加载依赖资源数量 : {0}", abl.DepAssetBundleInfoList.Count), GUILayout.Width(150.0f));
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.LabelField("已加载完成的依赖资源列表 :", GUILayout.Width(200.0f));
         EditorGUILayout.BeginHorizontal();
@@ -392,10 +428,10 @@ public class ABDebugWindow : EditorWindow
     private void displayOneAssetBundleInfoUI(AssetBundleInfo abi)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("资源名 : " + abi.AssetBundleName, GUILayout.Width(250.0f));
-        EditorGUILayout.LabelField("是否就绪 : " + abi.mIsReady, GUILayout.Width(100.0f));
-        EditorGUILayout.LabelField("引用计数 : " + abi.RefCount, GUILayout.Width(100.0f));
-        EditorGUILayout.LabelField("最近使用时间 : " + abi.LastUsedTime, GUILayout.Width(150.0f));
+        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abi.AssetBundleName), GUILayout.Width(250.0f));
+        EditorGUILayout.LabelField(string.Format("是否就绪 : {0}", abi.mIsReady), GUILayout.Width(100.0f));
+        EditorGUILayout.LabelField(string.Format("引用计数 : {0}", abi.RefCount), GUILayout.Width(100.0f));
+        EditorGUILayout.LabelField(string.Format("最近使用时间 : {0}", abi.LastUsedTime), GUILayout.Width(150.0f));
         EditorGUILayout.LabelField(string.Format("依赖引用对象列表 : {0}", abi.ReferenceOwnerList.Count == 0 ? "无" : string.Empty), GUILayout.Width(150.0f));
         foreach (var refowner in abi.ReferenceOwnerList)
         {
@@ -405,6 +441,31 @@ public class ABDebugWindow : EditorWindow
             }
         }
         EditorGUILayout.EndHorizontal();
+    }
+
+    /// <summary>
+    /// 显示一个AB异步加载队列信息
+    /// </summary>
+    /// <param name="abaq">队列信息</param>
+    /// <param name="queueindex">队列索引</param>
+    private void displayOneAssetBundleAsyncQueueInfoUI(AssetBundleAsyncQueue abaq, int queueindex)
+    {
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField(string.Format("AB异步携程索引号 : {0}", queueindex), GUILayout.Width(250.0f));
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("当前AB异步加载信息 : ", GUILayout.Width(250.0f));
+        EditorGUILayout.EndHorizontal();
+        if(abaq.CurrentLoadingAssetBundleLoader != null)
+        {
+            displayOneAssetBundleLoaderInfoUI(abaq.CurrentLoadingAssetBundleLoader);
+        }
+        else
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("无", GUILayout.Width(250.0f));
+            EditorGUILayout.EndHorizontal();
+        }
     }
 
     /// <summary>

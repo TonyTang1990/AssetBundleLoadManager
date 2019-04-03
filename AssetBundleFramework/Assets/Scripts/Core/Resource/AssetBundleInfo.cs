@@ -348,13 +348,14 @@ public class AssetBundleInfo : FactoryObj
                                 //TODO：解决Sprite Asset和Texture2D同名问题，满足可加载使用图集的Texture2D Asset
                                 //暂时未存储Texture2D，要访问图集Texture2D可以通过Sprite.texture的形式访问
                                 var asset = allassets[i];
-                                if (mLoadedAssetMap.ContainsKey(asset.name.ToLower()))
+                                if (mLoadedAssetMap.ContainsKey(asset.name))
                                 {
+                                    //ResourceLogger.logErr(string.Format("{0} : AB里存在同名Asset : {1}", AssetBundleName, asset.name));
                                     continue;
                                 }
                                 if (asset is Sprite)
                                 {
-                                    mLoadedAssetMap.Add(asset.name.ToLower(), asset);
+                                    mLoadedAssetMap.Add(asset.name, asset);
                                 }
                                 /*
                                 else if (asset is Texture2D) //修改为同时存储 Sprite 和存储Texture2D对应的Sprite

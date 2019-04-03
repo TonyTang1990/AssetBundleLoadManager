@@ -300,6 +300,31 @@ public class GameLauncher : MonoBehaviour {
         ABLoadType.PermanentLoad);          // Shader常驻
     }
 
+
+    /// <summary>
+    /// AB异步加载
+    /// </summary>
+    public void onAsynABLoad()
+    {
+        Debug.Log("onTestAsynAndSyncABLoad()");
+        if (mMainWindow == null)
+        {
+            onLoadWindowPrefab();
+        }
+
+        var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
+        var param1 = InputParam1.text;
+        Debug.Log("Param1 = " + param1);
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource(param1,
+          (abi) =>
+          {
+              var sp = abi.getAsset<Sprite>(image, param1);
+              image.sprite = sp;
+          },
+          ABLoadType.NormalLoad,
+          ABLoadMethod.Async);
+    }
+
     /// <summary>
     /// 测试AB异步和同步加载
     /// </summary>
@@ -345,6 +370,45 @@ public class GameLauncher : MonoBehaviour {
         {
             var sp = abi.getAsset<Sprite>(image, "Diffuse");
             image.sprite = sp;
+        },
+        ABLoadType.NormalLoad,
+        ABLoadMethod.Async);
+
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("pre_Zombunny",
+        (abi) =>
+        {
+            mActorInstance = abi.instantiateAsset("pre_Zombunny");
+        },
+        ABLoadType.NormalLoad,
+        ABLoadMethod.Async);
+
+        var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
+        Material mat = null;
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("sharematerial",
+        (abi) =>
+        {
+            var matasset = abi.getAsset<Material>(btnloadmat.gameObject, "sharematerial");
+            mat = GameObject.Instantiate<Material>(matasset);
+        },
+        ABLoadType.NormalLoad,
+        ABLoadMethod.Async);
+        btnloadmat.GetComponent<Image>().material = mat;
+
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("SFXTemplate",
+        (abi) =>
+        {
+            mSFXInstance = abi.instantiateAsset("SFXTemplate");
+        },
+        ABLoadType.NormalLoad,
+        ABLoadMethod.Async);
+
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("sfx1",
+        (abi) =>
+        {
+            var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");
+            var audiosource = mSFXInstance.GetComponent<AudioSource>();
+            audiosource.clip = ac;
+            audiosource.Play();
         },
         ABLoadType.NormalLoad,
         ABLoadMethod.Async);

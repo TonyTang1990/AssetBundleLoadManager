@@ -193,6 +193,26 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     }
     #endregion
 
+    #region AB异步加载队列部分
+    /// <summary>
+    /// 最大AB异步加载携程数量
+    /// </summary>
+    public int MaxMaximumAsyncCoroutine
+    {
+        get;
+        private set;
+    }
+
+    /// <summary>
+    /// AB异步加载队列列表
+    /// </summary>
+    public List<AssetBundleAsyncQueue> AssetBundleAsyncQueueList
+    {
+        get;
+        private set;
+    }
+    #endregion
+
     #region AB加载管理部分
     /// <summary> 逻辑层AB加载完成委托 /// </summary>
     /// <param name="abinfo"></param>
@@ -279,6 +299,7 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
         AssetBundleInfoFactory.initialize(200);
 
         mAssetBundleDpMap = new Dictionary<string, string[]>();
+
         EnableABUnloadUnsed = true;
         mABRequestTaskMap = new Dictionary<string, AssetBundleLoader>();
         mAllLoadedABInfoMap = new Dictionary<ABLoadType, Dictionary<string, AssetBundleInfo>>(new ABLoadTypeComparer());
@@ -295,6 +316,15 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
         mMaxUnloadABNumberPerFrame = 10;
         mABMinimumLifeTime = 20.0f;
         mABRecycleFPSThreshold = 20;
+
+        MaxMaximumAsyncCoroutine = 2;
+        AssetBundleAsyncQueueList = new List<AssetBundleAsyncQueue>();
+        for (int i = 0; i < MaxMaximumAsyncCoroutine; i++)
+        {
+            var abaq = new AssetBundleAsyncQueue();
+            AssetBundleAsyncQueueList.Add(abaq);
+            abaq.startABAsyncLoad();
+        }
 
         loadAllDpInfo();
     }
@@ -372,7 +402,7 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
                 abloader = mABRequestTaskMap[resname];
                 // 之前有请求resname资源，但还未完成
                 // 比如先异步请求resname，在异步完成前来了一个同步请求resname
-                // 修改加载方式并添加回调，异步会在同步加载完成时一起回调
+                // 修改加载方式并添加回调，同步会在异步加载完成时一起回调
                 abloader.LoadMethod = loadmethod;
                 abloader.LoadType = loadtype;
                 abloader.LoadABCompleteCallBack += completehandler;
