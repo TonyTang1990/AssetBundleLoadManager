@@ -277,6 +277,8 @@ public class AssetBundleLoader : FactoryObj
         onSelfABLoadComplete(ab);
     }
 
+    /*
+     * 异步加载AB走AssetBundleAsyncQueue的队列模式
     /// <summary>
     /// 异步加载AB
     /// </summary>
@@ -308,6 +310,7 @@ public class AssetBundleLoader : FactoryObj
 
         onSelfABLoadComplete(assetbundle);
     }
+    */
 
     /// <summary>
     /// 依赖AB加载完成回调

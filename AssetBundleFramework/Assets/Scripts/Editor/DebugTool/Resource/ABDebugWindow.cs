@@ -371,9 +371,18 @@ public class ABDebugWindow : EditorWindow
         GUILayout.Label("当前AB异步加载队列信息 :");
         EditorGUILayout.EndHorizontal();
         var abasyncqueue = AssetBundleAsyncQueue.ABAsyncQueue;
-        foreach(var abasync in abasyncqueue)
+        if (abasyncqueue.Count > 0)
         {
-            displayOneAssetBundleLoaderInfoUI(abasync);
+            foreach (var abasync in abasyncqueue)
+            {
+                displayOneAssetBundleLoaderInfoUI(abasync);
+            }
+        }
+        else
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("无", GUILayout.Width(250.0f));
+            EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label(string.Format("当前AB异步加载携程总数量 : {0}", ResourceModuleManager.getInstance().MaxMaximumAsyncCoroutine));

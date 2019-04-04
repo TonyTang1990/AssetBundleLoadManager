@@ -382,6 +382,17 @@ public class GameLauncher : MonoBehaviour {
         ABLoadType.NormalLoad,
         ABLoadMethod.Async);
 
+        //测试异步加载后立刻同步加载
+        GameObject actorinstance2 = null;
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("pre_Zombunny",
+        (abi) =>
+        {
+            actorinstance2 = abi.instantiateAsset("pre_Zombunny");
+        },
+        ABLoadType.NormalLoad,
+        ABLoadMethod.Sync);
+        Debug.Log("actorinstance2.transform.name = " + actorinstance2.transform.name);
+
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
         Material mat = null;
         ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("sharematerial",

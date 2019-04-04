@@ -16,9 +16,28 @@ using UnityEngine;
 public class ResourceLogger
 {
     /// <summary>
+    /// 资源Log开关本地存储Key
+    /// </summary>
+    private static string LogSwitchPrefsKey = "ResourceLogSwitch";
+
+    /// <summary>
     /// 资源Log打印开关
     /// </summary>
-    public static bool LogSwitch = false;
+    public static bool LogSwitch
+    {
+        get
+        {
+            var logswitchvalue = PlayerPrefs.GetInt(LogSwitchPrefsKey, 0);
+            mLogSwitch = logswitchvalue == 0 ? false : true;
+            return mLogSwitch;
+        }
+        set
+        {
+            mLogSwitch = value;
+            PlayerPrefs.SetInt(LogSwitchPrefsKey, mLogSwitch == true ? 1 : 0);
+        }
+    }
+    private static bool mLogSwitch = PlayerPrefs.GetInt(LogSwitchPrefsKey, 0) == 0 ? false : true;
 
     /// <summary>
     /// 打印普通Log信息

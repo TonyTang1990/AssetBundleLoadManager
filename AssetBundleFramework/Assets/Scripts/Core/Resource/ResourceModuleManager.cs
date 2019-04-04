@@ -402,11 +402,18 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
                 abloader = mABRequestTaskMap[resname];
                 // 之前有请求resname资源，但还未完成
                 // 比如先异步请求resname，在异步完成前来了一个同步请求resname
-                // 修改加载方式并添加回调，同步会在异步加载完成时一起回调
+                // 修改加载方式并添加回调，调用同步加载方式，异步加载会在同步加载完成时一起回调
                 abloader.LoadMethod = loadmethod;
                 abloader.LoadType = loadtype;
                 abloader.LoadABCompleteCallBack += completehandler;
                 abloader.LoadABCompleteNotifier = onABLoadCompleteNotifier;
+                if(loadmethod == ABLoadMethod.Sync)
+                {
+                    ResourceLogger.log(string.Format("请求同步加载一个正在异步加载的资源 : {0}", abloader.ABName));
+                    //重置AB加载状态，走同步加载模式
+                    abloader.LoadState = ABLoadState.None;
+                    abloader.startLoad();
+                }
             }
             else
             {

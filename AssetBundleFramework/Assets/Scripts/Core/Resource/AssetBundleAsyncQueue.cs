@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AssetBundleAsyncQueue.cs
  * Author:                  TONYTANG
  * Create Date:             2019//04/02
@@ -10,20 +10,20 @@ using UnityEngine;
 
 /// <summary>
 /// AssetBundleAsyncQueue.cs
-/// ABÒì²½¼ÓÔØ¶ÓÁĞ
-/// Ä¿µÄ£º
-/// ÓÅ»¯Ô­À´µÄÃ¿Ò»¸öÒì²½AB¼ÓÔØ¶¼ÊÇÒ»¸öĞ¯³ÌµÄÎÊÌâ
-/// ¸Ä³ÉÏŞ¶¨AB¼ÓÔØĞ¯³ÌÊıÁ¿£¬Ä£Äâ¶ÓÁĞµÄĞÎÊ½½øĞĞABÒì²½¼ÓÔØ
+/// ABå¼‚æ­¥åŠ è½½é˜Ÿåˆ—
+/// ç›®çš„ï¼š
+/// ä¼˜åŒ–åŸæ¥çš„æ¯ä¸€ä¸ªå¼‚æ­¥ABåŠ è½½éƒ½æ˜¯ä¸€ä¸ªæºç¨‹çš„é—®é¢˜
+/// æ”¹æˆé™å®šABåŠ è½½æºç¨‹æ•°é‡ï¼Œæ¨¡æ‹Ÿé˜Ÿåˆ—çš„å½¢å¼è¿›è¡ŒABå¼‚æ­¥åŠ è½½
 /// </summary>
 public class AssetBundleAsyncQueue {
 
     /// <summary>
-    /// Òì²½AB¼ÓÔØ¶ÓÁĞ(È«¾ÖÎ¨Ò»)
+    /// å¼‚æ­¥ABåŠ è½½é˜Ÿåˆ—(å…¨å±€å”¯ä¸€)
     /// </summary>
     public static Queue<AssetBundleLoader> ABAsyncQueue = new Queue<AssetBundleLoader>();
 
     /// <summary>
-    /// ÊÇ·ñ¿ªÆôÁËAB¼ÓÔØÈÎÎñĞ¯³Ì
+    /// æ˜¯å¦å¼€å¯äº†ABåŠ è½½ä»»åŠ¡æºç¨‹
     /// </summary>
     public bool IsLoadStart
     {
@@ -32,7 +32,7 @@ public class AssetBundleAsyncQueue {
     }
 
     /// <summary>
-    /// µ±Ç°ÕıÔÚ¼ÓÔØµÄAB¼ÓÔØÆ÷
+    /// å½“å‰æ­£åœ¨åŠ è½½çš„ABåŠ è½½å™¨
     /// </summary>
     public AssetBundleLoader CurrentLoadingAssetBundleLoader
     {
@@ -46,7 +46,7 @@ public class AssetBundleAsyncQueue {
     }
 
     /// <summary>
-    /// Æô¶¯ABÒì²½¼ÓÔØÈÎÎñĞ¯³Ì
+    /// å¯åŠ¨ABå¼‚æ­¥åŠ è½½ä»»åŠ¡æºç¨‹
     /// </summary>
     public void startABAsyncLoad()
     {
@@ -57,12 +57,12 @@ public class AssetBundleAsyncQueue {
         }
         else
         {
-            ResourceLogger.logErr("ABÒì²½¼ÓÔØÈÎÎñĞ¯³ÌÒÑ¾­Æô¶¯£¡²»ÄÜÖØ¸´¿ªÆô£¡");
+            ResourceLogger.logErr("ABå¼‚æ­¥åŠ è½½ä»»åŠ¡æºç¨‹å·²ç»å¯åŠ¨ï¼ä¸èƒ½é‡å¤å¼€å¯ï¼");
         }
     }
 
     /// <summary>
-    /// Òì²½¼ÓÔØÈÎÎñÈë¶ÓÁĞ
+    /// å¼‚æ­¥åŠ è½½ä»»åŠ¡å…¥é˜Ÿåˆ—
     /// </summary>
     /// <param name="abl"></param>
     public static void enqueue(AssetBundleLoader abl)
@@ -73,12 +73,12 @@ public class AssetBundleAsyncQueue {
         }
         else
         {
-            ResourceLogger.logErr(string.Format("ÑÏÖØ´íÎó£¬Í¬²½¼ÓÔØ×ÊÔ´ : {0} ²»Ó¦¸ÃÌí¼Óµ½Òì²½¼ÓÔØ¶ÓÁĞÀï£¡", abl.ABName));
+            ResourceLogger.logErr(string.Format("ä¸¥é‡é”™è¯¯ï¼ŒåŒæ­¥åŠ è½½èµ„æº : {0} ä¸åº”è¯¥æ·»åŠ åˆ°å¼‚æ­¥åŠ è½½é˜Ÿåˆ—é‡Œï¼", abl.ABName));
         }
     }
 
     /// <summary>
-    /// AB¼ÓÔØĞ¯³Ì
+    /// ABåŠ è½½æºç¨‹
     /// </summary>
     /// <returns></returns>
     private IEnumerator assetBundleLoadAsync()
@@ -88,31 +88,50 @@ public class AssetBundleAsyncQueue {
             if (ABAsyncQueue.Count > 0)
             {
                 CurrentLoadingAssetBundleLoader = ABAsyncQueue.Dequeue();
-                CurrentLoadingAssetBundleLoader.LoadState = ABLoadState.Loading;
-                var abpath = AssetBundlePath.GetABPath() + CurrentLoadingAssetBundleLoader.ABName;
-                AssetBundleCreateRequest abrequest = null;
-#if UNITY_EDITOR
-                //ÒòÎª×ÊÔ´²»È«£¬ºÜ¶à×ÊÔ´¶ªÊ§£¬µ¼ÖÂÖ±½Ó±¨´í
-                //ÕâÀïÁÙÊ±ÏÈÔÚEditorÄ£Ê½ÏÂÅĞ¶¨ÏÂÎÄ¼şÊÇ·ñ´æÔÚ£¬±ÜÃâAssetBundle.LoadFromFile()Ö±½Ó±¨´í
-                if (System.IO.File.Exists(abpath))
+                //æ£€æŸ¥æ˜¯å¦å·²ç»åŒæ­¥åŠ è½½å®Œæˆ
+                //å¦‚æœå¼‚æ­¥åŠ è½½ABæ—¶ï¼ŒåŒæ­¥è¯·æ±‚æ¥äº†ï¼Œæ‰“æ–­å¼‚æ­¥åç»­é€»è¾‘
+                //LoadState == ABLoadState.Noneè¡¨æ˜åŒæ­¥åŠ è½½è¯¥èµ„æºå·²ç»å®Œæˆï¼Œæ— éœ€å†å¼‚æ­¥è¿”å›
+                if (CurrentLoadingAssetBundleLoader.LoadState == ABLoadState.None)
                 {
-                    abrequest = AssetBundle.LoadFromFileAsync(abpath);
+                    //ResourceLogger.logWar("æœ‰èµ„æºè¿˜æœªå¼€å§‹å¼‚æ­¥åŠ è½½å°±è¢«åŒæ­¥åŠ è½½æ‰“æ–­!");
                 }
                 else
                 {
-                    Debug.LogError(string.Format("AB : {0}ÎÄ¼ş²»´æÔÚ£¡", CurrentLoadingAssetBundleLoader.ABName));
-                }
+                    CurrentLoadingAssetBundleLoader.LoadState = ABLoadState.Loading;
+                    var abname = CurrentLoadingAssetBundleLoader.ABName;
+                    var abpath = AssetBundlePath.GetABPath() + abname;
+                    AssetBundleCreateRequest abrequest = null;
+#if UNITY_EDITOR
+                    //å› ä¸ºèµ„æºä¸å…¨ï¼Œå¾ˆå¤šèµ„æºä¸¢å¤±ï¼Œå¯¼è‡´ç›´æ¥æŠ¥é”™
+                    //è¿™é‡Œä¸´æ—¶å…ˆåœ¨Editoræ¨¡å¼ä¸‹åˆ¤å®šä¸‹æ–‡ä»¶æ˜¯å¦å­˜åœ¨ï¼Œé¿å…AssetBundle.LoadFromFileAsync()ç›´æ¥æŠ¥é”™
+                    if (System.IO.File.Exists(abpath))
+                    {
+                        abrequest = AssetBundle.LoadFromFileAsync(abpath);
+                    }
+                    else
+                    {
+                        Debug.LogError(string.Format("AB : {0}æ–‡ä»¶ä¸å­˜åœ¨ï¼", CurrentLoadingAssetBundleLoader.ABName));
+                    }
 #else
-                abrequest = AssetBundle.LoadFromFileAsync(abpath);
+                    abrequest = AssetBundle.LoadFromFileAsync(abpath);
 #endif
-                yield return abrequest;
-                var assetbundle = abrequest.assetBundle;
-                if (assetbundle == null)
-                {
-                    ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", CurrentLoadingAssetBundleLoader.ABName));
+                    yield return abrequest;
+                    //å¦‚æœå¼‚æ­¥åŠ è½½ABæ—¶ï¼ŒåŒæ­¥è¯·æ±‚æ¥äº†ï¼Œæ‰“æ–­å¼‚æ­¥åç»­é€»è¾‘
+                    //LoadState == ABLoadState.Noneè¡¨æ˜åŒæ­¥åŠ è½½è¯¥èµ„æºå·²ç»å®Œæˆï¼Œæ— éœ€å†å¼‚æ­¥è¿”å›
+                    if (CurrentLoadingAssetBundleLoader.LoadState == ABLoadState.None)
+                    {
+                        ResourceLogger.log(string.Format("èµ„æº : {0}åŠ è½½å·²å®Œæˆï¼Œå¼‚æ­¥åŠ è½½è¢«æ‰“æ–­!", abname));
+                    }
+                    else
+                    {
+                        var assetbundle = abrequest.assetBundle;
+                        if (assetbundle == null)
+                        {
+                            ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", CurrentLoadingAssetBundleLoader.ABName));
+                        }
+                        CurrentLoadingAssetBundleLoader.onSelfABLoadComplete(assetbundle);
+                    }
                 }
-
-                CurrentLoadingAssetBundleLoader.onSelfABLoadComplete(assetbundle);
                 CurrentLoadingAssetBundleLoader = null;
             }
             else
