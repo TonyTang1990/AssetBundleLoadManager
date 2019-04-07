@@ -198,7 +198,7 @@ Manager统一管理：
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Async);
 ```
-​	![AssetBundleLoadManagerUIAfterLoadSprites](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png)
+​	![AssetBundleLoadManagerUIAfterLoadSprites](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadResources.png)
 可以看到我们切换的所有Sprite资源都被绑定到了imgBG对象上，因为不是作为依赖AB加载进来的所以每一个sprite所在的AB引用计数依然为0.
 
 6. 点击销毁窗口实例对象后
