@@ -2,7 +2,7 @@
 /*
  * file ObjectFactory.cs
  *
- * author: Pengmian
+ * author: ***
  * date: 2014/11/11   
  */
 

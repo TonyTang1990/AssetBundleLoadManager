@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1156133349
+CRC: 1590232309
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 03615795cdde241c3c0bc5f93c728c7c
+    Hash: 36e82fa4eb283ce06401495c09dc38cf
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1133156a654d0fb0e13da810e0eaa18c
@@ -42,4 +42,4 @@ ClassTypes:
 Assets:
 - Assets/Res/scenes/sceneprefabs/testscene2prefab.prefab
 Dependencies:
-- G:/Projects/Unity2017Projects/AssetBundleFrameworkStudy/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial

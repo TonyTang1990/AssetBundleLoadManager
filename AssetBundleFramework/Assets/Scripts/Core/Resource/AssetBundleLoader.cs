@@ -15,11 +15,14 @@ using UnityEngine;
 /// </summary>
 public class AssetBundleLoader : FactoryObj
 {
+    /// <summary> 资源管理层AB加载完成委托 /// </summary>
+    /// <param name="abl">AB加载任务信息</param>
+    public delegate void LoadABCompleteNotifier(AssetBundleLoader abl);
 
     /// <summary>
     /// 加载任务对应的AB资源名字
     /// </summary>
-    public string ABName
+    public string AssetBundleName
     {
         get;
         set;
@@ -68,7 +71,7 @@ public class AssetBundleLoader : FactoryObj
     /// <summary>
     /// 所有AB资源加载完成逻辑层回调
     /// </summary>
-    public ResourceModuleManager.LoadABCompleteHandler LoadABCompleteCallBack
+    public AbstractResourceModule.LoadResourceCompleteHandler LoadABCompleteCallBack
     {
         get;
         set;
@@ -77,16 +80,16 @@ public class AssetBundleLoader : FactoryObj
     /// <summary>
     /// 自身AB加载完成资源管理通知回调
     /// </summary>
-    public ResourceModuleManager.LoadABCompleteNotifier LoadABCompleteNotifier
+    public LoadABCompleteNotifier LoadSelfABCompleteNotifier
     {
         get;
         set;
     }
-
+    
     /// <summary>
     /// 资源加载方式
     /// </summary>
-    public ABLoadMethod LoadMethod
+    public ResourceLoadMethod LoadMethod
     {
         get;
         set;
@@ -95,19 +98,19 @@ public class AssetBundleLoader : FactoryObj
     /// <summary>
     /// 资源加载类型
     /// </summary>
-    public ABLoadType LoadType
+    public ResourceLoadType LoadType
     {
         get;
         set;
     }
 
     /// <summary> AB资源自身加载任务状态 /// </summary>
-    public ABLoadState LoadState
+    public ResourceLoadState LoadState
     {
         get;
         set;
     }
-
+    
     /// <summary> 依赖的AB数量 /// </summary>
     public int DepABCount
     {
@@ -157,24 +160,24 @@ public class AssetBundleLoader : FactoryObj
 
     public AssetBundleLoader()
     {
-        ABName = string.Empty;
+        AssetBundleName = string.Empty;
         DepABNames = null;
         LoadABCompleteCallBack = null;
-        LoadABCompleteNotifier = null;
-        LoadMethod = ABLoadMethod.Sync;
-        LoadState = ABLoadState.None;
+        LoadSelfABCompleteNotifier = null;
+        LoadMethod = ResourceLoadMethod.Sync;
+        LoadState = ResourceLoadState.None;
         mLoadedDepABCount = 0;
         mABInfo = null;
     }
 
     public AssetBundleLoader(string abname, string[] depnames)
     {
-        ABName = abname;
+        AssetBundleName = abname;
         DepABNames = depnames;
         LoadABCompleteCallBack = null;
-        LoadABCompleteNotifier = null;
-        LoadMethod = ABLoadMethod.Sync;
-        LoadState = ABLoadState.None;
+        LoadSelfABCompleteNotifier = null;
+        LoadMethod = ResourceLoadMethod.Sync;
+        LoadState = ResourceLoadState.None;
         mLoadedDepABCount = 0;
         mABInfo = null;
     }
@@ -184,30 +187,30 @@ public class AssetBundleLoader : FactoryObj
     /// </summary>
     public void startLoad()
     {
-        if (LoadState == ABLoadState.None)
+        if (LoadState == ResourceLoadState.None)
         {
-            LoadState = ABLoadState.Waiting;
+            LoadState = ResourceLoadState.Waiting;
             loadSelfAssetBundle();
         }
-        else if(LoadState == ABLoadState.Waiting)
+        else if(LoadState == ResourceLoadState.Waiting)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}处于等待加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", ABName));
+            ResourceLogger.logErr(string.Format("AB : {0}处于等待加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundleName));
         }
-        else if(LoadState == ABLoadState.Loading)
+        else if(LoadState == ResourceLoadState.Loading)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}处于加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", ABName));
+            ResourceLogger.logErr(string.Format("AB : {0}处于加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundleName));
         }
-        else if (LoadState == ABLoadState.SelfComplete)
+        else if (LoadState == ResourceLoadState.SelfComplete)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", ABName));
+            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundleName));
         }
-        else if (LoadState == ABLoadState.AllComplete)
+        else if (LoadState == ResourceLoadState.AllComplete)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身以及依赖AB加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", ABName));
+            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身以及依赖AB加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundleName));
         }
-        else if (LoadState == ABLoadState.Error)
+        else if (LoadState == ResourceLoadState.Error)
         {
-            ResourceLogger.logErr(string.Format("AB:{0}处于Error状态，无法加载!", ABName));
+            ResourceLogger.logErr(string.Format("AB:{0}处于Error状态，无法加载!", AssetBundleName));
         }
     }
 
@@ -226,9 +229,9 @@ public class AssetBundleLoader : FactoryObj
         {
             foreach (var dpab in DepABNames)
             {
-                // 依赖AB统一采用ABLoadType.NormalLoad方式，不采用被依赖资源AB的ABLoadType
+                // 依赖AB统一采用ResourceLoadType.NormalLoad方式，不采用被依赖资源AB的ResourceLoadType
                 // 只要被依赖AB不被卸载就不会导致依赖AB被卸载
-                ResourceModuleManager.getInstance().requstResource(dpab, onDepABLoadComplete, ABLoadType.NormalLoad, LoadMethod);
+                ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource(dpab, dpab, onDepABLoadComplete, ResourceLoadType.NormalLoad, LoadMethod);
             }
         }
     }
@@ -238,10 +241,10 @@ public class AssetBundleLoader : FactoryObj
     /// </summary>
     private void loadSelfAssetBundle()
     {
-        ResourceLogger.log(string.Format("加载AB:{0}", ABName));
-        if (LoadMethod == ABLoadMethod.Sync)
+        ResourceLogger.log(string.Format("加载AB:{0}", AssetBundleName));
+        if (LoadMethod == ResourceLoadMethod.Sync)
         {
-            LoadState = ABLoadState.Loading;
+            LoadState = ResourceLoadState.Loading;
             loadAssetBundleSync();
         }
         else
@@ -258,7 +261,7 @@ public class AssetBundleLoader : FactoryObj
     /// <returns></returns>
     private void loadAssetBundleSync()
     {
-        var abpath = AssetBundlePath.GetABPath() + ABName;
+        var abpath = AssetBundlePath.GetABLoadFullPath(AssetBundleName);
         AssetBundle ab = null;
 #if UNITY_EDITOR
         //因为资源不全，很多资源丢失，导致直接报错
@@ -269,7 +272,7 @@ public class AssetBundleLoader : FactoryObj
         }
         else
         {
-            Debug.LogError(string.Format("AB : {0}文件不存在！", ABName));
+            Debug.LogError(string.Format("AB : {0}文件不存在！", AssetBundleName));
         }
 #else
         ab = AssetBundle.LoadFromFile(abpath);
@@ -285,7 +288,7 @@ public class AssetBundleLoader : FactoryObj
     /// <returns></returns>
     public IEnumerator loadAssetBundleAsync()
     {
-        var abpath = AssetBundlePath.GetABPath() + ABName;
+        var abpath = AssetBundlePath.GetABPath() + AssetBundleName;
         AssetBundleCreateRequest abrequest = null;
 #if UNITY_EDITOR
         //因为资源不全，很多资源丢失，导致直接报错
@@ -296,7 +299,7 @@ public class AssetBundleLoader : FactoryObj
         }
         else
         {
-            Debug.LogError(string.Format("AB : {0}文件不存在！", ABName));
+            Debug.LogError(string.Format("AB : {0}文件不存在！", AssetBundleName));
         }
 #else
         abrequest = AssetBundle.LoadFromFileAsync(abpath);
@@ -305,7 +308,7 @@ public class AssetBundleLoader : FactoryObj
         var assetbundle = abrequest.assetBundle;
         if (assetbundle == null)
         {
-            ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", ABName));
+            ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", AssetBundleName));
         }
 
         onSelfABLoadComplete(assetbundle);
@@ -315,9 +318,10 @@ public class AssetBundleLoader : FactoryObj
     /// <summary>
     /// 依赖AB加载完成回调
     /// </summary>
-    /// <param name="abinfo">ab加载信息</param>
-    private void onDepABLoadComplete(AssetBundleInfo abinfo)
+    /// <param name="resinfo">ab加载信息</param>
+    private void onDepABLoadComplete(AbstractResourceInfo resinfo)
     {
+        var abinfo = resinfo as AssetBundleInfo;
         ResourceLogger.log(string.Format("依赖AB:{0}加载成功!", abinfo.AssetBundleName));
         mDepAssetBundleInfoList.Add(abinfo);
 #if UNITY_EDITOR
@@ -340,16 +344,16 @@ public class AssetBundleLoader : FactoryObj
     /// </summary>
     public void onSelfABLoadComplete(AssetBundle ab = null)
     {
-        ResourceLogger.log(string.Format("AB:{0}自身加载完成!", ABName));
+        ResourceLogger.log(string.Format("AB:{0}自身加载完成!", AssetBundleName));
 
-        mABInfo = ResourceModuleManager.getInstance().createAssetBundleInfo(ABName, ab);
+        mABInfo = AssetBundleModule.createAssetBundleInfo(AssetBundleName, ab);
         mABInfo.updateLastUsedTime();
         
-        LoadState = ABLoadState.SelfComplete;
+        LoadState = ResourceLoadState.SelfComplete;
 
         // 通知上层自身AB加载完成，移除加载任务
-        LoadABCompleteNotifier(this);
-        LoadABCompleteNotifier = null;
+        LoadSelfABCompleteNotifier(this);
+        LoadSelfABCompleteNotifier = null;
 
         loadDepAssetBundle();
     }
@@ -359,7 +363,7 @@ public class AssetBundleLoader : FactoryObj
     /// </summary>
     private void allABLoadedComplete()
     {
-        ResourceLogger.log(string.Format("AB:{0}所有AB加载完成!", ABName));
+        ResourceLogger.log(string.Format("AB:{0}所有AB加载完成!", AssetBundleName));
 
         // 所有AB加载完添加依赖AB索引信息并通知上层可以使用了
         foreach (var dploader in mDepAssetBundleInfoList)
@@ -367,7 +371,7 @@ public class AssetBundleLoader : FactoryObj
             mABInfo.addDependency(dploader);
         }
 
-        LoadState = ABLoadState.AllComplete;
+        LoadState = ResourceLoadState.AllComplete;
 
         // 所有AB加载完成才算AB Ready可以使用
         mABInfo.mIsReady = true;
@@ -385,12 +389,12 @@ public class AssetBundleLoader : FactoryObj
     /// </summary>
     public void recycle()
     {
-        ABName = string.Empty;
+        AssetBundleName = string.Empty;
         mDepABNames = null;
         LoadABCompleteCallBack = null;
-        LoadABCompleteNotifier = null;
-        LoadMethod = ABLoadMethod.Sync;
-        LoadState = ABLoadState.None;
+        LoadSelfABCompleteNotifier = null;
+        LoadMethod = ResourceLoadMethod.Sync;
+        LoadState = ResourceLoadState.None;
         mDepABCount = 0;
         mLoadedDepABCount = 0;
         mABInfo = null;

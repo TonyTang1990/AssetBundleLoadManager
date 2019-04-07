@@ -1,7 +1,7 @@
 ﻿/*
  * file CoroutineManager.cs
  *
- * author: Pengmian
+ * author: ***
  * date:   2014/10/9
  */
 

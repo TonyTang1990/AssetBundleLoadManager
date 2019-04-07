@@ -170,7 +170,7 @@ public class AssetBundleLoadAnalyse : SingletonTemplate<AssetBundleLoadAnalyse> 
 
         foreach (var abloadinfo in loadedabinfolist)
         {
-            sw.WriteLine("ABName : " + abloadinfo.ABName);
+            sw.WriteLine("AssetBundleName : " + abloadinfo.ABName);
             sw.WriteLine("\tABLoadTimeCount : " + abloadinfo.ABLoadTimeCount);
             sw.WriteLine("\tABUnloadTimeCount : " + abloadinfo.ABUnloadTimeCount);
             sw.WriteLine("\tABFirstLoadTime : " + abloadinfo.ABFirstLoadTime);

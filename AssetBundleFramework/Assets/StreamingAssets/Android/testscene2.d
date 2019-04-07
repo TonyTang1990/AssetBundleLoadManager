@@ -1,3 +1,0 @@
-sharematerial
-testscene2prefab
-testscene2prefab2

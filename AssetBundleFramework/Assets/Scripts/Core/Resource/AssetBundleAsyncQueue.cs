@@ -67,13 +67,13 @@ public class AssetBundleAsyncQueue {
     /// <param name="abl"></param>
     public static void enqueue(AssetBundleLoader abl)
     {
-        if(abl.LoadMethod == ABLoadMethod.Async)
+        if(abl.LoadMethod == ResourceLoadMethod.Async)
         {
             ABAsyncQueue.Enqueue(abl);
         }
         else
         {
-            ResourceLogger.logErr(string.Format("严重错误，同步加载资源 : {0} 不应该添加到异步加载队列里！", abl.ABName));
+            ResourceLogger.logErr(string.Format("严重错误，同步加载资源 : {0} 不应该添加到异步加载队列里！", abl.AssetBundleName));
         }
     }
 
@@ -90,16 +90,16 @@ public class AssetBundleAsyncQueue {
                 CurrentLoadingAssetBundleLoader = ABAsyncQueue.Dequeue();
                 //检查是否已经同步加载完成
                 //如果异步加载AB时，同步请求来了，打断异步后续逻辑
-                //LoadState == ABLoadState.None表明同步加载该资源已经完成，无需再异步返回
-                if (CurrentLoadingAssetBundleLoader.LoadState == ABLoadState.None)
+                //LoadState == ResourceLoadState.None表明同步加载该资源已经完成，无需再异步返回
+                if (CurrentLoadingAssetBundleLoader.LoadState == ResourceLoadState.None)
                 {
                     //ResourceLogger.logWar("有资源还未开始异步加载就被同步加载打断!");
                 }
                 else
                 {
-                    CurrentLoadingAssetBundleLoader.LoadState = ABLoadState.Loading;
-                    var abname = CurrentLoadingAssetBundleLoader.ABName;
-                    var abpath = AssetBundlePath.GetABPath() + abname;
+                    CurrentLoadingAssetBundleLoader.LoadState = ResourceLoadState.Loading;
+                    var abname = CurrentLoadingAssetBundleLoader.AssetBundleName;
+                    var abpath = AssetBundlePath.GetABLoadFullPath(abname);
                     AssetBundleCreateRequest abrequest = null;
 #if UNITY_EDITOR
                     //因为资源不全，很多资源丢失，导致直接报错
@@ -110,15 +110,15 @@ public class AssetBundleAsyncQueue {
                     }
                     else
                     {
-                        Debug.LogError(string.Format("AB : {0}文件不存在！", CurrentLoadingAssetBundleLoader.ABName));
+                        Debug.LogError(string.Format("AB : {0}文件不存在！", CurrentLoadingAssetBundleLoader.AssetBundleName));
                     }
 #else
                     abrequest = AssetBundle.LoadFromFileAsync(abpath);
 #endif
                     yield return abrequest;
                     //如果异步加载AB时，同步请求来了，打断异步后续逻辑
-                    //LoadState == ABLoadState.None表明同步加载该资源已经完成，无需再异步返回
-                    if (CurrentLoadingAssetBundleLoader.LoadState == ABLoadState.None)
+                    //LoadState == ResourceLoadState.None表明同步加载该资源已经完成，无需再异步返回
+                    if (CurrentLoadingAssetBundleLoader.LoadState == ResourceLoadState.None)
                     {
                         ResourceLogger.log(string.Format("资源 : {0}加载已完成，异步加载被打断!", abname));
                     }
@@ -127,7 +127,7 @@ public class AssetBundleAsyncQueue {
                         var assetbundle = abrequest.assetBundle;
                         if (assetbundle == null)
                         {
-                            ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", CurrentLoadingAssetBundleLoader.ABName));
+                            ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", CurrentLoadingAssetBundleLoader.AssetBundleName));
                         }
                         CurrentLoadingAssetBundleLoader.onSelfABLoadComplete(assetbundle);
                     }

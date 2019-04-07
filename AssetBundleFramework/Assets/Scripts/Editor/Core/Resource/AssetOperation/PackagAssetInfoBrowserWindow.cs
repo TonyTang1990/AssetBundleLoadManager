@@ -113,7 +113,7 @@ public class PackagAssetInfoBrowserWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.Label(string.Format("Asset path : {0}", pa.AssetPath), GUILayout.Width(700.0f));
         GUILayout.Label(string.Format("Asset BuildRule : {0}", pa.AssetAssetBundleBuildRule), GUILayout.Width(200.0f));
-        GUILayout.Label(string.Format("ABName : {0}", pa.getPackageAssetABName()), GUILayout.Width(400.0f));
+        GUILayout.Label(string.Format("AssetBundleName : {0}", pa.getPackageAssetABName()), GUILayout.Width(400.0f));
         GUILayout.EndHorizontal();
     }
 
@@ -124,7 +124,7 @@ public class PackagAssetInfoBrowserWindow : EditorWindow
     private void showAssetBundleBuildUI(AssetBundleBuild abb)
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label(string.Format("ABName : {0}", abb.assetBundleName), GUILayout.Width(400.0f));
+        GUILayout.Label(string.Format("AssetBundleName : {0}", abb.assetBundleName), GUILayout.Width(400.0f));
         GUILayout.BeginVertical();
         foreach(var asset  in abb.assetNames)
         {

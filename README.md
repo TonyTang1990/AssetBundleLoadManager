@@ -18,32 +18,44 @@ Manager统一管理：
 
 资源加载类：
 
-    - ABLoadMethod(资源加载方式枚举类型 -- 同步 or 异步)
-    - ABLoadState(资源加载状态 -- 错误，等待加载， 加载中，完成之类的)
-    - ABLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
-    - ResourceModuleManager(资源加载模块统一管理类)
+    - ResourceLoadMethod(资源加载方式枚举类型 -- 同步 or 异步)
+    - ResourceLoadMode(资源加载模式 -- AssetBundle or AssetDatabase(限Editor模式下可切换))
+    - ResourceLoadState(资源加载状态 -- 错误，等待加载， 加载中，完成之类的)
+    - ResourceLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
+    - ResourceModuleManager(资源加载模块统一入口管理类)
+    - AbstractResourceModule(资源加载模块抽象)
+    - AbstractResourceInfo(资源加载信息抽象)
+    - AssetBundleModule(AssetBundle模式下的实际加载管理模块)
     - AssetBundleAsyncQueue(AB异步加载队列)
     - AssetBundleLoader(AB资源加载任务类)
     - AssetBundleInfo(AB信息以及加载状态类 -- AB访问，索引计数以及AB依赖关系抽象都在这一层)
-    - AssetBundlePath(AB资源路径相关 -- 处理多平台路径问题)
+    - AssetBundlePath(AB资源路径相关 -- 处理多平台以及热更资源加载路径问题)
     - ABDebugWindow.cs(Editor运行模式下可视化查看AB加载详细信息的辅助工具窗口)
+    - AssetDatabaseModule(AssetDatabase模式下的实际加载管理模块)
+    - AssetDatabaseLoader(AssetDatabase模式下的资源加载任务类)
+    - AssetDatabaseInfo(AssetDatabase模式下资源加载信息类)
 
 ## AB加载管理方案
 加载管理方案：
 1. 加载指定资源
 2. 加载自身AB(自身AB加载完通知资源加载层移除该AB加载任务避免重复的加载任务被创建)，自身AB加载完判定是否有依赖AB
-3. 有则加载依赖AB(增加依赖AB的引用计数)(依赖AB采用和自身AB相同的加载方式(ABLoadMethod),但依赖AB统一采用ABLoadType.NormalLoad加载类型)
+3. 有则加载依赖AB(增加依赖AB的引用计数)(依赖AB采用和自身AB相同的加载方式(ResourceLoadMethod),但依赖AB统一采用ResourceLoadType.NormalLoad加载类型)
 4. 自身AB和所有依赖AB加载完回调通知逻辑层可以开始加载Asset资源(AB绑定对象在这一步)
 5. 判定AB是否满足引用计数为0，绑定对象为空，且为NormalLoad加载方式则卸载该AB(并释放依赖AB的计数减一)(通知资源管理层AB卸载，重用AssetBundleInfo对象)
 6. 切场景，递归判定卸载PreloadLoad加载类型AB资源
 
 相关设计：
-1. 依赖AB与被依赖者采用同样的加载方式(ABLoadMethod)，但加载方式依赖AB统一采用ABLoadType.NormalLoad
+1. 依赖AB与被依赖者采用同样的加载方式(ResourceLoadMethod)，但加载方式依赖AB统一采用ResourceLoadType.NormalLoad
 2. 依赖AB通过索引计数管理，只要原始AB不被卸载，依赖AB就不会被卸载
 3. 已加载的AB资源加载类型只允许从低往高变(NormalLoad -> Preload -> PermanentLoad)，不允许从高往低(PermanentLoad -> Preload -> NormalLoad)
 
 ## Demo使用说明
-1. AB依赖信息查看界面
+
+1. AssetBundle和AssetDatabase资源加载模式切换
+
+   ![AssetDatabaseModuleSwitch](/img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png)
+
+2. AB依赖信息查看界面
 
 ![AssetBundleDepInfoUI](/img/Unity/AssetBundle-Framework/AssetBundleDepInfoUI.png)
 
@@ -51,13 +63,19 @@ Manager统一管理：
 
 ![AssetBundleLoadManagerUI](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png)
 
-3. 测试界面
+3. AssetBundkle异步加载模式加载队列信息查看界面
+
+   ![AssetBundleAsyncUI](/img/Unity/AssetBundle-Framework/AssetBundleAsyncUI.png)
+
+4. 测试界面
 
 ![AssetBundleTestUI](/img/Unity/AssetBundle-Framework/AssetBundleTestUI.png)
 
 4. 点击加载窗口预制件按钮后:
 ```CS
-    ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("MainWindow",
+    mRMM.requstResource(
+    "mainwindow",
+    "MainWindow",
     (abi) =>
     {
         mMainWindow = abi.instantiateAsset("MainWindow");
@@ -69,47 +87,117 @@ Manager统一管理：
 
 5. 点击测试异步和同步加载按钮后
 ```CS
+    Debug.Log("onTestAsynAndSyncABLoad()");
     if(mMainWindow == null)
     {
         onLoadWindowPrefab();
     }
 
+    // 测试大批量异步加载资源后立刻同步加载其中一个该源
     var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-    ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("tutorialcellspritesheet",
-    (abi) =>
-    {
-        var sp = abi.getAsset<Sprite>(image, "TextureShader");
-        image.sprite = sp;
-    },
-    ABLoadType.NormalLoad,
-    ABLoadMethod.Async);
+    mRMM.requstResource(
+        "tutorialcellspritesheet",
+        "TextureShader",
+        (abi) =>
+        {
+            var sp = abi.getAsset<Sprite>(image, "TextureShader");
+            image.sprite = sp;
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
 
-    ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("Ambient",
-    (abi) =>
-    {
-        var sp = abi.getAsset<Sprite>(image, "Ambient");
-        image.sprite = sp;
-    },
-    ABLoadType.NormalLoad,
-    ABLoadMethod.Async);
+    mRMM.requstResource(
+        "ambient",
+        "ambient",
+        (abi) =>
+        {
+            var sp = abi.getAsset<Sprite>(image, "ambient");
+            image.sprite = sp;
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
 
-    ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("BasicTexture",
-    (abi) =>
-    {
-        var sp = abi.getAsset<Sprite>(image, "BasicTexture");
-        image.sprite = sp;
-    },
-    ABLoadType.NormalLoad,
-    ABLoadMethod.Async);
+    mRMM.requstResource(
+        "basictexture",
+        "basictexture",
+        (abi) =>
+        {
+            var sp = abi.getAsset<Sprite>(image, "basictexture");
+            image.sprite = sp;
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
 
-    ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("Diffuse",
-    (abi) =>
-    {
-        var sp = abi.getAsset<Sprite>(image, "Diffuse");
-        image.sprite = sp;
-    },
-    ABLoadType.NormalLoad,
-    ABLoadMethod.Async);
+    mRMM.requstResource(
+        "diffuse",
+        "diffuse",
+        (abi) =>
+        {
+            var sp = abi.getAsset<Sprite>(image, "diffuse");
+            image.sprite = sp;
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
+
+    mRMM.requstResource(
+        "pre_zombunny",
+        "pre_Zombunny",
+        (abi) =>
+        {
+            mActorInstance = abi.instantiateAsset("pre_Zombunny");
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
+
+    //测试异步加载后立刻同步加载
+    GameObject actorinstance2 = null;
+    mRMM.requstResource(
+        "pre_zombunny",
+        "pre_Zombunny",
+        (abi) =>
+        {
+            actorinstance2 = abi.instantiateAsset("pre_Zombunny");
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Sync);
+    Debug.Log("actorinstance2.transform.name = " + actorinstance2.transform.name);
+
+    var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
+    Material mat = null;
+    mRMM.requstResource(
+        "sharematerial",
+        "sharematerial",
+        (abi) =>
+        {
+            var matasset = abi.getAsset<Material>(btnloadmat.gameObject, "sharematerial");
+            mat = GameObject.Instantiate<Material>(matasset);
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
+    btnloadmat.GetComponent<Image>().material = mat;
+
+    mRMM.requstResource(
+        "sfxtemplate",
+        "SFXTemplate",
+        (abi) =>
+        {
+            mSFXInstance = abi.instantiateAsset("SFXTemplate");
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
+
+    mRMM.requstResource(
+        "sfx1",
+        "explosion",
+        (abi) =>
+        {
+            var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");
+            var audiosource = mSFXInstance.GetComponent<AudioSource>();
+            audiosource.clip = ac;
+            audiosource.Play();
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
 ```
 ![AssetBundleLoadManagerUIAfterLoadSprites](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png)
 可以看到我们切换的所有Sprite资源都被绑定到了imgBG对象上，因为不是作为依赖AB加载进来的所以每一个sprite所在的AB引用计数依然为0.
@@ -129,12 +217,14 @@ Note:
 
 读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。
 ```CS
-    ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource("shaderlist",
+    ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource(
+    "shaderlist",
+    "shaderlist",
     (abi) =>
     {
         abi.loadAllAsset<UnityEngine.Object>();
     },
-    ABLoadType.PermanentLoad);          // Shader常驻
+    ResourceLoadType.PermanentLoad);          // Shader常驻
 ```
 
 ## 个人博客

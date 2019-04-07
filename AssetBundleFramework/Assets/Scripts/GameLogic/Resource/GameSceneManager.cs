@@ -30,7 +30,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>, IModuleInte
     /// <summary>
     /// 当前场景的AssetBundle信息
     /// </summary>
-    private AssetBundleInfo mCurrentSceneABI;
+    private AbstractResourceInfo mCurrentSceneARI;
 
     /// <summary>
     /// 初始化
@@ -49,26 +49,28 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>, IModuleInte
     public void loadSceneSync(string scenename)
     {
         // 预加载资源类型需要在切换场景前卸载掉，切换场景后可能有新的预加载资源加载进来
-        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedPreloadLoadedAB();
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedPreloadLoadedResources();
 
         // 场景资源计数采用手动管理计数的方式
         // 切场景时手动计数减1
         // 加载时手动计数加1，不绑定对象
-        if (mCurrentSceneABI != null)
+        if (mCurrentSceneARI != null)
         {
-            mCurrentSceneABI.release();
-            mCurrentSceneABI = null;
+            mCurrentSceneARI.release();
+            mCurrentSceneARI = null;
         }
 
-        // 减掉场景计数后，切换场景前强制卸载所有不再使用的正常加载的Unsed AB(递归判定释放)
-        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedNormalLoadedAB();
+        // 减掉场景计数后，切换场景前强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedNormalLoadedResources();
 
-        ModuleManager.mSingleton.getModule<ResourceModuleManager>().requstResource(scenename,
-            (abi) =>
-            {
-                mCurrentSceneABI = abi;
-                mCurrentSceneABI.retain();
-            });
+        ModuleManager.mSingleton.getModule<ResourceModuleManager>().requstResource(
+        scenename,
+        scenename,
+        (abi) =>
+        {
+            mCurrentSceneARI = abi;
+            mCurrentSceneARI.retain();
+        });
 
         SceneManager.LoadScene(scenename);
     }
@@ -80,26 +82,28 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>, IModuleInte
     public void loadSceneAync(string scenename)
     {
         // 预加载资源类型需要在切换场景前卸载掉，切换场景后可能有新的预加载资源加载进来
-        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedPreloadLoadedAB();
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedPreloadLoadedResources();
 
         // 场景资源计数采用手动管理计数的方式
         // 切场景时手动计数减1
         // 加载时手动计数加1，不绑定对象
-        if (mCurrentSceneABI != null)
+        if (mCurrentSceneARI != null)
         {
-            mCurrentSceneABI.release();
-            mCurrentSceneABI = null;
+            mCurrentSceneARI.release();
+            mCurrentSceneARI = null;
         }
 
-        ModuleManager.mSingleton.getModule<ResourceModuleManager>().requstResource(scenename,
-            (abi) =>
-            {
-                mCurrentSceneABI = abi;
-                mCurrentSceneABI.retain();
-                SceneManager.LoadSceneAsync(scenename);
-            },
-            ABLoadType.NormalLoad,
-            ABLoadMethod.Async);
+        ModuleManager.mSingleton.getModule<ResourceModuleManager>().requstResource(
+        scenename,
+        scenename,
+        (abi) =>
+        {
+            mCurrentSceneARI = abi;
+            mCurrentSceneARI.retain();
+            SceneManager.LoadSceneAsync(scenename);
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
     }
 
     /// <summary>
@@ -121,8 +125,11 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>, IModuleInte
     private void onSceneUnloaded(Scene scene)
     {
         Debug.Log(string.Format("场景:{0}被卸载!", scene.name));
-        // 场景卸载后，递归释放所有不再使用的正常加载的AB
-        // 确保所有上一个场景不再使用的正常加载AB资源正确释放
-        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedNormalLoadedAB();
+        if(!scene.name.Equals("Preview Scene"))
+        {
+            // 场景卸载后，递归释放所有不再使用的正常加载的资源
+            // 确保所有上一个场景不再使用的正常加载AB资源正确释放
+            ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedNormalLoadedResources();
+        }
     }
 }

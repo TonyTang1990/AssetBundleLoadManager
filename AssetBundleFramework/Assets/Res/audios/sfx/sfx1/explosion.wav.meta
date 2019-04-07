@@ -3,6 +3,7 @@ guid: 4ced0812fe25ae24ba932966d5c304de
 timeCreated: 1521604248
 licenseType: Pro
 AudioImporter:
+  externalObjects: {}
   serializedVersion: 6
   defaultSettings:
     loadType: 0
@@ -16,7 +17,8 @@ AudioImporter:
   normalize: 1
   preloadAudioData: 1
   loadInBackground: 0
+  ambisonic: 0
   3D: 1
   userData: 
-  assetBundleName: multiplerule
+  assetBundleName: sfx1
   assetBundleVariant: 

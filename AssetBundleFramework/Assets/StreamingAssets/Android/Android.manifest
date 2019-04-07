@@ -1,0 +1,84 @@
+ManifestFileVersion: 0
+CRC: 2125810600
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: ambient
+      Dependencies: {}
+    Info_1:
+      Name: basictexture
+      Dependencies: {}
+    Info_2:
+      Name: diffuse
+      Dependencies: {}
+    Info_3:
+      Name: light_off
+      Dependencies: {}
+    Info_4:
+      Name: light_on
+      Dependencies: {}
+    Info_5:
+      Name: opengl_draw_call_result_picture
+      Dependencies: {}
+    Info_6:
+      Name: opengl_instanced_draw_call
+      Dependencies: {}
+    Info_7:
+      Name: tutorialcellspritesheet
+      Dependencies: {}
+    Info_8:
+      Name: mouseandkeyboardstudy
+      Dependencies: {}
+    Info_9:
+      Name: multipletexture
+      Dependencies: {}
+    Info_10:
+      Name: mainwindow
+      Dependencies:
+        Dependency_0: loadingscreen
+    Info_11:
+      Name: loadingscreen
+      Dependencies: {}
+    Info_12:
+      Name: pre_zombunny
+      Dependencies:
+        Dependency_0: shaderlist
+        Dependency_1: zombunnyanimations
+    Info_13:
+      Name: shaderlist
+      Dependencies: {}
+    Info_14:
+      Name: zombunnyanimations
+      Dependencies: {}
+    Info_15:
+      Name: sfx1
+      Dependencies: {}
+    Info_16:
+      Name: sfxtemplate
+      Dependencies: {}
+    Info_17:
+      Name: testscene2
+      Dependencies:
+        Dependency_0: testscene2prefab2
+        Dependency_1: testscene2prefab
+        Dependency_2: sharematerial
+    Info_18:
+      Name: testscene3
+      Dependencies:
+        Dependency_0: sharematerial
+        Dependency_1: testscene3prefab
+    Info_19:
+      Name: testscene2prefab2
+      Dependencies:
+        Dependency_0: sharematerial
+    Info_20:
+      Name: testscene2prefab
+      Dependencies:
+        Dependency_0: sharematerial
+    Info_21:
+      Name: sharematerial
+      Dependencies: {}
+    Info_22:
+      Name: testscene3prefab
+      Dependencies:
+        Dependency_0: sharematerial

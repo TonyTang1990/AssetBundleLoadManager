@@ -299,6 +299,10 @@
       <Project>{59DF80A5-36C8-C148-0F55-21B2184846BB}</Project>
       <Name>AssetBundleFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.AssetBundleBrowser.Editor.csproj">
+      <Project>{01B441AF-88CF-005F-B176-75F0E9BDF74E}</Project>
+      <Name>Unity.AssetBundleBrowser.Editor</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder.cs" />
@@ -329,7 +333,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Res\actors\zombunny\Shaders\Rim Lit Bumped Specular.shader" />
-    <None Include="Assets\allabdep.txt" />
+    <None Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\Unity.AssetBundleBrowser.Editor.asmdef" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
     <None Include="Assets\codeandweb.com\Readme.txt" />
   </ItemGroup>

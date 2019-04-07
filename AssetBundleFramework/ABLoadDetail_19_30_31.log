@@ -1,0 +1,72 @@
+AssetBundleName : android
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 19-30-25
+	ABLastUnloadTime : 19-30-25
+
+AssetBundleName : diffuse
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : basictexture
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : sfxtemplate
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : sfx1
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : sharematerial
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : pre_zombunny
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : loadingscreen
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : mainwindow
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : ambient
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : tutorialcellspritesheet
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+
+AssetBundleName : zombunnyanimations
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 19-30-7
+	ABLastUnloadTime : 
+

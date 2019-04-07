@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2420816481
+CRC: 972506271
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c8131657bc7d3e730fcbdb05ef204d11
+    Hash: 1cdcf55d9c8b1b26d9562f04c6eafd4d
   TypeTreeHash:
     serializedVersion: 2
     Hash: d74f6a97f2340464ebb374e24c1ad675
@@ -28,12 +28,7 @@ ClassTypes:
 - Class: 137
   Script: {instanceID: 0}
 Assets:
-- Assets/Res/actors/zombunny/Textures/ZomBunnyDiffuse.tif
 - Assets/Res/actors/zombunny/pre_Zombunny.prefab
-- Assets/Res/actors/zombunny/Materials/ZombunnyMaterial.mat
-- Assets/Res/actors/zombunny/Zombunny.fbx
-- Assets/Res/actors/zombunny/Textures/ZomBunnyNormals.tif
-- Assets/Res/actors/zombunny/Materials/EyesMaterial.mat
 Dependencies:
-- G:/Projects/Unity2017Projects/AssetBundleFrameworkStudy/AssetBundleFramework/Assets/StreamingAssets/Android/zombunnyanimations
-- G:/Projects/Unity2017Projects/AssetBundleFrameworkStudy/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/zombunnyanimations

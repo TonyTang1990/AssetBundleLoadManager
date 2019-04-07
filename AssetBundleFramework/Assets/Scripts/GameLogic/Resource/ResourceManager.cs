@@ -34,7 +34,9 @@ public class ResourceManager : SingletonTemplate<ResourceManager>, IModuleInterf
     public GameObject GetWindowInstance(string wndname)    
     {
         GameObject wndinstance = null;
-        ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource(wndname,
+        ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource(
+        wndname,
+        wndname,
         (abi) =>
         {
             wndinstance = abi.instantiateAsset(wndname);

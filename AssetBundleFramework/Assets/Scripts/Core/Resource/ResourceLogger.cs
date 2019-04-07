@@ -27,8 +27,6 @@ public class ResourceLogger
     {
         get
         {
-            var logswitchvalue = PlayerPrefs.GetInt(LogSwitchPrefsKey, 0);
-            mLogSwitch = logswitchvalue == 0 ? false : true;
             return mLogSwitch;
         }
         set

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1515525555
+CRC: 1745602394
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 070b88a60cb102d8a13394c2f9e7dcf8
+    Hash: 92ff34bf2a3b12511fe70220f8d9e98f
   TypeTreeHash:
     serializedVersion: 2
     Hash: 4cba9e3005940716d8d2bc2d82e37b61
@@ -38,4 +38,4 @@ ClassTypes:
 Assets:
 - Assets/Res/windows/MainWindow.prefab
 Dependencies:
-- E:/TonyTang/Work/MyPorjects/Unity/Unity2017Projects/Unity2017Project/AssetBundleFrameworkStudy/AssetBundleFramework/Assets/StreamingAssets/Android/loadingscreen
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/loadingscreen
