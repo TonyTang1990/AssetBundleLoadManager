@@ -19,7 +19,7 @@ Manager统一管理：
 资源加载类：
 
     - ResourceLoadMethod(资源加载方式枚举类型 -- 同步 or 异步)
-    - ResourceLoadMode(资源加载模式 -- AssetBundle or AssetDatabase(限Editor模式下可切换))
+    - ResourceLoadMode(资源加载模式 -- AssetBundle or AssetDatabase(**限Editor模式下可切换，且当前仅支持同步加载方式**))
     - ResourceLoadState(资源加载状态 -- 错误，等待加载， 加载中，完成之类的)
     - ResourceLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
     - ResourceModuleManager(资源加载模块统一入口管理类)
@@ -51,27 +51,26 @@ Manager统一管理：
 
 ## Demo使用说明
 
-1. AssetBundle和AssetDatabase资源加载模式切换
-
-   ![AssetDatabaseModuleSwitch](/img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png)
+1. AssetBundle和AssetDatabase资源加载模式切换![AssetDatabaseModuleSwitch](/img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png)
 
 2. AB依赖信息查看界面
 
-![AssetBundleDepInfoUI](/img/Unity/AssetBundle-Framework/AssetBundleDepInfoUI.png)
+   ![AssetBundleDepInfoUI](/img/Unity/AssetBundle-Framework/AssetBundleDepInfoUI.png)
 
-2. AB运行时加载管理详细信息界面
+3. AB运行时加载管理详细信息界面
 
-![AssetBundleLoadManagerUI](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png)
+   ![AssetBundleLoadManagerUI](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png)
 
-3. AssetBundkle异步加载模式加载队列信息查看界面
+4. AssetBundkle异步加载模式加载队列信息查看界面
 
    ![AssetBundleAsyncUI](/img/Unity/AssetBundle-Framework/AssetBundleAsyncUI.png)
 
-4. 测试界面
+5. 测试界面
 
-![AssetBundleTestUI](/img/Unity/AssetBundle-Framework/AssetBundleTestUI.png)
+   ![AssetBundleTestUI](/img/Unity/AssetBundle-Framework/AssetBundleTestUI.png)
 
-4. 点击加载窗口预制件按钮后:
+6. 点击加载窗口预制件按钮后:
+
 ```CS
     mRMM.requstResource(
     "mainwindow",
@@ -82,7 +81,7 @@ Manager统一管理：
         mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
     });
 ```
-![AssetBundleLoadManagerUIAfterLoadWindow](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png)
+​	![AssetBundleLoadManagerUIAfterLoadWindow](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png)
 可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)
 
 5. 点击测试异步和同步加载按钮后
@@ -199,14 +198,14 @@ Manager统一管理：
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Async);
 ```
-![AssetBundleLoadManagerUIAfterLoadSprites](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png)
+​	![AssetBundleLoadManagerUIAfterLoadSprites](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png)
 可以看到我们切换的所有Sprite资源都被绑定到了imgBG对象上，因为不是作为依赖AB加载进来的所以每一个sprite所在的AB引用计数依然为0.
 
 6. 点击销毁窗口实例对象后
 ```CS
     GameObject.Destroy(mMainWindow);
 ```
-![AssetBundleLoadManagerUIAfterDestroyWindow](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png)
+​	![AssetBundleLoadManagerUIAfterDestroyWindow](/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png)
 窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow和imgBG都被销毁了)
 
 7. 等待回收检测回收后
@@ -217,7 +216,7 @@ Note:
 
 读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。
 ```CS
-    ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource(
+    mRMM.requstResource(
     "shaderlist",
     "shaderlist",
     (abi) =>
