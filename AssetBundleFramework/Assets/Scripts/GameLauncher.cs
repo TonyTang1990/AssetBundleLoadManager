@@ -152,7 +152,6 @@ public class GameLauncher : MonoBehaviour {
         // 预加载Shader
         mRMM.requstResource(
         "shaderlist",
-        "shaderlist",
         (abi) =>
         {
             abi.loadAllAsset<UnityEngine.Object>();
@@ -172,7 +171,6 @@ public class GameLauncher : MonoBehaviour {
         Debug.Log("onLoadWindowPrefab()");
         mRMM.requstResource(
         "mainwindow",
-        "MainWindow",
         (abi) =>
         {
             mMainWindow = abi.instantiateAsset("MainWindow");
@@ -202,7 +200,6 @@ public class GameLauncher : MonoBehaviour {
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
         mRMM.requstResource(
         param1,
-        param2,
         (abi) =>
         {
             var sp = abi.getAsset<Sprite>(image, param2);
@@ -218,7 +215,6 @@ public class GameLauncher : MonoBehaviour {
         Debug.Log("onPlaySound()");
         mRMM.requstResource(
         "sfxtemplate",
-        "SFXTemplate",
         (abi) =>
         {
             mSFXInstance = abi.instantiateAsset("SFXTemplate");
@@ -226,7 +222,6 @@ public class GameLauncher : MonoBehaviour {
 
         mRMM.requstResource(
         "sfx1",
-        "explosion",
         (abi) =>
         {
             var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");
@@ -250,7 +245,6 @@ public class GameLauncher : MonoBehaviour {
         Material mat = null;
         mRMM.requstResource(
         "sharematerial",
-        "sharematerial",
         (abi) =>
         {
             var matasset = abi.getAsset<Material>(btnloadmat.gameObject, "sharematerial");
@@ -273,7 +267,6 @@ public class GameLauncher : MonoBehaviour {
         Debug.Log("onLoadActorPrefab()");
         mRMM.requstResource(
         "pre_zombunny",
-        "pre_Zombunny",
         (abi) =>
         {
             mActorInstance = abi.instantiateAsset("pre_Zombunny");
@@ -300,7 +293,6 @@ public class GameLauncher : MonoBehaviour {
         Debug.Log("Param1 = " + param1);
         mRMM.requstResource(
         param1,
-        param1,
         (abi) =>
         {
             abi.loadAllAsset<Sprite>();
@@ -316,7 +308,6 @@ public class GameLauncher : MonoBehaviour {
     {
         Debug.Log("onLoadPermanentShaderList()");
         mRMM.requstResource(
-        "shaderlist",
         "shaderlist",
         (abi) =>
         {
@@ -342,7 +333,6 @@ public class GameLauncher : MonoBehaviour {
         Debug.Log("Param1 = " + param1);
         mRMM.requstResource(
         param1,
-        param1,
         (abi) =>
         {
             var sp = abi.getAsset<Sprite>(image, param1);
@@ -367,7 +357,6 @@ public class GameLauncher : MonoBehaviour {
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
         mRMM.requstResource(
         "tutorialcellspritesheet",
-        "TextureShader",
         (abi) =>
         {
             var sp = abi.getAsset<Sprite>(image, "TextureShader");
@@ -377,7 +366,6 @@ public class GameLauncher : MonoBehaviour {
         ResourceLoadMethod.Async);
 
         mRMM.requstResource(
-        "ambient",
         "ambient",
         (abi) =>
         {
@@ -389,7 +377,6 @@ public class GameLauncher : MonoBehaviour {
 
         mRMM.requstResource(
         "basictexture",
-        "basictexture",
         (abi) =>
         {
             var sp = abi.getAsset<Sprite>(image, "basictexture");
@@ -399,7 +386,6 @@ public class GameLauncher : MonoBehaviour {
         ResourceLoadMethod.Async);
 
         mRMM.requstResource(
-        "diffuse",
         "diffuse",
         (abi) =>
         {
@@ -411,7 +397,6 @@ public class GameLauncher : MonoBehaviour {
 
         mRMM.requstResource(
         "pre_zombunny",
-        "pre_Zombunny",
         (abi) =>
         {
             mActorInstance = abi.instantiateAsset("pre_Zombunny");
@@ -423,7 +408,6 @@ public class GameLauncher : MonoBehaviour {
         GameObject actorinstance2 = null;
         mRMM.requstResource(
         "pre_zombunny",
-        "pre_Zombunny",
         (abi) =>
         {
             actorinstance2 = abi.instantiateAsset("pre_Zombunny");
@@ -436,7 +420,6 @@ public class GameLauncher : MonoBehaviour {
         Material mat = null;
         mRMM.requstResource(
         "sharematerial",
-        "sharematerial",
         (abi) =>
         {
             var matasset = abi.getAsset<Material>(btnloadmat.gameObject, "sharematerial");
@@ -448,7 +431,6 @@ public class GameLauncher : MonoBehaviour {
 
         mRMM.requstResource(
         "sfxtemplate",
-        "SFXTemplate",
         (abi) =>
         {
             mSFXInstance = abi.instantiateAsset("SFXTemplate");
@@ -458,7 +440,6 @@ public class GameLauncher : MonoBehaviour {
 
         mRMM.requstResource(
         "sfx1",
-        "explosion",
         (abi) =>
         {
             var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");

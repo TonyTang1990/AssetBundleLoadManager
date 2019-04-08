@@ -24,7 +24,7 @@ public abstract class AbstractResourceModule {
     public ResourceLoadMode ResLoadMode
     {
         get;
-        private set;
+        protected set;
     }
 
     /// <summary>
@@ -57,11 +57,10 @@ public abstract class AbstractResourceModule {
     /// 资源加载统一入口
     /// </summary>
     /// <param name="resname">资源AB名</param>
-    /// <param name="assetname">asset名</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
-    public abstract void requstResource(string resname, string assetname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync);
+    public abstract void requstResource(string resname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync);
 
     /// <summary>
     /// 更新入口

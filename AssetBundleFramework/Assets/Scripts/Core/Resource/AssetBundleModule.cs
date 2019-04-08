@@ -120,7 +120,7 @@ public class AssetBundleModule : AbstractResourceModule
             Debug.Log("重新加载依赖文件！");
         }
         // 依赖AB加载完即可卸载，所以作为NormalLoad方式加载
-        requstResource(AssetBundlePath.DependencyFileName, AssetBundlePath.DependencyFileName, onLoadAllDpInfoComplete, ResourceLoadType.NormalLoad, ResourceLoadMethod.Sync);
+        requstResource(AssetBundlePath.DependencyFileName, onLoadAllDpInfoComplete, ResourceLoadType.NormalLoad, ResourceLoadMethod.Sync);
     }
 
     /// <summary>
@@ -227,6 +227,7 @@ public class AssetBundleModule : AbstractResourceModule
         AssetBundleInfoFactory.initialize(200);
         mAssetBundleDpMap = new Dictionary<string, string[]>();
 
+        ResLoadMode = ResourceLoadMode.AssetBundle;
         EnableResourceRecyclingUnloadUnsed = true;
 
         mABRequestTaskMap = new Dictionary<string, AssetBundleLoader>();
@@ -286,11 +287,10 @@ public class AssetBundleModule : AbstractResourceModule
     /// 资源加载统一入口
     /// </summary>
     /// <param name="resname">资源AB名</param>
-    /// <param name="assetname">asset名</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
-    public override void requstResource(string resname, string assetname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public override void requstResource(string resname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
         // 在白名单里的资源一律以预加载形式加载，
         // 避免因为上层逻辑错误加载后被频繁加载卸载

@@ -2,12 +2,14 @@
 基于索引计数的AssetBundle加载管理框架。(参考: tangzx/ABSystem思路)
 
 ## 功能支持
-1. 支持AB同步和异步加载(统一采用callback风格)
+1. 支持编辑器和真机使用AssetBundle同步和异步加载(统一采用callback风格)
 2. 支持三种基本的资源加载类型(NormalLoad -- 正常加载(可通过Tick检测判定正常卸载) Preload -- 预加载(切场景才会卸载) PermanentLoad -- 永久加载(常驻内存永不卸载))
 3. 基于UnityEngine.Object的AB索引生命周期绑定
 4. 底层统一管理AB索引计数，管理资源加载释放
 5. 支持卸载频率，卸载帧率门槛，单次卸载数量等设置。采用Long Time Unused First Unload(越久没用越先卸载)原则卸载。
 6. 支持最大AB异步加载携程数量配置(采用队列模式)
+7. 支持编辑器下使用AssetDatabase模式(只需设置AB名字，无需打包AB，暂时只支持同步)
+8. 采用[AssetBundleBrowser](https://github.com/Unity-Technologies/AssetBundles-Browser)工具打包AB
 
 ## 类说明
 Manager统一管理：
@@ -74,7 +76,6 @@ Manager统一管理：
 ```CS
     mRMM.requstResource(
     "mainwindow",
-    "MainWindow",
     (abi) =>
     {
         mMainWindow = abi.instantiateAsset("MainWindow");
@@ -96,7 +97,6 @@ Manager统一管理：
     var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
     mRMM.requstResource(
         "tutorialcellspritesheet",
-        "TextureShader",
         (abi) =>
         {
             var sp = abi.getAsset<Sprite>(image, "TextureShader");
@@ -106,7 +106,6 @@ Manager统一管理：
         ResourceLoadMethod.Async);
 
     mRMM.requstResource(
-        "ambient",
         "ambient",
         (abi) =>
         {
@@ -118,7 +117,6 @@ Manager统一管理：
 
     mRMM.requstResource(
         "basictexture",
-        "basictexture",
         (abi) =>
         {
             var sp = abi.getAsset<Sprite>(image, "basictexture");
@@ -128,7 +126,6 @@ Manager统一管理：
         ResourceLoadMethod.Async);
 
     mRMM.requstResource(
-        "diffuse",
         "diffuse",
         (abi) =>
         {
@@ -140,7 +137,6 @@ Manager统一管理：
 
     mRMM.requstResource(
         "pre_zombunny",
-        "pre_Zombunny",
         (abi) =>
         {
             mActorInstance = abi.instantiateAsset("pre_Zombunny");
@@ -152,7 +148,6 @@ Manager统一管理：
     GameObject actorinstance2 = null;
     mRMM.requstResource(
         "pre_zombunny",
-        "pre_Zombunny",
         (abi) =>
         {
             actorinstance2 = abi.instantiateAsset("pre_Zombunny");
@@ -165,7 +160,6 @@ Manager统一管理：
     Material mat = null;
     mRMM.requstResource(
         "sharematerial",
-        "sharematerial",
         (abi) =>
         {
             var matasset = abi.getAsset<Material>(btnloadmat.gameObject, "sharematerial");
@@ -177,7 +171,6 @@ Manager统一管理：
 
     mRMM.requstResource(
         "sfxtemplate",
-        "SFXTemplate",
         (abi) =>
         {
             mSFXInstance = abi.instantiateAsset("SFXTemplate");
@@ -187,7 +180,6 @@ Manager统一管理：
 
     mRMM.requstResource(
         "sfx1",
-        "explosion",
         (abi) =>
         {
             var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");
@@ -218,7 +210,6 @@ Note:
 ```CS
     mRMM.requstResource(
     "shaderlist",
-    "shaderlist",
     (abi) =>
     {
         abi.loadAllAsset<UnityEngine.Object>();
@@ -226,7 +217,15 @@ Note:
     ResourceLoadType.PermanentLoad);          // Shader常驻
 ```
 
+## 待做事项
+
+1.  编辑器模式支持AssetDatabase的资源回收以及类型分类( 1. 正常加载 2.预加载 3. 永久加载)
+2. 优化AssetBundle模式绑定同一组件对象时，老的资源无法及时释放问题(因为没有挂载任何有效信息，现阶段的抽象无法反推原有组件绑定的资源信息，无法及时释放老的资源加载信息)
+3. 支持编辑器模式下AssetDatabase资源异步加载(方便暴露出AssetBundle加载模式下的异步问题)
+4. 支持真机资源热更(**资源热更模块**)
+
 ## 个人博客
+
 详细的博客记录学习:
 
 [TonyTang1990/AssetBundleLoadManager](http://tonytang1990.github.io/2018/10/24/AssetBundle%E8%B5%84%E6%BA%90%E6%89%93%E5%8C%85%E5%8A%A0%E8%BD%BD%E7%AE%A1%E7%90%86%E5%AD%A6%E4%B9%A0/)

@@ -65,7 +65,6 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>, IModuleInte
 
         ModuleManager.mSingleton.getModule<ResourceModuleManager>().requstResource(
         scenename,
-        scenename,
         (abi) =>
         {
             mCurrentSceneARI = abi;
@@ -94,7 +93,6 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>, IModuleInte
         }
 
         ModuleManager.mSingleton.getModule<ResourceModuleManager>().requstResource(
-        scenename,
         scenename,
         (abi) =>
         {

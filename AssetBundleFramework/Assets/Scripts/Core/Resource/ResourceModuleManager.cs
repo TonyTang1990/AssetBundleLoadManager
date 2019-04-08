@@ -13,6 +13,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
+// AssetBundle资源模式：
 // 资源加载方案1：
 // 1. 加载AB
 // 2. 判定AB是否有依赖AB，有依赖AB先加载依赖AB，没有则直接加载自身AB
@@ -69,27 +70,38 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
         }
         set
         {
+#if UNITY_EDITOR
             mResLoadMode = value;
             PlayerPrefs.SetInt(ResLoadModeKey, (int)mResLoadMode);
             Debug.Log(string.Format("切换资源加载模式到 : {0},重新运行Editor后生效!", mResLoadMode));
-#if UNITY_EDITOR
             if (EditorApplication.isPlaying)
             {
                 EditorApplication.isPlaying = false;
             }
+#else
+            //非编辑器只支持AssetBundle模式
+            mResLoadMode = ResourceLoadMode.AssetBundle;
+            Debug.Log("真机模式只支持AssetBundle模式，不允许切换!");
 #endif
         }
     }
     private ResourceLoadMode mResLoadMode;
 
+#if UNITY_EDITOR
     /// <summary>
     /// 资源加载模式Key
     /// </summary>
     private const string ResLoadModeKey = "ResLoadModeKey";
+#endif
 
     protected void Awake()
     {
+#if UNITY_EDITOR
         mResLoadMode = (ResourceLoadMode)PlayerPrefs.GetInt(ResLoadModeKey, (int)ResourceLoadMode.AssetBundle);
+#else
+        //非编辑器只支持AssetBundle模式
+        mResLoadMode = ResourceLoadMode.AssetBundle;
+#endif
         Debug.Log(string.Format("当前资源加载模式 : {0}", mResLoadMode));
 
         if (mResLoadMode == ResourceLoadMode.AssetBundle)
@@ -132,13 +144,12 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     /// 资源加载统一入口
     /// </summary>
     /// <param name="resname">资源AB名</param>
-    /// <param name="assetname">asset名</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
-    public void requstResource(string resname, string assetname, AbstractResourceModule.LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void requstResource(string resname, AbstractResourceModule.LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        CurrentResourceModule.requstResource(resname, assetname, completehandler, loadtype, loadmethod);
+        CurrentResourceModule.requstResource(resname, completehandler, loadtype, loadmethod);
     }
 
     void Update()

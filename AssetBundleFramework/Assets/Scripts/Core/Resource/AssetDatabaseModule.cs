@@ -20,6 +20,9 @@ public class AssetDatabaseModule : AbstractResourceModule
     /// </summary>
     public override void init()
     {
+        ResLoadMode = ResourceLoadMode.AssetDatabase;
+        EnableResourceRecyclingUnloadUnsed = true;
+
         AssetDatabaseLoaderFactory.initialize(20);             // 考虑到大部分都是采用同步加载，所以AssetDatabaseLoader并不需要初始化太多
         AssetDatabaseInfoFactory.initialize(200);
     }
@@ -46,13 +49,12 @@ public class AssetDatabaseModule : AbstractResourceModule
     /// 资源加载统一入口
     /// </summary>
     /// <param name="resname">资源AB名</param>
-    /// <param name="assetname">asset名</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
-    public override void requstResource(string resname, string assetname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public override void requstResource(string resname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        AssetDatabaseLoader adloader = createADLoader(resname, assetname);
+        AssetDatabaseLoader adloader = createADLoader(resname);
         //暂时默认都当同步加载，不支持异步模拟
         adloader.LoadMethod = loadmethod;
         adloader.LoadType = loadtype;
@@ -93,13 +95,11 @@ public class AssetDatabaseModule : AbstractResourceModule
     /// 创建AssetDatabase资源加载对象
     /// </summary>
     /// <param name="resname">资源名</param>
-    /// <param name="assetname">asset名</param>
     /// <returns></returns>
-    private AssetDatabaseLoader createADLoader(string resname, string assetname)
+    private AssetDatabaseLoader createADLoader(string resname)
     {
         var loader = AssetDatabaseLoaderFactory.create();
         loader.AssetBundleName = resname;
-        loader.AssetName = assetname;
         return loader;
     }
 }

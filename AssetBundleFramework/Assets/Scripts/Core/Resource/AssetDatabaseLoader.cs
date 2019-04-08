@@ -30,15 +30,6 @@ public class AssetDatabaseLoader : FactoryObj
     }
 
     /// <summary>
-    /// 加载任务对应的Asset名
-    /// </summary>
-    public string AssetName
-    {
-        get;
-        set;
-    }
-
-    /// <summary>
     /// 资源加载完成逻辑层回调
     /// </summary>
     public AbstractResourceModule.LoadResourceCompleteHandler LoadResourceCompleteCallBack
@@ -85,7 +76,6 @@ public class AssetDatabaseLoader : FactoryObj
     public AssetDatabaseLoader()
     {
         AssetBundleName = string.Empty;
-        AssetName = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
@@ -127,7 +117,6 @@ public class AssetDatabaseLoader : FactoryObj
     public void recycle()
     {
         AssetBundleName = string.Empty;
-        AssetName = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
@@ -158,7 +147,7 @@ public class AssetDatabaseLoader : FactoryObj
     /// </summary>
     private void loadAssetSync()
     {
-        //通过资源名(即AB名)和Asset名定位Asset
+        //通过资源名(即AB名)定位相关资源
         var assetspath = AssetDatabase.GetAssetPathsFromAssetBundle(AssetBundleName);
         if(assetspath.Length == 0)
         {
