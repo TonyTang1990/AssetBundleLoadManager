@@ -252,7 +252,6 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleAsyncQueue.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleInfo.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleInfoFactory.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\AssetBundleLoadAnalyse.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleLoader.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleLoaderFactory.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleModule.cs" />
@@ -262,6 +261,7 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseLoader.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseLoaderFactory.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseModule.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\ResourceLoadAnalyse.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceLogger.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleEnum.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleManager.cs" />

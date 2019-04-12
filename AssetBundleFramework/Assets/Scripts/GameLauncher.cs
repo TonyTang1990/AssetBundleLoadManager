@@ -474,15 +474,27 @@ public class GameLauncher : MonoBehaviour {
     public void onPrintABDepInfo()
     {
         Debug.Log("onPrintABDepInfo()");
-        (mRMM.CurrentResourceModule as AssetBundleModule).printAllResourceDpInfo();
+        if(mRMM.CurrentResourceModule is AssetBundleModule)
+        {
+            (mRMM.CurrentResourceModule as AssetBundleModule).printAllResourceDpInfo();
+        }
     }
 
     /// <summary>
-    /// 打印已加载AB信息
+    /// 打印已加载资源信息
     /// </summary>
-    public void onPrintLoadedABInfo()
+    public void onPrintLoadedResourceInfo()
     {
-        Debug.Log("onPrintLoadedABInfo()");
-        (mRMM.CurrentResourceModule as AssetBundleModule).printAllLoadedABOwnersAndRefCount();
+        Debug.Log("onPrintLoadedResourceInfo()");
+        mRMM.CurrentResourceModule.printAllLoadedResourceOwnersAndRefCount();
+    }
+
+    /// <summary>
+    /// 卸载不再使用的Asset
+    /// </summary>
+    public void onUnloadUnsedAssets()
+    {
+        Debug.Log("onUnloadUnsedAssets()");
+        Resources.UnloadUnusedAssets();
     }
 }

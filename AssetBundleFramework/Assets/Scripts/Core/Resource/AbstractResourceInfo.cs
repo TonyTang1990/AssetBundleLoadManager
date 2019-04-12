@@ -13,6 +13,15 @@ using UnityEngine;
 /// 资源加载信息抽象类
 /// </summary>
 public abstract class AbstractResourceInfo {
+    
+    /// <summary>
+    /// 资源卸载委托
+    /// </summary>
+    /// <param name="abi"></param>
+    public delegate void OnResourceUnloadedHandler(AbstractResourceInfo abi);
+
+    /// <summary> 资源卸载回调(用于通知资源对应Loader切换状态) /// </summary>
+    public OnResourceUnloadedHandler onResourceUnloadedCallback;
 
     /// <summary> 加载任务对应的资源名字 /// </summary>
     public string AssetBundleName
@@ -181,4 +190,30 @@ public abstract class AbstractResourceInfo {
         return mReferenceOwnerList.Count;
     }
 
+    #region 辅助调试工具
+    /// <summary>
+    /// 打印当前AB所有使用者信息以及索引计数(开发用)
+    /// </summary>
+    public void printAllOwnersNameAndRefCount()
+    {
+        ResourceLogger.log(string.Format("AB Name: {0}", AssetBundleName));
+        ResourceLogger.log(string.Format("Ref Count: {0}", RefCount));
+        if (mReferenceOwnerList.Count == 0)
+        {
+            ResourceLogger.log("Owners Name : None");
+        }
+        else
+        {
+            ResourceLogger.log("Owners Name :");
+            for (int i = 0, length = mReferenceOwnerList.Count; i < length; i++)
+            {
+                if (mReferenceOwnerList[i].Target != null)
+                {
+                    ResourceLogger.log(string.Format("owner[{0}] : {1}", i, mReferenceOwnerList[i].Target.ToString()));
+                }
+            }
+        }
+        ResourceLogger.log(string.Format("Last Used Time: {0}", LastUsedTime));
+    }
+    #endregion
 }

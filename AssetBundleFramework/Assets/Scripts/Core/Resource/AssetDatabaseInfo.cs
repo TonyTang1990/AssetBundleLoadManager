@@ -201,6 +201,52 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         }
     }
 
+    /// <summary>
+    /// 释放资源
+    /// </summary>
+    public override void dispose()
+    {
+        unloadResource();
+
+        LastUsedTime = 0.0f;
+
+        if (onResourceUnloadedCallback != null)
+        {
+            onResourceUnloadedCallback(this);
+        }
+        onResourceUnloadedCallback = null;
+    }
+
+    /// <summary>
+    /// 卸载资源(Resources.UnloadAsset遍历卸载)
+    /// </summary>
+    private void unloadResource()
+    {
+        ResourceLogger.log(string.Format("卸载资源:{0}", AssetBundleName));
+        foreach(var loadedasset in mLoadedAssetMap)
+        {
+            var asset = loadedasset.Value;
+            if (asset is GameObject)
+            {
+                ResourceLogger.log(string.Format("无法通过Resources.UnloadAsset卸载GameObject : {0}资源，后续会清空后通过Resources.UnloadUnsedAsset卸载!", asset.name));
+            }
+            else if(asset is Component)
+            {
+                ResourceLogger.log(string.Format("无法通过Resources.UnloadAsset卸载Component : {0}资源，后续会清空后通过Resources.UnloadUnsedAsset卸载!", asset.name));
+            }
+            else
+            {
+                Resources.UnloadAsset(loadedasset.Value);
+                ResourceLogger.log(string.Format("卸载资源:{0}的Asset : {1}", AssetBundleName, loadedasset.Value.name));
+            }
+        }
+        mLoadedAssetMap.Clear();
+        mIsReady = false;
+    }
+
+    /// <summary>
+    /// 回收重用
+    /// </summary>
     public void recycle()
     {
         AssetBundleName = string.Empty;
@@ -211,11 +257,6 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         mReferenceOwnerList.Clear();
         mLoadedAssetMap.Clear();
         AssetsPath = null;
-    }
-
-    public override void dispose()
-    {
-
     }
 }
 #endif

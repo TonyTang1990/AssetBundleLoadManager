@@ -80,4 +80,11 @@ public abstract class AbstractResourceModule {
     /// 同步接口，回收数量会比较大，只建议切场景时场景卸载后调用一次
     /// </summary>
     public abstract void unloadAllUnsedNormalLoadedResources();
+
+    #region 调试开发工具
+    /// <summary>
+    /// 打印当前资源所有使用者信息以及索引计数(开发用)
+    /// </summary>
+    public abstract void printAllLoadedResourceOwnersAndRefCount();
+    #endregion
 }

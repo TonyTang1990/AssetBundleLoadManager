@@ -36,6 +36,7 @@ Manager统一管理：
     - AssetDatabaseModule(AssetDatabase模式下的实际加载管理模块)
     - AssetDatabaseLoader(AssetDatabase模式下的资源加载任务类)
     - AssetDatabaseInfo(AssetDatabase模式下资源加载信息类)
+    - ResourceLoadAnalyse(资源加载统计分析工具)
 
 ## AB加载管理方案
 加载管理方案：

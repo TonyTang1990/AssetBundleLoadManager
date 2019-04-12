@@ -20,6 +20,10 @@ using UnityEngine;
 /// </summary>
 public class AssetDatabaseLoader : FactoryObj
 {
+    /// <summary> 资源管理层资源加载完成委托 /// </summary>
+    /// <param name="adl">资源加载任务信息</param>
+    public delegate void LoadResourceCompleteNotifier(AssetDatabaseLoader adl);
+
     /// <summary>
     /// 加载任务对应的资源名字
     /// </summary>
@@ -37,7 +41,16 @@ public class AssetDatabaseLoader : FactoryObj
         get;
         set;
     }
-    
+
+    /// <summary>
+    /// 资源自身加载完成资源管理通知回调
+    /// </summary>
+    public LoadResourceCompleteNotifier LoadSelfResourceCompleteNotifier
+    {
+        get;
+        set;
+    }
+
     /// <summary>
     /// 资源加载方式
     /// </summary>
@@ -156,12 +169,17 @@ public class AssetDatabaseLoader : FactoryObj
         else
         {
             mResourceInfo = createAssetDatabaseInfo(AssetBundleName, assetspath);
+            mResourceInfo.updateLastUsedTime();
         }
 
+        ///AssetDatabase模式下没有依赖资源的概念，
+        ///所以一口气回调资源加载任务完成和上层逻辑回调
+        LoadState = ResourceLoadState.SelfComplete;
+        LoadSelfResourceCompleteNotifier(this);
+        LoadSelfResourceCompleteNotifier = null;
+
         LoadState = ResourceLoadState.AllComplete;
-
         mResourceInfo.mIsReady = true;
-
         LoadResourceCompleteCallBack(mResourceInfo);
         LoadResourceCompleteCallBack = null;
 
@@ -180,7 +198,24 @@ public class AssetDatabaseLoader : FactoryObj
         var adi = AssetDatabaseInfoFactory.create();
         adi.AssetBundleName = resname;
         adi.AssetsPath = assetspath;
+        adi.onResourceUnloadedCallback = onResourceUnloaded;
         return adi;
+    }
+
+    /// <summary>
+    /// 对应资源卸载回调
+    /// </summary>
+    /// <param name="ari"></param>
+    private static void onResourceUnloaded(AbstractResourceInfo ari)
+    {
+        var adi = ari as AssetDatabaseInfo;
+        //资源卸载数据统计
+        if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
+        {
+            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(adi.AssetBundleName);
+        }
+        // 资源卸载时资源AssetDatabaseInfo回收时回收重用
+        AssetDatabaseInfoFactory.recycle(adi);
     }
 }
 #endif

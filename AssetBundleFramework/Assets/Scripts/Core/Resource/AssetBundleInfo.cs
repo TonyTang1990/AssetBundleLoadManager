@@ -15,15 +15,6 @@ using UnityEngine;
 /// </summary>
 public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
 {
-    /// <summary>
-    /// AB卸载委托
-    /// </summary>
-    /// <param name="abi"></param>
-    public delegate void OnUnloadedHandler(AssetBundleInfo abi);
-
-    /// <summary> AB卸载回调(用于通知AB对应Loader切换状态) /// </summary>
-    public OnUnloadedHandler onUnloadedCallback;
-
     /// <summary> 当前加载对应的AB /// </summary>
     public AssetBundle Bundle
     {
@@ -108,7 +99,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
         RefCount = 0;
         mReferenceOwnerList = new List<System.WeakReference>();
         mLoadedAssetMap = new Dictionary<string, UnityEngine.Object>();
-        onUnloadedCallback = null;
+        onResourceUnloadedCallback = null;
     }
 
     /// <summary>
@@ -217,11 +208,11 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
             dep.release();
         }
         mDepAssetBundleInfoSets.Clear();
-        if (onUnloadedCallback != null)
+        if (onResourceUnloadedCallback != null)
         {
-            onUnloadedCallback(this);
+            onResourceUnloadedCallback(this);
         }
-        onUnloadedCallback = null;
+        onResourceUnloadedCallback = null;
     }
 
     /*
@@ -235,31 +226,6 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
     */
 
     #region Debug
-    /// <summary>
-    /// 打印当前AB所有使用者信息以及索引计数(开发用)
-    /// </summary>
-    public void printAllOwnersNameAndRefCount()
-    {
-        ResourceLogger.log(string.Format("AB Name: {0}", AssetBundleName));
-        ResourceLogger.log(string.Format("Ref Count: {0}", RefCount));
-        if (mReferenceOwnerList.Count == 0)
-        {
-            ResourceLogger.log("Owners Name : None");
-        }
-        else
-        {
-            ResourceLogger.log("Owners Name :");
-            for (int i = 0, length = mReferenceOwnerList.Count; i < length; i++)
-            {
-                if (mReferenceOwnerList[i].Target != null)
-                {
-                    ResourceLogger.log(string.Format("owner[{0}] : {1}", i, mReferenceOwnerList[i].Target.ToString()));
-                }
-            }
-        }
-        ResourceLogger.log(string.Format("Last Used Time: {0}", LastUsedTime));
-    }
-
     /// <summary>
     /// 获取AssetBundle使用的详细描述信息
     /// </summary>
@@ -488,6 +454,6 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
         RefCount = 0;
         mReferenceOwnerList.Clear();
         mLoadedAssetMap.Clear();
-        onUnloadedCallback = null;
+        onResourceUnloadedCallback = null;
     }
 }

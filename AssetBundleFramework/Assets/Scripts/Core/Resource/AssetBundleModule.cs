@@ -461,7 +461,7 @@ public class AssetBundleModule : AbstractResourceModule
     /// <summary>
     /// 打印当前AB所有使用者信息以及索引计数(开发用)
     /// </summary>
-    public void printAllLoadedABOwnersAndRefCount()
+    public override void printAllLoadedResourceOwnersAndRefCount()
     {
         ResourceLogger.log("Normal Loaded AB Info:");
         foreach (var abi in mAllLoadedABInfoMap[ResourceLoadType.NormalLoad])
@@ -494,20 +494,21 @@ public class AssetBundleModule : AbstractResourceModule
         var abi = AssetBundleInfoFactory.create();
         abi.AssetBundleName = abname;
         abi.Bundle = ab;
-        abi.onUnloadedCallback = onABUnloaded;
+        abi.onResourceUnloadedCallback = onABUnloaded;
         return abi;
     }
 
     /// <summary>
     /// 对应AB卸载回调
     /// </summary>
-    /// <param name="abi"></param>
-    private static void onABUnloaded(AssetBundleInfo abi)
+    /// <param name="ari"></param>
+    private static void onABUnloaded(AbstractResourceInfo ari)
     {
+        var abi = ari as AssetBundleInfo;
         //AB卸载数据统计
-        if (AssetBundleLoadAnalyse.Singleton.ABLoadAnalyseSwitch)
+        if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
         {
-            AssetBundleLoadAnalyse.Singleton.addABUnloadedTime(abi.AssetBundleName);
+            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(abi.AssetBundleName);
         }
         // AB卸载时ABAssetBundleInfo回收时回收重用
         AssetBundleInfoFactory.recycle(abi);
@@ -520,7 +521,7 @@ public class AssetBundleModule : AbstractResourceModule
     {
         while(true)
         {
-            if (EnableResourceRecyclingUnloadUnsed && mCurrentFPS >= mABRecycleFPSThreshold && isABRequestQueueEmpty())
+            if (EnableResourceRecyclingUnloadUnsed && mCurrentFPS >= mABRecycleFPSThreshold && mABRequestTaskMap.Count == 0)
             {
                 float time = Time.time;
                 // 检查正常加载的资源AB，回收不再使用的AB
@@ -569,24 +570,15 @@ public class AssetBundleModule : AbstractResourceModule
             mABRequestTaskMap.Remove(abname);
             mAllLoadedABInfoMap[abl.LoadType].Add(abname, abl.ABInfo);
             //AB加载数据统计
-            if (AssetBundleLoadAnalyse.Singleton.ABLoadAnalyseSwitch)
+            if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
             {
-                AssetBundleLoadAnalyse.Singleton.addABLoadedTime(abname);
+                ResourceLoadAnalyse.Singleton.addResourceLoadedTime(abname);
             }
         }
         else
         {
             ResourceLogger.logErr(string.Format("收到不在加载任务请求队列里的AB:{0}加载完成回调!", abname));
         }
-    }
-
-    /// <summary>
-    /// AB请求队列是否为空
-    /// </summary>
-    /// <returns></returns>
-    private bool isABRequestQueueEmpty()
-    {
-        return mABRequestTaskMap.Count == 0;
     }
 
     /// <summary>

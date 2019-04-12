@@ -166,13 +166,13 @@ public class ABDebugWindow : EditorWindow
                 }
                 if (GUILayout.Button("开启资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
                 {
-                    AssetBundleLoadAnalyse.Singleton.ABLoadAnalyseSwitch = true;
-                    AssetBundleLoadAnalyse.Singleton.startABLoadAnalyse();
+                    ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = true;
+                    ResourceLoadAnalyse.Singleton.startResourceLoadAnalyse();
                 }
                 if (GUILayout.Button("结束资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
                 {
-                    AssetBundleLoadAnalyse.Singleton.endABLoadAnalyse();
-                    AssetBundleLoadAnalyse.Singleton.ABLoadAnalyseSwitch = false;
+                    ResourceLoadAnalyse.Singleton.endResourceLoadAnalyse();
+                    ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = false;
                 }
                 EditorGUILayout.EndHorizontal();
                 GUILayout.BeginVertical(GUILayout.MaxWidth(position.width), GUILayout.MaxHeight(position.height));
