@@ -33,6 +33,7 @@ public class ResourceLogger
         {
             mLogSwitch = value;
             PlayerPrefs.SetInt(LogSwitchPrefsKey, mLogSwitch == true ? 1 : 0);
+            Debug.Log(string.Format("当前资源开关:{0}", mLogSwitch));
         }
     }
     private static bool mLogSwitch = PlayerPrefs.GetInt(LogSwitchPrefsKey, 0) == 0 ? false : true;

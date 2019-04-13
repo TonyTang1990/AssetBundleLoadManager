@@ -98,12 +98,6 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     {
 #if UNITY_EDITOR
         mResLoadMode = (ResourceLoadMode)PlayerPrefs.GetInt(ResLoadModeKey, (int)ResourceLoadMode.AssetBundle);
-#else
-        //非编辑器只支持AssetBundle模式
-        mResLoadMode = ResourceLoadMode.AssetBundle;
-#endif
-        Debug.Log(string.Format("当前资源加载模式 : {0}", mResLoadMode));
-
         if (mResLoadMode == ResourceLoadMode.AssetBundle)
         {
             CurrentResourceModule = new AssetBundleModule();
@@ -112,6 +106,14 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
         {
             CurrentResourceModule = new AssetDatabaseModule();
         }
+#else
+        //非编辑器只支持AssetBundle模式
+        mResLoadMode = ResourceLoadMode.AssetBundle;
+        CurrentResourceModule = new AssetBundleModule();
+#endif
+        Debug.Log(string.Format("当前资源加载模式 : {0}", mResLoadMode));
+
+
     }
 
     /// <summary>

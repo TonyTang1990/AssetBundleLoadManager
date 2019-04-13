@@ -517,4 +517,13 @@ public class GameLauncher : MonoBehaviour {
         Debug.Log("onUnloadUnsedAssets()");
         Resources.UnloadUnusedAssets();
     }
+
+    /// <summary>
+    /// 切换资源Log开关
+    /// </summary>
+    public void changeResourceLogSwitch()
+    {
+        Debug.Log("changeResourceLogSwitch()");
+        ResourceLogger.LogSwitch = !ResourceLogger.LogSwitch;
+    }
 }

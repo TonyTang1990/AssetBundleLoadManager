@@ -21,21 +21,21 @@ public static class AssetBundlePath {
     /// <summary> AB热更新资源路径 /// </summary>
     private static string ABHotUpdatePath = Application.persistentDataPath + "/PC/";
     /// <summary> 依赖信息文件名 /// </summary>
-    public const string DependencyFileName = "pc";
+    public const string DependencyFileName = "PC";
 #elif UNITY_ANDROID
     /// <summary> AB包内资源路径 /// </summary>
     private static string ABBuildinPath = Application.streamingAssetsPath + "/Android/";
     /// <summary> AB热更新资源路径 /// </summary>
     private static string ABHotUpdatePath = Application.persistentDataPath + "/Android/";
     /// <summary> 依赖信息文件名 /// </summary>
-    public const string DependencyFileName = "android";
+    public const string DependencyFileName = "Android";
 #elif UNITY_IOS
     /// <summary> AB包内资源路径 /// </summary>
     private static string ABBuildinPath = Application.streamingAssetsPath + "/IOS/";
     /// <summary> AB热更新资源路径 /// </summary>
     private static string ABHotUpdatePath = Application.persistentDataPath + "/IOS/";
     /// <summary> 依赖信息文件名 /// </summary>
-    public const string DependencyFileName = "ios";
+    public const string DependencyFileName = "IOS";
 #endif
 
     /// <summary> 依赖信息Asset名 /// </summary>
