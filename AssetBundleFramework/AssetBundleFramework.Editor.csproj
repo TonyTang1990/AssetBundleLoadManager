@@ -329,7 +329,7 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PackagAssetInfoBrowserWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PrefabUtilitiesExtension.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\LightMap\LightMapDetailWindow.cs" />
-    <Compile Include="Assets\Scripts\Editor\DebugTool\Resource\ABDebugWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\DebugTool\Resource\ResourceDebugWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Res\actors\zombunny\Shaders\Rim Lit Bumped Specular.shader" />

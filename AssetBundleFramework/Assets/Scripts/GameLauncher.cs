@@ -48,6 +48,11 @@ public class GameLauncher : MonoBehaviour {
     private GameObject mActorInstance;
 
     /// <summary>
+    /// 角色实例对象2
+    /// </summary>
+    private GameObject mActorInstance2;
+
+    /// <summary>
     /// 音效临时实例对象
     /// </summary>
     private GameObject mSFXInstance;
@@ -405,16 +410,15 @@ public class GameLauncher : MonoBehaviour {
         ResourceLoadMethod.Async);
 
         //测试异步加载后立刻同步加载
-        GameObject actorinstance2 = null;
         mRMM.requstResource(
         "pre_zombunny",
         (abi) =>
         {
-            actorinstance2 = abi.instantiateAsset("pre_Zombunny");
+            mActorInstance2 = abi.instantiateAsset("pre_Zombunny");
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Sync);
-        Debug.Log("actorinstance2.transform.name = " + actorinstance2.transform.name);
+        Debug.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
 
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
         Material mat = null;
@@ -449,6 +453,22 @@ public class GameLauncher : MonoBehaviour {
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Async);
+    }
+
+    /// <summary>
+    /// 销毁异步和同步加载
+    /// </summary>
+    public void onDestroyAsynAndSyncLoad()
+    {
+        Debug.Log("onDestroyAsynAndSyncLoad()");
+        GameObject.Destroy(mMainWindow);
+        mMainWindow = null;
+        GameObject.Destroy(mActorInstance);
+        mActorInstance = null;
+        GameObject.Destroy(mActorInstance2);
+        mActorInstance2 = null;
+        GameObject.Destroy(mSFXInstance);
+        mSFXInstance = null;
     }
 
     /// <summary>

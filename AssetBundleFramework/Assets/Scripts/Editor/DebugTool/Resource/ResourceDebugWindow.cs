@@ -1,5 +1,5 @@
 ﻿/*
- * Description:             ABDebugWindow.cs
+ * Description:             ResourceDebugWindow.cs
  * Author:                  TONYTANG
  * Create Date:             2018//08/28
  */
@@ -11,10 +11,10 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// ABDebugWindow.cs
-/// AssetBundle辅助调试工具UI窗口
+/// ResourceDebugWindow.cs
+/// 资源(AssetBundle和AssetDatabase两种模式都支持)辅助调试工具UI窗口
 /// </summary>
-public class ABDebugWindow : EditorWindow
+public class ResourceDebugWindow : EditorWindow
 {
     /// <summary>
     /// AB辅助工具类型
@@ -89,12 +89,12 @@ public class ABDebugWindow : EditorWindow
     /// <summary>
     /// 符合展示引用信息筛选条件的AB加载信息列表
     /// </summary>
-    private List<AssetBundleInfo> mValideReferenceABInfoList = new List<AssetBundleInfo>();
+    private List<AbstractResourceInfo> mValideReferenceABInfoList = new List<AbstractResourceInfo>();
 
     [MenuItem("新AB工具/AB加载管理调试/辅助工具")]
     public static void openConvenientUIWindow()
     {
-        ABDebugWindow window = EditorWindow.GetWindow<ABDebugWindow>();
+        ResourceDebugWindow window = EditorWindow.GetWindow<ResourceDebugWindow>();
         window.Show();
     }
 
@@ -125,83 +125,74 @@ public class ABDebugWindow : EditorWindow
             }
             GUILayout.Label("资源回收开关:" + ResourceModuleManager.getInstance().CurrentResourceModule.EnableResourceRecyclingUnloadUnsed, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
             EditorGUILayout.EndHorizontal();
-            if (ResourceModuleManager.getInstance().ResLoadMode == ResourceLoadMode.AssetBundle)
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("筛选文本(默认不填表示显示所有):", GUILayout.MaxWidth(200.0f), GUILayout.MaxHeight(30.0f));
+            var oldtextfilter = mTextFilter;
+            mTextFilter = EditorGUILayout.TextField(mTextFilter, GUILayout.MaxWidth(100.0f), GUILayout.MaxHeight(30.0f));
+            if (!oldtextfilter.Equals(mTextFilter))
             {
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("筛选文本(默认不填表示显示所有):", GUILayout.MaxWidth(200.0f), GUILayout.MaxHeight(30.0f));
-                var oldtextfilter = mTextFilter;
-                mTextFilter = EditorGUILayout.TextField(mTextFilter, GUILayout.MaxWidth(100.0f), GUILayout.MaxHeight(30.0f));
-                if (!oldtextfilter.Equals(mTextFilter))
-                {
-                    mFilterTextChanged = true;
-                }
-                else
-                {
-                    mFilterTextChanged = false;
-                }
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button("查看AB依赖信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-                {
-                    mCurrentABDebugToolType = ABDebugToolType.AB_Display_All_Dep;
-                    mFilterTextChanged = true;
-                }
-                if (GUILayout.Button("查看AB使用索引信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-                {
-                    mCurrentABDebugToolType = ABDebugToolType.AB_Display_AB_ReferenceInfo;
-                    mFilterTextChanged = true;
-                }
-                if (GUILayout.Button("查看AB异步加载信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-                {
-                    mCurrentABDebugToolType = ABDebugToolType.AB_Display_Async_QueueInfo;
-                    mFilterTextChanged = true;
-                }
-                if (GUILayout.Button("生成一份txt的AB依赖信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-                {
-                    writeABDepInfoIntoTxt();
-                }
-                if (GUILayout.Button("强制卸载指定AB", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-                {
-                    forceUnloadSpecificAB(mTextFilter);
-                }
-                if (GUILayout.Button("开启资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-                {
-                    ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = true;
-                    ResourceLoadAnalyse.Singleton.startResourceLoadAnalyse();
-                }
-                if (GUILayout.Button("结束资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-                {
-                    ResourceLoadAnalyse.Singleton.endResourceLoadAnalyse();
-                    ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = false;
-                }
-                EditorGUILayout.EndHorizontal();
-                GUILayout.BeginVertical(GUILayout.MaxWidth(position.width), GUILayout.MaxHeight(position.height));
-                mUiScrollPos = GUILayout.BeginScrollView(mUiScrollPos);
-                mDetailFoldOut = EditorGUILayout.Foldout(mDetailFoldOut, "详细数据展示区域:");
-                if (mDetailFoldOut)
-                {
-                    if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_All_Dep)
-                    {
-                        displayABAllDepInfoUI();
-                    }
-                    else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_AB_ReferenceInfo)
-                    {
-                        displayABReferenceInfoUI();
-                    }
-                    else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_Async_QueueInfo)
-                    {
-                        displayABAysncQueueInfoUI();
-                    }
-                }
-                GUILayout.EndScrollView();
-                EditorGUILayout.EndVertical();
+                mFilterTextChanged = true;
             }
             else
             {
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("部分功能仅在AssetBundle运行模式下可用!");
-                EditorGUILayout.EndHorizontal();
+                mFilterTextChanged = false;
             }
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("查看AB依赖信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+            {
+                mCurrentABDebugToolType = ABDebugToolType.AB_Display_All_Dep;
+                mFilterTextChanged = true;
+            }
+            if (GUILayout.Button("查看资源使用索引信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+            {
+                mCurrentABDebugToolType = ABDebugToolType.AB_Display_AB_ReferenceInfo;
+                mFilterTextChanged = true;
+            }
+            if (GUILayout.Button("查看AB异步加载信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+            {
+                mCurrentABDebugToolType = ABDebugToolType.AB_Display_Async_QueueInfo;
+                mFilterTextChanged = true;
+            }
+            if (GUILayout.Button("生成一份txt的AB依赖信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+            {
+                writeABDepInfoIntoTxt();
+            }
+            if (GUILayout.Button("强制卸载指定AB", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+            {
+                forceUnloadSpecificAB(mTextFilter);
+            }
+            if (GUILayout.Button("开启资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+            {
+                ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = true;
+                ResourceLoadAnalyse.Singleton.startResourceLoadAnalyse();
+            }
+            if (GUILayout.Button("结束资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+            {
+                ResourceLoadAnalyse.Singleton.endResourceLoadAnalyse();
+                ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = false;
+            }
+            EditorGUILayout.EndHorizontal();
+            GUILayout.BeginVertical(GUILayout.MaxWidth(position.width), GUILayout.MaxHeight(position.height));
+            mUiScrollPos = GUILayout.BeginScrollView(mUiScrollPos);
+            mDetailFoldOut = EditorGUILayout.Foldout(mDetailFoldOut, "详细数据展示区域:");
+            if (mDetailFoldOut)
+            {
+                if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_All_Dep)
+                {
+                    displayABAllDepInfoUI();
+                }
+                else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_AB_ReferenceInfo)
+                {
+                    displayABReferenceInfoUI();
+                }
+                else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_Async_QueueInfo)
+                {
+                    displayABAysncQueueInfoUI();
+                }
+            }
+            GUILayout.EndScrollView();
+            EditorGUILayout.EndVertical();
         }
         EditorGUILayout.EndVertical();
     }
@@ -211,9 +202,9 @@ public class ABDebugWindow : EditorWindow
     /// </summary>
     private void displayABAllDepInfoUI()
     {
-        var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
-        if (assetbundleresourcemodule != null)
+        if (isAssetBundleModule())
         {
+            var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
             GUILayout.BeginVertical();
             var alldepinfo = assetbundleresourcemodule.AssetBundleDpMap;
             if (!mTextFilter.Equals(string.Empty))
@@ -275,134 +266,152 @@ public class ABDebugWindow : EditorWindow
             }
             EditorGUILayout.EndVertical();
         }
+        else
+        {
+            GUILayout.BeginVertical();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("AB依赖信息只在AssetBundle模式下可用！");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+        }        
     }
 
     /// <summary>
-    /// 显示AB使用索引信息UI
+    /// 显示资源使用索引信息UI
     /// </summary>
     private void displayABReferenceInfoUI()
     {
-        var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
-        if (assetbundleresourcemodule != null)
+        var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule;
+        EditorGUILayout.BeginVertical();
+        var normalloadedabinfomap = assetbundleresourcemodule.getSpecificLoadTypeARIMap(ResourceLoadType.NormalLoad);
+        var preloadloadedabinfomap = assetbundleresourcemodule.getSpecificLoadTypeARIMap(ResourceLoadType.Preload);
+        var permanentloadedabinfomap = assetbundleresourcemodule.getSpecificLoadTypeARIMap(ResourceLoadType.PermanentLoad);
+        if (!mTextFilter.Equals(string.Empty))
         {
-            EditorGUILayout.BeginVertical();
-            var requestinfomap = assetbundleresourcemodule.ABRequestTaskMap;
-            var normalloadedabinfomap = assetbundleresourcemodule.getSpecificLoadTypeABIMap(ResourceLoadType.NormalLoad);
-            var preloadloadedabinfomap = assetbundleresourcemodule.getSpecificLoadTypeABIMap(ResourceLoadType.Preload);
-            var permanentloadedabinfomap = assetbundleresourcemodule.getSpecificLoadTypeABIMap(ResourceLoadType.PermanentLoad);
-            if (!mTextFilter.Equals(string.Empty))
+            if (mFilterTextChanged)
             {
-                if (mFilterTextChanged)
+                mValideReferenceABInfoList.Clear();
+                foreach (var normalloadedabinfo in normalloadedabinfomap)
                 {
-                    mValideReferenceABInfoList.Clear();
-                    foreach (var normalloadedabinfo in normalloadedabinfomap)
+                    if (normalloadedabinfo.Key.StartsWith(mTextFilter))
                     {
-                        if (normalloadedabinfo.Key.StartsWith(mTextFilter))
-                        {
-                            mValideReferenceABInfoList.Add(normalloadedabinfo.Value);
-                        }
+                        mValideReferenceABInfoList.Add(normalloadedabinfo.Value);
                     }
+                }
 
-                    foreach (var preloadloadedabinfo in preloadloadedabinfomap)
+                foreach (var preloadloadedabinfo in preloadloadedabinfomap)
+                {
+                    if (preloadloadedabinfo.Key.StartsWith(mTextFilter))
                     {
-                        if (preloadloadedabinfo.Key.StartsWith(mTextFilter))
-                        {
-                            mValideReferenceABInfoList.Add(preloadloadedabinfo.Value);
-                        }
+                        mValideReferenceABInfoList.Add(preloadloadedabinfo.Value);
                     }
+                }
 
-                    foreach (var permanentloadedabinfo in permanentloadedabinfomap)
+                foreach (var permanentloadedabinfo in permanentloadedabinfomap)
+                {
+                    if (permanentloadedabinfo.Key.StartsWith(mTextFilter))
                     {
-                        if (permanentloadedabinfo.Key.StartsWith(mTextFilter))
-                        {
-                            mValideReferenceABInfoList.Add(permanentloadedabinfo.Value);
-                        }
+                        mValideReferenceABInfoList.Add(permanentloadedabinfo.Value);
                     }
+                }
 
-                    if (mValideReferenceABInfoList.Count > 0)
+                if (mValideReferenceABInfoList.Count > 0)
+                {
+                    foreach (var validereferenceabinfo in mValideReferenceABInfoList)
                     {
-                        foreach (var validereferenceabinfo in mValideReferenceABInfoList)
-                        {
-                            displayOneAssetBundleInfoUI(validereferenceabinfo);
-                        }
-                    }
-                    else
-                    {
-                        GUILayout.Label(string.Format("找不到资源 : {0}的索引信息!", mTextFilter));
+                        displayOneAssetBundleInfoUI(validereferenceabinfo);
                     }
                 }
                 else
                 {
-                    if (mValideReferenceABInfoList.Count > 0)
-                    {
-                        foreach (var validereferenceabinfo in mValideReferenceABInfoList)
-                        {
-                            displayOneAssetBundleInfoUI(validereferenceabinfo);
-                        }
-                    }
-                    else
-                    {
-                        GUILayout.Label(string.Format("找不到资源 : {0}的索引信息!", mTextFilter));
-                    }
+                    GUILayout.Label(string.Format("找不到资源 : {0}的索引信息!", mTextFilter));
                 }
             }
             else
             {
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(string.Format("当前FPS : {0}", assetbundleresourcemodule.CurrentFPS));
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(string.Format("加载队列信息 : {0}", requestinfomap.Count == 0 ? "无" : string.Empty));
-                EditorGUILayout.EndHorizontal();
-                foreach (var requestabl in requestinfomap)
+                if (mValideReferenceABInfoList.Count > 0)
                 {
-                    displayOneAssetBundleLoaderInfoUI(requestabl.Value);
+                    foreach (var validereferenceabinfo in mValideReferenceABInfoList)
+                    {
+                        displayOneAssetBundleInfoUI(validereferenceabinfo);
+                    }
                 }
-
-                EditorGUILayout.Space();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("正常已加载资源信息:");
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(string.Format("正常已加载AB数量 : {0}", normalloadedabinfomap.Count));
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(string.Format("可回收正常已加载非常驻AB数量 : {0}", assetbundleresourcemodule.getNormalUnsedABNumber()));
-                EditorGUILayout.EndHorizontal();
-                foreach (var loadedabi in normalloadedabinfomap)
+                else
                 {
-                    displayOneAssetBundleInfoUI(loadedabi.Value);
-                }
-
-                EditorGUILayout.Space();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("预加载已加载资源信息:");
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(string.Format("预加载已加载AB数量 : {0}", preloadloadedabinfomap.Count));
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(string.Format("可回收预加载已加载非常驻AB数量 : {0}", assetbundleresourcemodule.getPreloadUnsedABNumber()));
-                EditorGUILayout.EndHorizontal();
-                foreach (var loadedabi in preloadloadedabinfomap)
-                {
-                    displayOneAssetBundleInfoUI(loadedabi.Value);
-                }
-
-                EditorGUILayout.Space();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("常驻已加载资源信息:");
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(string.Format("已加载常驻AB数量 : {0}", permanentloadedabinfomap.Count));
-                EditorGUILayout.EndHorizontal();
-                foreach (var ploadedabi in permanentloadedabinfomap)
-                {
-                    displayOneAssetBundleInfoUI(ploadedabi.Value);
+                    GUILayout.Label(string.Format("找不到资源 : {0}的索引信息!", mTextFilter));
                 }
             }
-            EditorGUILayout.EndVertical();
         }
+        else
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(string.Format("当前FPS : {0}", assetbundleresourcemodule.CurrentFPS));
+            EditorGUILayout.EndHorizontal();
+            if(assetbundleresourcemodule.ResLoadMode == ResourceLoadMode.AssetBundle)
+            {
+                var resourcemodule = assetbundleresourcemodule as AssetBundleModule;
+                if (resourcemodule != null)
+                {
+                    var requestinfomap = resourcemodule.ABRequestTaskMap;
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label(string.Format("加载队列信息 : {0}", requestinfomap.Count == 0 ? "无" : string.Empty));
+                    EditorGUILayout.EndHorizontal();
+                    foreach (var requestabl in requestinfomap)
+                    {
+                        displayOneAssetBundleLoaderInfoUI(requestabl.Value);
+                    }
+                }
+            }            
+            else
+            {
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("资源加载队列信息只在AssetBundle模式下可用!");
+                EditorGUILayout.EndHorizontal();
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("正常已加载资源信息:");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(string.Format("正常已加载资源数量 : {0}", normalloadedabinfomap.Count));
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(string.Format("可回收正常已加载非常驻资源数量 : {0}", assetbundleresourcemodule.getNormalUnsedABNumber()));
+            EditorGUILayout.EndHorizontal();
+            foreach (var loadedabi in normalloadedabinfomap)
+            {
+                displayOneAssetBundleInfoUI(loadedabi.Value);
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("预加载已加载资源信息:");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(string.Format("预加载已加载资源数量 : {0}", preloadloadedabinfomap.Count));
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(string.Format("可回收预加载已加载非常驻资源数量 : {0}", assetbundleresourcemodule.getPreloadUnsedABNumber()));
+            EditorGUILayout.EndHorizontal();
+            foreach (var loadedabi in preloadloadedabinfomap)
+            {
+                displayOneAssetBundleInfoUI(loadedabi.Value);
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("常驻已加载资源信息:");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(string.Format("已加载常驻资源数量 : {0}", permanentloadedabinfomap.Count));
+            EditorGUILayout.EndHorizontal();
+            foreach (var ploadedabi in permanentloadedabinfomap)
+            {
+                displayOneAssetBundleInfoUI(ploadedabi.Value);
+            }
+        }
+        EditorGUILayout.EndVertical();
     }
 
     /// <summary>
@@ -410,9 +419,9 @@ public class ABDebugWindow : EditorWindow
     /// </summary>
     private void displayABAysncQueueInfoUI()
     {
-        var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
-        if(assetbundleresourcemodule != null)
+        if (isAssetBundleModule())
         {
+            var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
             EditorGUILayout.BeginVertical();
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("当前AB异步加载队列信息 :");
@@ -439,6 +448,14 @@ public class ABDebugWindow : EditorWindow
             {
                 displayOneAssetBundleAsyncQueueInfoUI(abasyncqueuelist[i], i);
             }
+            EditorGUILayout.EndVertical();
+        }
+        else
+        {
+            GUILayout.BeginVertical();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("AB异步加载队列信息只在AssetBundle模式下可用！");
+            EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
         }
     }
@@ -482,7 +499,7 @@ public class ABDebugWindow : EditorWindow
     /// 显示一个AssetBundleInfo的信息
     /// </summary>
     /// <param name="abi"></param>
-    private void displayOneAssetBundleInfoUI(AssetBundleInfo abi)
+    private void displayOneAssetBundleInfoUI(AbstractResourceInfo abi)
     {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField(string.Format("资源名 : {0}", abi.AssetBundleName), GUILayout.Width(250.0f));
@@ -530,9 +547,9 @@ public class ABDebugWindow : EditorWindow
     /// </summary>
     private void writeABDepInfoIntoTxt()
     {
-        var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
-        if(assetbundleresourcemodule != null)
+        if(isAssetBundleModule())
         {
+            var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
             var alldepinfomap = assetbundleresourcemodule.AssetBundleDpMap;
             using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Application.dataPath + "/../alldepab.txt"))
             {
@@ -548,6 +565,10 @@ public class ABDebugWindow : EditorWindow
                 sw.Close();
                 sw.Dispose();
             }
+        }
+        else
+        {
+            Debug.LogError("非AssetBundle模式下不支持输出AB依赖信息文件！");
         }
     }
 
@@ -576,7 +597,23 @@ public class ABDebugWindow : EditorWindow
     /// <param name="abname"></param>
     private void forceUnloadSpecificAB(string abname)
     {
-        var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
-        assetbundleresourcemodule.forceUnloadSpecificResource(abname);
+        if(isAssetBundleModule())
+        {
+            var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
+            assetbundleresourcemodule.forceUnloadSpecificResource(abname);
+        }
+        else
+        {
+            Debug.LogError("强制卸载指定AB功能只在AssetBundle模式下可用!");
+        }
+    }
+
+    /// <summary>
+    /// 是否是AssetBundle模式
+    /// </summary>
+    /// <returns></returns>
+    private bool isAssetBundleModule()
+    {
+        return ResourceModuleManager.getInstance().CurrentResourceModule.ResLoadMode == ResourceLoadMode.AssetBundle;
     }
 }

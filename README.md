@@ -32,7 +32,7 @@ Manager统一管理：
     - AssetBundleLoader(AB资源加载任务类)
     - AssetBundleInfo(AB信息以及加载状态类 -- AB访问，索引计数以及AB依赖关系抽象都在这一层)
     - AssetBundlePath(AB资源路径相关 -- 处理多平台以及热更资源加载路径问题)
-    - ABDebugWindow.cs(Editor运行模式下可视化查看AB加载详细信息的辅助工具窗口)
+    - ResourceDebugWindow.cs(Editor运行模式下可视化查看资源加载(AssetBundle和AssetDatabase两种都支持)详细信息的辅助工具窗口)
     - AssetDatabaseModule(AssetDatabase模式下的实际加载管理模块)
     - AssetDatabaseLoader(AssetDatabase模式下的资源加载任务类)
     - AssetDatabaseInfo(AssetDatabase模式下资源加载信息类)

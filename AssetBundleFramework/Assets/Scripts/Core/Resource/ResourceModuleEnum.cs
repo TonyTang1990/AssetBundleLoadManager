@@ -14,7 +14,8 @@ using UnityEngine;
 public enum ResourceLoadMode
 {
     AssetBundle = 0,            // AssetBundle模式
-    AssetDatabase = 1           // 编辑器AssetDatabase模式
+    AssetDatabase = 1,          // 编辑器AssetDatabase模式
+    Invalide = 2,               // 非法模式
 }
 
 /// <summary>
