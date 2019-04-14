@@ -287,6 +287,9 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/TonyTang/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
+    <Reference Include="xbuffer_runtime">
+      <HintPath>Assets/Scripts/Core/Conf/Xbuffer/xbuffer_runtime.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>G:/Software/UnityAllVersions/2017.4.3f1/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -329,6 +332,7 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PackagAssetInfoBrowserWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PrefabUtilitiesExtension.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\LightMap\LightMapDetailWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\ScriptAutomation\ScriptKeywordProcesser.cs" />
     <Compile Include="Assets\Scripts\Editor\DebugTool\Resource\ResourceDebugWindow.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -37,7 +37,7 @@ namespace AssetBundleBrowser
 			var root = new TreeViewItem(-1, -1);
 			root.children = new List<TreeViewItem>();
 			if (m_InspectTab == null)
-				Debug.Log("Unknown problem in AssetBundle Browser Inspect tab.  Restart Browser and try again, or file ticket on github.");
+                Debug.Log("Unknown problem in AssetBundle Browser Inspect tab.  Restart Browser and try again, or file ticket on github.");
 			else
 			{
 				foreach (var folder in m_InspectTab.BundleList)

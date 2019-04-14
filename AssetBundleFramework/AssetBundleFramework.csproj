@@ -230,6 +230,9 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/TonyTang/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
+    <Reference Include="xbuffer_runtime">
+      <HintPath>Assets/Scripts/Core/Conf/Xbuffer/xbuffer_runtime.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>G:/Software/UnityAllVersions/2017.4.3f1/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -244,7 +247,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Core\Conf\ConfLoader.cs" />
     <Compile Include="Assets\Scripts\Core\Coroutine\CoroutineManager.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\IModuleInterface.cs" />
     <Compile Include="Assets\Scripts\Core\ModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceInfo.cs" />
@@ -265,16 +270,28 @@
     <Compile Include="Assets\Scripts\Core\Resource\ResourceLogger.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleEnum.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleManager.cs" />
-    <Compile Include="Assets\Scripts\Core\ScriptAutomation\ScriptKeywordProcesser.cs" />
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonMonoBehaviourTemplate.cs" />
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonTemplate.cs" />
     <Compile Include="Assets\Scripts\Core\Templates\ObjectFactory.cs" />
+    <Compile Include="Assets\Scripts\Core\VersionConfig\GameConfigManager.cs" />
+    <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfig.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_author_InfoBuffer.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_globalBuffer.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_languageBuffer.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_author_Info.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_language.cs" />
+    <Compile Include="Assets\Scripts\Data\CSTemplateOutput\GameDataManager.cs" />
+    <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_author_InfoContainer.cs" />
+    <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_globalContainer.cs" />
+    <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_languageContainer.cs" />
     <Compile Include="Assets\Scripts\DebugTools\FastUIEntry.cs" />
     <Compile Include="Assets\Scripts\DebugTools\MonoMemoryProfiler.cs" />
     <Compile Include="Assets\Scripts\DebugTools\TimeCounter.cs" />
     <Compile Include="Assets\Scripts\DebugTools\VisibleLogUtility.cs" />
     <Compile Include="Assets\Scripts\Extension\StringExtension.cs" />
     <Compile Include="Assets\Scripts\GameLauncher.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Data\DataAccess.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\AtlasManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\AudioManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\EffectManager.cs" />
@@ -284,6 +301,7 @@
     <Compile Include="Assets\Scripts\GameLogic\Resource\SharedMaterialManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\SharedTextureManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\WindowManager.cs" />
+    <Compile Include="Assets\Scripts\Utilities\DIYLog.cs" />
     <Compile Include="Assets\Scripts\Utilities\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,9 @@
+G:\Projects\CSProjects\VS2017Projects\XbufferExcelToData\XbufferExcelToData\ExcelReadDll\bin\Debug\ExcelReadDll.dll
+G:\Projects\CSProjects\VS2017Projects\XbufferExcelToData\XbufferExcelToData\ExcelReadDll\bin\Debug\ExcelReadDll.pdb
+G:\Projects\CSProjects\VS2017Projects\XbufferExcelToData\XbufferExcelToData\ExcelReadDll\obj\Debug\ExcelReadDll.csprojAssemblyReference.cache
+G:\Projects\CSProjects\VS2017Projects\XbufferExcelToData\XbufferExcelToData\ExcelReadDll\obj\Debug\ExcelReadDll.csproj.CoreCompileInputs.cache
+G:\Projects\CSProjects\VS2017Projects\XbufferExcelToData\XbufferExcelToData\ExcelReadDll\obj\Debug\ExcelReadDll.dll
+G:\Projects\CSProjects\VS2017Projects\XbufferExcelToData\XbufferExcelToData\ExcelReadDll\obj\Debug\ExcelReadDll.pdb
+G:\Projects\CSProjects\VS2017Projects\XbufferExcelToData\XbufferExcelToData\ExcelReadDll\bin\Debug\Excel.dll
+G:\Projects\CSProjects\VS2017Projects\XbufferExcelToData\XbufferExcelToData\ExcelReadDll\bin\Debug\ICSharpCode.SharpZipLib.dll
+G:\Projects\CSProjects\VS2017Projects\XbufferExcelToData\XbufferExcelToData\ExcelReadDll\obj\Debug\ExcelReadDll.csproj.CopyComplete

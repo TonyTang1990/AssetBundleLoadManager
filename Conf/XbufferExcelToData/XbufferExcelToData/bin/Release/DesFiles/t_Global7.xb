@@ -1,0 +1,10 @@
+// t_Global7的注释
+class t_Global7
+{
+	id:int;			                             //唯一id
+	stringvalue:string;			                 //字符串数据
+	intvalue:int;			                       //整形数据
+	floatvalue:float;			                   //浮点数数据
+	intarrayvalue:[int];			                //整形数组数据
+	stringarrayvalue:[string];			          //字符串数组数据
+}

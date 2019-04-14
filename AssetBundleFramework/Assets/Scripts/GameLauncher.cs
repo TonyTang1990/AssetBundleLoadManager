@@ -4,6 +4,7 @@
  * Create Date:             2018/03/12
  */
 
+using Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -109,6 +110,9 @@ public class GameLauncher : MonoBehaviour {
 
         var rmm = gameObject.AddComponent<ResourceModuleManager>();
         rmm.setInstance(rmm);
+
+        var humm = gameObject.AddComponent<HotUpdateModuleManager>();
+        humm.setInstance(humm);
     }
 
     /// <summary>
@@ -124,6 +128,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     private void registerModules()
     {
+        #region 资源模块
         ModuleManager.Singleton.registerModule<ResourceModuleManager>(ResourceModuleManager.getInstance());
         ModuleManager.Singleton.registerModule<ResourceManager>(ResourceManager.Singleton);
         ModuleManager.Singleton.registerModule<GameSceneManager>(GameSceneManager.Singleton);
@@ -134,6 +139,15 @@ public class GameLauncher : MonoBehaviour {
         ModuleManager.Singleton.registerModule<EffectManager>(EffectManager.Singleton);
         ModuleManager.Singleton.registerModule<SharedTextureManager>(SharedTextureManager.Singleton);
         ModuleManager.Singleton.registerModule<SharedMaterialManager>(SharedMaterialManager.Singleton);
+        #endregion
+
+        #region 版本管理模块
+        ModuleManager.Singleton.registerModule<GameConfigManager>(GameConfigManager.Singleton);
+        #endregion
+
+        #region 资源热更管理模块
+        ModuleManager.Singleton.registerModule<HotUpdateModuleManager>(HotUpdateModuleManager.getInstance());
+        #endregion
     }
 
     /// <summary>
@@ -164,6 +178,12 @@ public class GameLauncher : MonoBehaviour {
         ResourceLoadType.PermanentLoad);          // Shader常驻
         mRMM.startResourceRecyclingTask();
 
+        //初始化版本信息
+        ModuleManager.Singleton.getModule<GameConfigManager>().readVerisonConfigData();
+
+        //初始化表格数据读取
+        GameDataManager.Singleton.loadAll();
+
         // 初始化逻辑层Manager
         ModuleManager.Singleton.getModule<GameSceneManager>().init();
     }
@@ -173,7 +193,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onLoadWindowPrefab()
     {
-        Debug.Log("onLoadWindowPrefab()");
+        DIYLog.Log("onLoadWindowPrefab()");
         mRMM.requstResource(
         "mainwindow",
         (abi) =>
@@ -188,7 +208,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onDestroyWindowInstance()
     {
-        Debug.Log("onDestroyWindowInstance()");
+        DIYLog.Log("onDestroyWindowInstance()");
         GameObject.Destroy(mMainWindow);
     }
 
@@ -197,11 +217,11 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onLoadSprite()
     {
-        Debug.Log("onLoadSprite()");
+        DIYLog.Log("onLoadSprite()");
         var param1 = InputParam1.text;
-        Debug.Log("Param1 = " + param1);
+        DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
-        Debug.Log("Param2 = " + param2);
+        DIYLog.Log("Param2 = " + param2);
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
         mRMM.requstResource(
         param1,
@@ -217,7 +237,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onPlaySound()
     {
-        Debug.Log("onPlaySound()");
+        DIYLog.Log("onPlaySound()");
         mRMM.requstResource(
         "sfxtemplate",
         (abi) =>
@@ -245,7 +265,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onLoadMaterial()
     {
-        Debug.Log("onLoadMaterial()");
+        DIYLog.Log("onLoadMaterial()");
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
         Material mat = null;
         mRMM.requstResource(
@@ -269,7 +289,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onLoadActorPrefab()
     {
-        Debug.Log("onLoadActorPrefab()");
+        DIYLog.Log("onLoadActorPrefab()");
         mRMM.requstResource(
         "pre_zombunny",
         (abi) =>
@@ -283,7 +303,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onDestroyActorInstance()
     {
-        Debug.Log("onDestroyActorInstance()");
+        DIYLog.Log("onDestroyActorInstance()");
         GameObject.Destroy(mActorInstance);
     }
 
@@ -293,9 +313,9 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onPreloadAtlas()
     {
-        Debug.Log("onPreloadAtlas()");
+        DIYLog.Log("onPreloadAtlas()");
         var param1 = InputParam1.text;
-        Debug.Log("Param1 = " + param1);
+        DIYLog.Log("Param1 = " + param1);
         mRMM.requstResource(
         param1,
         (abi) =>
@@ -311,7 +331,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onLoadPermanentShaderList()
     {
-        Debug.Log("onLoadPermanentShaderList()");
+        DIYLog.Log("onLoadPermanentShaderList()");
         mRMM.requstResource(
         "shaderlist",
         (abi) =>
@@ -327,7 +347,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onAsynABLoad()
     {
-        Debug.Log("onTestAsynAndSyncABLoad()");
+        DIYLog.Log("onTestAsynAndSyncABLoad()");
         if (mMainWindow == null)
         {
             onLoadWindowPrefab();
@@ -335,7 +355,7 @@ public class GameLauncher : MonoBehaviour {
 
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
         var param1 = InputParam1.text;
-        Debug.Log("Param1 = " + param1);
+        DIYLog.Log("Param1 = " + param1);
         mRMM.requstResource(
         param1,
         (abi) =>
@@ -352,7 +372,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onTestAsynAndSyncABLoad()
     {
-        Debug.Log("onTestAsynAndSyncABLoad()");
+        DIYLog.Log("onTestAsynAndSyncABLoad()");
         if(mMainWindow == null)
         {
             onLoadWindowPrefab();
@@ -418,7 +438,7 @@ public class GameLauncher : MonoBehaviour {
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Sync);
-        Debug.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
+        DIYLog.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
 
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
         Material mat = null;
@@ -460,7 +480,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onDestroyAsynAndSyncLoad()
     {
-        Debug.Log("onDestroyAsynAndSyncLoad()");
+        DIYLog.Log("onDestroyAsynAndSyncLoad()");
         GameObject.Destroy(mMainWindow);
         mMainWindow = null;
         GameObject.Destroy(mActorInstance);
@@ -476,11 +496,11 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onChangeScene()
     {
-        Debug.Log("onChangeScene()");
+        DIYLog.Log("onChangeScene()");
         var param1 = InputParam1.text;
-        Debug.Log("Param1 = " + param1);
+        DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
-        Debug.Log("Param2 = " + param2);
+        DIYLog.Log("Param2 = " + param2);
 
         //切换场景前关闭所有打开窗口，测试切场景资源卸载功能
         onDestroyWindowInstance();
@@ -493,7 +513,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onPrintABDepInfo()
     {
-        Debug.Log("onPrintABDepInfo()");
+        DIYLog.Log("onPrintABDepInfo()");
         if(mRMM.CurrentResourceModule is AssetBundleModule)
         {
             (mRMM.CurrentResourceModule as AssetBundleModule).printAllResourceDpInfo();
@@ -505,7 +525,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onPrintLoadedResourceInfo()
     {
-        Debug.Log("onPrintLoadedResourceInfo()");
+        DIYLog.Log("onPrintLoadedResourceInfo()");
         mRMM.CurrentResourceModule.printAllLoadedResourceOwnersAndRefCount();
     }
 
@@ -514,7 +534,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void onUnloadUnsedAssets()
     {
-        Debug.Log("onUnloadUnsedAssets()");
+        DIYLog.Log("onUnloadUnsedAssets()");
         Resources.UnloadUnusedAssets();
     }
 
@@ -523,7 +543,81 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     public void changeResourceLogSwitch()
     {
-        Debug.Log("changeResourceLogSwitch()");
+        DIYLog.Log("changeResourceLogSwitch()");
         ResourceLogger.LogSwitch = !ResourceLogger.LogSwitch;
+    }
+
+    /// <summary>
+    /// 打印版本信息
+    /// </summary>
+    public void printVersionInfo()
+    {
+        DIYLog.Log("printVersionInfo()");
+        ModuleManager.Singleton.getModule<GameConfigManager>().readVerisonConfigData();
+    }
+
+    /// <summary>
+    /// 存储最新版本信息
+    /// </summary>
+    public void saveNewVersionInfo()
+    {
+        DIYLog.Log("saveNewVersionInfo()");
+        var param1 = InputParam1.text;
+        DIYLog.Log("Param1 = " + param1);
+        var param2 = InputParam2.text;
+        DIYLog.Log("Param2 = " + param2);
+        double newversioncode = 0.0f;
+        int newresourceversioncode = 0;
+        if(double.TryParse(param1, out newversioncode))
+        {
+            if (int.TryParse(param2, out newresourceversioncode))
+            {
+                ModuleManager.Singleton.getModule<GameConfigManager>().saveVersionConfig(newversioncode, newresourceversioncode);
+            }
+            else
+            {
+                DIYLog.LogError("新资源版本号解析出错！");
+            }
+        }
+        else
+        {
+            DIYLog.LogError("新版本号解析出错！");
+        }
+    }
+
+    /// <summary>
+    /// 打印所有表格数据
+    /// </summary>
+    public void printAllExcellData()
+    {
+        DIYLog.Log("printAllExcellData()");
+        var languagelist = GameDataManager.Singleton.t_languagecontainer.getList();
+        foreach(var language in languagelist)
+        {
+            DIYLog.Log("----------------------------------------------");
+            DIYLog.Log(string.Format("language id : {0}", language.id));
+            DIYLog.Log(string.Format("language content : {0}", language.content));
+        }
+        var authorlist = GameDataManager.Singleton.t_author_Infocontainer.getList();
+        foreach (var author in authorlist)
+        {
+            DIYLog.Log("----------------------------------------------");
+            DIYLog.Log(string.Format("author id : {0}", author.id));
+            DIYLog.Log(string.Format("author author : {0}", author.author));
+            DIYLog.Log(string.Format("author age : {0}", author.age));
+            DIYLog.Log(string.Format("author national : {0}", author.national));
+            DIYLog.Log(string.Format("author sex : {0}", author.sex));
+        }
+        var globallist = GameDataManager.Singleton.t_globalcontainer.getList();
+        foreach (var global in globallist)
+        {
+            DIYLog.Log("----------------------------------------------");
+            DIYLog.Log(string.Format("global id : {0}", global.id));
+            DIYLog.Log(string.Format("global intvalue : {0}", global.intvalue));
+            DIYLog.Log(string.Format("global stringvalue : {0}", global.stringvalue));
+            DIYLog.Log(string.Format("global floatvalue : {0}", global.floatvalue));
+            DIYLog.Log(string.Format("global intarrayvalue : {0}", global.intarrayvalue.ToString()));
+            DIYLog.Log(string.Format("global stringarrayvalue : {0}", global.stringarrayvalue.ToString()));
+        }
     }
 }

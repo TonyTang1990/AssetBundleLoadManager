@@ -37,7 +37,7 @@ public class MaterialPackageAsset : PackageAsset {
         //所以如果M1不是作为跟随FBX层打包又被多个Prefab使用的话，强烈建议使用ShareRule打包M1
         //if(mAssetAssetBundleBuildRule == AssetABBuildRule.E_NORMAL && mDependentPackageAsset.PackageAssetType == AssetPackageType.E_PREFAB)
         //{
-        //    Debug.LogError(string.Format("Asset Path: {0}打包規則為NormalRule，但被最终上层引用是E_PREFAB，请使用ShareRule打包此资源!！", AssetPath));
+        //    DIYLogLogError(string.Format("Asset Path: {0}打包規則為NormalRule，但被最终上层引用是E_PREFAB，请使用ShareRule打包此资源!！", AssetPath));
         //    return false;
         //}
         return true;

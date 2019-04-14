@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<ExportConfig>  
+   <ExcelInputPath>./Excels/</ExcelInputPath>  
+   <TemplatePath>./Templates/</TemplatePath>
+   <DesFileOutputPath>./DesFiles/</DesFileOutputPath>
+   <ByteDataOutputPath>./../AssetBundleFramework/Assets/Resources/DataBytes/</ByteDataOutputPath>
+   <CSClassCodeOutputPath>./../AssetBundleFramework/Assets/Scripts/Data/CSOutput/ClassCode/</CSClassCodeOutputPath>
+   <CSBufferCodeOutputPath>./../AssetBundleFramework/Assets/Scripts/Data/CSOutput/BufferCode/</CSBufferCodeOutputPath>
+   <CSTemplateOutputPath>./../AssetBundleFramework/Assets/Scripts/Data/CSTemplateOutput/</CSTemplateOutputPath>
+   <OtherLanguageCodeOutputPath>./OtherOutput/</OtherLanguageCodeOutputPath>
+</ExportConfig>

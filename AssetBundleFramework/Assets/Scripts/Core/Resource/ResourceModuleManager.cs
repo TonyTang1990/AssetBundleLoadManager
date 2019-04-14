@@ -112,8 +112,6 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
         CurrentResourceModule = new AssetBundleModule();
 #endif
         Debug.Log(string.Format("当前资源加载模式 : {0}", mResLoadMode));
-
-
     }
 
     /// <summary>

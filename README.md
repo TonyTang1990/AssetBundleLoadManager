@@ -2,14 +2,15 @@
 基于索引计数的AssetBundle加载管理框架。(参考: tangzx/ABSystem思路)
 
 ## 功能支持
-1. 支持编辑器和真机使用AssetBundle同步和异步加载(统一采用callback风格)
-2. 支持三种基本的资源加载类型(NormalLoad -- 正常加载(可通过Tick检测判定正常卸载) Preload -- 预加载(切场景才会卸载) PermanentLoad -- 永久加载(常驻内存永不卸载))
-3. 基于UnityEngine.Object的AB索引生命周期绑定
-4. 底层统一管理AB索引计数，管理资源加载释放
-5. 支持卸载频率，卸载帧率门槛，单次卸载数量等设置。采用Long Time Unused First Unload(越久没用越先卸载)原则卸载。
-6. 支持最大AB异步加载携程数量配置(采用队列模式)
-7. 支持编辑器下使用AssetDatabase模式(只需设置AB名字，无需打包AB，暂时只支持同步)
-8. 采用[AssetBundleBrowser](https://github.com/Unity-Technologies/AssetBundles-Browser)工具打包AB
+1. 支持编辑器和真机加载AssetBundle同步和异步加载(统一采用callback风格)
+2. 加载Asset暂时是采用同步加载(AssetBundle.LoadAsset & AssetBundle.LoadAllAssets)
+3. 支持三种基本的资源加载类型(NormalLoad -- 正常加载(可通过Tick检测判定正常卸载) Preload -- 预加载(切场景才会卸载) PermanentLoad -- 永久加载(常驻内存永不卸载))
+4. 基于UnityEngine.Object的AB索引生命周期绑定
+5. 底层统一管理AB索引计数，管理资源加载释放
+6. 支持卸载频率，卸载帧率门槛，单次卸载数量等设置。采用Long Time Unused First Unload(越久没用越先卸载)原则卸载。
+7. 支持最大AB异步加载携程数量配置(采用队列模式)
+8. 支持编辑器下使用AssetDatabase模式(只需设置AB名字，无需打包AB，暂时只支持同步)
+9. 采用[AssetBundleBrowser](https://github.com/Unity-Technologies/AssetBundles-Browser)工具打包AB
 
 ## 类说明
 Manager统一管理：

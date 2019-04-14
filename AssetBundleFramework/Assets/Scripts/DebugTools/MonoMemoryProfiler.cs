@@ -97,7 +97,7 @@ public class MonoMemoryProfiler : SingletonTemplate<MonoMemoryProfiler> {
                 mTotalUsedMonoMemory_End = Profiler.GetMonoUsedSizeLong();
             }
 
-            var heapmemoryoffset = mTotalUsedMonoMemory_End - mTotalUsedMonoMemory_Begin;            
+            var heapmemoryoffset = mTotalUsedMonoMemory_End - mTotalUsedMonoMemory_Begin;
             Debug.Log(string.Format("内存统计标签 : {0}", mTagName));
             Debug.Log(string.Format("当前Mono内存大小 = {0} Bytes", mTotalUsedMonoMemory_End));
             Debug.Log(string.Format("之前Mono内存大小 = {0} Bytes", mTotalUsedMonoMemory_Begin));

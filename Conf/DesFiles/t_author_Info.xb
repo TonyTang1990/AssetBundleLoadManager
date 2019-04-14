@@ -1,0 +1,9 @@
+// t_author_Info的注释
+class t_author_Info
+{
+	id:int;			                             //唯一id
+	author:string;			                      //作者
+	age:int;			                            //年龄
+	sex:string;			                         //性别
+	national:string;			                    //2
+}

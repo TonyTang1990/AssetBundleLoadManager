@@ -1,0 +1,4 @@
+E:\TonyTang\Work\MyPorjects\CS\XbufferExcelToData\XbufferExcelToData\bin\Release\xbuffer_parser.exe
+E:\TonyTang\Work\MyPorjects\CS\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.csprojAssemblyReference.cache
+E:\TonyTang\Work\MyPorjects\CS\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.csproj.CoreCompileInputs.cache
+E:\TonyTang\Work\MyPorjects\CS\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.exe

@@ -1,0 +1,11 @@
+// t_AuthorInfo5的注释
+class t_AuthorInfo5
+{
+	id:int;			                             //唯一id
+	author:string;			                      //作者
+	age:int;			                            //年龄
+	money:float;			                        //拥有金钱
+	hashouse:bool;			                      //拥有房子
+	pbutctime:long;			                     //出版utc时间
+	luckynumber:[int];			                  //幸运数字
+}
