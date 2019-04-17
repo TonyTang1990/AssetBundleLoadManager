@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIYLog", "DIYLog\DIYLog.csproj", "{B2E73B75-A8CD-4BB9-9A68-EF61E2D990A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B7916EF7-106A-4CEF-965F-8B2DA3BEEAE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2E73B75-A8CD-4BB9-9A68-EF61E2D990A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2E73B75-A8CD-4BB9-9A68-EF61E2D990A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2E73B75-A8CD-4BB9-9A68-EF61E2D990A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2E73B75-A8CD-4BB9-9A68-EF61E2D990A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D494B3F-B0BA-4AE6-AEE0-021CE74A4648}
+	EndGlobalSection
+EndGlobal

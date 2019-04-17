@@ -1,11 +1,9 @@
-/*
+﻿/*
  * Description:             DIYLog..cs
  * Author:                  TONYTANG
  * Create Date:             2018/12/09
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
