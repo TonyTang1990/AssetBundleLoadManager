@@ -620,4 +620,22 @@ public class GameLauncher : MonoBehaviour {
             DIYLog.Log(string.Format("global stringarrayvalue : {0}", global.stringarrayvalue.ToString()));
         }
     }
+
+    /// <summary>
+    /// 打印所有AB路径信息
+    /// </summary>
+    public void printAllABPath()
+    {
+        DIYLog.Log("printAllABPath()");
+        AssetBundlePath.PrintAllPathInfo();
+    }
+
+    /// <summary>
+    /// 资源热更测试
+    /// </summary>
+    public void testResourceHotUpdate()
+    {
+        DIYLog.Log("testResourceHotUpdate()");
+        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().startResourceHotUpdate();
+    }
 }

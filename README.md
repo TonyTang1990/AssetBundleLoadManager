@@ -11,6 +11,7 @@
 7. 支持最大AB异步加载携程数量配置(采用队列模式)
 8. 支持编辑器下使用AssetDatabase模式(只需设置AB名字，无需打包AB，暂时只支持同步)
 9. 采用[AssetBundleBrowser](https://github.com/Unity-Technologies/AssetBundles-Browser)工具打包AB
+10. 导表工具[XbufferExcellToData](https://github.com/TonyTang1990/XbufferExcellToData)
 
 ## 类说明
 Manager统一管理：

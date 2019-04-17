@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AssetBundlePath.cs
  * Author:                  TONYTANG
  * Create Date:             2018//09/28
@@ -6,46 +6,56 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
 /// AssetBundlePath.cs
-/// AB×ÊÔ´Â·¾¶Ïà¹Ø¾²Ì¬Àà£¬´¦Àí¶àÆ½Ì¨Â·¾¶ÎÊÌâ
+/// ABèµ„æºè·¯å¾„ç›¸å…³é™æ€ç±»ï¼Œå¤„ç†å¤šå¹³å°è·¯å¾„é—®é¢˜
 /// </summary>
 public static class AssetBundlePath {
 
     #region AssetBundle
 #if UNITY_STANDALONE
-    /// <summary> AB°üÄÚ×ÊÔ´Â·¾¶ /// </summary>
+    /// <summary> ABåŒ…å†…èµ„æºè·¯å¾„ /// </summary>
     private static string ABBuildinPath = Application.streamingAssetsPath + "/PC/";
-    /// <summary> ABÈÈ¸üĞÂ×ÊÔ´Â·¾¶ /// </summary>
+    /// <summary> ABçƒ­æ›´æ–°èµ„æºè·¯å¾„ /// </summary>
     private static string ABHotUpdatePath = Application.persistentDataPath + "/PC/";
-    /// <summary> ÒÀÀµĞÅÏ¢ÎÄ¼şÃû /// </summary>
+    /// <summary> ä¾èµ–ä¿¡æ¯æ–‡ä»¶å /// </summary>
     public const string DependencyFileName = "PC";
 #elif UNITY_ANDROID
-    /// <summary> AB°üÄÚ×ÊÔ´Â·¾¶ /// </summary>
+    /// <summary> ABåŒ…å†…èµ„æºè·¯å¾„ /// </summary>
     private static string ABBuildinPath = Application.streamingAssetsPath + "/Android/";
-    /// <summary> ABÈÈ¸üĞÂ×ÊÔ´Â·¾¶ /// </summary>
+    /// <summary> ABçƒ­æ›´æ–°èµ„æºè·¯å¾„ /// </summary>
     private static string ABHotUpdatePath = Application.persistentDataPath + "/Android/";
-    /// <summary> ÒÀÀµĞÅÏ¢ÎÄ¼şÃû /// </summary>
+    /// <summary> ä¾èµ–ä¿¡æ¯æ–‡ä»¶å /// </summary>
     public const string DependencyFileName = "Android";
 #elif UNITY_IOS
-    /// <summary> AB°üÄÚ×ÊÔ´Â·¾¶ /// </summary>
+    /// <summary> ABåŒ…å†…èµ„æºè·¯å¾„ /// </summary>
     private static string ABBuildinPath = Application.streamingAssetsPath + "/IOS/";
-    /// <summary> ABÈÈ¸üĞÂ×ÊÔ´Â·¾¶ /// </summary>
+    /// <summary> ABçƒ­æ›´æ–°èµ„æºè·¯å¾„ /// </summary>
     private static string ABHotUpdatePath = Application.persistentDataPath + "/IOS/";
-    /// <summary> ÒÀÀµĞÅÏ¢ÎÄ¼şÃû /// </summary>
+    /// <summary> ä¾èµ–ä¿¡æ¯æ–‡ä»¶å /// </summary>
     public const string DependencyFileName = "IOS";
 #endif
 
-    /// <summary> ÒÀÀµĞÅÏ¢AssetÃû /// </summary>
+    /// <summary> ä¾èµ–ä¿¡æ¯Assetå /// </summary>
     public const string DependencyAssetName = "AssetBundleManifest";
 
     /// <summary>
-    /// »ñÈ¡AB°üÄÚ¼ÓÔØÂ·¾¶
+    /// æ‰“å°æ‰€æœ‰è·¯å¾„ä¿¡æ¯
     /// </summary>
-    /// <param name="resName"></param>
-    /// <param name="wwwPath"></param>
+    public static void PrintAllPathInfo()
+    {
+        DIYLog.Log(string.Format("ABBuildinPath : {0}", ABBuildinPath));
+        DIYLog.Log(string.Format("ABHotUpdatePath : {0}", ABHotUpdatePath));
+        DIYLog.Log(string.Format("DependencyFileName : {0}", DependencyFileName));
+        DIYLog.Log(string.Format("DependencyAssetName : {0}", DependencyAssetName));
+    }
+
+    /// <summary>
+    /// è·å–ABåŒ…å†…åŠ è½½è·¯å¾„
+    /// </summary>
     /// <returns></returns>
     public static string GetABInnerPath()
     {
@@ -53,16 +63,76 @@ public static class AssetBundlePath {
     }
 
     /// <summary>
-    /// »ñÈ¡AB¼ÓÔØÈ«Â·¾¶(º¬ÈÈ¸ü¼ÓÔØÂß¼­ÅĞ¶¨)
+    /// è·å–ABåŒ…å¤–åŠ è½½è·¯å¾„
+    /// </summary>
+    /// <returns></returns>
+    public static string GetABOutterPath()
+    {
+        return ABHotUpdatePath;
+    }
+
+    /// <summary>
+    /// è·å–ABåŠ è½½å…¨è·¯å¾„(å«çƒ­æ›´åŠ è½½é€»è¾‘åˆ¤å®š)
     /// </summary>
     /// <param name="abname"></param>
     /// <returns></returns>
     public static string GetABLoadFullPath(string abname)
     {
         //TODO:
-        //ÈÈ¸üÂß¼­Â·¾¶ÅĞ¶¨
-        //ÔİÊ±Ä¬ÈÏ·µ»Ø°üÄÚÂ·¾¶
-        return ABBuildinPath + abname;
+        //çƒ­æ›´é€»è¾‘è·¯å¾„åˆ¤å®š
+        //if(åŒ…å¤–æœ‰)        // Application.persistentDataPath
+        //{ 
+        //    è¿”å›åŒ…å¤–èµ„æºè·¯å¾„
+        //}
+        //else              // Application.streamingAssetsPath
+        //{ 
+        //    è¿”å›åŒ…å†…èµ„æºè·¯å¾„
+        //}
+        var outterabfullpath = ABHotUpdatePath + abname;
+        if (IsABExitInOutterPath(abname))
+        {
+            ResourceLogger.log(string.Format("ä½¿ç”¨åŒ…å¤–èµ„æº : {0}", abname));
+            return outterabfullpath;
+        }
+        else
+        {
+            ResourceLogger.log(string.Format("ä½¿ç”¨åŒ…å†…èµ„æº : {0}", abname));
+            return ABBuildinPath + abname;
+        }
+    }
+
+    /// <summary>
+    /// åˆ¤å®šæŒ‡å®šABæ˜¯å¦å­˜åœ¨åŒ…å¤–
+    /// </summary>
+    /// <param name="abname"></param>
+    /// <returns></returns>
+    public static bool IsABExitInOutterPath(string abname)
+    {
+        var outterabfullpath = ABHotUpdatePath + abname;
+        if (File.Exists(outterabfullpath))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// æ£€æŸ¥ABåŒ…å¤–ç›®å½•ï¼Œä¸å­˜åœ¨åˆ™åˆ›å»ºä¸€ä¸ª
+    /// </summary>
+    public static void CheckOrCreateABOutterPathFolder()
+    {
+        if(Directory.Exists(ABHotUpdatePath))
+        {
+            ResourceLogger.log(string.Format("ABåŒ…å¤–ç›®å½•:{0}å·²å­˜åœ¨!", ABHotUpdatePath));
+        }
+        else
+        {
+            ResourceLogger.log(string.Format("ABåŒ…å¤–ç›®å½•:{0}ä¸å­˜åœ¨ï¼Œæ–°åˆ›å»ºä¸€ä¸ª!", ABHotUpdatePath));
+            Directory.CreateDirectory(ABHotUpdatePath);
+        }
     }
     #endregion
 }
