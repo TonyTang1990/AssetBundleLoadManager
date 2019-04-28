@@ -1,0 +1,10 @@
+# 文件以及目录过滤
+# 过滤library目录
+Library/
+# 过滤.vs目录
+.vs/
+# 过滤Temp目录
+Temp/
+# 过滤cs工程文件
+*.csproj
+*.sln

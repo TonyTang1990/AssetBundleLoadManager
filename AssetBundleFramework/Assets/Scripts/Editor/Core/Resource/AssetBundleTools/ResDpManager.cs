@@ -40,7 +40,7 @@ public class ResDpManager : SingletonTemplate<ResDpManager> {
     /// <returns></returns>
     public void loadAllDpInfo()
     {
-        var dpfiles = Directory.GetFiles(AssetBundlePath.GetABInnerPath(), "*.d");
+        var dpfiles = Directory.GetFiles(AssetBundlePath.ABBuildinPath, "*.d");
         var dplist = new List<string>();
         foreach (var dpfile in dpfiles)
         {

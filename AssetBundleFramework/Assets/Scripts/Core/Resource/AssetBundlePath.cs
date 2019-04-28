@@ -18,23 +18,23 @@ public static class AssetBundlePath {
     #region AssetBundle
 #if UNITY_STANDALONE
     /// <summary> AB包内资源路径 /// </summary>
-    private static string ABBuildinPath = Application.streamingAssetsPath + "/PC/";
+    public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/PC/";
     /// <summary> AB热更新资源路径 /// </summary>
-    private static string ABHotUpdatePath = Application.persistentDataPath + "/PC/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/PC/";
     /// <summary> 依赖信息文件名 /// </summary>
     public const string DependencyFileName = "PC";
 #elif UNITY_ANDROID
     /// <summary> AB包内资源路径 /// </summary>
-    private static string ABBuildinPath = Application.streamingAssetsPath + "/Android/";
+    public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/Android/";
     /// <summary> AB热更新资源路径 /// </summary>
-    private static string ABHotUpdatePath = Application.persistentDataPath + "/Android/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/Android/";
     /// <summary> 依赖信息文件名 /// </summary>
     public const string DependencyFileName = "Android";
 #elif UNITY_IOS
     /// <summary> AB包内资源路径 /// </summary>
-    private static string ABBuildinPath = Application.streamingAssetsPath + "/IOS/";
+    public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/IOS/";
     /// <summary> AB热更新资源路径 /// </summary>
-    private static string ABHotUpdatePath = Application.persistentDataPath + "/IOS/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/IOS/";
     /// <summary> 依赖信息文件名 /// </summary>
     public const string DependencyFileName = "IOS";
 #endif
@@ -51,24 +51,6 @@ public static class AssetBundlePath {
         DIYLog.Log(string.Format("ABHotUpdatePath : {0}", ABHotUpdatePath));
         DIYLog.Log(string.Format("DependencyFileName : {0}", DependencyFileName));
         DIYLog.Log(string.Format("DependencyAssetName : {0}", DependencyAssetName));
-    }
-
-    /// <summary>
-    /// 获取AB包内加载路径
-    /// </summary>
-    /// <returns></returns>
-    public static string GetABInnerPath()
-    {
-        return ABBuildinPath;
-    }
-
-    /// <summary>
-    /// 获取AB包外加载路径
-    /// </summary>
-    /// <returns></returns>
-    public static string GetABOutterPath()
-    {
-        return ABHotUpdatePath;
     }
 
     /// <summary>
@@ -122,7 +104,7 @@ public static class AssetBundlePath {
     /// <summary>
     /// 检查AB包外目录，不存在则创建一个
     /// </summary>
-    public static void CheckOrCreateABOutterPathFolder()
+    public static void CheckAndCreateABOutterPathFolder()
     {
         if(Directory.Exists(ABHotUpdatePath))
         {

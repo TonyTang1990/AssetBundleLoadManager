@@ -253,6 +253,7 @@
     <Compile Include="Assets\Scripts\Core\Conf\ConfLoader.cs" />
     <Compile Include="Assets\Scripts\Core\Coroutine\CoroutineManager.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateModuleManager.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\TWebRequest.cs" />
     <Compile Include="Assets\Scripts\Core\IModuleInterface.cs" />
     <Compile Include="Assets\Scripts\Core\ModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceInfo.cs" />
@@ -276,8 +277,8 @@
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonMonoBehaviourTemplate.cs" />
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonTemplate.cs" />
     <Compile Include="Assets\Scripts\Core\Templates\ObjectFactory.cs" />
-    <Compile Include="Assets\Scripts\Core\VersionConfig\GameConfigManager.cs" />
     <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfig.cs" />
+    <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfigManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_author_InfoBuffer.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_globalBuffer.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_languageBuffer.cs" />

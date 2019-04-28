@@ -142,7 +142,7 @@ public class GameLauncher : MonoBehaviour {
         #endregion
 
         #region 版本管理模块
-        ModuleManager.Singleton.registerModule<GameConfigManager>(GameConfigManager.Singleton);
+        ModuleManager.Singleton.registerModule<VersionConfigManager>(VersionConfigManager.Singleton);
         #endregion
 
         #region 资源热更管理模块
@@ -166,8 +166,12 @@ public class GameLauncher : MonoBehaviour {
     {
         mRMM = ModuleManager.Singleton.getModule<ResourceModuleManager>();
 
-        // 初始化资源模块
+        // 资源模块初始化
         mRMM.init();
+
+        //热更模块初始化
+        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().init();
+
         // 预加载Shader
         mRMM.requstResource(
         "shaderlist",
@@ -179,7 +183,7 @@ public class GameLauncher : MonoBehaviour {
         mRMM.startResourceRecyclingTask();
 
         //初始化版本信息
-        ModuleManager.Singleton.getModule<GameConfigManager>().readVerisonConfigData();
+        ModuleManager.Singleton.getModule<VersionConfigManager>().readVerisonConfigData();
 
         //初始化表格数据读取
         GameDataManager.Singleton.loadAll();
@@ -553,7 +557,7 @@ public class GameLauncher : MonoBehaviour {
     public void printVersionInfo()
     {
         DIYLog.Log("printVersionInfo()");
-        ModuleManager.Singleton.getModule<GameConfigManager>().readVerisonConfigData();
+        ModuleManager.Singleton.getModule<VersionConfigManager>().readVerisonConfigData();
     }
 
     /// <summary>
@@ -572,7 +576,7 @@ public class GameLauncher : MonoBehaviour {
         {
             if (int.TryParse(param2, out newresourceversioncode))
             {
-                ModuleManager.Singleton.getModule<GameConfigManager>().saveVersionConfig(newversioncode, newresourceversioncode);
+                ModuleManager.Singleton.getModule<VersionConfigManager>().saveVersionConfig(newversioncode, newresourceversioncode);
             }
             else
             {
@@ -631,11 +635,40 @@ public class GameLauncher : MonoBehaviour {
     }
 
     /// <summary>
+    /// 版本强更测试
+    /// </summary>
+    public void testVersionwHotUpdate()
+    {
+        DIYLog.Log("testVersionwHotUpdate()");
+        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkVersionHotUpdate(versionHotUpdateCompleteCallBack);
+    }
+
+    /// <summary>
     /// 资源热更测试
     /// </summary>
     public void testResourceHotUpdate()
     {
         DIYLog.Log("testResourceHotUpdate()");
-        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().startResourceHotUpdate();
+        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkResourceHotUpdate(resourceHotUpdateCompleteCallBack);
+    }
+    
+    /// <summary>
+    /// 版本强更完成回调
+    /// </summary>
+    /// <param name="versioncode">版本号</param>
+    /// <param name="result">版本强更结果</param>
+    private void versionHotUpdateCompleteCallBack(double versioncode, bool result)
+    {
+        DIYLog.Log(string.Format("版本强更结果 newversioncode: {0} result : {1}", versioncode, result));
+    }
+
+    /// <summary>
+    /// 资源热更完成回调
+    /// </summary>
+    /// <param name="resourceversion">资源版本号</param>
+    /// <param name="result">资源热更结果</param>
+    private void resourceHotUpdateCompleteCallBack(int resourceversion, bool result)
+    {
+        DIYLog.Log(string.Format("资源热更结果 newresourceversion: {0} result : {1}", resourceversion, result));
     }
 }

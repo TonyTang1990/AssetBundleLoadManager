@@ -94,7 +94,10 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
     private const string ResLoadModeKey = "ResLoadModeKey";
 #endif
 
-    protected void Awake()
+    /// <summary>
+    /// 初始化资源加载相关的
+    /// </summary>
+    public void init()
     {
 #if UNITY_EDITOR
         mResLoadMode = (ResourceLoadMode)PlayerPrefs.GetInt(ResLoadModeKey, (int)ResourceLoadMode.AssetBundle);
@@ -112,13 +115,6 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
         CurrentResourceModule = new AssetBundleModule();
 #endif
         Debug.Log(string.Format("当前资源加载模式 : {0}", mResLoadMode));
-    }
-
-    /// <summary>
-    /// 初始化资源加载相关的
-    /// </summary>
-    public void init()
-    {
         CurrentResourceModule.init();
     }
 

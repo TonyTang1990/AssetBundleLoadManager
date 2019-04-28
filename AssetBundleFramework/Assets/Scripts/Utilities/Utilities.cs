@@ -38,7 +38,7 @@ public static class Utilities
     /// <summary>
     /// 检查指定目录是否存在，不存在创建一个
     /// </summary>
-    public static void checkOrCreateSpecificFolder(string folderpath)
+    public static void checkAndCreateSpecificFolder(string folderpath)
     {
         if (!Directory.Exists(folderpath))
         {
