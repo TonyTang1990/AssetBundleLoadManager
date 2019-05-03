@@ -12,18 +12,7 @@ using UnityEngine;
 /// AudioManager.cs
 /// 音效单例管理类
 /// </summary>
-public class AudioManager : SingletonTemplate<AudioManager>, IModuleInterface {
-
-    /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
+public class AudioManager : SingletonTemplate<AudioManager> {
 
 
 }

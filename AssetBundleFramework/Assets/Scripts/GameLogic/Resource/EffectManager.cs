@@ -12,18 +12,7 @@ using UnityEngine;
 /// EffectManager.cs
 /// 特效管理单例类
 /// </summary>
-public class EffectManager : SingletonTemplate<EffectManager>, IModuleInterface {
-
-    /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
+public class EffectManager : SingletonTemplate<EffectManager> {
 
 
 }

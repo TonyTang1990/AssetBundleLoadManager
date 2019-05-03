@@ -14,19 +14,8 @@ using UnityEngine.SceneManagement;
 /// GameSceneManager.cs
 /// 游戏场景管理单例类
 /// </summary>
-public class GameSceneManager : SingletonTemplate<GameSceneManager>, IModuleInterface
+public class GameSceneManager : SingletonTemplate<GameSceneManager>
 {
-    /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
-
     /// <summary>
     /// 当前场景的AssetBundle信息
     /// </summary>

@@ -12,18 +12,7 @@ using UnityEngine;
 /// SharedMaterialManager.cs
 /// 共享材质管理单例类
 /// </summary>
-public class SharedMaterialManager : SingletonTemplate<SharedMaterialManager>, IModuleInterface {
-
-    /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
+public class SharedMaterialManager : SingletonTemplate<SharedMaterialManager> {
 
 
 }

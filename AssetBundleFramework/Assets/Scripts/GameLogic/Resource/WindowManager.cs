@@ -12,17 +12,7 @@ using UnityEngine;
 /// WindowManager.cs
 /// 窗口管理单例类
 /// </summary>
-public class WindowManager : SingletonTemplate<WindowManager>, IModuleInterface
+public class WindowManager : SingletonTemplate<WindowManager>
 {
 
-    /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
 }

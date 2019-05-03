@@ -14,25 +14,13 @@ using UnityEngine;
 /// 模块单例类，用于解耦各模块之间耦合度
 /// 获取各模块的中介类
 /// </summary>
-public sealed class ModuleManager : SingletonTemplate<ModuleManager>, IModuleInterface {
-
-    /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
+public sealed class ModuleManager : SingletonTemplate<ModuleManager> {
 
     /// <summary>
     /// 注册模块映射Map
     /// Key为模块类型名，Value为模块实例对象
     /// </summary>
     private Dictionary<string, IModuleInterface> mRegisteredModuleMap;
-
 
     public ModuleManager()
     {

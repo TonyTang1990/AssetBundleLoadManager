@@ -13,7 +13,7 @@ using UnityEngine;
 /// ResourceManager.cs
 /// 上层资源请求单例管理类
 /// </summary>
-public class ResourceManager : SingletonTemplate<ResourceManager>, IModuleInterface {
+public class ResourceManager : SingletonTemplate<ResourceManager> {
 
     /// <summary>
     /// 模块名

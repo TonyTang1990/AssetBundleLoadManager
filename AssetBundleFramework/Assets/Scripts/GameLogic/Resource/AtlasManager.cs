@@ -13,18 +13,7 @@ using UnityEngine;
 /// AtlasManager.cs
 /// 图集管理单例类
 /// </summary>
-public class AtlasManager : SingletonTemplate<AtlasManager>, IModuleInterface
+public class AtlasManager : SingletonTemplate<AtlasManager>
 {
-    /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
-
 
 }

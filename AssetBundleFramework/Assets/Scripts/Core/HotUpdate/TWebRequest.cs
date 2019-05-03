@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             TWebRequest.cs
  * Author:                  TONYTANG
  * Create Date:             2019//04/21
@@ -12,27 +12,37 @@ using UnityEngine.Networking;
 
 /// <summary>
 /// TWebRequest.cs
-/// WebÈÎÎñ·ÃÎÊ·â×°
+/// Webä»»åŠ¡è®¿é—®å°è£…
 /// </summary>
 public class TWebRequest {
 
     /// <summary>
-    /// Web·ÃÎÊ×´Ì¬
+    /// Webä»»åŠ¡è¯·æ±‚çŠ¶æ€
     /// </summary>
-    public enum WebRequestStatus
+    public enum TWebRequestStatus
     {
-        WRP_None = 1,           // ÎŞ×´Ì¬
-        WRP_Faield,             // Ê§°Ü
-        WRP_Complete            // Íê³É
+        TW_Wait_Start,              // ç­‰å¾…å¼€å§‹
+        TW_In_Progress,             // è¿›è¡Œä¸­
+        TW_Stop,                    // åœæ­¢
+        TW_Comlete,                 // å®Œæˆ
     }
 
     /// <summary>
-    /// WebÇëÇóÈÎÎñĞÅÏ¢³éÏó
+    /// Webè¯·æ±‚ä»»åŠ¡ä¿¡æ¯æŠ½è±¡
     /// </summary>
-    private class WebRequestTaskInfo
+    public class WebRequestTaskInfo
     {
         /// <summary>
-        /// ÈÎÎñURL
+        /// Webè¯·æ±‚ä»»åŠ¡è®¿é—®çŠ¶æ€
+        /// </summary>
+        public enum WebTaskRequestStatus
+        {
+            WT_Faield,             // å¤±è´¥
+            WT_Complete            // å®Œæˆ
+        }
+        
+        /// <summary>
+        /// ä»»åŠ¡URL
         /// </summary>
         public string URL
         {
@@ -41,16 +51,16 @@ public class TWebRequest {
         }
 
         /// <summary>
-        /// ÈÎÎñÍê³É»Øµ÷
+        /// ä»»åŠ¡å®Œæˆå›è°ƒ
         /// </summary>
-        public Action<string, WebRequestStatus> CompleteCallback
+        public Action<string, DownloadHandler, WebTaskRequestStatus> CompleteCallback
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// ÈÎÎñ³¬Ê±Ê±¼ä
+        /// ä»»åŠ¡è¶…æ—¶æ—¶é—´
         /// </summary>
         public int TimeOut
         {
@@ -59,12 +69,12 @@ public class TWebRequest {
         }
 
         /// <summary>
-        /// WebÇëÇóÈÎÎñĞÅÏ¢¹¹Ôìº¯Êı
+        /// Webè¯·æ±‚ä»»åŠ¡ä¿¡æ¯æ„é€ å‡½æ•°
         /// </summary>
         /// <param name="url"></param>
         /// <param name="callback"></param>
         /// <param name="timeout"></param>
-        public WebRequestTaskInfo(string url, Action<string, WebRequestStatus> callback, int timeout)
+        public WebRequestTaskInfo(string url, Action<string, DownloadHandler, WebTaskRequestStatus> callback, int timeout)
         {
             URL = url;
             CompleteCallback = callback;
@@ -73,53 +83,57 @@ public class TWebRequest {
     }
 
     /// <summary>
-    /// Web·ÃÎÊÈÎÎñ¶ÓÁĞ
+    /// Webè®¿é—®ä»»åŠ¡é˜Ÿåˆ—
     /// </summary>
     private Queue<WebRequestTaskInfo> mWebRequestTaskQueue;
 
     /// <summary>
-    /// ÊÇ·ñÔÚÇëÇóÖĞ
+    /// Webä»»åŠ¡è¯·æ±‚çŠ¶æ€
     /// </summary>
-    private bool mIsInProgress;
+    public TWebRequestStatus TWRequestStatus
+    {
+        get;
+        private set;
+    }
 
     public TWebRequest()
     {
         mWebRequestTaskQueue = new Queue<WebRequestTaskInfo>();
-        mIsInProgress = false;
+        TWRequestStatus = TWebRequestStatus.TW_Wait_Start;
     }
 
     /// <summary>
-    /// ÇëÇóÈÎÎñÈë¶ÓÁĞ
+    /// è¯·æ±‚ä»»åŠ¡å…¥é˜Ÿåˆ—
     /// </summary>
     /// <param name="url">url</param>
-    /// <param name="completecallback">Íê³É»Øµ÷</param>
-    /// <param name="timeout">³¬Ê±Ê±¼ä</param>
-    public void enqueue(string url, Action<string, WebRequestStatus> completecallback, int timeout = 5)
+    /// <param name="completecallback">å®Œæˆå›è°ƒ</param>
+    /// <param name="timeout">è¶…æ—¶æ—¶é—´</param>
+    public void enqueue(string url, Action<string, DownloadHandler, WebRequestTaskInfo.WebTaskRequestStatus> completecallback, int timeout = 5)
     {
-        if(mIsInProgress == false)
+        if(TWRequestStatus != TWebRequestStatus.TW_In_Progress)
         {
             if(!url.IsNullOrEmpty() && completecallback != null)
             {
                 var newtask = new WebRequestTaskInfo(url, completecallback, timeout);
-                mWebRequestTaskQueue.Equals(newtask);
+                mWebRequestTaskQueue.Enqueue(newtask);
             }
             else
             {
-                DIYLog.LogError("URLºÍcompletecallback¶¼²»ÄÜÎª¿Õ£¡Ìí¼ÓÈÎÎñÊ§°Ü£¡");
+                DIYLog.LogError("URLå’Œcompletecallbackéƒ½ä¸èƒ½ä¸ºç©ºï¼æ·»åŠ ä»»åŠ¡å¤±è´¥ï¼");
             }
         }
         else
         {
-            DIYLog.LogError("ÒÑ¾­ÔÚÇëÇóÖĞ£¬ÎŞ·¨Ìí¼ÓÈÎÎñ£¡");
+            DIYLog.LogError("å·²ç»åœ¨è¯·æ±‚ä¸­ï¼Œæ— æ³•æ·»åŠ ä»»åŠ¡ï¼");
         }
     }
 
     /// <summary>
-    /// ¿ªÊ¼ÇëÇó×ÊÔ´ÈÎÎñ
+    /// å¼€å§‹è¯·æ±‚èµ„æºä»»åŠ¡
     /// </summary>
     public void startRequest()
     {
-        if(!mIsInProgress)
+        if(TWRequestStatus != TWebRequestStatus.TW_In_Progress)
         {
             if (mWebRequestTaskQueue.Count > 0)
             {
@@ -127,46 +141,68 @@ public class TWebRequest {
             }
             else
             {
-                DIYLog.LogWarning("Ã»ÓĞÈÎÎñĞÅÏ¢£¬ÎŞ·¨¿ªÊ¼ÇëÇó£¡");
+                DIYLog.LogWarning("æ²¡æœ‰ä»»åŠ¡ä¿¡æ¯ï¼Œæ— æ³•å¼€å§‹è¯·æ±‚ï¼");
             }
         }
         else
         {
-            DIYLog.LogWarning("ÒÑ¾­ÔÚÇëÇóÖĞ£¬ÎŞ·¨¿ªÊ¼ÇëÇó£¡");
+            DIYLog.LogWarning("å·²ç»åœ¨è¯·æ±‚ä¸­ï¼Œæ— æ³•å¼€å§‹è¯·æ±‚ï¼");
         }
     }
 
     /// <summary>
-    /// ÈÎÎñÇëÇóĞ¯³Ì
+    /// åœæ­¢èµ„æºè¯·æ±‚ä»»åŠ¡
+    /// </summary>
+    public void stopRequest()
+    {
+        TWRequestStatus = TWebRequestStatus.TW_Stop;
+    }
+
+    /// <summary>
+    /// é‡ç½®è¯·æ±‚
+    /// </summary>
+    public void resetRequest()
+    {
+        mWebRequestTaskQueue.Clear();
+        TWRequestStatus = TWebRequestStatus.TW_Wait_Start;
+    }
+
+    /// <summary>
+    /// ä»»åŠ¡è¯·æ±‚æºç¨‹
     /// </summary>
     /// <returns></returns>
     private IEnumerator requestCoroutine()
     {
-        mIsInProgress = true;
+        TWRequestStatus = TWebRequestStatus.TW_In_Progress;
 
-        while(mWebRequestTaskQueue.Count > 0)
+        while(mWebRequestTaskQueue.Count > 0 && TWRequestStatus == TWebRequestStatus.TW_In_Progress)
         {
             var task = mWebRequestTaskQueue.Dequeue();
-            DIYLog.Log(string.Format("ÏÂÔØ×ÊÔ´ : {0}", task.URL));
+            DIYLog.Log(string.Format("ä¸‹è½½èµ„æº : {0}", task.URL));
             var webrequest = UnityWebRequest.Get(task.URL);
             webrequest.timeout = task.TimeOut;
             yield return webrequest.SendWebRequest();
             if (webrequest.isNetworkError)
             {
-                DIYLog.LogError(string.Format("{0}×ÊÔ´ÏÂÔØ³ö´í!", task.URL));
+                DIYLog.LogError(string.Format("{0}èµ„æºä¸‹è½½å‡ºé”™!", task.URL));
                 DIYLog.LogError(webrequest.error);
                 if(webrequest.isHttpError)
                 {
                     DIYLog.LogError(string.Format("responseCode : ", webrequest.responseCode));
                 }
-                task.CompleteCallback(task.URL, WebRequestStatus.WRP_Faield);
+                task.CompleteCallback(task.URL, webrequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Faield);
             }
             else
             {
                 DIYLog.Log(string.Format("{0} webrequest.isDone:{1}!", task.URL, webrequest.isDone));
-                DIYLog.Log(string.Format("{0}×ÊÔ´ÏÂÔØÍê³É!", task.URL));
-                task.CompleteCallback(task.URL, WebRequestStatus.WRP_Faield);
+                DIYLog.Log(string.Format("{0}èµ„æºä¸‹è½½å®Œæˆ!", task.URL));
+                task.CompleteCallback(task.URL, webrequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete);
             }
+        }
+
+        if(mWebRequestTaskQueue.Count == 0)
+        {
+            TWRequestStatus = TWebRequestStatus.TW_Comlete;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Description:             AssetBundlePath.cs
  * Author:                  TONYTANG
  * Create Date:             2018//09/28
@@ -11,7 +11,8 @@ using UnityEngine;
 
 /// <summary>
 /// AssetBundlePath.cs
-/// AB资源路径相关静态类，处理多平台路径问题
+/// 路径相关静态类
+/// 处理资源加载多平台路径问题
 /// </summary>
 public static class AssetBundlePath {
 

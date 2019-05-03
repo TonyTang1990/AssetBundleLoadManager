@@ -110,9 +110,6 @@ public class GameLauncher : MonoBehaviour {
 
         var rmm = gameObject.AddComponent<ResourceModuleManager>();
         rmm.setInstance(rmm);
-
-        var humm = gameObject.AddComponent<HotUpdateModuleManager>();
-        humm.setInstance(humm);
     }
 
     /// <summary>
@@ -128,25 +125,16 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     private void registerModules()
     {
-        #region 资源模块
+        #region 资源管理模块
         ModuleManager.Singleton.registerModule<ResourceModuleManager>(ResourceModuleManager.getInstance());
-        ModuleManager.Singleton.registerModule<ResourceManager>(ResourceManager.Singleton);
-        ModuleManager.Singleton.registerModule<GameSceneManager>(GameSceneManager.Singleton);
-        ModuleManager.Singleton.registerModule<WindowManager>(WindowManager.Singleton);
-        ModuleManager.Singleton.registerModule<AtlasManager>(AtlasManager.Singleton);
-        ModuleManager.Singleton.registerModule<AudioManager>(AudioManager.Singleton);
-        ModuleManager.Singleton.registerModule<ModuleManager>(ModuleManager.Singleton);
-        ModuleManager.Singleton.registerModule<EffectManager>(EffectManager.Singleton);
-        ModuleManager.Singleton.registerModule<SharedTextureManager>(SharedTextureManager.Singleton);
-        ModuleManager.Singleton.registerModule<SharedMaterialManager>(SharedMaterialManager.Singleton);
         #endregion
 
         #region 版本管理模块
-        ModuleManager.Singleton.registerModule<VersionConfigManager>(VersionConfigManager.Singleton);
+        ModuleManager.Singleton.registerModule<VersionConfigModuleManager>(VersionConfigModuleManager.Singleton);
         #endregion
 
-        #region 资源热更管理模块
-        ModuleManager.Singleton.registerModule<HotUpdateModuleManager>(HotUpdateModuleManager.getInstance());
+        #region 热更管理模块
+        ModuleManager.Singleton.registerModule<HotUpdateModuleManager>(HotUpdateModuleManager.Singleton);
         #endregion
     }
 
@@ -183,13 +171,13 @@ public class GameLauncher : MonoBehaviour {
         mRMM.startResourceRecyclingTask();
 
         //初始化版本信息
-        ModuleManager.Singleton.getModule<VersionConfigManager>().readVerisonConfigData();
+        ModuleManager.Singleton.getModule<VersionConfigModuleManager>().initVerisonConfigData();
 
         //初始化表格数据读取
         GameDataManager.Singleton.loadAll();
 
         // 初始化逻辑层Manager
-        ModuleManager.Singleton.getModule<GameSceneManager>().init();
+        GameSceneManager.Singleton.init();
     }
     
     /// <summary>
@@ -557,7 +545,7 @@ public class GameLauncher : MonoBehaviour {
     public void printVersionInfo()
     {
         DIYLog.Log("printVersionInfo()");
-        ModuleManager.Singleton.getModule<VersionConfigManager>().readVerisonConfigData();
+        ModuleManager.Singleton.getModule<VersionConfigModuleManager>().initVerisonConfigData();
     }
 
     /// <summary>
@@ -576,7 +564,8 @@ public class GameLauncher : MonoBehaviour {
         {
             if (int.TryParse(param2, out newresourceversioncode))
             {
-                ModuleManager.Singleton.getModule<VersionConfigManager>().saveVersionConfig(newversioncode, newresourceversioncode);
+                ModuleManager.Singleton.getModule<VersionConfigModuleManager>().saveNewVersionCodeConfig(newversioncode);
+                ModuleManager.Singleton.getModule<VersionConfigModuleManager>().saveNewResoueceCodeConfig(newresourceversioncode);
             }
             else
             {
@@ -640,7 +629,7 @@ public class GameLauncher : MonoBehaviour {
     public void testVersionwHotUpdate()
     {
         DIYLog.Log("testVersionwHotUpdate()");
-        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkVersionHotUpdate(versionHotUpdateCompleteCallBack);
+        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode, versionHotUpdateCompleteCallBack);
     }
 
     /// <summary>
@@ -649,17 +638,16 @@ public class GameLauncher : MonoBehaviour {
     public void testResourceHotUpdate()
     {
         DIYLog.Log("testResourceHotUpdate()");
-        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkResourceHotUpdate(resourceHotUpdateCompleteCallBack);
+        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode, resourceHotUpdateCompleteCallBack);
     }
     
     /// <summary>
     /// 版本强更完成回调
     /// </summary>
-    /// <param name="versioncode">版本号</param>
     /// <param name="result">版本强更结果</param>
-    private void versionHotUpdateCompleteCallBack(double versioncode, bool result)
+    private void versionHotUpdateCompleteCallBack(bool result)
     {
-        DIYLog.Log(string.Format("版本强更结果 newversioncode: {0} result : {1}", versioncode, result));
+        DIYLog.Log(string.Format("版本强更结果 result : {0}", result));
     }
 
     /// <summary>
@@ -670,5 +658,48 @@ public class GameLauncher : MonoBehaviour {
     private void resourceHotUpdateCompleteCallBack(int resourceversion, bool result)
     {
         DIYLog.Log(string.Format("资源热更结果 newresourceversion: {0} result : {1}", resourceversion, result));
+    }
+    
+    /// <summary>
+    /// 测试热更新完整流程
+    /// </summary>
+    public void testHotUpdateFullWorkFlow()
+    {
+        DIYLog.Log("testHotUpdateFullWorkFlow()");
+        ModuleManager.Singleton.getModule<VersionConfigModuleManager>().initVerisonConfigData();
+        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkHasVersionHotUpdate();
+        //TODO:
+        //拉去服务器列表信息(网络那一套待开发,暂时用本地默认数值测试)
+        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkVersionHotUpdate(
+            HotUpdateModuleManager.NewHotUpdateVersionCode,
+            (versionhotupdateresult) =>
+            {
+                if (versionhotupdateresult)
+                {
+                    DIYLog.Log("版本强更完成!请重进或重新触发热更流程！");
+                    return;
+                }
+                else
+                {
+                    //不需要强更走后续流程
+                    ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkResourceHotUpdate(
+                        HotUpdateModuleManager.NewHotUpdateResourceCode,
+                        (versioncode, resourcehotupdateresult) =>
+                        {
+                            if (resourcehotupdateresult)
+                            {
+                                DIYLog.Log("资源热更完成!请重进或重新触发热更流程！");
+                                return;
+                            }
+                            else
+                            {
+                                DIYLog.Log("不需要资源热更，可以直接进入游戏！");
+                                return;
+                            }
+                        }
+                    );
+                }
+            }
+        );
     }
 }
