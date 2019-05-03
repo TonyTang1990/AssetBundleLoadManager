@@ -62,23 +62,23 @@ Manager统一管理：
 
 #### Demo使用说明
 
-1. AssetBundle和AssetDatabase资源加载模式切换![AssetDatabaseModuleSwitch](G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png)
+1. AssetBundle和AssetDatabase资源加载模式切换![AssetDatabaseModuleSwitch](./img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png)
 
 2. AB依赖信息查看界面
 
-   ![AssetBundleDepInfoUI](G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleDepInfoUI.png)
+   ![AssetBundleDepInfoUI](./img/Unity/AssetBundle-Framework/AssetBundleDepInfoUI.png)
 
 3. AB运行时加载管理详细信息界面
 
-   ![AssetBundleLoadManagerUI](G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png)
+   ![AssetBundleLoadManagerUI](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png)
 
 4. AssetBundkle异步加载模式加载队列信息查看界面
 
-   ![AssetBundleAsyncUI](G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleAsyncUI.png)
+   ![AssetBundleAsyncUI](./img/Unity/AssetBundle-Framework/AssetBundleAsyncUI.png)
 
 5. 测试界面
 
-   ![AssetBundleTestUI](G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleTestUI.png)
+   ![AssetBundleTestUI](./img/Unity/AssetBundle-Framework/AssetBundleTestUI.png)
 
 6. 点击加载窗口预制件按钮后:
 
@@ -92,7 +92,7 @@ Manager统一管理：
     });
 ```
 
-​	![AssetBundleLoadManagerUIAfterLoadWindow](G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png)
+​	![AssetBundleLoadManagerUIAfterLoadWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png)
 可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)
 
 5. 点击测试异步和同步加载按钮后
@@ -202,7 +202,7 @@ Manager统一管理：
         ResourceLoadMethod.Async);
 ```
 
-​	![AssetBundleLoadManagerUIAfterLoadSprites](G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadResources.png)
+​	![AssetBundleLoadManagerUIAfterLoadSprites](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadResources.png)
 可以看到我们切换的所有Sprite资源都被绑定到了imgBG对象上，因为不是作为依赖AB加载进来的所以每一个sprite所在的AB引用计数依然为0.
 
 6. 点击销毁窗口实例对象后
@@ -211,11 +211,11 @@ Manager统一管理：
     GameObject.Destroy(mMainWindow);
 ```
 
-​	![AssetBundleLoadManagerUIAfterDestroyWindow](G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png)
+​	![AssetBundleLoadManagerUIAfterDestroyWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png)
 窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow和imgBG都被销毁了)
 
 7. 等待回收检测回收后
-   ![AssetBundleLoadManagerUIAfterUnloadAB](G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png)
+   ![AssetBundleLoadManagerUIAfterUnloadAB](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png)
    上述资源在窗口销毁后，满足了可回收的三大条件(1. 索引计数为0 2. 绑定对象为空 3. NormalLoad加载方式)，最终被成功回收。
 
 Note:
@@ -258,7 +258,7 @@ Note:
 
 ### 流程图
 
-![HotUpdateFlowChat](G:\Projects\GitHubProjects\AssetBundleFramework\AssetBundleLoadManager\img\Unity\HotUpdate\HotUpdateFlowChat.png)
+![HotUpdateFlowChat](./img/Unity/HotUpdate/HotUpdateFlowChat.png)
 
 ## 导表模块
 
