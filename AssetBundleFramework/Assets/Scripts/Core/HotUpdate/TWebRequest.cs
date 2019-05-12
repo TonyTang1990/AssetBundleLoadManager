@@ -96,10 +96,37 @@ public class TWebRequest {
         private set;
     }
 
+    /// <summary>
+    /// 当前进度
+    /// 当前进度的计算方式：
+    /// (完成的任务个数 + 进行时的任务进度) / 总的任务个数
+    /// Note:
+    /// 任务未开始没有进度信息
+    /// </summary>
+    public float CurrentProgress
+    {
+        get
+        {
+            return (mTotalWebRequestNumber - mWebRequestTaskQueue.Count + (mCurrentInProgressWebRequest != null ? mCurrentInProgressWebRequest.downloadProgress : 0.0f)) / mTotalWebRequestNumber;
+        }
+    }
+
+    /// <summary>
+    /// 当前正在执行的Web请求任务
+    /// </summary>
+    private UnityWebRequest mCurrentInProgressWebRequest;
+
+    /// <summary>
+    /// 总的任务个数
+    /// </summary>
+    private int mTotalWebRequestNumber;
+
     public TWebRequest()
     {
         mWebRequestTaskQueue = new Queue<WebRequestTaskInfo>();
         TWRequestStatus = TWebRequestStatus.TW_Wait_Start;
+        mCurrentInProgressWebRequest = null;
+        mTotalWebRequestNumber = 0;
     }
 
     /// <summary>
@@ -119,12 +146,12 @@ public class TWebRequest {
             }
             else
             {
-                DIYLog.LogError("URL和completecallback都不能为空！添加任务失败！");
+                Debug.LogError("URL和completecallback都不能为空！添加任务失败！");
             }
         }
         else
         {
-            DIYLog.LogError("已经在请求中，无法添加任务！");
+            Debug.LogError("已经在请求中，无法添加任务！");
         }
     }
 
@@ -137,16 +164,17 @@ public class TWebRequest {
         {
             if (mWebRequestTaskQueue.Count > 0)
             {
+                mTotalWebRequestNumber = mWebRequestTaskQueue.Count;
                 CoroutineManager.Singleton.startCoroutine(requestCoroutine());
             }
             else
             {
-                DIYLog.LogWarning("没有任务信息，无法开始请求！");
+                Debug.LogWarning("没有任务信息，无法开始请求！");
             }
         }
         else
         {
-            DIYLog.LogWarning("已经在请求中，无法开始请求！");
+            Debug.LogWarning("已经在请求中，无法开始请求！");
         }
     }
 
@@ -159,12 +187,22 @@ public class TWebRequest {
     }
 
     /// <summary>
+    /// 继续资源请求任务
+    /// </summary>
+    public void resumeRequest()
+    {
+        TWRequestStatus = TWebRequestStatus.TW_In_Progress;
+    }
+
+    /// <summary>
     /// 重置请求
     /// </summary>
     public void resetRequest()
     {
         mWebRequestTaskQueue.Clear();
         TWRequestStatus = TWebRequestStatus.TW_Wait_Start;
+        mCurrentInProgressWebRequest = null;
+        mTotalWebRequestNumber = 0;
     }
 
     /// <summary>
@@ -178,31 +216,32 @@ public class TWebRequest {
         while(mWebRequestTaskQueue.Count > 0 && TWRequestStatus == TWebRequestStatus.TW_In_Progress)
         {
             var task = mWebRequestTaskQueue.Dequeue();
-            DIYLog.Log(string.Format("下载资源 : {0}", task.URL));
-            var webrequest = UnityWebRequest.Get(task.URL);
-            webrequest.timeout = task.TimeOut;
-            yield return webrequest.SendWebRequest();
-            if (webrequest.isNetworkError)
+            Debug.Log(string.Format("下载资源 : {0}", task.URL));
+            mCurrentInProgressWebRequest = UnityWebRequest.Get(task.URL);
+            mCurrentInProgressWebRequest.timeout = task.TimeOut;
+            yield return mCurrentInProgressWebRequest.SendWebRequest();
+            if (mCurrentInProgressWebRequest.isNetworkError)
             {
-                DIYLog.LogError(string.Format("{0}资源下载出错!", task.URL));
-                DIYLog.LogError(webrequest.error);
-                if(webrequest.isHttpError)
+                Debug.LogError(string.Format("{0}资源下载出错!", task.URL));
+                Debug.LogError(mCurrentInProgressWebRequest.error);
+                if(mCurrentInProgressWebRequest.isHttpError)
                 {
-                    DIYLog.LogError(string.Format("responseCode : ", webrequest.responseCode));
+                    Debug.LogError(string.Format("responseCode : ", mCurrentInProgressWebRequest.responseCode));
                 }
-                task.CompleteCallback(task.URL, webrequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Faield);
+                task.CompleteCallback(task.URL, mCurrentInProgressWebRequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Faield);
             }
             else
             {
-                DIYLog.Log(string.Format("{0} webrequest.isDone:{1}!", task.URL, webrequest.isDone));
-                DIYLog.Log(string.Format("{0}资源下载完成!", task.URL));
-                task.CompleteCallback(task.URL, webrequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete);
+                Debug.Log(string.Format("{0} webrequest.isDone:{1}!", task.URL, mCurrentInProgressWebRequest.isDone));
+                Debug.Log(string.Format("{0}资源下载完成!", task.URL));
+                task.CompleteCallback(task.URL, mCurrentInProgressWebRequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete);
             }
         }
 
         if(mWebRequestTaskQueue.Count == 0)
         {
             TWRequestStatus = TWebRequestStatus.TW_Comlete;
+            mCurrentInProgressWebRequest = null;
         }
     }
 }

@@ -279,42 +279,7 @@ public class AssetBundleLoader : FactoryObj
 #endif
         onSelfABLoadComplete(ab);
     }
-
-    /*
-     * 异步加载AB走AssetBundleAsyncQueue的队列模式
-    /// <summary>
-    /// 异步加载AB
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator loadAssetBundleAsync()
-    {
-        var abpath = AssetBundlePath.GetABPath() + AssetBundleName;
-        AssetBundleCreateRequest abrequest = null;
-#if UNITY_EDITOR
-        //因为资源不全，很多资源丢失，导致直接报错
-        //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
-        if (System.IO.File.Exists(abpath))
-        {
-            abrequest = AssetBundle.LoadFromFileAsync(abpath);
-        }
-        else
-        {
-            Debug.LogError(string.Format("AB : {0}文件不存在！", AssetBundleName));
-        }
-#else
-        abrequest = AssetBundle.LoadFromFileAsync(abpath);
-#endif
-        yield return abrequest;
-        var assetbundle = abrequest.assetBundle;
-        if (assetbundle == null)
-        {
-            ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", AssetBundleName));
-        }
-
-        onSelfABLoadComplete(assetbundle);
-    }
-    */
-
+    
     /// <summary>
     /// 依赖AB加载完成回调
     /// </summary>

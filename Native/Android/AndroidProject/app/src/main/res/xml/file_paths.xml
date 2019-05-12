@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //下载安装包目录
+    <paths>
+        <external-path
+            name="download"
+            path="" />
+        <external-files-path
+            name="download"
+            path="" />
+    </paths>
+</resources>

@@ -1,0 +1,111 @@
+/*
+ * 表示使用Android插件进行gradle的Android自动化构建
+ * com.android.library表示是构建成一个Android模块
+ */
+apply plugin: 'com.android.library'
+
+// android {}指定如何配置android相关编译构建
+android {
+    // 指定Android API编译版本
+    compileSdkVersion 27
+
+    //defaultConfig {}指定Android部分默认设置，可以通过这里的指定覆盖AndroidManifest.xml里的部分内容
+    defaultConfig {
+        minSdkVersion 15            // 最低支持的Android API版本
+        targetSdkVersion 27         // 目标Android API版本
+        versionCode 1               // App的version number
+        versionName "1.0"           // App的version name
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    // buildTypes {}指定编译类型的详细信息，比如release和debug的详细编译设定
+    buildTypes {
+        // release的编译设定
+        release {
+            minifyEnabled false                                                                         // 是否开启代码精简
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'    // 代码混淆相关设置
+        }
+    }
+}
+
+// dependencies {}指定编译依赖信息(比如我们的项目需要依赖unity的classes.jar库)
+dependencies {
+    // dependencies模块详细说明参考:https://developer.android.com/studio/build/dependencies
+    // implementation -- Gradle 会将依赖项添加到编译类路径，并将依赖项打包到构建输出
+    // api -- Gradle 会将依赖项添加到编译类路径，并构建输出
+    // compileOnly -- Gradle 只会将依赖项添加到编译类路径（即不会将其添加到构建输出）
+    // runtimeOnly -- Gradle 只会将依赖项添加到构建输出，供运行时使用。也就是说，不会将其添加到编译类路径
+    // androidTestImplementation -- 要在库中添加注解处理器依赖项，则必须使用 annotationProcessor 配置将其添加到注解处理器类路径。这是因为使用此配置可分离编译类路径与注解处理器类路径，从而提升构建性能
+    // fileTree - 指定目录(libs)下符合条件(*.jar)的文件添加到编译路径下
+    // 因为项目依赖了Unity的class.jar但又不希望classes.jar跟着aar一起导出(会导致unity打包报错 -- classes.jar包重复问题)
+    // 所以这里不能使用fileTree包含lib目录下所有jar，需要修改成不包含classes.jar的形式
+    implementation fileTree(include: ['*.jar'], dir: 'libs/include')
+    // com.android.support:appcompat-v7:27.1.1 - 添加Android兼容模式库到项目，用于支持更多的theme和兼容老的部分功能
+    // 远程依赖库
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    // Adds a remote binary dependency only for local tests.
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // files - 猜测是显示指定依赖文件(没找到官方解释)
+    // 这里专门用compileOnly是为了避免classes.jar进aar包
+    compileOnly files('libs/exclude/classes.jar')
+}
+
+// task - 添加自定义的构建任务
+// 这里是增加一个删除旧的jar的任务
+// type:指定任务的类型delete删除
+task deleteOldJar(type: Delete) {
+    // 指定删除release/NativeCode.jar文件
+    delete 'build/libs/classes.jar'
+    delete 'release/NativeCode.jar'
+}
+
+// task - 添加自定义的构建任务
+// 这里是增加一个删除旧的aar的任务
+// type:指定任务的类型delete删除
+task deleteOldAar(type: Delete) {
+    // 指定删除build/outputs/aar/app-debug.aar和app-release.aar文件
+    delete 'build/outputs/aar/app-debug.aar'
+    delete 'build/outputs/aar/app-release.aar'
+}
+
+// task - 添加自定义的构建任务
+// 这里增加一个从新打包jar的任务，目的是为了去除默认build里打包的BuildConfig.class(会导致Unity使用jar时报错)
+// type: 指定任务类型是Jar打包
+task makeJar(type: Jar) {
+    // 指定jar来源(文件或者目录)
+    from file('build/intermediates/classes/release')
+    // 指定需要重新打包后的jar名字
+    archiveName = 'classes.jar'
+    // 输出目录
+    destinationDir = file('build/libs/')
+    // 过滤不需要的class文件
+    exclude('com/tonytang/assetbundleframewok/BuildConfig.class')
+    exclude('com/tonytang/assetbundleframewok/BuildConfig\$*.class')
+    exclude('com/tonytang/assetbundleframewok/R.class')
+    exclude('com/tonytang/assetbundleframewok/R\$*.class')
+    // 需要包含打包到jar中的文件
+    include('com/tonytang/assetbundleframewok/**')
+}
+
+// 指定makeJar任务依赖的任务build(依赖的任务先执行)
+makeJar.dependsOn(build)
+
+// task - 添加自定义的构建任务
+// 这里是增加一个到处jar的任务
+// type:指定任务类型为Copy复制
+task exportJar(type: Copy) {
+    // 从哪里复制
+    from('build/libs/')
+    // 复制到哪里
+    into('release/')
+
+    /// 重命名文件
+    rename('classes.jar', 'NativeCode.jar')
+}
+
+// 指定exportJar任务依赖的任务deleteOldJar,deleteOldAar.build,makeJar(依赖的任务先执行)
+exportJar.dependsOn(deleteOldJar, deleteOldAar, makeJar)

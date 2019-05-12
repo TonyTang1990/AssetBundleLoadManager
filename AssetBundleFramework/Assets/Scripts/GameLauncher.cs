@@ -110,6 +110,10 @@ public class GameLauncher : MonoBehaviour {
 
         var rmm = gameObject.AddComponent<ResourceModuleManager>();
         rmm.setInstance(rmm);
+        var vcm = gameObject.AddComponent<VersionConfigModuleManager>();
+        vcm.setInstance(vcm);
+        var hum = gameObject.AddComponent<HotUpdateModuleManager>();
+        hum.setInstance(hum);
     }
 
     /// <summary>
@@ -117,7 +121,7 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     private void nativeInitilization()
     {
-
+        NativeManager.Singleton.init();
     }
 
     /// <summary>
@@ -130,11 +134,11 @@ public class GameLauncher : MonoBehaviour {
         #endregion
 
         #region 版本管理模块
-        ModuleManager.Singleton.registerModule<VersionConfigModuleManager>(VersionConfigModuleManager.Singleton);
+        ModuleManager.Singleton.registerModule<VersionConfigModuleManager>(VersionConfigModuleManager.getInstance());
         #endregion
 
         #region 热更管理模块
-        ModuleManager.Singleton.registerModule<HotUpdateModuleManager>(HotUpdateModuleManager.Singleton);
+        ModuleManager.Singleton.registerModule<HotUpdateModuleManager>(HotUpdateModuleManager.getInstance());
         #endregion
     }
 
@@ -624,12 +628,24 @@ public class GameLauncher : MonoBehaviour {
     }
 
     /// <summary>
+    /// 调用原生方法
+    /// </summary>
+    public void onCallNativeMethodClick()
+    {
+        Debug.Log("onCallNativeMethodClick()");
+        NativeManager.Singleton.callNativeMethod();
+    }
+
+    /// <summary>
     /// 版本强更测试
     /// </summary>
     public void testVersionwHotUpdate()
     {
         DIYLog.Log("testVersionwHotUpdate()");
-        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode, versionHotUpdateCompleteCallBack);
+        if(ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode))
+        {
+            ModuleManager.Singleton.getModule<HotUpdateModuleManager>().doNewVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode, versionHotUpdateCompleteCallBack);
+        }
     }
 
     /// <summary>
@@ -638,7 +654,10 @@ public class GameLauncher : MonoBehaviour {
     public void testResourceHotUpdate()
     {
         DIYLog.Log("testResourceHotUpdate()");
-        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode, resourceHotUpdateCompleteCallBack);
+        if (ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode))
+        {
+            ModuleManager.Singleton.getModule<HotUpdateModuleManager>().doResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode, resourceHotUpdateCompleteCallBack);
+        }
     }
     
     /// <summary>
@@ -653,11 +672,10 @@ public class GameLauncher : MonoBehaviour {
     /// <summary>
     /// 资源热更完成回调
     /// </summary>
-    /// <param name="resourceversion">资源版本号</param>
     /// <param name="result">资源热更结果</param>
-    private void resourceHotUpdateCompleteCallBack(int resourceversion, bool result)
+    private void resourceHotUpdateCompleteCallBack(bool result)
     {
-        DIYLog.Log(string.Format("资源热更结果 newresourceversion: {0} result : {1}", resourceversion, result));
+        DIYLog.Log(string.Format("资源热更结果 result : {0}", result));
     }
     
     /// <summary>
@@ -667,39 +685,110 @@ public class GameLauncher : MonoBehaviour {
     {
         DIYLog.Log("testHotUpdateFullWorkFlow()");
         ModuleManager.Singleton.getModule<VersionConfigModuleManager>().initVerisonConfigData();
+        //检测是否强更过版本
         ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkHasVersionHotUpdate();
         //TODO:
         //拉去服务器列表信息(网络那一套待开发,暂时用本地默认数值测试)
-        ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkVersionHotUpdate(
-            HotUpdateModuleManager.NewHotUpdateVersionCode,
-            (versionhotupdateresult) =>
-            {
-                if (versionhotupdateresult)
+        if(ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode))
+        {
+            ModuleManager.Singleton.getModule<HotUpdateModuleManager>().doNewVersionHotUpdate(
+                HotUpdateModuleManager.NewHotUpdateVersionCode, 
+                (versionhotupdateresult) =>
                 {
-                    DIYLog.Log("版本强更完成!请重进或重新触发热更流程！");
-                    return;
+                    if (versionhotupdateresult)
+                    {
+                        DIYLog.Log("版本强更完成!触发自动安装！");
+#if UNITY_ANDROID
+                        (NativeManager.Singleton as AndroidNativeManager).installAPK(ModuleManager.Singleton.getModule<HotUpdateModuleManager>().VersionHotUpdateCacheFilePath);
+#endif
+                        return;
+                    }
+                    else
+                    {
+                        resourceHotUpdate();
+                    }
+                }
+            );
+        }
+        else
+        {
+            resourceHotUpdate();
+        }
+    }
+
+    private void resourceHotUpdate()
+    {
+        //不需要强更走后判定资源热更流程
+        if (ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode))
+        {
+            //单独开启一个携程打印强更进度
+            StartCoroutine(printVersionHotUpdateProgressCoroutine());
+            ModuleManager.Singleton.getModule<HotUpdateModuleManager>().doResourceHotUpdate(
+                HotUpdateModuleManager.NewHotUpdateResourceCode,
+                (resourcehotupdateresult) =>
+                {
+                    if (resourcehotupdateresult)
+                    {
+                        DIYLog.Log("资源热更完成!请重进或重新触发热更流程！");
+                        return;
+                    }
+                    else
+                    {
+                        DIYLog.Log("资源热更出错!");
+                        return;
+                    }
+                }
+            );
+        }
+        else
+        {
+            DIYLog.Log("无需资源热更，可以直接进入游戏！");
+        }
+    }
+
+    private IEnumerator printVersionHotUpdateProgressCoroutine()
+    {
+        Debug.Log("printVersionHotUpdateProgressCoroutine()");
+        while(ModuleManager.Singleton.getModule<HotUpdateModuleManager>().HotVersionUpdateRequest.TWRequestStatus == TWebRequest.TWebRequestStatus.TW_In_Progress)
+        {
+            yield return new WaitForSeconds(1.0f);
+            Debug.Log(string.Format("当前版本热更进度 : {0}", ModuleManager.Singleton.getModule<HotUpdateModuleManager>().HotResourceUpdateProgress));
+        }
+    }
+
+    /// <summary>
+    /// 尝试进游戏(验证版本强更以及资源热更相关判定)
+    /// </summary>
+    public void tryEnterGame()
+    {
+        DIYLog.Log("tryEnterGame()");
+        ModuleManager.Singleton.getModule<VersionConfigModuleManager>().initVerisonConfigData();
+        if (ModuleManager.Singleton.getModule<HotUpdateModuleManager>().HotUpdateSwitch)
+        {
+            if (VersionConfigModuleManager.getInstance().needVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode))
+            {
+                DIYLog.Log(string.Format("服务器版本号 : {0}高于本地版本号 : {1}，需要强更！", HotUpdateModuleManager.NewHotUpdateVersionCode, VersionConfigModuleManager.getInstance().GameVersionConfig.VersionCode));
+                DIYLog.Log("不允许进游戏！");
+            }
+            else
+            {
+                DIYLog.Log(string.Format("服务器版本号 : {0}小于或等于本地版本号 : {1}，不需要强更！", HotUpdateModuleManager.NewHotUpdateVersionCode, VersionConfigModuleManager.getInstance().GameVersionConfig.VersionCode));
+                if (VersionConfigModuleManager.getInstance().needResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode))
+                {
+                    DIYLog.Log(string.Format("服务器资源版本号 : {0}大于本地资源版本号 : {1}，需要资源热更！", HotUpdateModuleManager.NewHotUpdateResourceCode, VersionConfigModuleManager.getInstance().GameVersionConfig.ResourceVersionCode));
+                    DIYLog.Log("不允许进游戏！");
                 }
                 else
                 {
-                    //不需要强更走后续流程
-                    ModuleManager.Singleton.getModule<HotUpdateModuleManager>().checkResourceHotUpdate(
-                        HotUpdateModuleManager.NewHotUpdateResourceCode,
-                        (versioncode, resourcehotupdateresult) =>
-                        {
-                            if (resourcehotupdateresult)
-                            {
-                                DIYLog.Log("资源热更完成!请重进或重新触发热更流程！");
-                                return;
-                            }
-                            else
-                            {
-                                DIYLog.Log("不需要资源热更，可以直接进入游戏！");
-                                return;
-                            }
-                        }
-                    );
+                    DIYLog.Log(string.Format("服务器资源版本号 : {0}小于或等于本地资源版本号 : {1}，不需要资源热更！", HotUpdateModuleManager.NewHotUpdateResourceCode, VersionConfigModuleManager.getInstance().GameVersionConfig.ResourceVersionCode));
+                    DIYLog.Log("可以进游戏!");
                 }
             }
-        );
+        }
+        else
+        {
+            DIYLog.Log("热更开关未打开，不允许热更！");
+            DIYLog.Log("可以进游戏!");
+        }
     }
 }

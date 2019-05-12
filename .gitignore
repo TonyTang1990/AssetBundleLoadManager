@@ -1,6 +1,6 @@
 # 文件以及目录过滤
 # 过滤library目录
-Library/
+AssetBundleFramework/Library/
 # 过滤.vs目录
 .vs/
 # 过滤Temp目录

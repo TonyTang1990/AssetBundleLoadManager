@@ -16,7 +16,7 @@ using UnityEngine;
 /// VersionConfigModuleManager.cs
 /// 游戏版本信息管理模块单例类
 /// </summary>
-public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleManager>, IModuleInterface
+public class VersionConfigModuleManager : SingletonMonoBehaviourTemplate<VersionConfigModuleManager>, IModuleInterface
 {
     /// <summary>
     /// 模块名
@@ -30,7 +30,7 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     }
 
     /// <summary> 包外资源版本信息文件存储目录路径 /// </summary>
-    public readonly string OutterVersionConfigSaveFileFolderPath;
+    public string OutterVersionConfigSaveFileFolderPath;
 
     /// <summary>
     /// 游戏版本信息配置文件名
@@ -45,10 +45,10 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     /// <summary>
     /// 包内版本信息文件存储路径
     /// </summary>
-    private readonly string mInnerVersionConfigFilePath;
+    private string mInnerVersionConfigFilePath;
 
     /// <summary> 包外资源版本信息文件存储路径 /// </summary>
-    private readonly string OutterVersionConfigSaveFileFullPath;
+    private string OutterVersionConfigSaveFileFullPath;
 
     /// <summary>
     /// 游戏版本信息
@@ -74,10 +74,10 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     /// </summary>
     private UTF8Encoding mUTF8Encoding = new UTF8Encoding(true);
 
-    public VersionConfigModuleManager()
+    private void Awake()
     {
         mInnerVersionConfigFilePath = ConfigFolderPath + mVersionConfigFileName;
-        OutterVersionConfigSaveFileFolderPath = Application.persistentDataPath + "/" +  ConfigFolderPath;
+        OutterVersionConfigSaveFileFolderPath = Application.persistentDataPath + "/" + ConfigFolderPath;
         OutterVersionConfigSaveFileFullPath = OutterVersionConfigSaveFileFolderPath + mVersionConfigFileName + ".json";
         GameVersionConfig = null;
         mInnerGameVersionConfig = null;
@@ -154,6 +154,8 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     /// <returns></returns>
     public void initVerisonConfigData()
     {
+        mInnerGameVersionConfig = null;
+        mOuterGameVersionConfig = null;
         Debug.Log(string.Format("OutterVersionConfigSaveFileFullPath : {0}", OutterVersionConfigSaveFileFullPath));
         Debug.Log(string.Format("mInnerVersionConfigFilePath : {0}", mInnerVersionConfigFilePath));
 
