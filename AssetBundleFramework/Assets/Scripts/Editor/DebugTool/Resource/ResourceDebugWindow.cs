@@ -38,11 +38,11 @@ public class ResourceDebugWindow : EditorWindow
     {
         get
         {
-            return (int)ResourceModuleManager.getInstance().ResLoadMode;
+            return (int)ResourceModuleManager.Singleton.ResLoadMode;
         }
         set
         {
-            ResourceModuleManager.getInstance().ResLoadMode = (ResourceLoadMode)value;
+            ResourceModuleManager.Singleton.ResLoadMode = (ResourceLoadMode)value;
         }
     }
 
@@ -116,14 +116,14 @@ public class ResourceDebugWindow : EditorWindow
                 Debug.unityLogger.logEnabled = mLoggerSwitch;
             }
             ResourceLogger.LogSwitch = GUILayout.Toggle(ResourceLogger.LogSwitch, "是否开启资源Log", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
-            GUILayout.Label("资源回收开关:" + ResourceModuleManager.getInstance().CurrentResourceModule.EnableResourceRecyclingUnloadUnsed, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
+            GUILayout.Label("资源回收开关:" + ResourceModuleManager.Singleton.CurrentResourceModule.EnableResourceRecyclingUnloadUnsed, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
             var preresourceloadmodeindex = ResourceLoadModeIndex;
             var newresourceloadmodeindex = EditorGUILayout.Popup(preresourceloadmodeindex, ResourceLoadModeChoices, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
             if(preresourceloadmodeindex != newresourceloadmodeindex)
             {
                 ResourceLoadModeIndex = newresourceloadmodeindex;
             }
-            GUILayout.Label("资源回收开关:" + ResourceModuleManager.getInstance().CurrentResourceModule.EnableResourceRecyclingUnloadUnsed, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
+            GUILayout.Label("资源回收开关:" + ResourceModuleManager.Singleton.CurrentResourceModule.EnableResourceRecyclingUnloadUnsed, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("筛选文本(默认不填表示显示所有):", GUILayout.MaxWidth(200.0f), GUILayout.MaxHeight(30.0f));
@@ -204,7 +204,7 @@ public class ResourceDebugWindow : EditorWindow
     {
         if (isAssetBundleModule())
         {
-            var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
+            var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
             GUILayout.BeginVertical();
             var alldepinfo = assetbundleresourcemodule.AssetBundleDpMap;
             if (!mTextFilter.Equals(string.Empty))
@@ -281,7 +281,7 @@ public class ResourceDebugWindow : EditorWindow
     /// </summary>
     private void displayABReferenceInfoUI()
     {
-        var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule;
+        var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule;
         EditorGUILayout.BeginVertical();
         var normalloadedabinfomap = assetbundleresourcemodule.getSpecificLoadTypeARIMap(ResourceLoadType.NormalLoad);
         var preloadloadedabinfomap = assetbundleresourcemodule.getSpecificLoadTypeARIMap(ResourceLoadType.Preload);
@@ -421,7 +421,7 @@ public class ResourceDebugWindow : EditorWindow
     {
         if (isAssetBundleModule())
         {
-            var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
+            var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
             EditorGUILayout.BeginVertical();
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("当前AB异步加载队列信息 :");
@@ -549,7 +549,7 @@ public class ResourceDebugWindow : EditorWindow
     {
         if(isAssetBundleModule())
         {
-            var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
+            var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
             var alldepinfomap = assetbundleresourcemodule.AssetBundleDpMap;
             using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Application.dataPath + "/../alldepab.txt"))
             {
@@ -599,7 +599,7 @@ public class ResourceDebugWindow : EditorWindow
     {
         if(isAssetBundleModule())
         {
-            var assetbundleresourcemodule = ResourceModuleManager.getInstance().CurrentResourceModule as AssetBundleModule;
+            var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
             assetbundleresourcemodule.forceUnloadSpecificResource(abname);
         }
         else
@@ -614,6 +614,6 @@ public class ResourceDebugWindow : EditorWindow
     /// <returns></returns>
     private bool isAssetBundleModule()
     {
-        return ResourceModuleManager.getInstance().CurrentResourceModule.ResLoadMode == ResourceLoadMode.AssetBundle;
+        return ResourceModuleManager.Singleton.CurrentResourceModule.ResLoadMode == ResourceLoadMode.AssetBundle;
     }
 }

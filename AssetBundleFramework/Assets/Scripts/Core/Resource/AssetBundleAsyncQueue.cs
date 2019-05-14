@@ -52,7 +52,7 @@ public class AssetBundleAsyncQueue {
     {
         if(IsLoadStart == false)
         {
-            ModuleManager.Singleton.getModule<ResourceModuleManager>().StartCoroutine(assetBundleLoadAsync());
+            CoroutineManager.Singleton.StartCoroutine(assetBundleLoadAsync());
             IsLoadStart = true;
         }
         else

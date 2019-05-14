@@ -3308,7 +3308,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1230477526}
   - component: {fileID: 1230477527}
-  - component: {fileID: 1230477528}
   m_Layer: 0
   m_Name: GameLauncher
   m_TagString: Untagged
@@ -3344,18 +3343,7 @@ MonoBehaviour:
   UIRoot: {fileID: 398744034}
   InputParam1: {fileID: 705071512}
   InputParam2: {fileID: 546920829}
---- !u!114 &1230477528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1230477525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bdcf909398fa3c4d8e88ce3af2d62ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TxtOutput: {fileID: 925646096}
+  TxtNativeOutput: {fileID: 925646096}
 --- !u!1 &1247471661
 GameObject:
   m_ObjectHideFlags: 0

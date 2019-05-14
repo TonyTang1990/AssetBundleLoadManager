@@ -15,7 +15,17 @@ using UnityEngine.UI;
 /// </summary>
 public class NativeMessageHandler : MonoBehaviour {
 
-    public Text TxtOutput;
+    /// <summary>
+    /// 原生消息数据显示文本
+    /// </summary>
+    public Text TxtNativeOutput;
+
+    public static NativeMessageHandler Singleton { get; private set; }
+
+    void Awake()
+    {
+        Singleton = this;
+    }
 
     /// <summary>
     /// 接收原生消息
@@ -24,7 +34,10 @@ public class NativeMessageHandler : MonoBehaviour {
     public void resUnityMsg(string msg)
     {
         Debug.Log(string.Format("resUnityMsg : {0}", msg));
-        TxtOutput.text = msg;
+        if(TxtNativeOutput != null)
+        {
+            TxtNativeOutput.text = msg;
+        }
     }
 
     /// <summary>

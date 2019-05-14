@@ -38,7 +38,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     public void loadSceneSync(string scenename)
     {
         // 预加载资源类型需要在切换场景前卸载掉，切换场景后可能有新的预加载资源加载进来
-        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedPreloadLoadedResources();
+        ResourceModuleManager.Singleton.unloadAllUnsedPreloadLoadedResources();
 
         // 场景资源计数采用手动管理计数的方式
         // 切场景时手动计数减1
@@ -50,9 +50,9 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         }
 
         // 减掉场景计数后，切换场景前强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
-        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedNormalLoadedResources();
+        ResourceModuleManager.Singleton.unloadAllUnsedNormalLoadedResources();
 
-        ModuleManager.mSingleton.getModule<ResourceModuleManager>().requstResource(
+        ResourceModuleManager.Singleton.requstResource(
         scenename,
         (abi) =>
         {
@@ -70,7 +70,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     public void loadSceneAync(string scenename)
     {
         // 预加载资源类型需要在切换场景前卸载掉，切换场景后可能有新的预加载资源加载进来
-        ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedPreloadLoadedResources();
+        ResourceModuleManager.Singleton.unloadAllUnsedPreloadLoadedResources();
 
         // 场景资源计数采用手动管理计数的方式
         // 切场景时手动计数减1
@@ -81,7 +81,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
             mCurrentSceneARI = null;
         }
 
-        ModuleManager.mSingleton.getModule<ResourceModuleManager>().requstResource(
+        ResourceModuleManager.Singleton.requstResource(
         scenename,
         (abi) =>
         {
@@ -116,7 +116,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         {
             // 场景卸载后，递归释放所有不再使用的正常加载的资源
             // 确保所有上一个场景不再使用的正常加载AB资源正确释放
-            ModuleManager.Singleton.getModule<ResourceModuleManager>().unloadAllUnsedNormalLoadedResources();
+            ResourceModuleManager.Singleton.unloadAllUnsedNormalLoadedResources();
         }
     }
 }

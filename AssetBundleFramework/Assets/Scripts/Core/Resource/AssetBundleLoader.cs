@@ -231,7 +231,7 @@ public class AssetBundleLoader : FactoryObj
             {
                 // 依赖AB统一采用ResourceLoadType.NormalLoad方式，不采用被依赖资源AB的ResourceLoadType
                 // 只要被依赖AB不被卸载就不会导致依赖AB被卸载
-                ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource(dpab, onDepABLoadComplete, ResourceLoadType.NormalLoad, LoadMethod);
+                ResourceModuleManager.Singleton.requstResource(dpab, onDepABLoadComplete, ResourceLoadType.NormalLoad, LoadMethod);
             }
         }
     }

@@ -34,7 +34,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager> {
     public GameObject GetWindowInstance(string wndname)    
     {
         GameObject wndinstance = null;
-        ModuleManager.Singleton.getModule<ResourceModuleManager>().requstResource(
+        ResourceModuleManager.Singleton.requstResource(
         wndname,
         (abi) =>
         {

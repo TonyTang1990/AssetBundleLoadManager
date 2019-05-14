@@ -37,19 +37,8 @@ using UnityEngine.Networking;
 /// Note:
 /// 服务器那一块待开发，所以先默认有资源可以更新，暂时只做资源热更下载这一块
 /// </summary>
-public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateModuleManager>, IModuleInterface
+public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
 {
-    /// <summary>
-    /// 真实模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
-
     /// <summary>
     /// 热更开关
     /// </summary>
@@ -195,7 +184,7 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
     /// </summary>
     private TWebRequest mHotResourceUpdateRequest;
 
-    private void Awake()
+    public HotUpdateModuleManager()
     {
         HotUpdateSwitch = true;
 
@@ -253,7 +242,7 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
     public bool checkHasVersionHotUpdate()
     {
         Debug.Log("checkHasVersionHotUpdate()");
-        if (VersionConfigModuleManager.getInstance().hasVersionHotUpdate())
+        if (VersionConfigModuleManager.Singleton.hasVersionHotUpdate())
         {
             Debug.Log("强更过版本！清除包外目录！");
             // 清空包外目录
@@ -272,17 +261,17 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
                 Directory.Delete(LocalResourceUpdateListFilFolderPath, true);
                 Debug.Log(string.Format("删除包外热更资源信息目录 : {0}", LocalResourceUpdateListFilFolderPath));
             }
-            if (Directory.Exists(VersionConfigModuleManager.getInstance().OutterVersionConfigSaveFileFolderPath))
+            if (Directory.Exists(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFolderPath))
             {
-                Directory.Delete(VersionConfigModuleManager.getInstance().OutterVersionConfigSaveFileFolderPath, true);
-                Debug.Log(string.Format("删除包外版本信息存储目录 : {0}", VersionConfigModuleManager.getInstance().OutterVersionConfigSaveFileFolderPath));
+                Directory.Delete(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFolderPath, true);
+                Debug.Log(string.Format("删除包外版本信息存储目录 : {0}", VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFolderPath));
             }
             if (Directory.Exists(VersionHotUpdateCacheFolderPath))
             {
                 Directory.Delete(VersionHotUpdateCacheFolderPath, true);
                 Debug.Log(string.Format("删除包外版本强更包存储目录 : {0}", VersionHotUpdateCacheFolderPath));
             }
-            ModuleManager.Singleton.getModule<VersionConfigModuleManager>().initVerisonConfigData();
+            VersionConfigModuleManager.Singleton.initVerisonConfigData();
             return true;
         }
         else
@@ -301,14 +290,14 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
         Debug.Log("checkVersionHotUpdate()");
         if (HotUpdateSwitch)
         {
-            if (VersionConfigModuleManager.getInstance().needVersionHotUpdate(newhotupdateversioncode))
+            if (VersionConfigModuleManager.Singleton.needVersionHotUpdate(newhotupdateversioncode))
             {
-                Debug.Log(string.Format("服务器版本号 : {0}高于本地版本号 : {1}，需要强更！", newhotupdateversioncode, VersionConfigModuleManager.getInstance().GameVersionConfig.VersionCode));
+                Debug.Log(string.Format("服务器版本号 : {0}高于本地版本号 : {1}，需要强更！", newhotupdateversioncode, VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode));
                 return true;
             }
             else
             {
-                Debug.Log(string.Format("服务器版本号 : {0}小于或等于本地版本号 : {1}，不需要强更！", newhotupdateversioncode, VersionConfigModuleManager.getInstance().GameVersionConfig.VersionCode));
+                Debug.Log(string.Format("服务器版本号 : {0}小于或等于本地版本号 : {1}，不需要强更！", newhotupdateversioncode, VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode));
                 return false;
             }
         }
@@ -328,7 +317,7 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
     {
         Debug.Log("doNewVersionHotUpdate()");
         //写入当前版本信息到包外
-        VersionConfigModuleManager.getInstance().saveNewVersionCodeConfig(VersionConfigModuleManager.getInstance().GameVersionConfig.VersionCode);
+        VersionConfigModuleManager.Singleton.saveNewVersionCodeConfig(VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode);
         //引导版本强更
         mVersionHotUpdateCompleteCB = completecallback;
         HotVersionUpdateRequest.resetRequest();
@@ -399,14 +388,14 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
         Debug.Log("checkResourceHotUpdate()");
         if (HotUpdateSwitch)
         {
-            if (VersionConfigModuleManager.getInstance().needResourceHotUpdate(newhotupdateresourcecode))
+            if (VersionConfigModuleManager.Singleton.needResourceHotUpdate(newhotupdateresourcecode))
             {
-                Debug.Log(string.Format("服务器资源版本号 : {0}大于本地资源版本号 : {1}，需要资源热更！", newhotupdateresourcecode, VersionConfigModuleManager.getInstance().GameVersionConfig.ResourceVersionCode));
+                Debug.Log(string.Format("服务器资源版本号 : {0}大于本地资源版本号 : {1}，需要资源热更！", newhotupdateresourcecode, VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode));
                 return true;
             }
             else
             {
-                Debug.Log(string.Format("服务器资源版本号 : {0}小于或等于本地资源版本号 : {1}，不需要资源热更！", newhotupdateresourcecode, VersionConfigModuleManager.getInstance().GameVersionConfig.ResourceVersionCode));
+                Debug.Log(string.Format("服务器资源版本号 : {0}小于或等于本地资源版本号 : {1}，不需要资源热更！", newhotupdateresourcecode, VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode));
                 return false;
             }
         }
@@ -428,7 +417,7 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
         mResourceHotUpdateCompleteCB = completecallback;
         //拉取服务器热更资源信息与本地资源热更信息进行比较
         TWebRequest twr = new TWebRequest();
-        var url = TestHotUpdateURL + ModuleManager.Singleton.getModule<VersionConfigModuleManager>().GameVersionConfig.VersionCode.ToString("0.0") + "/" + ResourceUpdateListFileName;
+        var url = TestHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + ResourceUpdateListFileName;
         mHotResourceUpdateRequest.resetRequest();
         twr.enqueue(url, resourceListHotUpdateCompleteCB);
         twr.startRequest();
@@ -477,7 +466,7 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
                     }
                 }
                 //根据返回的热更资源数据结合本地资源版本号以及已经热更下载的资源计算出剩下需要热更的资源数据
-                var currentresversion = VersionConfigModuleManager.getInstance().GameVersionConfig.ResourceVersionCode;
+                var currentresversion = VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode;
                 foreach (var hotupdateresourceinfo in hotupdateresourcesmap)
                 {
                     if (hotupdateresourceinfo.Key > currentresversion)
@@ -503,7 +492,7 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
                 }
                 foreach (var res in mHotUpdateResourceList)
                 {
-                    var finalurl = TestHotUpdateURL + ModuleManager.Singleton.getModule<VersionConfigModuleManager>().GameVersionConfig.VersionCode.ToString("0.0") + "/" + res;
+                    var finalurl = TestHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + res;
                     mHotResourceUpdateRequest.enqueue(finalurl, singleResourceHotUpdateCompleteCB);
                 }
                 mHotResourceUpdateRequest.startRequest();
@@ -551,7 +540,7 @@ public class HotUpdateModuleManager : SingletonMonoBehaviourTemplate<HotUpdateMo
                 Debug.Log("资源热更完成!");
                 mResourceHotUpdateCompleteCB(true);
                 mResourceHotUpdateCompleteCB = null;
-                VersionConfigModuleManager.getInstance().saveNewResoueceCodeConfig(NewHotUpdateResourceCode);
+                VersionConfigModuleManager.Singleton.saveNewResoueceCodeConfig(NewHotUpdateResourceCode);
             }
         }
         else

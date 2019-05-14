@@ -16,19 +16,8 @@ using UnityEngine;
 /// VersionConfigModuleManager.cs
 /// 游戏版本信息管理模块单例类
 /// </summary>
-public class VersionConfigModuleManager : SingletonMonoBehaviourTemplate<VersionConfigModuleManager>, IModuleInterface
+public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleManager>
 {
-    /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
-
     /// <summary> 包外资源版本信息文件存储目录路径 /// </summary>
     public string OutterVersionConfigSaveFileFolderPath;
 
@@ -74,7 +63,7 @@ public class VersionConfigModuleManager : SingletonMonoBehaviourTemplate<Version
     /// </summary>
     private UTF8Encoding mUTF8Encoding = new UTF8Encoding(true);
 
-    private void Awake()
+    public VersionConfigModuleManager()
     {
         mInnerVersionConfigFilePath = ConfigFolderPath + mVersionConfigFileName;
         OutterVersionConfigSaveFileFolderPath = Application.persistentDataPath + "/" + ConfigFolderPath;

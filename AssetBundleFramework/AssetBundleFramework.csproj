@@ -254,8 +254,6 @@
     <Compile Include="Assets\Scripts\Core\Coroutine\CoroutineManager.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\TWebRequest.cs" />
-    <Compile Include="Assets\Scripts\Core\IModuleInterface.cs" />
-    <Compile Include="Assets\Scripts\Core\ModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceInfo.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceModule.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleAsyncQueue.cs" />

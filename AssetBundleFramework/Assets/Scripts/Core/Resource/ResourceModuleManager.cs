@@ -37,19 +37,8 @@ using UnityEngine;
 /// ResourceModuleManager.cs
 /// 资源加载管理类
 /// </summary>
-public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModuleManager>, IModuleInterface
+public class ResourceModuleManager : SingletonTemplate<ResourceModuleManager>
 {
-    /// <summary>
-    /// 真实的模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
-
     /// <summary>
     /// 当前资源加载模块
     /// </summary>
@@ -148,7 +137,7 @@ public class ResourceModuleManager : SingletonMonoBehaviourTemplate<ResourceModu
         CurrentResourceModule.requstResource(resname, completehandler, loadtype, loadmethod);
     }
 
-    void Update()
+    public void Update()
     {
         CurrentResourceModule.Update();
     }

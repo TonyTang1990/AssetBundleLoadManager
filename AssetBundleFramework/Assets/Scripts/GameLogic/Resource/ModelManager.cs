@@ -12,16 +12,6 @@ using UnityEngine;
 /// ModelManager.cs
 /// 模型管理单例类
 /// </summary>
-public class ModelManager : SingletonTemplate<ModelManager>, IModuleInterface {
+public class ModelManager : SingletonTemplate<ModelManager> {
 
-    /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
 }
