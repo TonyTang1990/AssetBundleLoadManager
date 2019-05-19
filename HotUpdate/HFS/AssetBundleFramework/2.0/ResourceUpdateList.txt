@@ -1,1 +1,1 @@
-2:Android;2:mainwindow
+2:Android;2:mainwindow;3:Android;3:mainwindow

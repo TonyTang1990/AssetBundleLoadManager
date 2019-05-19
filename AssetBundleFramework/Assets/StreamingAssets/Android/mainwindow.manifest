@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1745602394
+CRC: 3111996034
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8b1d041ce6f77f5974d4e08927249f14
+    Hash: 951587f57be9789ae1e38c6e9e0140bd
   TypeTreeHash:
     serializedVersion: 2
     Hash: 4cba9e3005940716d8d2bc2d82e37b61
@@ -38,4 +38,4 @@ ClassTypes:
 Assets:
 - Assets/Res/windows/MainWindow.prefab
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/loadingscreen
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/mouseandkeyboardstudy

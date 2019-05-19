@@ -116,7 +116,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 测试热更资源版本号
     /// 待添加网络模块后从服务器端读取
     /// </summary>
-    public const int NewHotUpdateResourceCode = 2;
+    public const int NewHotUpdateResourceCode = 3;
 
     /// <summary>
     /// 资源热更进度
@@ -130,21 +130,16 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     }
 
     /// <summary>
-    /// 需要资源热更列表
+    /// 需要资源热更列表映射Map
+    /// Key为资源版本号，Value为该版本号需要热更新的资源列表信息
     /// </summary>
-    private List<string> mHotUpdateResourceList;
+    private SortedDictionary<int, List<string>> mNeedHotUpdateResourceMap;
 
     /// <summary>
     /// 需要资源热更的资源总数
     /// </summary>
     private int mHotUpdateResourceTotalNumber;
-
-    /// <summary>
-    /// 资源热更结果映射Map
-    /// Key为资源名，Value为资源热更结果
-    /// </summary>
-    private Dictionary<string, bool> mHotUpdateResourceResultMap;
-
+    
     /// <summary>
     /// 资源更新完成回调
     /// </summary>
@@ -158,8 +153,9 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
 
     /// <summary>
     /// 本地已经热更到的资源列表(热更完毕后会清空)
+    /// Key为资源版本号，Value为该资源版本号已经热更到的资源列表信息
     /// </summary>
-    private List<string> mLocalResourceUpdateList;
+    private SortedDictionary<int, List<string>> mLocalUpdatedResourceMap;
 
     /// <summary>
     /// 资源热更列表文件名
@@ -194,11 +190,10 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         HotVersionUpdateRequest = new TWebRequest();
         mVersionHotUpdateCompleteCB = null;
 
-        mHotUpdateResourceList = new List<string>();
-        mHotUpdateResourceResultMap = new Dictionary<string, bool>();
+        mNeedHotUpdateResourceMap = new SortedDictionary<int, List<string>>();
         mResourceHotUpdateCompleteCB = null;
         mResourceUpdateListMap = new Dictionary<int, List<string>>();
-        mLocalResourceUpdateList = new List<string>();
+        mLocalUpdatedResourceMap = new SortedDictionary<int, List<string>>();
         LocalResourceUpdateListFilFolderPath = Application.persistentDataPath + "/ResourceUpdateList/";
         LocalResourceUpdateListFilePath = LocalResourceUpdateListFilFolderPath + ResourceUpdateListFileName;
         mHotResourceUpdateRequest = new TWebRequest();
@@ -209,23 +204,37 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// </summary>
     public void init()
     {
-        initLocalResourceUpdateList();
+        initLocalUpdatedResourceInfo();
     }
 
     /// <summary>
-    /// 初始化本地资源热更列表
+    /// 初始化本地以热更资源资源信息
     /// </summary>
-    private void initLocalResourceUpdateList()
+    private void initLocalUpdatedResourceInfo()
     {
         Debug.Log("初始化本地资源热更列表!");
-        mLocalResourceUpdateList.Clear();
+        mLocalUpdatedResourceMap.Clear();
         if (File.Exists(LocalResourceUpdateListFilePath))
         {
             var resourceupdateinfo = File.ReadAllLines(LocalResourceUpdateListFilePath);
-            mLocalResourceUpdateList.AddRange(resourceupdateinfo);
-            foreach (var updatedresource in mLocalResourceUpdateList)
+            foreach (var updatedresource in resourceupdateinfo)
             {
-                Debug.Log(string.Format("已经更新到的资源 : {0}", updatedresource));
+                //避免因为最后一个空行导致报错
+                if(updatedresource.IsNullOrEmpty())
+                {
+                    continue;
+                }
+                var resourceinfo = updatedresource.Split(':');
+                var resversion = int.Parse(resourceinfo[0]);
+                var resname = resourceinfo[1];
+                List<string> updatedreslist;
+                if(!mLocalUpdatedResourceMap.TryGetValue(resversion, out updatedreslist))
+                {
+                    updatedreslist = new List<string>();
+                    mLocalUpdatedResourceMap.Add(resversion, updatedreslist);
+                }
+                updatedreslist.Add(resname);
+                Debug.Log(string.Format("已经更新到的资源信息 : 资源版本号:{0} 资源名:{1}", resversion, resname));
             }
         }
         else
@@ -417,6 +426,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         mResourceHotUpdateCompleteCB = completecallback;
         //拉取服务器热更资源信息与本地资源热更信息进行比较
         TWebRequest twr = new TWebRequest();
+        //URL = 基础URL + 当前版本号 + "/" + 热更资源信息文件名(ResourceUpdateList.txt)
         var url = TestHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + ResourceUpdateListFileName;
         mHotResourceUpdateRequest.resetRequest();
         twr.enqueue(url, resourceListHotUpdateCompleteCB);
@@ -435,7 +445,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         if (requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
         {
             Debug.Log(string.Format("热更资源列表下载成功!热更资源列表信息 : {0}", downloadhandler.text));
-            mHotUpdateResourceList.Clear();
+            mNeedHotUpdateResourceMap.Clear();
             mHotUpdateResourceTotalNumber = 0;
 
             //TODO:
@@ -446,6 +456,11 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
             {
                 foreach (var hotupdatereousrceinfo in hotupdateresourcesinfo)
                 {
+                    //避免最后添加;后导致多一个空数据报错
+                    if(hotupdatereousrceinfo.IsNullOrEmpty())
+                    {
+                        continue;
+                    }
                     var resourceinfo = hotupdatereousrceinfo.Split(':');
                     var resversion = int.Parse(resourceinfo[0]);
                     var resname = resourceinfo[1];
@@ -469,33 +484,75 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                 var currentresversion = VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode;
                 foreach (var hotupdateresourceinfo in hotupdateresourcesmap)
                 {
+                    List<string> alreadyupdatedreslist;
+                    if(!mLocalUpdatedResourceMap.TryGetValue(hotupdateresourceinfo.Key, out alreadyupdatedreslist))
+                    {
+                        alreadyupdatedreslist = new List<string>();
+                    }
                     if (hotupdateresourceinfo.Key > currentresversion)
                     {
-                        mHotUpdateResourceList.AddRange(hotupdateresourceinfo.Value);
+                        foreach(var hotupdateresource in hotupdateresourceinfo.Value)
+                        {
+                            if(alreadyupdatedreslist.Contains(hotupdateresource))
+                            {
+                                Debug.Log(string.Format("资源已经热更过了： 资源版本号:{0} 资源名:{1}", hotupdateresourceinfo.Key, hotupdateresource));
+                            }
+                            else
+                            {
+                                List<string> neddhotupdatereslist;
+                                if (!mNeedHotUpdateResourceMap.TryGetValue(hotupdateresourceinfo.Key, out neddhotupdatereslist))
+                                {
+                                    neddhotupdatereslist = new List<string>();
+                                    mNeedHotUpdateResourceMap.Add(hotupdateresourceinfo.Key, neddhotupdatereslist);
+                                }
+                                if (!neddhotupdatereslist.Contains(hotupdateresource))
+                                {
+                                    neddhotupdatereslist.Add(hotupdateresource);
+                                    mHotUpdateResourceTotalNumber++;
+                                    Debug.Log(string.Format("添加需要热更的资源信息,版本号 : {0}, 资源名 : {1}", hotupdateresourceinfo.Key, hotupdateresource));
+                                }
+                            }
+                        }
+
+                    }
+                }                
+                Debug.Log(string.Format("需要热更的资源数 : {0}", mHotUpdateResourceTotalNumber));
+                foreach (var needhotupdateresinfo in mNeedHotUpdateResourceMap)
+                {
+                    foreach(var needhotupdateres in needhotupdateresinfo.Value)
+                    {
+                        Debug.Log(string.Format("需要热更的资源信息 : 资源版本号:{0} 资源名:{1}", needhotupdateresinfo.Key, needhotupdateres));
                     }
                 }
-                mHotUpdateResourceTotalNumber = mHotUpdateResourceList.Count;
-                Debug.Log(string.Format("需要热更的资源数 : {0}", mHotUpdateResourceTotalNumber));
-                foreach (var hotupdateres in mHotUpdateResourceList)
-                {
-                    Debug.Log(string.Format("需要热更的资源名 : {0}", hotupdateres));
-                }
 
-                //开始资源热更
-                //检查资源热更目录，不存在就创建一个
-                AssetBundlePath.CheckAndCreateABOutterPathFolder();
-                //检查资源热更列表信息目录
-                if (!Directory.Exists(LocalResourceUpdateListFilFolderPath))
+                if(mHotUpdateResourceTotalNumber > 0)
                 {
-                    Directory.CreateDirectory(LocalResourceUpdateListFilFolderPath);
-                    Debug.Log(string.Format("创建目录 : {0}", LocalResourceUpdateListFilFolderPath));
+                    //开始资源热更
+                    //检查资源热更目录，不存在就创建一个
+                    AssetBundlePath.CheckAndCreateABOutterPathFolder();
+                    //检查资源热更列表信息目录
+                    if (!Directory.Exists(LocalResourceUpdateListFilFolderPath))
+                    {
+                        Directory.CreateDirectory(LocalResourceUpdateListFilFolderPath);
+                        Debug.Log(string.Format("创建目录 : {0}", LocalResourceUpdateListFilFolderPath));
+                    }
+                    foreach (var resinfo in mNeedHotUpdateResourceMap)
+                    {
+                        foreach (var res in resinfo.Value)
+                        {
+                            //URL = 基础URL + 当前版本号 + "/" + 需要热更的资源版本号 + "/" + 需要热更的资源名
+                            var finalurl = TestHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + resinfo.Key + "/" + res;
+                            mHotResourceUpdateRequest.enqueue(finalurl, singleResourceHotUpdateCompleteCB);
+                        }
+                    }
+                    mHotResourceUpdateRequest.startRequest();
                 }
-                foreach (var res in mHotUpdateResourceList)
+                else
                 {
-                    var finalurl = TestHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + res;
-                    mHotResourceUpdateRequest.enqueue(finalurl, singleResourceHotUpdateCompleteCB);
+                    Debug.Log("没有资源需要热更，直接进入游戏!");
+                    mResourceHotUpdateCompleteCB(true);
+                    mResourceHotUpdateCompleteCB = null;
                 }
-                mHotResourceUpdateRequest.startRequest();
             }
             catch(Exception e)
             {
@@ -528,14 +585,19 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     {
         Debug.Log(string.Format("资源 : {0}下载返回！", url));
         var resname = Path.GetFileName(url);
+        var resversion = int.Parse(Path.GetFileName(Path.GetDirectoryName(url)));
         if(requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
         {
-            Debug.Log(string.Format("资源 : {0}热更下载成功！", resname));
+            Debug.Log(string.Format("资源版本号 : {0} 资源名 : {1}热更下载成功！", resversion, resname));
             //存储热更资源到包外并记录热更资源信息
-            saveHotResourceUpdate(resname, downloadhandler.data);
-            mHotUpdateResourceList.Remove(resname);
+            saveHotResourceUpdate(resname, resversion, downloadhandler.data);
+            mNeedHotUpdateResourceMap[resversion].Remove(resname);
+            if(mNeedHotUpdateResourceMap[resversion].Count == 0)
+            {
+                mNeedHotUpdateResourceMap.Remove(resversion);
+            }
             Debug.Log(string.Format("当前资源热更进度 : {0}", HotResourceUpdateProgress));
-            if(mHotUpdateResourceList.Count == 0)
+            if(mNeedHotUpdateResourceMap.Count == 0)
             {
                 Debug.Log("资源热更完成!");
                 mResourceHotUpdateCompleteCB(true);
@@ -555,9 +617,10 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// <summary>
     /// 存储热更资源并记录热更资源信息
     /// </summary>
-    /// <param name="resname"></param>
-    /// <param name="data"></param>
-    private void saveHotResourceUpdate(string resname, byte[] data)
+    /// <param name="resname">资源名</param>
+    /// <param name="resversion">资源版本号</param>
+    /// <param name="data">资源二进制数据</param>
+    private void saveHotResourceUpdate(string resname, int resversion, byte[] data)
     {
         //检查包外是否存在同名资源，存在的话需要先删除再存储最新到包外
         var resfullpath = AssetBundlePath.ABHotUpdatePath + resname;
@@ -578,7 +641,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         }
         using (var sw = File.AppendText(LocalResourceUpdateListFilePath))
         {
-            sw.WriteLine(resname);
+            sw.WriteLine(resversion + ":" + resname);
             sw.Close();
         }
         Debug.Log(string.Format("写入已更资源 : {0}", resfullpath));

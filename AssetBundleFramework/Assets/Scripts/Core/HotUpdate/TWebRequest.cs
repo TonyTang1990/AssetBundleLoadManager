@@ -107,7 +107,7 @@ public class TWebRequest {
     {
         get
         {
-            return (mTotalWebRequestNumber - mWebRequestTaskQueue.Count + (mCurrentInProgressWebRequest != null ? mCurrentInProgressWebRequest.downloadProgress : 0.0f)) / mTotalWebRequestNumber;
+            return (mTotalWebRequestNumber - mWebRequestTaskQueue.Count + (1 - (mCurrentInProgressWebRequest != null ? mCurrentInProgressWebRequest.downloadProgress : 0.0f))) / mTotalWebRequestNumber;
         }
     }
 

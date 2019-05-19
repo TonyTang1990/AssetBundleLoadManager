@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2689164699
+CRC: 1365911459
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -35,7 +35,7 @@ AssetBundleManifest:
     Info_10:
       Name: mainwindow
       Dependencies:
-        Dependency_0: loadingscreen
+        Dependency_0: mouseandkeyboardstudy
     Info_11:
       Name: loadingscreen
       Dependencies: {}
