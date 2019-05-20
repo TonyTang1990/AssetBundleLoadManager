@@ -69,11 +69,18 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 版本强更文件目录测试路径
     /// </summary>
     private const string VersionHotUpdateFileFolderPath = "http://192.168.1.3/AssetBundleFramework/";
-    
+
+#if DEVELOPMENT
     /// <summary>
     /// 热更测试地址
     /// </summary>
-    private const string TestHotUpdateURL = "http://192.168.1.3/AssetBundleFramework/";
+    private const string HotUpdateURL = "http://192.168.1.3/AssetBundleFramework/";
+#else
+    /// <summary>
+    /// 正式的资源热更地址
+    /// </summary>
+    private const string HotUpdateURL = "http://static-resource-server.oss-cn-shenzhen.aliyuncs.com/AssetBundleFramework/";
+#endif
 
     /// <summary>
     /// 版本强更缓存目录
@@ -243,7 +250,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         }
     }
 
-    #region 版本强更部分
+#region 版本强更部分
     /// <summary>
     /// 检查是否已经版本强更完成
     /// </summary>
@@ -385,9 +392,9 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
             mVersionHotUpdateCompleteCB = null;
         }
     }
-    #endregion
+#endregion
 
-    #region 资源热更新部分
+#region 资源热更新部分
     /// <summary>
     /// 检查资源热更
     /// </summary>
@@ -427,7 +434,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         //拉取服务器热更资源信息与本地资源热更信息进行比较
         TWebRequest twr = new TWebRequest();
         //URL = 基础URL + 当前版本号 + "/" + 热更资源信息文件名(ResourceUpdateList.txt)
-        var url = TestHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + ResourceUpdateListFileName;
+        var url = HotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + ResourceUpdateListFileName;
         mHotResourceUpdateRequest.resetRequest();
         twr.enqueue(url, resourceListHotUpdateCompleteCB);
         twr.startRequest();
@@ -541,7 +548,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                         foreach (var res in resinfo.Value)
                         {
                             //URL = 基础URL + 当前版本号 + "/" + 需要热更的资源版本号 + "/" + 需要热更的资源名
-                            var finalurl = TestHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + resinfo.Key + "/" + res;
+                            var finalurl = HotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + resinfo.Key + "/" + res;
                             mHotResourceUpdateRequest.enqueue(finalurl, singleResourceHotUpdateCompleteCB);
                         }
                     }
@@ -646,5 +653,5 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         }
         Debug.Log(string.Format("写入已更资源 : {0}", resfullpath));
     }
-    #endregion
+#endregion
 }
