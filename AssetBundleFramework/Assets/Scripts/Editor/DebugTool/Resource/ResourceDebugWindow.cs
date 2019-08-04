@@ -54,7 +54,7 @@ public class ResourceDebugWindow : EditorWindow
     /// <summary>
     /// 过滤文本
     /// </summary>
-    private string mTextFilter = string.Empty;
+    private string mTextFilter = "";
 
     /// <summary>
     /// 当前AB辅助工具类型

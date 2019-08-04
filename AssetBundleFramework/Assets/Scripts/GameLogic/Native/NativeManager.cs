@@ -27,6 +27,8 @@ public abstract class NativeManager{
                 mNativeManagerSingleton = new AndroidNativeManager();
 #elif UNITY_IOS
                 mNativeManagerSingleton = new IOSNativeManager();
+#elif UNITY_STANDALONE
+                mNativeManagerSingleton = new PCNativeManager();
 #endif
             }
             return mNativeManagerSingleton;

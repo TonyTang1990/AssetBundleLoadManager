@@ -298,6 +298,7 @@
     <Compile Include="Assets\Scripts\GameLogic\Native\IOS\IOSNativeManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Native\NativeManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Native\NativeMessageHandler.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Native\PC\PCNativeManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\AtlasManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\AudioManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\EffectManager.cs" />
