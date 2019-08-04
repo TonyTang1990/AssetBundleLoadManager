@@ -14,6 +14,14 @@ using UnityEngine;
 /// </summary>
 public class PCNativeManager : NativeManager
 {
+    public override void callNativeMethod()
+    {
 
+    }
+
+    public override void init()
+    {
+
+    }
 }
 #endif
