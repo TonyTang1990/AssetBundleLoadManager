@@ -66,21 +66,29 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     }
 
     /// <summary>
-    /// 版本强更文件目录测试路径
+    /// 热更新地址信息配置文件名
     /// </summary>
-    private const string VersionHotUpdateFileFolderPath = "http://192.168.1.3/AssetBundleFramework/";
+    private const string mVersionConfigFileName = "HotUpdateConfig";
 
-#if DEVELOPMENT
     /// <summary>
-    /// 热更测试地址
+    /// 配置文件目录路径
     /// </summary>
-    private const string HotUpdateURL = "http://192.168.1.3/AssetBundleFramework/";
-#else
+    private const string ConfigFolderPath = "Config/";
+    
     /// <summary>
-    /// 正式的资源热更地址
+    /// 热更新文件存储路径
     /// </summary>
-    private const string HotUpdateURL = "http://static-resource-server.oss-cn-shenzhen.aliyuncs.com/AssetBundleFramework/";
-#endif
+    private string mHotUpdateConfigFilePath;
+
+    /// <summary>
+    /// 热更新信息
+    /// </summary>
+    private HotUpdateConfig mHotUpdateConfig;
+
+    /// <summary>
+    /// 资源热更地址
+    /// </summary>
+    private string mHotUpdateURL;
 
     /// <summary>
     /// 版本强更缓存目录
@@ -103,7 +111,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// <summary>
     /// 热更APK文件名
     /// </summary>
-    private const string VersionHotUpdateFileName = "AssetBundleFramework.apk";
+    private string mVersionHotUpdateFileName = string.Empty;//"AssetBundleFramework.apk";
 
     /// <summary>
     /// 版本强更请求
@@ -186,14 +194,24 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 资源热更请求
     /// </summary>
     private TWebRequest mHotResourceUpdateRequest;
+    
+    /// <summary>
+    /// UTF8编码
+    /// </summary>
+    private UTF8Encoding mUTF8Encoding = new UTF8Encoding(true);
 
     public HotUpdateModuleManager()
     {
         HotUpdateSwitch = true;
 
+        mHotUpdateConfigFilePath = ConfigFolderPath + mVersionConfigFileName;
+        mHotUpdateConfig = null;
+        mHotUpdateURL = string.Empty;
+
         mHotUpdateResourceTotalNumber = 0;
         VersionHotUpdateCacheFolderPath = Application.persistentDataPath + "/download/";
-        VersionHotUpdateCacheFilePath = VersionHotUpdateCacheFolderPath + VersionHotUpdateFileName;
+        
+        mVersionHotUpdateFileName = string.Empty;
         HotVersionUpdateRequest = new TWebRequest();
         mVersionHotUpdateCompleteCB = null;
 
@@ -211,7 +229,38 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// </summary>
     public void init()
     {
+        initHotUpdateConfig();
         initLocalUpdatedResourceInfo();
+    }
+
+    /// <summary>
+    /// 初始化热更新地址信息
+    /// </summary>
+    private void initHotUpdateConfig()
+    {
+        mHotUpdateConfig = null;
+        Debug.Log(string.Format("mHotUpdateConfigFilePath : {0}", mHotUpdateConfigFilePath));
+        //读取包内的热更信息
+        var hotupdateconfigasset = Resources.Load<TextAsset>(mHotUpdateConfigFilePath);
+        if (hotupdateconfigasset != null)
+        {
+            Debug.Log("热更新地址信息信息:");
+            var content = mUTF8Encoding.GetString(hotupdateconfigasset.bytes);
+            Debug.Log(string.Format("content : {0}", content));
+            mHotUpdateConfig = JsonUtility.FromJson<HotUpdateConfig>(content);
+            Debug.Log(string.Format("APKName : {0} HotUpdateLocalURL : {1} HotUpdateURL : {2}", mHotUpdateConfig.APKName, mHotUpdateConfig.HotUpdateLocalURL, mHotUpdateConfig.HotUpdateURL));
+            mVersionHotUpdateFileName = mHotUpdateConfig.APKName;
+            VersionHotUpdateCacheFilePath = VersionHotUpdateCacheFolderPath + mVersionHotUpdateFileName;
+#if DEVELOPMENT
+            mHotUpdateURL = mHotUpdateConfig.HotUpdateLocalURL;
+#else
+            mHotUpdateURL = mHotUpdateConfig.HotUpdateURL;
+#endif
+        }
+        else
+        {
+            Debug.LogError(string.Format("包内热更地址信息文件 : {0}不存在!", mHotUpdateConfigFilePath));
+        }
     }
 
     /// <summary>
@@ -337,7 +386,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         //引导版本强更
         mVersionHotUpdateCompleteCB = completecallback;
         HotVersionUpdateRequest.resetRequest();
-        var versionhotupdatefilepath = VersionHotUpdateFileFolderPath + newhotupdateversioncode.ToString("0.0") + "/" + VersionHotUpdateFileName;
+        var versionhotupdatefilepath = mHotUpdateURL + newhotupdateversioncode.ToString("0.0") + "/" + mVersionHotUpdateFileName;
         HotVersionUpdateRequest.enqueue(versionhotupdatefilepath, versionHotUpdateCompleteCB, 1800);
         HotVersionUpdateRequest.startRequest();
     }
@@ -434,7 +483,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         //拉取服务器热更资源信息与本地资源热更信息进行比较
         TWebRequest twr = new TWebRequest();
         //URL = 基础URL + 当前版本号 + "/" + 热更资源信息文件名(ResourceUpdateList.txt)
-        var url = HotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + ResourceUpdateListFileName;
+        var url = mHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + ResourceUpdateListFileName;
         mHotResourceUpdateRequest.resetRequest();
         twr.enqueue(url, resourceListHotUpdateCompleteCB);
         twr.startRequest();
@@ -548,7 +597,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                         foreach (var res in resinfo.Value)
                         {
                             //URL = 基础URL + 当前版本号 + "/" + 需要热更的资源版本号 + "/" + 需要热更的资源名
-                            var finalurl = HotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + resinfo.Key + "/" + res;
+                            var finalurl = mHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + resinfo.Key + "/" + res;
                             mHotResourceUpdateRequest.enqueue(finalurl, singleResourceHotUpdateCompleteCB);
                         }
                     }
