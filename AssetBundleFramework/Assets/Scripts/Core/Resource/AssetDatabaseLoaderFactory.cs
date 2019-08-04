@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AssetDatabaseLoaderFactory.cs
  * Author:                  TONYTANG
  * Create Date:             2019//04/04
@@ -11,7 +11,7 @@ using UnityEngine;
 
 /// <summary>
 /// AssetDatabaseLoaderFactory.cs
-/// AssetDatabaseLoaderFactory¿É»ØÊÕÖØÓÃ¹¤³§
+/// AssetDatabaseLoaderFactoryå¯å›æ”¶é‡ç”¨å·¥å‚
 /// </summary>
 public class AssetDatabaseLoaderFactory : ObjectFactory<AssetDatabaseLoader>
 {

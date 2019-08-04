@@ -152,7 +152,7 @@ public class AssetDatabaseModule : AbstractResourceModule
             if (mUnsedResourceInfoList.Count == 0)
             {
                 //不再有可卸载的资源
-                iscomplete = false;
+                iscomplete = true;
             }
             else
             {

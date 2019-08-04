@@ -122,7 +122,17 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                         }
                         else
                         {
-                            ResourceLogger.logErr(string.Format("资源名 : {0}里有同名资源！Asset资源 : {1}添加失败!请优化取名，避免重名Asset！", AssetBundleName, assetname));
+                            if (typeof(T) == typeof(Sprite))
+                            {
+                                // 暂时用重复的覆盖老(Sprite覆盖Texture2D)的(解决单张图作为Sprite时，Texture2D和Sprite同名的问题)
+                                // 问题: 
+                                // 1. 此方式不会缓存图集的Texture2D(暂时可以通过sprite.Texture的方式访问Texture2D)
+                                mLoadedAssetMap[assetname] = asset;
+                            }
+                            else
+                            {
+                                ResourceLogger.logErr(string.Format("资源名 : {0}里有同名资源！Asset资源 : {1}添加失败!请优化取名，避免重名Asset！", AssetBundleName, assetname));
+                            }
                         }
                     }
                 }
@@ -182,7 +192,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                         }
                         else if (assetpathes.Length > 1)
                         {
-                            ResourceLogger.logErr(string.Format("资源名 : {0}里存在同名Asset : {}资源！请先纠正Asset取名！", AssetBundleName, assetname));
+                            ResourceLogger.logErr(string.Format("资源名 : {0}里存在同名Asset : {1}资源！请先纠正Asset取名！", AssetBundleName, assetname));
                             return null;
                         }
                         else

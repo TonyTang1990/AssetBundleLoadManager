@@ -31,7 +31,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager> {
     /// </summary>
     /// <param name="wndname"></param>
     /// <returns></returns>
-    public GameObject GetWindowInstance(string wndname)    
+    public GameObject GetWindowInstance(string wndname)
     {
         GameObject wndinstance = null;
         ResourceModuleManager.Singleton.requstResource(

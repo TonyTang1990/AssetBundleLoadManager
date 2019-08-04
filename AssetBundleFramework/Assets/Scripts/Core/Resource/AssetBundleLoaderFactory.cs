@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AssetBundleLoaderFactory.cs
  * Author:                  TONYTANG
  * Create Date:             2018//09/30
@@ -10,7 +10,7 @@ using UnityEngine;
 
 /// <summary>
 /// AssetBundleLoaderFactory.cs
-/// AssetBundleLoader¿É»ØÊÕÖØÓÃ¹¤³§
+/// AssetBundleLoaderå¯å›æ”¶é‡ç”¨å·¥å‚
 /// </summary>
 public class AssetBundleLoaderFactory : ObjectFactory<AssetBundleLoader>
 {

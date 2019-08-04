@@ -1,4 +1,4 @@
-/*
+Ôªø/*
  * Description:             AssetDatabaseInfoFactory.cs
  * Author:                  TONYTANG
  * Create Date:             2019//04/05
@@ -11,7 +11,7 @@ using UnityEngine;
 
 /// <summary>
 /// AssetDatabaseInfoFactory.cs
-/// AssetDatabaseInfo÷ÿ”√π§≥ß¿‡
+/// AssetDatabaseInfoÈáçÁî®Â∑•ÂéÇÁ±ª
 /// </summary>
 public class AssetDatabaseInfoFactory : ObjectFactory<AssetDatabaseInfo>
 {

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetBundleFramework", "AssetBundleFramework.csproj", "{59DF80A5-36C8-C148-0F55-21B2184846BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetBundleFramework.Editor", "AssetBundleFramework.Editor.csproj", "{CCB891FF-6718-DC2F-B021-5B9041F9FD57}"
