@@ -246,7 +246,8 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
             }
             else
             {
-                Resources.UnloadAsset(loadedasset.Value);
+                //AssetDatabase模式下不会真正卸载资源(因为没有真正打AB没有真正的依赖关系，只是假的模拟AB加载)
+                //Resources.UnloadAsset(loadedasset.Value);
                 ResourceLogger.log(string.Format("卸载资源:{0}的Asset : {1}", AssetBundleName, loadedasset.Value.name));
             }
         }
