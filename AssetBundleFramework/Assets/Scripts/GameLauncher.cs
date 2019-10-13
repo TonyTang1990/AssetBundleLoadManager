@@ -73,6 +73,16 @@ public class GameLauncher : MonoBehaviour {
     /// </summary>
     private ResourceModuleManager mRMM;
 
+    /// <summary>
+    /// 背景音乐音效组件
+    /// </summary>
+    private AudioSource mBGMAudioSource;
+
+    /// <summary>
+    /// 当前场景背景音乐的资源信息
+    /// </summary>
+    private AbstractResourceInfo mCurrentBGMARI;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
@@ -158,6 +168,8 @@ public class GameLauncher : MonoBehaviour {
 
         // 初始化逻辑层Manager
         GameSceneManager.Singleton.init();
+
+        mBGMAudioSource = GetComponent<AudioSource>();
     }
     
     /// <summary>
@@ -202,6 +214,36 @@ public class GameLauncher : MonoBehaviour {
             var sp = abi.getAsset<Sprite>(image, param2);
             image.sprite = sp;
         });
+    }
+
+    /// <summary>
+    /// 播放背景音乐
+    /// </summary>
+    public void onPlayBGM()
+    {
+        DIYLog.Log("onPlayBGM()");
+        if (mBGMAudioSource != null)
+        {
+            //背景音效是挂载GameLaucher上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
+            if (mCurrentBGMARI != null)
+            {
+                mCurrentBGMARI.releaseOwner(mBGMAudioSource);
+            }
+
+            mRMM.requstResource("backgroundmusic",
+            (ari) =>
+            {
+                mCurrentBGMARI = ari;
+                var clip = ari.getAsset<AudioClip>(mBGMAudioSource, "backgroundmusic");
+                mBGMAudioSource.clip = clip;
+                mBGMAudioSource.loop = true;
+                mBGMAudioSource.Play();
+            });
+        }
+        else
+        {
+            DIYLog.LogError("背景音乐组件为空，无法播放!");
+        }
     }
 
     /// <summary>

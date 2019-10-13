@@ -13,6 +13,5 @@ using UnityEngine;
 /// 音效单例管理类
 /// </summary>
 public class AudioManager : SingletonTemplate<AudioManager> {
-
-
+    
 }

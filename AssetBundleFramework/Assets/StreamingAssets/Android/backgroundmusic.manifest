@@ -1,16 +1,16 @@
 ManifestFileVersion: 0
-CRC: 1283364529
+CRC: 2058636166
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5f59003d9777cccca16ccfa8f2217ce4
+    Hash: 592346a97ea7c8a814514c060889f765
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 6370d3f9de9eca57f523bce048404a46
+    Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
 HashAppended: 0
 ClassTypes:
-- Class: 48
+- Class: 83
   Script: {instanceID: 0}
 Assets:
-- Assets/Res/actors/zombunny/Shaders/Rim Lit Bumped Specular.shader
+- Assets/Res/audios/music/backgroundmusic.mp3
 Dependencies: []

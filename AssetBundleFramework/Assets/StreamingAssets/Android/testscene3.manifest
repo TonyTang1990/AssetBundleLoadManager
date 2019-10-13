@@ -3,7 +3,7 @@ CRC: 1607344855
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3efb06d5dc0234f063ba6a1ad1d2d6b4
+    Hash: 1f2509d09f041ed96a6128c0f1841b80
   TypeTreeHash:
     serializedVersion: 2
     Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
@@ -12,5 +12,5 @@ ClassTypes: []
 Assets:
 - Assets/Res/scenes/TestScene3.unity
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial
 - G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/testscene3prefab
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial

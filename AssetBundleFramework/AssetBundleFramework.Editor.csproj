@@ -326,6 +326,7 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ScenePackageAsset.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ShaderPackageAsset.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\TexturePackageAsset.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetBundleNameSetting.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetDpBrowserWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetImporterExtension.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeHelper.cs" />

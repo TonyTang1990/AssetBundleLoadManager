@@ -1,84 +1,87 @@
 ManifestFileVersion: 0
-CRC: 1365911459
+CRC: 3564502773
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: ambient
-      Dependencies: {}
+      Name: testscene3
+      Dependencies:
+        Dependency_0: testscene3prefab
+        Dependency_1: sharematerial
     Info_1:
-      Name: basictexture
-      Dependencies: {}
+      Name: testscene2
+      Dependencies:
+        Dependency_0: sharematerial
+        Dependency_1: testscene2prefab2
+        Dependency_2: testscene2prefab
     Info_2:
-      Name: diffuse
-      Dependencies: {}
-    Info_3:
       Name: light_off
       Dependencies: {}
+    Info_3:
+      Name: opengl_instanced_draw_call
+      Dependencies: {}
     Info_4:
-      Name: light_on
+      Name: diffuse
       Dependencies: {}
     Info_5:
-      Name: opengl_draw_call_result_picture
+      Name: mouseandkeyboardstudy
       Dependencies: {}
     Info_6:
-      Name: opengl_instanced_draw_call
+      Name: light_on
       Dependencies: {}
     Info_7:
       Name: tutorialcellspritesheet
       Dependencies: {}
     Info_8:
-      Name: mouseandkeyboardstudy
-      Dependencies: {}
-    Info_9:
-      Name: multipletexture
-      Dependencies: {}
-    Info_10:
-      Name: mainwindow
-      Dependencies:
-        Dependency_0: mouseandkeyboardstudy
-    Info_11:
       Name: loadingscreen
       Dependencies: {}
+    Info_9:
+      Name: ambient
+      Dependencies: {}
+    Info_10:
+      Name: opengl_draw_call_result_picture
+      Dependencies: {}
+    Info_11:
+      Name: multipletexture
+      Dependencies: {}
     Info_12:
-      Name: pre_zombunny
-      Dependencies:
-        Dependency_0: shaderlist
-        Dependency_1: zombunnyanimations
+      Name: basictexture
+      Dependencies: {}
     Info_13:
       Name: shaderlist
       Dependencies: {}
     Info_14:
-      Name: zombunnyanimations
-      Dependencies: {}
-    Info_15:
-      Name: sfx1
-      Dependencies: {}
-    Info_16:
-      Name: sfxtemplate
-      Dependencies: {}
-    Info_17:
-      Name: testscene2
-      Dependencies:
-        Dependency_0: testscene2prefab2
-        Dependency_1: testscene2prefab
-        Dependency_2: sharematerial
-    Info_18:
-      Name: testscene3
+      Name: testscene3prefab
       Dependencies:
         Dependency_0: sharematerial
-        Dependency_1: testscene3prefab
+    Info_15:
+      Name: mainwindow
+      Dependencies:
+        Dependency_0: mouseandkeyboardstudy
+    Info_16:
+      Name: sharematerial
+      Dependencies: {}
+    Info_17:
+      Name: zombunnyanimations
+      Dependencies: {}
+    Info_18:
+      Name: pre_zombunny
+      Dependencies:
+        Dependency_0: shaderlist
+        Dependency_1: zombunnyanimations
     Info_19:
       Name: testscene2prefab2
       Dependencies:
         Dependency_0: sharematerial
     Info_20:
+      Name: sfxtemplate
+      Dependencies: {}
+    Info_21:
       Name: testscene2prefab
       Dependencies:
         Dependency_0: sharematerial
-    Info_21:
-      Name: sharematerial
-      Dependencies: {}
     Info_22:
-      Name: testscene3prefab
-      Dependencies:
-        Dependency_0: sharematerial
+      Name: sfx1
+      Dependencies: {}
+    Info_23:
+      Name: backgroundmusic
+      Dependencies: {}

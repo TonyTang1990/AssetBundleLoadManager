@@ -148,6 +148,34 @@ public abstract class AbstractResourceInfo {
     }
 
     /// <summary>
+    /// 移除指定拥有者绑定(用于解决上层绑定对象一直存在导致资源无法释放的问题)
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <returns></returns>
+    public bool releaseOwner(UnityEngine.Object owner)
+    {
+        if (owner == null)
+        {
+            ResourceLogger.logErr(string.Format("引用对象不能为空!无法为资源:{0}解除绑定!", AssetBundleName));
+            return false;
+        }
+
+        var ownerindex = mReferenceOwnerList.FindIndex((ow) => ow.Target.Equals(owner));
+        if (ownerindex != -1)
+        {
+            ResourceLogger.log(string.Format("资源:{0}找到指定绑定对象:{1},解除绑定并减少资源索引计数!", AssetBundleName, owner));
+            mReferenceOwnerList.RemoveAt(ownerindex);
+            release();
+            return true;
+        }
+        else
+        {
+            ResourceLogger.log(string.Format("资源:{0}找不到指定绑定对象:{1},解除绑定失败!", AssetBundleName, owner));
+            return false;
+        }
+    }
+
+    /// <summary>
     /// 为AB添加指定owner的引用
     /// 所有owner都销毁则ab引用计数归零可回收
     /// </summary>
