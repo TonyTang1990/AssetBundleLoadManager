@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             ResourceManager.cs
  * Author:                  TONYTANG
  * Create Date:             2018//10/20
@@ -11,12 +11,12 @@ using UnityEngine;
 
 /// <summary>
 /// ResourceManager.cs
-/// ÉÏ²ã×ÊÔ´ÇëÇóµ¥Àı¹ÜÀíÀà
+/// ä¸Šå±‚èµ„æºè¯·æ±‚å•ä¾‹ç®¡ç†ç±»
 /// </summary>
 public class ResourceManager : SingletonTemplate<ResourceManager> {
 
     /// <summary>
-    /// Ä£¿éÃû
+    /// æ¨¡å—å
     /// </summary>
     public string ModuleName
     {
@@ -27,11 +27,11 @@ public class ResourceManager : SingletonTemplate<ResourceManager> {
     }
 
     /// <summary>
-    /// »ñÈ¡´°¿ÚÊµÀı¶ÔÏó
+    /// è·å–çª—å£å®ä¾‹å¯¹è±¡
     /// </summary>
     /// <param name="wndname"></param>
     /// <returns></returns>
-    public GameObject GetWindowInstance(string wndname)
+    public GameObject getWindowInstance(string wndname)
     {
         GameObject wndinstance = null;
         ResourceModuleManager.Singleton.requstResource(

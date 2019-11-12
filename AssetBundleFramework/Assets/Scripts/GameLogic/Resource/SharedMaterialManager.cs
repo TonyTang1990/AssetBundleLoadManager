@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             SharedMaterialManager.cs
  * Author:                  TONYTANG
  * Create Date:             2018//10/20
@@ -10,7 +10,7 @@ using UnityEngine;
 
 /// <summary>
 /// SharedMaterialManager.cs
-/// ¹²Ïí²ÄÖÊ¹ÜÀíµ¥ÀıÀà
+/// å…±äº«æè´¨ç®¡ç†å•ä¾‹ç±»
 /// </summary>
 public class SharedMaterialManager : SingletonTemplate<SharedMaterialManager> {
 

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             EffectManager.cs
  * Author:                  TONYTANG
  * Create Date:             2018//10/20
@@ -10,7 +10,7 @@ using UnityEngine;
 
 /// <summary>
 /// EffectManager.cs
-/// ÌØĞ§¹ÜÀíµ¥ÀıÀà
+/// ç‰¹æ•ˆç®¡ç†å•ä¾‹ç±»
 /// </summary>
 public class EffectManager : SingletonTemplate<EffectManager> {
 

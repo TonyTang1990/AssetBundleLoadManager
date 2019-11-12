@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AtlasManager.cs
  * Author:                  TONYTANG
  * Create Date:             2018//10/20
@@ -11,7 +11,7 @@ using UnityEngine;
 
 /// <summary>
 /// AtlasManager.cs
-/// Í¼¼¯¹ÜÀíµ¥ÀıÀà
+/// å›¾é›†ç®¡ç†å•ä¾‹ç±»
 /// </summary>
 public class AtlasManager : SingletonTemplate<AtlasManager>
 {

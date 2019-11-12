@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AudioManager.cs
  * Author:                  TONYTANG
  * Create Date:             2018//10/20
@@ -10,7 +10,7 @@ using UnityEngine;
 
 /// <summary>
 /// AudioManager.cs
-/// ÒôĞ§µ¥Àı¹ÜÀíÀà
+/// éŸ³æ•ˆå•ä¾‹ç®¡ç†ç±»
 /// </summary>
 public class AudioManager : SingletonTemplate<AudioManager> {
     

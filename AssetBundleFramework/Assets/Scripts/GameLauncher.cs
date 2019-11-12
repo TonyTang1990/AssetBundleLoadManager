@@ -156,6 +156,8 @@ public class GameLauncher : MonoBehaviour {
         (abi) =>
         {
             abi.loadAllAsset<UnityEngine.Object>();
+            // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+
         },
         ResourceLoadType.PermanentLoad);          // Shader常驻
         mRMM.startResourceRecyclingTask();

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             ModelManager.cs
  * Author:                  TONYTANG
  * Create Date:             2018//10/20
@@ -10,7 +10,7 @@ using UnityEngine;
 
 /// <summary>
 /// ModelManager.cs
-/// Ä£ĞÍ¹ÜÀíµ¥ÀıÀà
+/// æ¨¡å‹ç®¡ç†å•ä¾‹ç±»
 /// </summary>
 public class ModelManager : SingletonTemplate<ModelManager> {
 

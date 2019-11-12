@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             WindowManager.cs
  * Author:                  TONYTANG
  * Create Date:             2018//10/25
@@ -10,7 +10,7 @@ using UnityEngine;
 
 /// <summary>
 /// WindowManager.cs
-/// ´°¿Ú¹ÜÀíµ¥ÀıÀà
+/// çª—å£ç®¡ç†å•ä¾‹ç±»
 /// </summary>
 public class WindowManager : SingletonTemplate<WindowManager>
 {

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             SharedTextureManager.cs
  * Author:                  TONYTANG
  * Create Date:             2018//10/20
@@ -10,7 +10,7 @@ using UnityEngine;
 
 /// <summary>
 /// SharedTextureManager.cs
-/// ¹²ÏíÎÆÀí¹ÜÀíµ¥ÀıÀà
+/// å…±äº«çº¹ç†ç®¡ç†å•ä¾‹ç±»
 /// </summary>
 public class SharedTextureManager : SingletonTemplate<SharedTextureManager> {
 
