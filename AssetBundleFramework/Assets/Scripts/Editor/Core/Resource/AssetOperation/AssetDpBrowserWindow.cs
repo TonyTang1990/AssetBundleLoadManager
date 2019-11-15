@@ -19,8 +19,11 @@ public class AssetDpBrowserWindow : EditorWindow
     /// 依赖资源映射map
     /// Key为选中Asset的路径，Value依赖Asset的路径列表
     /// </summary>
-    private Dictionary<string, List<string>> dpAssetInfoMap;
+    private Dictionary<string, List<string>> dpAssetInfoMap = new Dictionary<string, List<string>>();
 
+    /// <summary>
+    /// 滚动位置
+    /// </summary>
     private Vector2 uiScrollPos;
 
     /// <summary>
@@ -52,13 +55,13 @@ public class AssetDpBrowserWindow : EditorWindow
 
     private void refreshSelections()
     {
-        dpAssetInfoMap = new Dictionary<string, List<string>>();
+        dpAssetInfoMap.Clear();
         var selections = Selection.GetFiltered<Object>(SelectionMode.Assets);
         foreach (var selection in selections)
         {
             var selectionassetpath = AssetDatabase.GetAssetPath(selection);
             var dpassets = AssetDatabase.GetDependencies(selectionassetpath, includeIndirectDp);
-            if(!dpAssetInfoMap.ContainsKey(selectionassetpath))
+            if (!dpAssetInfoMap.ContainsKey(selectionassetpath))
             {
                 dpAssetInfoMap.Add(selectionassetpath, new List<string>());
             }

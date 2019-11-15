@@ -103,6 +103,7 @@ public class GameLauncher : MonoBehaviour {
 
     private void Update()
     {
+        Timer.Singleton.Update();
         ResourceModuleManager.Singleton.Update();
     }
 
@@ -151,15 +152,21 @@ public class GameLauncher : MonoBehaviour {
         HotUpdateModuleManager.Singleton.init();
 
         // 预加载Shader
-        mRMM.requstResource(
-        "shaderlist",
-        (abi) =>
-        {
-            abi.loadAllAsset<UnityEngine.Object>();
-            // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+        //ResourceManager.Singleton.loadAllShader("shaderlist", () =>
+        //{
+        //    // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
 
-        },
-        ResourceLoadType.PermanentLoad);          // Shader常驻
+        //},
+        //ResourceLoadType.PermanentLoad);
+        //mRMM.requstResource(
+        //"shaderlist",
+        //(abi) =>
+        //{
+        //    abi.loadAllAsset<Shader>();
+        //    // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+
+        //},
+        //ResourceLoadType.PermanentLoad);          // Shader常驻
         mRMM.startResourceRecyclingTask();
 
         //初始化版本信息
@@ -180,13 +187,18 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadWindowPrefab()
     {
         DIYLog.Log("onLoadWindowPrefab()");
-        mRMM.requstResource(
-        "mainwindow",
-        (abi) =>
+        ResourceManager.Singleton.getUIInstance("mainwindow", "mainwindow", (arg) =>
         {
-            mMainWindow = abi.instantiateAsset("MainWindow");
+            mMainWindow = arg;
             mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
         });
+        //mRMM.requstResource(
+        //"mainwindow",
+        //(abi) =>
+        //{
+        //    mMainWindow = abi.instantiateAsset("MainWindow");
+        //    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+        //});
     }
 
     /// <summary>
@@ -224,28 +236,30 @@ public class GameLauncher : MonoBehaviour {
     public void onPlayBGM()
     {
         DIYLog.Log("onPlayBGM()");
-        if (mBGMAudioSource != null)
-        {
-            //背景音效是挂载GameLaucher上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
-            if (mCurrentBGMARI != null)
-            {
-                mCurrentBGMARI.releaseOwner(mBGMAudioSource);
-            }
+        AudioManager.Singleton.playBGM("backgroundmusic");
 
-            mRMM.requstResource("backgroundmusic",
-            (ari) =>
-            {
-                mCurrentBGMARI = ari;
-                var clip = ari.getAsset<AudioClip>(mBGMAudioSource, "backgroundmusic");
-                mBGMAudioSource.clip = clip;
-                mBGMAudioSource.loop = true;
-                mBGMAudioSource.Play();
-            });
-        }
-        else
-        {
-            DIYLog.LogError("背景音乐组件为空，无法播放!");
-        }
+        //if (mBGMAudioSource != null)
+        //{
+        //    //背景音效是挂载GameLaucher上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
+        //    if (mCurrentBGMARI != null)
+        //    {
+        //        mCurrentBGMARI.releaseOwner(mBGMAudioSource);
+        //    }
+
+        //    mRMM.requstResource("backgroundmusic",
+        //    (ari) =>
+        //    {
+        //        mCurrentBGMARI = ari;
+        //        var clip = ari.getAsset<AudioClip>(mBGMAudioSource, "backgroundmusic");
+        //        mBGMAudioSource.clip = clip;
+        //        mBGMAudioSource.loop = true;
+        //        mBGMAudioSource.Play();
+        //    });
+        //}
+        //else
+        //{
+        //    DIYLog.LogError("背景音乐组件为空，无法播放!");
+        //}
     }
 
     /// <summary>
@@ -254,25 +268,26 @@ public class GameLauncher : MonoBehaviour {
     public void onPlaySound()
     {
         DIYLog.Log("onPlaySound()");
-        mRMM.requstResource(
-        "sfxtemplate",
-        (abi) =>
-        {
-            mSFXInstance = abi.instantiateAsset("SFXTemplate");
-        });
+        AudioManager.Singleton.playSFXSound("sfx1", "explosion");
+        //mRMM.requstResource(
+        //"sfxtemplate",
+        //(abi) =>
+        //{
+        //    mSFXInstance = abi.instantiateAsset("SFXTemplate");
+        //});
 
-        mRMM.requstResource(
-        "sfx1",
-        (abi) =>
-        {
-            var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");
-            var audiosource = mSFXInstance.GetComponent<AudioSource>();
-            audiosource.clip = ac;
-            audiosource.Play();
-        });
+        //mRMM.requstResource(
+        //"sfx1",
+        //(abi) =>
+        //{
+        //    var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");
+        //    var audiosource = mSFXInstance.GetComponent<AudioSource>();
+        //    audiosource.clip = ac;
+        //    audiosource.Play();
+        //});
 
-        // 延迟10秒后删除音效实体对象，测试AB加载管理回收
-        CoroutineManager.Singleton.delayedCall(10.0f, () => { GameObject.Destroy(mSFXInstance); });
+        //// 延迟10秒后删除音效实体对象，测试AB加载管理回收
+        //CoroutineManager.Singleton.delayedCall(10.0f, () => { GameObject.Destroy(mSFXInstance); });
     }
 
 
@@ -283,21 +298,18 @@ public class GameLauncher : MonoBehaviour {
     {
         DIYLog.Log("onLoadMaterial()");
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
-        Material mat = null;
-        mRMM.requstResource(
-        "sharematerial",
-        (abi) =>
+        var image = btnloadmat.GetComponent<Image>();
+        ResourceManager.Singleton.getShareMaterial(image, "sharematerial", "sharematerial", (arg)=>
         {
-            var matasset = abi.getAsset<Material>(btnloadmat.gameObject, "sharematerial");
-            mat = GameObject.Instantiate<Material>(matasset);
+            Material mat = arg;
+            image.material = mat;
+            //延时测试材质回收
+            CoroutineManager.Singleton.delayedCall(10.0f, () =>
+            {
+                Destroy(mat);
+            });
         });
-        btnloadmat.GetComponent<Image>().material = mat;
 
-        //延时测试材质回收
-        CoroutineManager.Singleton.delayedCall(10.0f, () =>
-        {
-            Destroy(mat);
-        });
     }
 
     /// <summary>
@@ -306,12 +318,16 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadActorPrefab()
     {
         DIYLog.Log("onLoadActorPrefab()");
-        mRMM.requstResource(
-        "pre_zombunny",
-        (abi) =>
+        ModelManager.Singleton.getModelInstance("pre_zombunny", (arg) =>
         {
-            mActorInstance = abi.instantiateAsset("pre_Zombunny");
-        });  
+            mActorInstance = arg;
+        });
+        //mRMM.requstResource(
+        //"pre_zombunny",
+        //(abi) =>
+        //{
+        //    mActorInstance = abi.instantiateAsset("pre_Zombunny");
+        //});
     }
 
     /// <summary>
@@ -332,13 +348,14 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("onPreloadAtlas()");
         var param1 = InputParam1.text;
         DIYLog.Log("Param1 = " + param1);
-        mRMM.requstResource(
-        param1,
-        (abi) =>
-        {
-            abi.loadAllAsset<Sprite>();
-        },
-        ResourceLoadType.Preload);
+        AtlasManager.Singleton.loadAtlas(param1, null, ResourceLoadType.Preload);
+        //mRMM.requstResource(
+        //param1,
+        //(abi) =>
+        //{
+        //    abi.loadAllAsset<Sprite>();
+        //},
+        //ResourceLoadType.Preload);
     }
 
 
@@ -348,13 +365,19 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadPermanentShaderList()
     {
         DIYLog.Log("onLoadPermanentShaderList()");
-        mRMM.requstResource(
-        "shaderlist",
-        (abi) =>
+        ResourceManager.Singleton.loadAllShader("shaderlist", ()=>
         {
+            // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
 
         },
-        ResourceLoadType.PermanentLoad);          // Shader常驻
+        ResourceLoadType.PermanentLoad);
+        //mRMM.requstResource(
+        //"shaderlist",
+        //(abi) =>
+        //{
+        //    abi.loadAllAsset<Shader>();
+        //},
+        //ResourceLoadType.PermanentLoad);          // Shader常驻
     }
 
 

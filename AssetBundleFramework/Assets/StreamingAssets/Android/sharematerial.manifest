@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 751211443
+CRC: 169167536
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6f0cbbef596118b9d9777cbafd7ab09b
+    Hash: 2548439663d4918a7f5c1e869abe05d2
   TypeTreeHash:
     serializedVersion: 2
     Hash: 51a16e16d5113854a16091e54ae5bb0d
@@ -15,4 +15,5 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Res/sharematerials/sharematerial.mat
-Dependencies: []
+Dependencies:
+- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist

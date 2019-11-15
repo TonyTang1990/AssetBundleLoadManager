@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2011858016
+CRC: 984985408
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -51,7 +51,8 @@ AssetBundleManifest:
       Dependencies: {}
     Info_14:
       Name: sharematerial
-      Dependencies: {}
+      Dependencies:
+        Dependency_0: shaderlist
     Info_15:
       Name: zombunnyanimations
       Dependencies: {}
@@ -85,3 +86,6 @@ AssetBundleManifest:
       Name: testscene2prefab
       Dependencies:
         Dependency_0: sharematerial
+    Info_24:
+      Name: imgspritedefault
+      Dependencies: {}
