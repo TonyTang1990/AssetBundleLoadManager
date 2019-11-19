@@ -367,7 +367,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("onLoadPermanentShaderList()");
         ResourceManager.Singleton.loadAllShader("shaderlist", ()=>
         {
-            // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+
 
         },
         ResourceLoadType.PermanentLoad);
@@ -378,6 +378,24 @@ public class GameLauncher : MonoBehaviour {
         //    abi.loadAllAsset<Shader>();
         //},
         //ResourceLoadType.PermanentLoad);          // Shader常驻
+    }
+
+    /// <summary>
+    /// 预加载Shader变体
+    /// </summary>
+    public void onPreloadShaderVariants()
+    {
+        DIYLog.Log("onPreloadShaderVariants()");
+        // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+        ResourceModuleManager.Singleton.requstResource(
+       "shaderlist",
+       (abi) =>
+       {
+           var svc = abi.loadAsset<ShaderVariantCollection>("DIYShaderVariantsCollection");
+           // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+           svc.WarmUp();
+       },
+       ResourceLoadType.PermanentLoad);
     }
 
 

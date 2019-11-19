@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 984985408
+CRC: 3816912528
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -89,3 +89,7 @@ AssetBundleManifest:
     Info_24:
       Name: imgspritedefault
       Dependencies: {}
+    Info_25:
+      Name: pre_cube
+      Dependencies:
+        Dependency_0: sharematerial

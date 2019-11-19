@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AssetDpBuildInBrowserWindow.cs
  * Author:                  TANGHUAN
  * Create Date:             2019//11/13
@@ -12,27 +12,27 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// AssetÒÀÀµÄÚÖÃ×ÊÔ´²é¿´´°¿Ú
+/// Assetä¾èµ–å†…ç½®èµ„æºæŸ¥çœ‹çª—å£
 /// </summary>
 public class AssetDpBuildInBrowserWindow : EditorWindow
 {
     /// <summary>
-    /// ÄÚÖÃ×ÊÔ´Ãû×Ö
+    /// å†…ç½®èµ„æºåå­—
     /// </summary>
     private const string BuildInResourceName = "Resources/unity_builtin_extra";
 
     /// <summary>
-    /// ¹ö¶¯Î»ÖÃ
+    /// æ»šåŠ¨ä½ç½®
     /// </summary>
     private Vector2 uiScrollPos;
 
     /// <summary>
-    /// ÒÀÀµÄÚÖÃ×ÊÔ´µÄAssetÓ³Éämap
-    /// KeyÎªÑ¡ÖĞAssetµÄÂ·¾¶£¬ValueÎªAssetÊ¹ÓÃÁËÄÚÖÃShaderµÄ½ÚµãÃûÁĞ±í
+    /// ä¾èµ–å†…ç½®èµ„æºçš„Assetæ˜ å°„map
+    /// Keyä¸ºé€‰ä¸­Assetçš„è·¯å¾„ï¼ŒValueä¸ºAssetä½¿ç”¨äº†å†…ç½®Shaderçš„èŠ‚ç‚¹ååˆ—è¡¨
     /// </summary>
     private Dictionary<string, List<string>> mReferenceBuildInAssetMap = new Dictionary<string, List<string>>();
 
-    [MenuItem("Tools/Assets/Í³¼ÆÄÚÖÃ×ÊÔ´ÒıÓÃAsset", false)]
+    [MenuItem("Tools/Assets/ç»Ÿè®¡å†…ç½®èµ„æºå¼•ç”¨Asset", false)]
     public static void dpAssetBrowser()
     {
         var assetdpbuildinwindow = EditorWindow.GetWindow<AssetDpBuildInBrowserWindow>();
@@ -43,7 +43,7 @@ public class AssetDpBuildInBrowserWindow : EditorWindow
     {
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Í³¼ÆÄÚÖÃShaderÒıÓÃAsset", GUILayout.MaxWidth(200.0f)))
+        if (GUILayout.Button("ç»Ÿè®¡å†…ç½®Shaderå¼•ç”¨Asset", GUILayout.MaxWidth(200.0f)))
         {
             analyzeBuildInShaderReferenceAsset();
         }
@@ -60,17 +60,17 @@ public class AssetDpBuildInBrowserWindow : EditorWindow
     }
 
     /// <summary>
-    /// ÏÔÊ¾Ê¹ÓÃÁËÄÚÖÃShaderµÄ×ÊÔ´ĞÅÏ¢UI
+    /// æ˜¾ç¤ºä½¿ç”¨äº†å†…ç½®Shaderçš„èµ„æºä¿¡æ¯UI
     /// </summary>
     /// <param name="assetpath"></param>
     /// <param name="nodenamelist"></param>
     private void showReferenceAssetUI(string assetpath, List<string> nodenamelist)
     {
-        GUILayout.Label("AssetÂ·¾¶:");
+        GUILayout.Label("Assetè·¯å¾„:");
         GUILayout.Label(assetpath);
         if(nodenamelist.Count > 0)
         {
-            GUILayout.Label("Ê¹ÓÃÁËÄÚÖÃShaderµÄ½ÚµãÃû:");
+            GUILayout.Label("ä½¿ç”¨äº†å†…ç½®Shaderçš„èŠ‚ç‚¹å:");
             foreach (var nodename in nodenamelist)
             {
                 GUILayout.Label(nodename);
@@ -80,7 +80,7 @@ public class AssetDpBuildInBrowserWindow : EditorWindow
     }
 
     /// <summary>
-    /// Í³¼ÆÄÚÖÃShaderÒıÓÃAsset
+    /// ç»Ÿè®¡å†…ç½®Shaderå¼•ç”¨Asset
     /// </summary>
     private void analyzeBuildInShaderReferenceAsset()
     {
@@ -107,7 +107,7 @@ public class AssetDpBuildInBrowserWindow : EditorWindow
     }
 
     /// <summary>
-    /// Ö¸¶¨²ÄÖÊÊÇ·ñÊ¹ÓÃÁËÄÚÖÃShader
+    /// æŒ‡å®šæè´¨æ˜¯å¦ä½¿ç”¨äº†å†…ç½®Shader
     /// </summary>
     /// <param name="asset"></param>
     /// <param name="nodenamelist"></param>
@@ -140,7 +140,7 @@ public class AssetDpBuildInBrowserWindow : EditorWindow
                     isusingbuildinshader = true;
                 }
             }
-            // UI×é¼ş
+            // UIç»„ä»¶
             var allgraphics = prefab.GetComponentsInChildren<Graphic>();
             foreach(var graphic in allgraphics)
             {
@@ -159,7 +159,7 @@ public class AssetDpBuildInBrowserWindow : EditorWindow
     }
 
     /// <summary>
-    /// ³¢ÊÔÌí¼ÓAssetµÄÄÚÖÃShaderµÄÒıÓÃĞÅÏ¢
+    /// å°è¯•æ·»åŠ Assetçš„å†…ç½®Shaderçš„å¼•ç”¨ä¿¡æ¯
     /// </summary>
     /// <param name="assetpath"></param>
     /// <param name="nodenamelist"></param>
@@ -180,7 +180,7 @@ public class AssetDpBuildInBrowserWindow : EditorWindow
     }
 
     /// <summary>
-    /// ÊÇ·ñÊÇÄÚÖÃShader
+    /// æ˜¯å¦æ˜¯å†…ç½®Shader
     /// </summary>
     /// <param name="shader"></param>
     /// <returns></returns>

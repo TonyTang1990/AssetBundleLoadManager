@@ -43,7 +43,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
         resname,
         (abi) =>
         {
-            abi.loadAllAsset<UnityEngine.Object>();
+            abi.loadAllAsset<Shader>();
             callback?.Invoke();
         },
         loadtype,
