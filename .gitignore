@@ -2,9 +2,8 @@
 # 过滤library目录
 AssetBundleFramework/Library/
 # 过滤.vs目录
-.vs/
+AssetBundleFramework/.vs/
 # 过滤Temp目录
-Temp/
-# 过滤cs工程文件
-*.csproj
-*.sln
+AssetBundleFramework/Temp/
+# 过滤obj目录
+AssetBundleFramework/obj/
