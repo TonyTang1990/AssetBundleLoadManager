@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -33,6 +34,26 @@ public class ShaderVariantsCollectionWindow : EditorWindow
     /// </summary>
     private GameObject SVCCubeParentGo;
 
+    /// <summary>
+    /// 是否完成Shader变体收集
+    /// </summary>
+    private bool mCompleteSVC;
+
+    /// <summary>
+    /// 是否完成动态Cube创建
+    /// </summary>
+    private bool mCompleteDynamicCubeInstantiate;
+
+    /// <summary>
+    /// 动态创建Cube的生存时长
+    /// </summary>
+    private const float mDynamicCubeLifeTime = 2.0f;
+
+    /// <summary>
+    /// 经历的时间
+    /// </summary>
+    private float mTimePassed;
+
     [MenuItem("Tools/Assetbundle/Shader变体搜集窗口", false)]
     public static void shaderVaraintsCollectWindow()
     {
@@ -44,28 +65,50 @@ public class ShaderVariantsCollectionWindow : EditorWindow
     {
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("搜集Shader变体", GUILayout.MaxWidth(200.0f)))
+        if (GUILayout.Button("搜集Shader变体", GUILayout.MaxWidth(150.0f)))
         {
             collectAllShaderVariants();
         }
-        if (GUILayout.Button("切换到变体搜集场景", GUILayout.MaxWidth(200.0f)))
+        if (GUILayout.Button("切换到变体搜集场景", GUILayout.MaxWidth(150.0f)))
         {
             openShaderVariantsCollectScene();
         }
-        if (GUILayout.Button("清理变体", GUILayout.MaxWidth(200.0f)))
+        if (GUILayout.Button("清理变体", GUILayout.MaxWidth(150.0f)))
         {
             clearAllShaderVariants();
         }
-        if (GUILayout.Button("创建Cube使用有效材质", GUILayout.MaxWidth(200.0f)))
+        if (GUILayout.Button("创建Cube使用有效材质", GUILayout.MaxWidth(150.0f)))
         {
             createAllValideMaterialCude();
         }
-        if (GUILayout.Button("触发变体搜集", GUILayout.MaxWidth(200.0f)))
+        if (GUILayout.Button("触发变体搜集", GUILayout.MaxWidth(150.0f)))
         {
             doShaderVariantsCollect();
         }
+        if (GUILayout.Button("测试Async Await", GUILayout.MaxWidth(150.0f)))
+        {
+            Debug.Log("Before Call TestAsync()");
+            var task = TestAsync1();
+            task.Wait();
+            Debug.Log("After Call TestAsync()");
+        }
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
+    }
+
+    void Update()
+    {
+        //if (mCompleteDynamicCubeInstantiate)
+        //{
+        //    mTimePassed += Time.deltaTime;
+
+        //    if (mTimePassed >= mDynamicCubeLifeTime)
+        //    {
+        //        mCompleteDynamicCubeInstantiate = false;
+        //        mTimePassed = 0f;
+        //        doShaderVariantsCollect();
+        //    }
+        //}
     }
 
     /// <summary>
@@ -75,15 +118,17 @@ public class ShaderVariantsCollectionWindow : EditorWindow
     {
         ShaderCollectRootFolderPath = Application.dataPath;
         ShaderVariantOuputFolderPath = Application.dataPath + "/Res/shadervariants";
+        mCompleteSVC = false;
+        mCompleteDynamicCubeInstantiate = false;
         // Shader变体搜集流程
         // 1. 打开Shader变体搜集场景
         // 2. 清除Shader变体搜集数据
         // 3. 并排创建使用每一个有效材质的Cube渲染一帧
         // 4. 触发变体搜集并保存变体搜集文件
-        openShaderVariantsCollectScene();
-        clearAllShaderVariants();
-        createAllValideMaterialCude();
-        doShaderVariantsCollect();
+        openShaderVariantsCollectScene();//.Wait();
+        clearAllShaderVariants();//.Wait();
+        createAllValideMaterialCude();//.Wait();
+        doShaderVariantsCollect();//.Wait();
 
         //ShaderCollection.GenShaderVariant(ShaderCollectRootFolderPath, ShaderVariantOuputFolderPath);
     }
@@ -96,6 +141,8 @@ public class ShaderVariantsCollectionWindow : EditorWindow
         Debug.Log("clearAllShaderVariants()");
         MethodInfo clearcurrentsvc = typeof(ShaderUtil).GetMethod("ClearCurrentShaderVariantCollection", BindingFlags.NonPublic | BindingFlags.Static);
         clearcurrentsvc.Invoke(null, null);
+        Debug.Log("清除Shader变体数据!");
+        //await Task.Delay(1000);
     }
 
     /// <summary>
@@ -105,6 +152,8 @@ public class ShaderVariantsCollectionWindow : EditorWindow
     {
         Debug.Log("openShaderVariantsCollectScene()");
         EditorSceneManager.OpenScene("Assets/Res/scenes/ShaderVariantsCollectScene.unity");
+        Debug.Log("打开Shader变体收集场景!");
+        //await Task.Delay(1000);
     }
 
     /// <summary>
@@ -115,7 +164,7 @@ public class ShaderVariantsCollectionWindow : EditorWindow
         Debug.Log("createAllValideMaterialCude()");
         SVCCubeParentGo = new GameObject("SVCCubeParentGo");
         SVCCubeParentGo.transform.position = Vector3.zero;
-        var posoffset = new Vector3(0.2f, 0f, 0f);
+        var posoffset = new Vector3(0.05f, 0f, 0f);
         var cubeworldpos = Vector3.zero;
         var svccubetemplate = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Res/prefabs/pre_SVCCube.prefab");
         var allmatassets = getAllValideMaterial();
@@ -128,6 +177,11 @@ public class ShaderVariantsCollectionWindow : EditorWindow
             cube.transform.SetParent(SVCCubeParentGo.transform);
         }
         EditorSceneManager.SaveOpenScenes();
+        //mCompleteDynamicCubeInstantiate = true;
+        //延时等待一会，确保变体数据更新
+        Debug.Log("创建完Cube，开始等待两秒!");
+        //await Task.Delay(2000);
+        Debug.Log("创建完Cube，等待两秒完成!");
     }
 
     /// <summary>
@@ -160,6 +214,8 @@ public class ShaderVariantsCollectionWindow : EditorWindow
         }
         GameObject.DestroyImmediate(SVCCubeParentGo);
         EditorSceneManager.SaveOpenScenes();
+        Debug.Log("保存完Shader变体文件!");
+        //await Task.Delay(1000);
     }
 
     /// <summary>
@@ -202,4 +258,33 @@ public class ShaderVariantsCollectionWindow : EditorWindow
         }
         return allmatassets;
     }
+
+    #region Async Await
+    /// <summary>
+    /// 测试关键字Async Await的异步用法
+    /// </summary>
+    /// <returns></returns>
+    private static async Task TestAsync1()
+    {
+        Debug.Log("TestAsync1()");
+        var result = await TestAsync2();
+        Debug.Log("Get result from TestAsync2()");
+    }
+
+    /// <summary>
+    /// 测试关键字Async Await的异步用法
+    /// </summary>
+    /// <returns></returns>
+    private static async Task<bool> TestAsync2()
+    {
+        Debug.Log("TestAsync2()");
+        var result = await Task.Run<bool>(() => { return true; });
+        Debug.Log("result1 = " + result);
+        result = await Task.Run<bool>(() => { return false; });
+        Debug.Log("result2 = " + result);
+        result = await Task.Run<bool>(() => { return true; });
+        Debug.Log("result3 = " + result);
+        return result;
+    }
+    #endregion
 }
