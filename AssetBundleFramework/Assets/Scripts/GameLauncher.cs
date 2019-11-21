@@ -154,19 +154,9 @@ public class GameLauncher : MonoBehaviour {
         // 预加载Shader
         //ResourceManager.Singleton.loadAllShader("shaderlist", () =>
         //{
-        //    // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
 
         //},
         //ResourceLoadType.PermanentLoad);
-        //mRMM.requstResource(
-        //"shaderlist",
-        //(abi) =>
-        //{
-        //    abi.loadAllAsset<Shader>();
-        //    // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
-
-        //},
-        //ResourceLoadType.PermanentLoad);          // Shader常驻
         mRMM.startResourceRecyclingTask();
 
         //初始化版本信息

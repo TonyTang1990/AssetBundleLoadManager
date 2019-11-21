@@ -65,7 +65,7 @@ public class FBXAnimationExtract {
                     var animationfolderpath = fbxfolderpath + "/" + fbxfilename + "Animations/";
                     var animationassetname = fbxobj.name + ".anim";
                     var animationassetfullpath = animationfolderpath + animationassetname;
-                    Utilities.checkAndCreateSpecificFolder(animationfolderpath);
+                    Utilities.CheckAndCreateSpecificFolder(animationfolderpath);
                     AssetDatabase.CreateAsset(temp, animationassetfullpath);
                     animationcliplist.Add(temp);
                 }

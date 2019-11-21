@@ -174,7 +174,7 @@ public class PackageAsset{
                         abname = mAssetObject.name;
                         break;
                     case AssetABBuildRule.E_MUTILPLE:
-                        abname = Utilities.getFileFolderName(mAssetPath);
+                        abname = Utilities.GetFileFolderName(mAssetPath);
                         break;
                     case AssetABBuildRule.E_NORMAL:
                         // 递归判定出最底层Asset最终Normal规则打包的AB名字

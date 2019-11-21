@@ -38,7 +38,7 @@ public static class Utilities
     /// <summary>
     /// 检查指定目录是否存在，不存在创建一个
     /// </summary>
-    public static void checkAndCreateSpecificFolder(string folderpath)
+    public static void CheckAndCreateSpecificFolder(string folderpath)
     {
         if (!Directory.Exists(folderpath))
         {
@@ -49,7 +49,7 @@ public static class Utilities
     /// <summary>
     /// 无论目录是否存在都删除所有文件重新创建一个目录
     /// </summary>
-    public static void recreateSpecificFolder(string folderpath)
+    public static void RecreateSpecificFolder(string folderpath)
     {
         if (Directory.Exists(folderpath))
         {
@@ -63,7 +63,7 @@ public static class Utilities
     /// </summary>
     /// <param name="filepath"></param>
     /// <returns></returns>
-    public static string getFileFolderName(string filepath)
+    public static string GetFileFolderName(string filepath)
     {
         return Path.GetFileName(Path.GetDirectoryName(filepath));
     }
@@ -73,7 +73,7 @@ public static class Utilities
     /// </summary>
     /// <param name="filefullpath"></param>
     /// <param name="obj"></param>
-    public static void serializeDataToFile(string filefullpath, object obj)
+    public static void SerializeDataToFile(string filefullpath, object obj)
     {
         var bf = new BinaryFormatter();
         var s = new FileStream(filefullpath, FileMode.CreateNew, FileAccess.Write);
@@ -86,7 +86,7 @@ public static class Utilities
     /// </summary>
     /// <param name="filefullpath"></param>
     /// <returns></returns>
-    public static System.Object deserializeDataFromFile(string filefullpath)
+    public static System.Object DeserializeDataFromFile(string filefullpath)
     {
         var bf = new BinaryFormatter();
         TextAsset text = Resources.Load<TextAsset>(filefullpath);

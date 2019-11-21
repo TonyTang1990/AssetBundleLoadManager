@@ -507,7 +507,7 @@ public class ABHelper : SingletonTemplate<ABHelper> {
     /// </summary>
     public void checkShaderBuildFolder()
     {
-        Utilities.checkAndCreateSpecificFolder(mFinalShaderPath);
+        Utilities.CheckAndCreateSpecificFolder(mFinalShaderPath);
     }
 
     /// <summary>

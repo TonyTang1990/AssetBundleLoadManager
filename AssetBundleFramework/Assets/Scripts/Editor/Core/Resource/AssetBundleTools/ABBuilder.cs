@@ -173,7 +173,7 @@ public class ABBuilder {
             return false;
         }
 
-        Utilities.checkAndCreateSpecificFolder(ABHelper.Singleton.CurrentPlatformABPath);
+        Utilities.CheckAndCreateSpecificFolder(ABHelper.Singleton.CurrentPlatformABPath);
         
         // Asset打包映射map，Key為Asset相对路径，Value为Asset打包抽象对象
         // 用于整理出Asset的层级关系，确保每一个Asset只对应一个PackageAsset抽象对象

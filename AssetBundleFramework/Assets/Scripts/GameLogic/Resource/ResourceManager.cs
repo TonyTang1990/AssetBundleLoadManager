@@ -43,6 +43,10 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
         resname,
         (abi) =>
         {
+            var svc = abi.loadAsset<ShaderVariantCollection>("DIYShaderVariantsCollection");
+            // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+            svc?.WarmUp();
+            // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
             abi.loadAllAsset<Shader>();
             callback?.Invoke();
         },
