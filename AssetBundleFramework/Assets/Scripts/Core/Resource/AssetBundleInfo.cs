@@ -21,72 +21,9 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
         get;
         set;
     }
-
-    /*
-    /// <summary> AB名字 /// </summary>
-    public string AssetBundleName
-    {
-        get;
-        set;
-    }
-
-    /// <summary>
-    /// 上一次使用的有效时间(用于回收策略判定，比如越久未使用先回收，0.0f表示被回收或者未被使用)
-    /// </summary>
-    public float LastUsedTime
-    {
-        get;
-        private set;
-    }
-
-    /// <summary> 是否不再有人使用 /// </summary>
-    public bool IsUnsed
-    {
-        get { return mIsReady && RefCount <= 0 && updateOwnerReference() == 0; }
-    }
-
-    /// <summary> AB是否已经加载完成 /// </summary>
-    public bool mIsReady;
-
-    /// <summary>
-    /// AB里的所有Asset是否已经加载完(仅用于判定通过AssetBundle.LoadAllAssets()或者AssetBundle.LoadAllAssetsAsync()的加载方式)
-    /// </summary>
-    private bool mIsAllAssetLoaded;
-    */
-
+    
     /// <summary> 当前AB依赖AB的信息组 /// </summary>
     private HashSet<AssetBundleInfo> mDepAssetBundleInfoSets;
-
-    /*
-    /// <summary> AB引用计数 /// </summary>
-    public int RefCount
-    {
-        get
-        {
-            return mRefCount;
-        }
-    }
-    private int mRefCount;
-
-    /// <summary>
-    /// 引用对象列表
-    /// 用于判定引用AB的对象是否依然有效(还在使用未销毁)
-    /// </summary>
-    public List<System.WeakReference> ReferenceOwnerList
-    {
-        get
-        {
-            return mReferenceOwnerList;
-        }
-    }
-    private List<System.WeakReference> mReferenceOwnerList;
-
-    /// <summary>
-    /// 已加载的Asset映射map
-    /// Key为Asset名字，Value为对应Asset对象
-    /// </summary>
-    private Dictionary<string, UnityEngine.Object> mLoadedAssetMap;
-    */
 
     public AssetBundleInfo()
     {
