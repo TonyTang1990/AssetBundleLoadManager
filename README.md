@@ -232,8 +232,6 @@ Note:
     ResourceLoadType.PermanentLoad);          // Shader常驻
 ```
 
-
-
 ## 热更新模块
 
 ### 类说明
@@ -309,10 +307,37 @@ HFS的测试资源见目录(\HotUpdate\HFS)
 
 [**XbufferExcellToData**](https://github.com/TonyTang1990/XbufferExcellToData)
 
+## 辅助功能模块
+
+### 资源处理分析
+
+1. 支持资源依赖统计(不限资源类型)
+2. 支持内置资源引用分析
+3. 支持内置资源提取(限材质和纹理，不包含Shader是考虑到Shader可以自行下载) 
+4. 支持shader变体搜集(半成品)
+
+资源辅助工具三件套：
+
+1. 资源依赖查看工具
+
+   ![AssetDependenciesBrowser](./img/Unity/AssetBundle-Framework/AssetDependenciesBrowser.png)
+
+2. 内置资源依赖统计工具(只统计了*.mat和*.prefab，场景建议做成Prefab来统计)
+
+   ![BuildInResourceReferenceAnalyze](./img/Unity/AssetBundle-Framework/BuildInResourceReferenceAnalyze.png)
+
+ 3. 内置资源提取工具
+
+    ![BuildInResourceExtraction](./img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png)
+
+4. Shader变体搜集工具
+
+   ![ShaderVariantsCollection](./img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png) 
+
 # 待做事项
 
 1.  ~~编辑器模式支持AssetDatabase的资源回收以及类型分类( 1. 正常加载 2.预加载 3. 永久加载)~~
-2.  优化AssetBundle模式绑定同一组件对象时，老的资源无法及时释放问题(因为没有挂载任何有效信息，现阶段的抽象无法反推原有组件绑定的资源信息，无法及时释放老的资源加载信息)
+2.  优化AssetBundle模式绑定同一组件对象时，老的资源无法及时释放问题(因为没有挂载任何有效信息，现阶段的抽象无法反推原有组件绑定的资源信息，无法及时释放老的资源加载信息)(考虑重写部分组件来解决此问题 e.g. 重写Image成TImage后保持索引基数对象来保证关联性)
 3.  支持编辑器模式下AssetDatabase资源异步加载(方便暴露出AssetBundle加载模式下的异步问题)
 4.  ~~支持真机资源热更以及版本强更(**热更模块**)~~
 5.  支持真机代码热更(Lua + XLua)
