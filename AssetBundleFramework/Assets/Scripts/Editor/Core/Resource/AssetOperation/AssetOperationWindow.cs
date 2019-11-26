@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AssetOperationWindow.cs
  * Author:                  TANGHUAN
  * Create Date:             2019//11/21
@@ -16,33 +16,33 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Asset´¦Àí´°¿Ú
+/// Assetå¤„ç†çª—å£
 /// </summary>
 public class AssetOperationWindow : EditorWindow
 {
     /// <summary>
-    /// Asset´¦ÀíÀàĞÍ
+    /// Assetå¤„ç†ç±»å‹
     /// </summary>
     public enum EAssetOperationType
     {
-        Invalide = 1,                               // ÎŞĞ§ÀàĞÍ
-        AssetDependencyBrowser,                     // AssetÒÀÀµÎÄ¼ş²é¿´ÀàĞÍ
-        AssetBuildInResourceRefAnalyze,             // AssetÄÚÖÃ×ÊÔ´ÒıÓÃÍ³¼ÆÀàĞÍ
-        AssetBuildInResourceRefExtraction,          // AssetÄÚÖÃ×ÊÔ´ÒıÓÃÌáÈ¡ÀàĞÍ
-        ShaderVariantsCollection,                   // Shader±äÌåËÑ¼¯´°¿Ú
+        Invalide = 1,                               // æ— æ•ˆç±»å‹
+        AssetDependencyBrowser,                     // Assetä¾èµ–æ–‡ä»¶æŸ¥çœ‹ç±»å‹
+        AssetBuildInResourceRefAnalyze,             // Assetå†…ç½®èµ„æºå¼•ç”¨ç»Ÿè®¡ç±»å‹
+        AssetBuildInResourceRefExtraction,          // Assetå†…ç½®èµ„æºå¼•ç”¨æå–ç±»å‹
+        ShaderVariantsCollection,                   // Shaderå˜ä½“æœé›†çª—å£
     }
 
     /// <summary>
-    /// Asset´¦ÀíÀàĞÍ
+    /// Assetå¤„ç†ç±»å‹
     /// </summary>
     private EAssetOperationType mAssetOperationType = EAssetOperationType.Invalide;
 
     /// <summary>
-    /// ¹ö¶¯Î»ÖÃ
+    /// æ»šåŠ¨ä½ç½®
     /// </summary>
     private Vector2 uiScrollPos;
 
-    [MenuItem("Tools/Assets/AssetÏà¹Ø´¦Àí¹¤¾ß", false)]
+    [MenuItem("Tools/Assets/Assetç›¸å…³å¤„ç†å·¥å…·", false)]
     public static void dpAssetBrowser()
     {
         var assetoperationwindow = EditorWindow.GetWindow<AssetOperationWindow>();
@@ -53,10 +53,10 @@ public class AssetOperationWindow : EditorWindow
     {
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
-        includeIndirectDp = GUILayout.Toggle(includeIndirectDp, "ÊÇ·ñ°üº¬¼ä½ÓÒıÓÃ");
-        GUILayout.Label("×ÊÔ´ºó×º¹ıÂË:");
+        includeIndirectDp = GUILayout.Toggle(includeIndirectDp, "æ˜¯å¦åŒ…å«é—´æ¥å¼•ç”¨");
+        GUILayout.Label("èµ„æºåç¼€è¿‡æ»¤:");
         postFixFilter = GUILayout.TextField(postFixFilter, GUILayout.MaxWidth(200.0f));
-        if (GUILayout.Button("²é¿´Ñ¡ÖĞAssetÒÀÀµ", GUILayout.MaxWidth(150.0f)))
+        if (GUILayout.Button("æŸ¥çœ‹é€‰ä¸­Assetä¾èµ–", GUILayout.MaxWidth(150.0f)))
         {
             mAssetOperationType = EAssetOperationType.AssetDependencyBrowser;
             refreshAssetDepBrowserSelections();
@@ -66,13 +66,13 @@ public class AssetOperationWindow : EditorWindow
         GUILayout.Space(10);
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Í³¼ÆÄÚÖÃ×ÊÔ´ÒıÓÃAsset", GUILayout.MaxWidth(150.0f)))
+        if (GUILayout.Button("ç»Ÿè®¡å†…ç½®èµ„æºå¼•ç”¨Asset", GUILayout.MaxWidth(150.0f)))
         {
             mAssetOperationType = EAssetOperationType.AssetBuildInResourceRefAnalyze;
             analyzeBuildInResourceReferenceAsset();
         }
         GUILayout.Space(10);
-        if (GUILayout.Button("ÌáÈ¡Ñ¡ÖĞ¶ÔÏóÄÚÖÃ×ÊÔ´", GUILayout.MaxWidth(150.0f)))
+        if (GUILayout.Button("æå–é€‰ä¸­å¯¹è±¡å†…ç½®èµ„æº", GUILayout.MaxWidth(150.0f)))
         {
             mAssetOperationType = EAssetOperationType.AssetBuildInResourceRefExtraction;
             var selectiongo = Selection.activeGameObject;
@@ -82,11 +82,11 @@ public class AssetOperationWindow : EditorWindow
             }
             else
             {
-                Debug.Log("ÇëÏÈÑ¡ÖĞÓĞĞ§ÌáÈ¡¶ÔÏó,Ö»Ö§³ÖGameObject!");
+                Debug.Log("è¯·å…ˆé€‰ä¸­æœ‰æ•ˆæå–å¯¹è±¡,åªæ”¯æŒGameObject!");
             }
         }
         GUILayout.Space(10);
-        if (GUILayout.Button("ËÑ¼¯Shader±äÌå", GUILayout.MaxWidth(150.0f)))
+        if (GUILayout.Button("æœé›†Shaderå˜ä½“", GUILayout.MaxWidth(150.0f)))
         {
             mAssetOperationType = EAssetOperationType.ShaderVariantsCollection;
             collectAllShaderVariants();
@@ -98,12 +98,12 @@ public class AssetOperationWindow : EditorWindow
     }
 
     /// <summary>
-    /// ÏÔÊ¾ÄÚÖÃ×ÊÔ´ÒıÓÃ½á¹û
+    /// æ˜¾ç¤ºå†…ç½®èµ„æºå¼•ç”¨ç»“æœ
     /// </summary>
     private void displayAssetOperationResult()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Asset´¦ÀíÀàĞÍ:" + mAssetOperationType);
+        GUILayout.Label("Assetå¤„ç†ç±»å‹:" + mAssetOperationType);
         GUILayout.EndHorizontal();
         switch (mAssetOperationType)
         {
@@ -125,25 +125,25 @@ public class AssetOperationWindow : EditorWindow
         }
     }
 
-    #region AssetÒÀÀµÎÄ¼ş²é¿´
+    #region Assetä¾èµ–æ–‡ä»¶æŸ¥çœ‹
     /// <summary>
-    /// ÒÀÀµ×ÊÔ´Ó³Éämap
-    /// KeyÎªÑ¡ÖĞAssetµÄÂ·¾¶£¬ValueÒÀÀµAssetµÄÂ·¾¶ÁĞ±í
+    /// ä¾èµ–èµ„æºæ˜ å°„map
+    /// Keyä¸ºé€‰ä¸­Assetçš„è·¯å¾„ï¼ŒValueä¾èµ–Assetçš„è·¯å¾„åˆ—è¡¨
     /// </summary>
     private Dictionary<string, List<string>> dpAssetInfoMap = new Dictionary<string, List<string>>();
 
     /// <summary>
-    /// ÊÇ·ñ°üº¬¼ä½ÓÒıÓÃ
+    /// æ˜¯å¦åŒ…å«é—´æ¥å¼•ç”¨
     /// </summary>
     private bool includeIndirectDp = false;
 
     /// <summary>
-    /// ×ÊÔ´ºó×º¹ıÂË
+    /// èµ„æºåç¼€è¿‡æ»¤
     /// </summary>
     private string postFixFilter = string.Empty;
 
     /// <summary>
-    /// ÏÔÊ¾AssetÒÀÀµ×ÊÔ´ä¯ÀÀ½á¹û
+    /// æ˜¾ç¤ºAssetä¾èµ–èµ„æºæµè§ˆç»“æœ
     /// </summary>
     private void displayAssetDependencyBrowserResult()
     {
@@ -158,7 +158,7 @@ public class AssetOperationWindow : EditorWindow
     }
 
     /// <summary>
-    /// ÏÔÊ¾ÒÀÀµ×ÊÔ´ĞÅÏ¢UI
+    /// æ˜¾ç¤ºä¾èµ–èµ„æºä¿¡æ¯UI
     /// </summary>
     /// <param name="assetpath"></param>
     /// <param name="dpassetpath"></param>
@@ -166,9 +166,9 @@ public class AssetOperationWindow : EditorWindow
     {
         GUILayout.BeginVertical();
         uiScrollPos = GUILayout.BeginScrollView(uiScrollPos, GUILayout.MaxWidth(2000.0f), GUILayout.MaxHeight(800.0f));
-        GUILayout.Label("Ö÷AssetÂ·¾¶:");
+        GUILayout.Label("ä¸»Assetè·¯å¾„:");
         GUILayout.Label(assetpath);
-        GUILayout.Label("ÒÀÀµAssetÂ·¾¶:");
+        GUILayout.Label("ä¾èµ–Assetè·¯å¾„:");
         foreach (var dpassetpath in dpassetpathlist)
         {
             if (postFixFilter.Equals(string.Empty))
@@ -188,7 +188,7 @@ public class AssetOperationWindow : EditorWindow
     }
 
     /// <summary>
-    /// Ë¢ĞÂÑ¡ÖĞAssetÒÀÀµÊı¾İä¯ÀÀ
+    /// åˆ·æ–°é€‰ä¸­Assetä¾èµ–æ•°æ®æµè§ˆ
     /// </summary>
     private void refreshAssetDepBrowserSelections()
     {
@@ -210,15 +210,15 @@ public class AssetOperationWindow : EditorWindow
     }
     #endregion
 
-    #region AssetÄÚÖÃ×ÊÔ´ÒıÓÃÍ³¼Æ
+    #region Assetå†…ç½®èµ„æºå¼•ç”¨ç»Ÿè®¡
     /// <summary>
-    /// ÒÀÀµÄÚÖÃ×ÊÔ´µÄAssetÓ³Éämap
-    /// KeyÎªÑ¡ÖĞAssetµÄÂ·¾¶£¬ValueÎªAssetÊ¹ÓÃÁËÄÚÖÃ×ÊÔ´µÄ½ÚµãÃûºÍ×ÊÔ´ÃûµÄÁĞ±í
+    /// ä¾èµ–å†…ç½®èµ„æºçš„Assetæ˜ å°„map
+    /// Keyä¸ºé€‰ä¸­Assetçš„è·¯å¾„ï¼ŒValueä¸ºAssetä½¿ç”¨äº†å†…ç½®èµ„æºçš„èŠ‚ç‚¹åå’Œèµ„æºåçš„åˆ—è¡¨
     /// </summary>
     private Dictionary<string, List<KeyValuePair<string, string>>> mReferenceBuildInResourceAssetMap = new Dictionary<string, List<KeyValuePair<string, string>>>();
 
     /// <summary>
-    /// ÏÔÊ¾ÄÚÖÃ×ÊÔ´ÒıÓÃÍ³¼Æ½á¹û
+    /// æ˜¾ç¤ºå†…ç½®èµ„æºå¼•ç”¨ç»Ÿè®¡ç»“æœ
     /// </summary>
     private void displayAssetBuildInResourceRefAnalyze()
     {
@@ -233,35 +233,35 @@ public class AssetOperationWindow : EditorWindow
     }
 
     /// <summary>
-    /// ÏÔÊ¾Ê¹ÓÃÁËÄÚÖÃ×ÊÔ´ĞÅÏ¢UI
+    /// æ˜¾ç¤ºä½¿ç”¨äº†å†…ç½®èµ„æºä¿¡æ¯UI
     /// </summary>
     /// <param name="assetpath"></param>
     /// <param name="biassetinfolist"></param>
     private void showBIResourceReferenceAssetUI(string assetpath, List<KeyValuePair<string, string>> biassetinfolist)
     {
-        GUILayout.Label("AssetÂ·¾¶:");
+        GUILayout.Label("Assetè·¯å¾„:");
         GUILayout.Label(assetpath);
         if (biassetinfolist.Count > 0)
         {
-            GUILayout.Label("ÄÚÖÃ×ÊÔ´Ê¹ÓÃĞÅÏ¢:");
+            GUILayout.Label("å†…ç½®èµ„æºä½¿ç”¨ä¿¡æ¯:");
             foreach (var biassetinfo in biassetinfolist)
             {
-                GUILayout.Label(string.Format("½ÚµãÃû:{0}, ×ÊÔ´Ãû:{1}", biassetinfo.Key, biassetinfo.Value));
+                GUILayout.Label(string.Format("èŠ‚ç‚¹å:{0}, èµ„æºå:{1}", biassetinfo.Key, biassetinfo.Value));
             }
         }
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
     }
 
     /// <summary>
-    /// Í³¼ÆÄÚÖÃ×ÊÔ´ÒıÓÃAsset
+    /// ç»Ÿè®¡å†…ç½®èµ„æºå¼•ç”¨Asset
     /// </summary>
     private void analyzeBuildInResourceReferenceAsset()
     {
-        //  Ö÷Òª¼ì²éÒÔÏÂ¼¸¸ö·½Ãæ£º
-        //  1. GraphicµÄTextureºÍMatetial
-        //  2. MeshRendererµÄMaterial
-        //  3. ParticleSystemµÄMaterial
-        //  4. MaterialµÄShader
+        //  ä¸»è¦æ£€æŸ¥ä»¥ä¸‹å‡ ä¸ªæ–¹é¢ï¼š
+        //  1. Graphicçš„Textureå’ŒMatetial
+        //  2. MeshRendererçš„Material
+        //  3. ParticleSystemçš„Material
+        //  4. Materialçš„Shader
         mReferenceBuildInResourceAssetMap.Clear();
         var allmatfiles = Directory.GetFiles("Assets/", "*.mat", SearchOption.AllDirectories);
         var assetinfolist = new List<KeyValuePair<string, string>>();
@@ -285,7 +285,7 @@ public class AssetOperationWindow : EditorWindow
     }
 
     /// <summary>
-    /// Ö¸¶¨²ÄÖÊÊÇ·ñÊ¹ÓÃÁËÄÚÖÃ×ÊÔ´
+    /// æŒ‡å®šæè´¨æ˜¯å¦ä½¿ç”¨äº†å†…ç½®èµ„æº
     /// </summary>
     /// <param name="asset"></param>
     /// <param name="assetinfolist"></param>
@@ -298,7 +298,7 @@ public class AssetOperationWindow : EditorWindow
             var mat = asset as Material;
             if (mat.shader != null && EditorResourceUtilities.isBuildInResource(mat.shader))
             {
-                assetinfolist.Add(new KeyValuePair<string, string>("ÎŞ", mat.shader.name));
+                assetinfolist.Add(new KeyValuePair<string, string>("æ— ", mat.shader.name));
                 return true;
             }
             else
@@ -309,12 +309,12 @@ public class AssetOperationWindow : EditorWindow
         else if (typeof(T) == typeof(GameObject))
         {
             var prefab = asset as GameObject;
-            // ÈËÎïÄ£ĞÍºÍÁ£×ÓÌØĞ§
+            // äººç‰©æ¨¡å‹å’Œç²’å­ç‰¹æ•ˆ
             var allrenders = prefab.GetComponentsInChildren<Renderer>();
             var isusingbuildinresource = false;
             foreach (var render in allrenders)
             {
-                //ÓÃµ½µÄÄÚÖÃassetÃû(²ÉÓÃÆ´´ÕµÄ·½Ê½ e.g. Default.mat Sprite.png)
+                //ç”¨åˆ°çš„å†…ç½®assetå(é‡‡ç”¨æ‹¼å‡‘çš„æ–¹å¼ e.g. Default.mat Sprite.png)
                 var usedassetname = string.Empty;
                 if (render.sharedMaterial != null)
                 {
@@ -337,11 +337,11 @@ public class AssetOperationWindow : EditorWindow
                     }
                 }
             }
-            // UI×é¼ş
+            // UIç»„ä»¶
             var allgraphics = prefab.GetComponentsInChildren<Graphic>();
             foreach (var graphic in allgraphics)
             {
-                //ÓÃµ½µÄÄÚÖÃassetÃû(²ÉÓÃÆ´´ÕµÄ·½Ê½ e.g. Default.mat Sprite.png)
+                //ç”¨åˆ°çš„å†…ç½®assetå(é‡‡ç”¨æ‹¼å‡‘çš„æ–¹å¼ e.g. Default.mat Sprite.png)
                 var usedassetname = string.Empty;
                 if (graphic.material != null)
                 {
@@ -381,7 +381,7 @@ public class AssetOperationWindow : EditorWindow
     }
 
     /// <summary>
-    /// ³¢ÊÔÌí¼ÓAssetµÄÄÚÖÃShaderµÄÒıÓÃĞÅÏ¢
+    /// å°è¯•æ·»åŠ Assetçš„å†…ç½®Shaderçš„å¼•ç”¨ä¿¡æ¯
     /// </summary>
     /// <param name="assetpath"></param>
     /// <param name="assetinfolist"></param>
@@ -399,36 +399,36 @@ public class AssetOperationWindow : EditorWindow
     }
     #endregion
 
-    #region AssetÄÚÖÃ×ÊÔ´ÒıÓÃÌáÈ¡
+    #region Assetå†…ç½®èµ„æºå¼•ç”¨æå–
     /// <summary>
-    /// ÄÚÖÃ²ÄÖÊÌáÈ¡Ïà¶ÔÊä³öÄ¿Â¼
+    /// å†…ç½®æè´¨æå–ç›¸å¯¹è¾“å‡ºç›®å½•
     /// </summary>
     private const string mBuildInMaterialExtractRelativeOutputFolderPath = "/Res/buildinresources/buildinmaterials/";
 
     /// <summary>
-    /// ÄÚÖÃ²ÄÖÊÌáÈ¡Ïà¶ÔÊä³öÄ¿Â¼
+    /// å†…ç½®æè´¨æå–ç›¸å¯¹è¾“å‡ºç›®å½•
     /// </summary>
     private const string mBuildInTextureExtractRelativeOutputFolderPath = "/Res/buildinresources/buildintextures/";
 
     /// <summary>
-    /// ÄÚÖÃ×ÊÔ´ÌáÈ¡½á¹û
+    /// å†…ç½®èµ„æºæå–ç»“æœ
     /// </summary>
     private bool mBuildInResourceExtractionResult;
 
     /// <summary>
-    /// ÄÚÖÃ×ÊÔ´ÌáÈ¡½á¹ûÁĞ±í
+    /// å†…ç½®èµ„æºæå–ç»“æœåˆ—è¡¨
     /// </summary>
     private List<string> mBuildInResourceExtractedList = new List<string>();
 
     /// <summary>
-    /// AssetÄÚÖÃ×ÊÔ´ÌáÈ¡½á¹û
+    /// Assetå†…ç½®èµ„æºæå–ç»“æœ
     /// </summary>
     private void displayAssetBuildInResourceRefExtractionResult()
     {
         GUILayout.BeginVertical();
         uiScrollPos = GUILayout.BeginScrollView(uiScrollPos);
-        GUILayout.Label(string.Format("ÄÚÖÃ×ÊÔ´ÌáÈ¡{0}!", mBuildInResourceExtractionResult == false ? "½øĞĞÖĞ" : "Íê³É"));
-        GUILayout.Label("ÄÚÖÃ×ÊÔ´ÌáÈ¡½á¹ûÁĞ±í:");
+        GUILayout.Label(string.Format("å†…ç½®èµ„æºæå–{0}!", mBuildInResourceExtractionResult == false ? "è¿›è¡Œä¸­" : "å®Œæˆ"));
+        GUILayout.Label("å†…ç½®èµ„æºæå–ç»“æœåˆ—è¡¨:");
         foreach (var extractedres in mBuildInResourceExtractedList)
         {
             GUILayout.Label(extractedres);
@@ -438,7 +438,7 @@ public class AssetOperationWindow : EditorWindow
     }
 
     /// <summary>
-    /// ÌáÈ¡ÄÚÖÃ×ÊÔ´
+    /// æå–å†…ç½®èµ„æº
     /// </summary>
     /// <param name="asset"></param>
     private void extractBuildInResource(UnityEngine.GameObject asset)
@@ -452,7 +452,7 @@ public class AssetOperationWindow : EditorWindow
         Utilities.CheckAndCreateSpecificFolder(textureextractoutputfolderpath);
         var referencebuildinobjectlist = getReferenceBuildInResourceExcludeShader(asset);
         referencebuildinobjectlist = referencebuildinobjectlist.Distinct().ToList();
-        Debug.Log(string.Format("ÒıÓÃÄÚÖÃ×ÊÔ´ÊıÁ¿:{0}", referencebuildinobjectlist.Count));
+        Debug.Log(string.Format("å¼•ç”¨å†…ç½®èµ„æºæ•°é‡:{0}", referencebuildinobjectlist.Count));
         mBuildInResourceExtractedList.Clear();
         foreach (var buildinobject in referencebuildinobjectlist)
         {
@@ -460,7 +460,7 @@ public class AssetOperationWindow : EditorWindow
             {
                 Material mat = GameObject.Instantiate<Material>(mt);
                 var outputfolderpath = "Assets" + mBuildInMaterialExtractRelativeOutputFolderPath + buildinobject.name + ".mat";
-                Debug.Log(string.Format("²ÄÖÊÊä³öÏà¶ÔÂ·¾¶:{0}", outputfolderpath));
+                Debug.Log(string.Format("æè´¨è¾“å‡ºç›¸å¯¹è·¯å¾„:{0}", outputfolderpath));
                 AssetDatabase.CreateAsset(mat, outputfolderpath);
                 mBuildInResourceExtractedList.Add(outputfolderpath);
             }
@@ -468,29 +468,29 @@ public class AssetOperationWindow : EditorWindow
             {
                 var texturepreview = AssetPreview.GetAssetPreview(buildinobject);
                 var outputfolderpath = "Assets" + mBuildInTextureExtractRelativeOutputFolderPath + buildinobject.name + ".png";
-                Debug.Log(string.Format("ÎÆÀíÊä³öÏà¶ÔÂ·¾¶:{0}", outputfolderpath));
+                Debug.Log(string.Format("çº¹ç†è¾“å‡ºç›¸å¯¹è·¯å¾„:{0}", outputfolderpath));
                 File.WriteAllBytes(outputfolderpath, texturepreview.EncodeToPNG());
                 mBuildInResourceExtractedList.Add(outputfolderpath);
             }
             else
             {
-                Debug.LogError(string.Format("²»Ö§³Öµ¼³öµÄ×ÊÔ´ÀàĞÍ:{0}", buildinobject.GetType()));
+                Debug.LogError(string.Format("ä¸æ”¯æŒå¯¼å‡ºçš„èµ„æºç±»å‹:{0}", buildinobject.GetType()));
             }
         }
         mBuildInResourceExtractionResult = true;
     }
 
     /// <summary>
-    /// »ñÈ¡·ÇShaderµÄÄÚÖÃ×ÊÔ´ÒıÓÃ
+    /// è·å–éShaderçš„å†…ç½®èµ„æºå¼•ç”¨
     /// </summary>
     /// <param name="asset"></param>
     /// <returns></returns>
     private List<UnityEngine.Object> getReferenceBuildInResourceExcludeShader(UnityEngine.GameObject asset)
     {
-        // Ö÷ÒªÌáÆğÒÔÏÂ¼¸ÖÖ×ÊÔ´:
-        // 1. ÄÚÖÃTexture
-        // 2. ÄÚÖÃ²ÄÖÊ
-        // ÈËÎïÄ£ĞÍºÍÁ£×ÓÌØĞ§
+        // ä¸»è¦æèµ·ä»¥ä¸‹å‡ ç§èµ„æº:
+        // 1. å†…ç½®Texture
+        // 2. å†…ç½®æè´¨
+        // äººç‰©æ¨¡å‹å’Œç²’å­ç‰¹æ•ˆ
         var assetlist = new List<UnityEngine.Object>();
         var allrenders = asset.GetComponentsInChildren<Renderer>();
         foreach (var render in allrenders)
@@ -500,7 +500,7 @@ public class AssetOperationWindow : EditorWindow
                 assetlist.Add(render.sharedMaterial);
             }
         }
-        // UI×é¼ş
+        // UIç»„ä»¶
         var allgraphics = asset.GetComponentsInChildren<Graphic>();
         foreach (var graphic in allgraphics)
         {
@@ -517,41 +517,41 @@ public class AssetOperationWindow : EditorWindow
     }
     #endregion
 
-    #region Shader±äÌåËÑ¼¯
+    #region Shaderå˜ä½“æœé›†
     /// <summary>
-    /// Shader±äÌåËÑ¼¯¸úÄ¿Â¼
+    /// Shaderå˜ä½“æœé›†è·Ÿç›®å½•
     /// </summary>
     private string ShaderCollectRootFolderPath;
 
     /// <summary>
-    /// Shader±äÌåËÑ¼¯ÎÄ¼şÊä³öÄ¿Â¼
+    /// Shaderå˜ä½“æœé›†æ–‡ä»¶è¾“å‡ºç›®å½•
     /// </summary>
     private string ShaderVariantOuputFolderPath;
 
     /// <summary>
-    /// ±äÌåËÑ¼¯Cube¸¸½Úµã(·½±ãÍ³Ò»É¾³ı)
+    /// å˜ä½“æœé›†Cubeçˆ¶èŠ‚ç‚¹(æ–¹ä¾¿ç»Ÿä¸€åˆ é™¤)
     /// </summary>
     private GameObject SVCCubeParentGo;
 
     /// <summary>
-    /// Shader±äÌåËÑ¼¯½á¹û
+    /// Shaderå˜ä½“æœé›†ç»“æœ
     /// </summary>
     private bool mShaderVariantCollectionResult;
 
     /// <summary>
-    /// ĞèÒªËÑ¼¯µÄ²ÄÖÊAssetÂ·¾¶ÁĞ±í
+    /// éœ€è¦æœé›†çš„æè´¨Assetè·¯å¾„åˆ—è¡¨
     /// </summary>
     private List<string> mMaterialNeedCollectedList = new List<string>();
 
     /// <summary>
-    /// ÏÔÊ¾±äÌåËÑ¼¯½á¹û
+    /// æ˜¾ç¤ºå˜ä½“æœé›†ç»“æœ
     /// </summary>
     private void displayShaderVariantsCollectionResult()
     {
         GUILayout.BeginVertical();
         uiScrollPos = GUILayout.BeginScrollView(uiScrollPos);
-        GUILayout.Label(string.Format("Shader±äÌåËÑ¼¯{0}!", mShaderVariantCollectionResult == false ? "½øĞĞÖĞ" : "Íê³É"));
-        GUILayout.Label("ĞèÒªËÑ¼¯µÄ²ÄÖÊ×ÊÔ´Â·¾¶:");
+        GUILayout.Label(string.Format("Shaderå˜ä½“æœé›†{0}!", mShaderVariantCollectionResult == false ? "è¿›è¡Œä¸­" : "å®Œæˆ"));
+        GUILayout.Label("éœ€è¦æœé›†çš„æè´¨èµ„æºè·¯å¾„:");
         foreach (var matcollectedpath in mMaterialNeedCollectedList)
         {
             GUILayout.Label(matcollectedpath);
@@ -561,7 +561,7 @@ public class AssetOperationWindow : EditorWindow
     }
 
     /// <summary>
-    /// ËÑ¼¯ËùÓĞµÄShader±äÌå
+    /// æœé›†æ‰€æœ‰çš„Shaderå˜ä½“
     /// </summary>
     private async void collectAllShaderVariants()
     {
@@ -570,48 +570,48 @@ public class AssetOperationWindow : EditorWindow
         ShaderVariantOuputFolderPath = Application.dataPath + "/Res/shadervariants";
         var preactivescene = EditorSceneManager.GetActiveScene();
         var preactivescenepath = preactivescene.path;
-        Debug.Log(string.Format("Ö®Ç°´ò¿ªµÄ³¡¾°×ÊÔ´Â·¾¶:{0}", preactivescenepath));
-        // Shader±äÌåËÑ¼¯Á÷³Ì
-        // 1. ´ò¿ªShader±äÌåËÑ¼¯³¡¾°
-        // 2. Çå³ıShader±äÌåËÑ¼¯Êı¾İ
-        // 3. ²¢ÅÅ´´½¨Ê¹ÓÃÃ¿Ò»¸öÓĞĞ§²ÄÖÊµÄCubeäÖÈ¾Ò»Ö¡
-        // 4. ´¥·¢±äÌåËÑ¼¯²¢±£´æ±äÌåËÑ¼¯ÎÄ¼ş
-        Debug.Log("¿ªÊ¼ËÑ¼¯Shader±äÌå!");
+        Debug.Log(string.Format("ä¹‹å‰æ‰“å¼€çš„åœºæ™¯èµ„æºè·¯å¾„:{0}", preactivescenepath));
+        // Shaderå˜ä½“æœé›†æµç¨‹
+        // 1. æ‰“å¼€Shaderå˜ä½“æœé›†åœºæ™¯
+        // 2. æ¸…é™¤Shaderå˜ä½“æœé›†æ•°æ®
+        // 3. å¹¶æ’åˆ›å»ºä½¿ç”¨æ¯ä¸€ä¸ªæœ‰æ•ˆæè´¨çš„Cubeæ¸²æŸ“ä¸€å¸§
+        // 4. è§¦å‘å˜ä½“æœé›†å¹¶ä¿å­˜å˜ä½“æœé›†æ–‡ä»¶
+        Debug.Log("å¼€å§‹æœé›†Shaderå˜ä½“!");
         await openShaderVariantsCollectSceneAsync();
         await clearAllShaderVariantsAsync();
         await createAllValideMaterialCudeAsync();
         await doShaderVariantsCollectAsync();
-        Debug.Log("½áÊøËÑ¼¯Shader±äÌå!");
-        // ´ò¿ªÖ®Ç°µÄ³¡¾°
+        Debug.Log("ç»“æŸæœé›†Shaderå˜ä½“!");
+        // æ‰“å¼€ä¹‹å‰çš„åœºæ™¯
         EditorSceneManager.OpenScene(preactivescenepath);
         mShaderVariantCollectionResult = true;
     }
 
     /// <summary>
-    /// ´ò¿ªShader±äÌåËÑ¼¯³¡¾°
+    /// æ‰“å¼€Shaderå˜ä½“æœé›†åœºæ™¯
     /// </summary>
     private async Task openShaderVariantsCollectSceneAsync()
     {
         Debug.Log("openShaderVariantsCollectScene()");
         EditorSceneManager.OpenScene("Assets/Res/scenes/ShaderVariantsCollectScene.unity");
-        Debug.Log("´ò¿ªShader±äÌåÊÕ¼¯³¡¾°!");
+        Debug.Log("æ‰“å¼€Shaderå˜ä½“æ”¶é›†åœºæ™¯!");
         await Task.Delay(1000);
     }
 
     /// <summary>
-    /// Çå³ıShader±äÌåÊı¾İ
+    /// æ¸…é™¤Shaderå˜ä½“æ•°æ®
     /// </summary>
     private async Task clearAllShaderVariantsAsync()
     {
         Debug.Log("clearAllShaderVariants()");
         MethodInfo clearcurrentsvc = typeof(ShaderUtil).GetMethod("ClearCurrentShaderVariantCollection", BindingFlags.NonPublic | BindingFlags.Static);
         clearcurrentsvc.Invoke(null, null);
-        Debug.Log("Çå³ıShader±äÌåÊı¾İ!");
+        Debug.Log("æ¸…é™¤Shaderå˜ä½“æ•°æ®!");
         await Task.Delay(1000);
     }
 
     /// <summary>
-    /// ´´½¨ËùÓĞÓĞĞ§²ÄÖÊµÄ¶ÔÓ¦Cube
+    /// åˆ›å»ºæ‰€æœ‰æœ‰æ•ˆæè´¨çš„å¯¹åº”Cube
     /// </summary>
     private async Task createAllValideMaterialCudeAsync()
     {
@@ -623,7 +623,7 @@ public class AssetOperationWindow : EditorWindow
         var svccubetemplate = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Res/prefabs/pre_SVCCube.prefab");
         var allmatassets = getAllValideMaterial();
         mMaterialNeedCollectedList.Clear();
-        Debug.Log(string.Format("ĞèÒªËÑ¼¯µÄ²ÄÖÊÊıÁ¿:{0}", allmatassets));
+        Debug.Log(string.Format("éœ€è¦æœé›†çš„æè´¨æ•°é‡:{0}", allmatassets));
         for (int i = 0, length = allmatassets.Count; i < length; i++)
         {
             var matassetpath = AssetDatabase.GetAssetPath(allmatassets[i]);
@@ -635,14 +635,14 @@ public class AssetOperationWindow : EditorWindow
             cube.transform.SetParent(SVCCubeParentGo.transform);
         }
         EditorSceneManager.SaveOpenScenes();
-        //ÑÓÊ±µÈ´ıÒ»»á£¬È·±£±äÌåÊı¾İ¸üĞÂ
-        Debug.Log("´´½¨ÍêCube£¬¿ªÊ¼µÈ´ı5Ãë!");
+        //å»¶æ—¶ç­‰å¾…ä¸€ä¼šï¼Œç¡®ä¿å˜ä½“æ•°æ®æ›´æ–°
+        Debug.Log("åˆ›å»ºå®ŒCubeï¼Œå¼€å§‹ç­‰å¾…5ç§’!");
         await Task.Delay(5000);
-        Debug.Log("´´½¨ÍêCube£¬µÈ´ı5ÃëÍê³É!");
+        Debug.Log("åˆ›å»ºå®ŒCubeï¼Œç­‰å¾…5ç§’å®Œæˆ!");
     }
 
     /// <summary>
-    /// Ö´ĞĞ±äÌåËÑ¼¯
+    /// æ‰§è¡Œå˜ä½“æœé›†
     /// </summary>
     private async Task doShaderVariantsCollectAsync()
     {
@@ -651,32 +651,32 @@ public class AssetOperationWindow : EditorWindow
         var outputassetsindex = ShaderVariantOuputFolderPath.IndexOf("Assets");
         var outputrelativepath = ShaderVariantOuputFolderPath.Substring(outputassetsindex, ShaderVariantOuputFolderPath.Length - outputassetsindex);
         var svcoutputfilepath = outputrelativepath + "DIYShaderVariantsCollection.shadervariants";
-        Debug.Log(string.Format("Shader±äÌåÎÄ¼şÊä³öÄ¿Â¼:{0}", ShaderVariantOuputFolderPath));
-        Debug.Log(string.Format("Shader±äÌåÎÄ¼şÊä³öÏà¶ÔÂ·¾¶:{0}", svcoutputfilepath));
+        Debug.Log(string.Format("Shaderå˜ä½“æ–‡ä»¶è¾“å‡ºç›®å½•:{0}", ShaderVariantOuputFolderPath));
+        Debug.Log(string.Format("Shaderå˜ä½“æ–‡ä»¶è¾“å‡ºç›¸å¯¹è·¯å¾„:{0}", svcoutputfilepath));
         if (!Directory.Exists(ShaderVariantOuputFolderPath))
         {
-            Debug.Log(string.Format("Shader±äÌåÎÄ¼şÊä³öÄ¿Â¼:{0}²»´æÔÚ£¬ÖØĞÂ´´½¨Ò»¸ö!", ShaderVariantOuputFolderPath));
+            Debug.Log(string.Format("Shaderå˜ä½“æ–‡ä»¶è¾“å‡ºç›®å½•:{0}ä¸å­˜åœ¨ï¼Œé‡æ–°åˆ›å»ºä¸€ä¸ª!", ShaderVariantOuputFolderPath));
             Directory.CreateDirectory(ShaderVariantOuputFolderPath);
         }
         EditorSceneManager.SaveOpenScenes();
         MethodInfo savecurrentsvc = typeof(ShaderUtil).GetMethod("SaveCurrentShaderVariantCollection", BindingFlags.NonPublic | BindingFlags.Static);
         savecurrentsvc.Invoke(null, new object[] { svcoutputfilepath });
-        // Ö±½ÓÉèÖÃABÃû×ÖºÍShader´ò°üµ½Ò»Æğ
+        // ç›´æ¥è®¾ç½®ABåå­—å’ŒShaderæ‰“åŒ…åˆ°ä¸€èµ·
         var svcassetimporter = AssetImporter.GetAtPath(svcoutputfilepath);
         if (svcassetimporter != null)
         {
             svcassetimporter.assetBundleName = "shaderlist";
-            DIYLog.Log(string.Format("ÉèÖÃ×ÊÔ´:{0}µÄABÃû×ÖÎª:shaderlist", svcoutputfilepath));
+            DIYLog.Log(string.Format("è®¾ç½®èµ„æº:{0}çš„ABåå­—ä¸º:shaderlist", svcoutputfilepath));
             AssetDatabase.SaveAssets();
         }
         GameObject.DestroyImmediate(SVCCubeParentGo);
         EditorSceneManager.SaveOpenScenes();
-        Debug.Log("±£´æÍêShader±äÌåÎÄ¼ş!");
+        Debug.Log("ä¿å­˜å®ŒShaderå˜ä½“æ–‡ä»¶!");
         await Task.Delay(1000);
     }
 
     /// <summary>
-    /// »ñÈ¡ËùÓĞÓĞĞ§²ÄÖÊ(ÓĞĞ§ÊÇÖ¸ÓĞÊ¹ÓÃShader)
+    /// è·å–æ‰€æœ‰æœ‰æ•ˆæè´¨(æœ‰æ•ˆæ˜¯æŒ‡æœ‰ä½¿ç”¨Shader)
     /// </summary>
     /// <returns></returns>
     private List<Material> getAllValideMaterial()
@@ -695,14 +695,14 @@ public class AssetOperationWindow : EditorWindow
         for (int i = 0; i < assets.Count; i++)
         {
             var p = AssetDatabase.GUIDToAssetPath(assets[i]);
-            //»ñÈ¡ÒÀÀµÖĞµÄmat
+            //è·å–ä¾èµ–ä¸­çš„mat
             var dependenciesPath = AssetDatabase.GetDependencies(p, true);
 
             var mats = dependenciesPath.ToList().FindAll((dp) => dp.EndsWith(".mat"));
             allmats.AddRange(mats);
         }
 
-        //´¦ÀíËùÓĞµÄ material
+        //å¤„ç†æ‰€æœ‰çš„ material
         allmats = allmats.Distinct().ToList();
 
         foreach (var mat in allmats)
@@ -717,15 +717,15 @@ public class AssetOperationWindow : EditorWindow
     }
     #endregion
 
-    #region Ä¬ÈÏÎŞĞ§ÀàĞÍ
+    #region é»˜è®¤æ— æ•ˆç±»å‹
     /// <summary>
-    /// ÏÔÊ¾ÎŞĞ§ÀàĞÍ½á¹û
+    /// æ˜¾ç¤ºæ— æ•ˆç±»å‹ç»“æœ
     /// </summary>
     private void displayInvalideResult()
     {
         GUILayout.BeginVertical();
         uiScrollPos = GUILayout.BeginScrollView(uiScrollPos);
-        GUILayout.Label("Ã»ÓĞÓĞĞ§²Ù×÷!");
+        GUILayout.Label("æ²¡æœ‰æœ‰æ•ˆæ“ä½œ!");
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
     }
