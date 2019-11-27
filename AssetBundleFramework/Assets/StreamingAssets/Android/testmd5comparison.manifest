@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 2211445787
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2d14fe0645ec03db0fafcdd30472d9b2
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ea3f786f3814b1ad9ef2ef747825eec5
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/prefabs/TestMd5Comparison.prefab
+Dependencies:
+- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist

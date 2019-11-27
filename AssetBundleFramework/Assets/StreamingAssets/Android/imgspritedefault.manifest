@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3281133626
+CRC: 1283102537
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 61413a1ff478e4c3d87cdf51cebb95d8
+    Hash: 61041b27d8308e6a2c97f104b6825bb1
   TypeTreeHash:
     serializedVersion: 2
     Hash: 4d381bd757befc44e002beaab248b4f1
@@ -26,4 +26,4 @@ ClassTypes:
 Assets:
 - Assets/Res/prefabs/imagebuildin.prefab
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist
+- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist

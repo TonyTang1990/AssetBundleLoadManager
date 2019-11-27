@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4115518364
+CRC: 2627292317
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: dd7f4bb976d9a5ccf8f627810f73965d
+    Hash: 70a43bc2b374337b3a7e771b49354723
   TypeTreeHash:
     serializedVersion: 2
     Hash: 38dc45a1dd805075cf42870c43916350
@@ -38,4 +38,4 @@ ClassTypes:
 Assets:
 - Assets/Res/windows/MainWindow.prefab
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/mouseandkeyboardstudy
+- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/mouseandkeyboardstudy

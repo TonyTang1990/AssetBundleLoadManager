@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2173849418
+CRC: 2089006883
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1adf9a1ee214484307899a3739e51846
+    Hash: 80ebc3f83547f1e318ba60ad9810ba5f
   TypeTreeHash:
     serializedVersion: 2
     Hash: 43917c7e82ed3ae0a408b3ea37ec80f7
@@ -26,4 +26,4 @@ ClassTypes:
 Assets:
 - Assets/Res/actors/cube/pre_Cube.prefab
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial
+- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial

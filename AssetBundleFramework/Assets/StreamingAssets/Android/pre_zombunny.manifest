@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2151049115
+CRC: 601165923
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 736dcd4116329d28e6426600d44e3ad5
+    Hash: 2616d7ea973228c5c38e747b9f4966b4
   TypeTreeHash:
     serializedVersion: 2
     Hash: a22ba75345d592142d92c2f365e9cff6
@@ -30,5 +30,5 @@ ClassTypes:
 Assets:
 - Assets/Res/actors/zombunny/pre_Zombunny.prefab
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/zombunnyanimations
+- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist
+- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/zombunnyanimations
