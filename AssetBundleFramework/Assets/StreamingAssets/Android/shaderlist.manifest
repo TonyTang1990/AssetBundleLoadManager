@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3542839985
+CRC: 2179907172
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 96fa2fd8078182ce15cf30ea185889da
+    Hash: 54ff4ede3dce5a732879d81ade056074
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7f0bffc1563fad4b76a0da6fdabbfa72
@@ -14,9 +14,13 @@ ClassTypes:
 - Class: 200
   Script: {instanceID: 0}
 Assets:
-- Assets/Res/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-BumpSpec.shader
-- Assets/Res/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Standard
+  Unlit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-BumpSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Default.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-VertexLit.shader
 - Assets/Res/actors/zombunny/Shaders/Rim Lit Bumped Specular.shader
 - Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants
-- Assets/Res/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Diffuse.shader
 Dependencies: []

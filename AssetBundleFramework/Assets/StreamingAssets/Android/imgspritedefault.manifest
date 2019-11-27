@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1898607157
+CRC: 3281133626
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d05a2bc4b9efcbf66078e457de27bba0
+    Hash: 61413a1ff478e4c3d87cdf51cebb95d8
   TypeTreeHash:
     serializedVersion: 2
     Hash: 4d381bd757befc44e002beaab248b4f1
@@ -24,5 +24,6 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
-- Assets/Res/prefabs/imgspritedefault.prefab
-Dependencies: []
+- Assets/Res/prefabs/imagebuildin.prefab
+Dependencies:
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist

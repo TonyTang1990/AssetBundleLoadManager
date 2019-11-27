@@ -11,7 +11,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile></TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
@@ -19,7 +19,7 @@
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2018.4.1f1</UnityVersion>
     <RootNamespace></RootNamespace>
-    <LangVersion>4</LangVersion>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -33,7 +33,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2018_4_1;UNITY_2018_4;UNITY_2018;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_TEXTURE_STREAMING;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_VIDEO;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_LOCALIZATION;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_EVENT_QUEUE;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_AR;UNITY_HAS_GOOGLEVR;UNITY_HAS_TANGO;ENABLE_SPATIALTRACKING;ENABLE_RUNTIME_PERMISSIONS;UNITY_ASTC_ONLY_DECOMPRESS;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0;NET_LEGACY;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2018_4_1;UNITY_2018_4;UNITY_2018;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_TEXTURE_STREAMING;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_VIDEO;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_LOCALIZATION;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_EVENT_QUEUE;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_AR;UNITY_HAS_GOOGLEVR;UNITY_HAS_TANGO;ENABLE_SPATIALTRACKING;ENABLE_RUNTIME_PERMISSIONS;UNITY_ASTC_ONLY_DECOMPRESS;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_VSTU;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -43,243 +43,243 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2018_4_1;UNITY_2018_4;UNITY_2018;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_TEXTURE_STREAMING;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_VIDEO;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_LOCALIZATION;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_EVENT_QUEUE;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_AR;UNITY_HAS_GOOGLEVR;UNITY_HAS_TANGO;ENABLE_SPATIALTRACKING;ENABLE_RUNTIME_PERMISSIONS;UNITY_ASTC_ONLY_DECOMPRESS;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0;NET_LEGACY;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2018_4_1;UNITY_2018_4;UNITY_2018;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_TEXTURE_STREAMING;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_VIDEO;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_LOCALIZATION;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_EVENT_QUEUE;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_AR;UNITY_HAS_GOOGLEVR;UNITY_HAS_TANGO;ENABLE_SPATIALTRACKING;ENABLE_RUNTIME_PERMISSIONS;UNITY_ASTC_ONLY_DECOMPRESS;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_VSTU;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Managed/UnityEngine/UnityEngine">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.AIModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.ARModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.ARModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.ARModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.AccessibilityModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.AccessibilityModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.AccessibilityModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.AnimationModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.AssetBundleModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.AudioModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.BaselibModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.BaselibModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.BaselibModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.ClothModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.ClothModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.ClothModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.ClusterInputModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.ClusterInputModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.ClusterInputModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.ClusterRendererModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.CoreModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.CrashReportingModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.CrashReportingModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.CrashReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.DirectorModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.DirectorModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.DirectorModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.FileSystemHttpModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.FileSystemHttpModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.FileSystemHttpModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.GameCenterModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.GameCenterModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.GameCenterModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.GridModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.GridModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.GridModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.HotReloadModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.HotReloadModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.HotReloadModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.IMGUIModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.ImageConversionModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.InputModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.InputModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.InputModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.JSONSerializeModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.LocalizationModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.LocalizationModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.LocalizationModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.ParticleSystemModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.PerformanceReportingModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.PhysicsModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.Physics2DModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.Physics2DModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.Physics2DModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.ProfilerModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.ProfilerModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.ProfilerModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.ScreenCaptureModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.SharedInternalsModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.SpatialTrackingModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.SpatialTrackingModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.SpatialTrackingModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.SpriteMaskModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.SpriteShapeModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.StreamingModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.StreamingModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.StreamingModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.StyleSheetsModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.StyleSheetsModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.StyleSheetsModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.SubstanceModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.SubstanceModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.SubstanceModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.TLSModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.TLSModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.TLSModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.TerrainModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.TerrainModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.TerrainModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.TerrainPhysicsModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.TextCoreModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.TextCoreModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.TextCoreModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.TextRenderingModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.TilemapModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.TilemapModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.TilemapModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.TimelineModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.TimelineModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.TimelineModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UIModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UIModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UIElementsModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UIElementsModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UNETModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UNETModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UNETModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UmbraModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UmbraModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UmbraModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UnityAnalyticsModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UnityConnectModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UnityConnectModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UnityTestProtocolModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UnityTestProtocolModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UnityTestProtocolModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UnityWebRequestModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UnityWebRequestAssetBundleModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.VFXModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.VFXModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.VFXModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.VRModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.VRModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.VRModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.VehiclesModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.VehiclesModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.VehiclesModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.VideoModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.VideoModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.VideoModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.WindModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.WindModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.WindModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine.XRModule">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
     <Reference Include="Managed/UnityEditor">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/UnityEditor.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Managed/Unity.Locator">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\Managed/Unity.Locator.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\Managed/Unity.Locator.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Timeline">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Timeline">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/Timeline/Editor/UnityEditor.Timeline.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/Timeline/Editor/UnityEditor.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Networking">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.GoogleAudioSpatializer">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/Editor/UnityEditor.GoogleAudioSpatializer.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/Editor/UnityEditor.GoogleAudioSpatializer.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GoogleAudioSpatializer">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/Editor/UnityEditor.SpatialTracking.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/Editor/UnityEditor.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.VR">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Graphs">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Android.Extensions">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
@@ -294,52 +294,379 @@
       <HintPath>Assets/Scripts/Core/Conf/Xbuffer/xbuffer_runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Advertisements">
-      <HintPath>D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
+      <HintPath>G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
-      <HintPath>D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll</HintPath>
+      <HintPath>G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>D:/TonyTang/Work/Software/Unity/Unity2018-4-1f1/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+      <HintPath>G:/Software/UnityAllVersions/2018.4.1f1/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\mscorlib.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Core.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Runtime.Serialization.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Runtime.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Xml.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Xml.Linq.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Microsoft.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Primitives">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\Microsoft.Win32.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="System.AppContext">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.AppContext.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Concurrent">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.Concurrent.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.NonGeneric">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.NonGeneric.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Specialized">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Collections.Specialized.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.EventBasedAsync">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.EventBasedAsync.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Primitives">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.TypeConverter">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ComponentModel.TypeConverter.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Console">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Common">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Contracts">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Debug">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Debug.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.FileVersionInfo">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.FileVersionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Process">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Process.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.StackTrace">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.StackTrace.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.TextWriterTraceListener">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.TextWriterTraceListener.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Tools">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.TraceSource">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Diagnostics.TraceSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Primitives">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Drawing.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Dynamic.Runtime">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Dynamic.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization.Calendars">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Globalization.Calendars.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Globalization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization.Extensions">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Globalization.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.ZipFile">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.Compression.ZipFile.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.DriveInfo">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.DriveInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Watcher">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.FileSystem.Watcher.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.IsolatedStorage">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.IsolatedStorage.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.MemoryMappedFiles">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.MemoryMappedFiles.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Pipes">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.Pipes.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.UnmanagedMemoryStream">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.IO.UnmanagedMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq.Expressions">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.Expressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq.Parallel">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.Parallel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq.Queryable">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Linq.Queryable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Rtc">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Http.Rtc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.NameResolution">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.NameResolution.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.NetworkInformation">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.NetworkInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Ping">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Ping.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Primitives">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Requests">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Requests.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Security">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Sockets">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.Sockets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.WebHeaderCollection">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.WebHeaderCollection.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.WebSockets.Client">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.WebSockets.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.WebSockets">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Net.WebSockets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ObjectModel">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Emit">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Emit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Emit.ILGeneration">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Emit.ILGeneration.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Emit.Lightweight">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Emit.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Extensions">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Primitives">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Reflection.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.Reader">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Resources.Reader.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.ResourceManager">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Resources.ResourceManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.Writer">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Resources.Writer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.VisualC">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.CompilerServices.VisualC.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Handles">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Handles.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.InteropServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.WindowsRuntime">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Numerics">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Formatters">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Formatters.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Json">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Primitives">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Xml">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Runtime.Serialization.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Claims">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Claims.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Csp">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Csp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.Principal.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.SecureString">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Security.SecureString.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Duplex">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Duplex.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Http">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.NetTcp">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.NetTcp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Primitives">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Security">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ServiceModel.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Text.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.Extensions">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Text.Encoding.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.RegularExpressions">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Text.RegularExpressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Overlapped">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Overlapped.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Parallel">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Tasks.Parallel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Thread">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Thread.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.ThreadPool">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.ThreadPool.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Timer">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Threading.Timer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.ReaderWriter">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.ReaderWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XDocument">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XmlDocument">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XmlDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XmlSerializer">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XmlSerializer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XPath">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XPath.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XPath.XDocument">
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XPath.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="UnityScript">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\UnityScript.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\unityscript\UnityScript.dll</HintPath>
     </Reference>
     <Reference Include="UnityScript.Lang">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\UnityScript.Lang.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\unityscript\UnityScript.Lang.dll</HintPath>
     </Reference>
     <Reference Include="Boo.Lang">
-      <HintPath>D:\TonyTang\Work\Software\Unity\Unity2018-4-1f1\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\Boo.Lang.dll</HintPath>
+      <HintPath>G:\Software\UnityAllVersions\2018.4.1f1\Editor\Data\MonoBleedingEdge\lib\mono\unityscript\Boo.Lang.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -397,242 +724,242 @@
     <None Include="Assets\Plugins\Android\res\values\strings.xml" />
     <None Include="Assets\Plugins\Android\res\values\styles.xml" />
     <None Include="Assets\Res\actors\zombunny\Shaders\Rim Lit Bumped Specular.shader" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\AutoLight.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\GLSLSupport.glslinc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\HLSLSupport.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\Lighting.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\SpeedTree8Common.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\SpeedTreeBillboardCommon.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\SpeedTreeCommon.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\SpeedTreeVertex.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\SpeedTreeWind.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\TerrainEngine.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\TerrainPreview.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\TerrainSplatmapCommon.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\TerrainTool.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\Tessellation.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityBuiltin2xTreeLibrary.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityBuiltin3xTreeLibrary.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityCG.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityCG.glslinc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityCustomRenderTexture.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityDeferredLibrary.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityDeprecated.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityGBuffer.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityGlobalIllumination.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityImageBasedLighting.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityInstancing.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityLightingCommon.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityMetaPass.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityPBSLighting.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityShaderUtilities.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityShaderVariables.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityShadowLibrary.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnitySprites.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardBRDF.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardConfig.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardCore.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardCoreForward.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardCoreForwardSimple.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardInput.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardMeta.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardParticleEditor.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardParticleInstancing.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardParticleShadow.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardParticles.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardShadow.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStandardUtils.cginc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStereoExtensions.glslinc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityStereoSupport.glslinc" />
-    <None Include="Assets\Res\buildinshaders\CGIncludes\UnityUI.cginc" />
-    <None Include="Assets\Res\buildinshaders\DefaultResources\Font.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResources\Internal-BlendShape.compute" />
-    <None Include="Assets\Res\buildinshaders\DefaultResources\Internal-Clear.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResources\Internal-Colored.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResources\Internal-ErrorShader.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResources\Internal-Skinning-Util.cginc" />
-    <None Include="Assets\Res\buildinshaders\DefaultResources\Internal-Skinning.compute" />
-    <None Include="Assets\Res\buildinshaders\DefaultResources\PerformanceTools\FrameDebuggerRenderTargetDisplay.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\AR\Shaders\TangoARRender.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Alpha-BumpSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Alpha-Bumped.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Alpha-Diffuse.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Alpha-Glossy.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Alpha-Parallax.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Alpha-ParallaxSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Alpha-VertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\AlphaTest-BumpSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\AlphaTest-Bumped.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\AlphaTest-Diffuse.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\AlphaTest-Glossy.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\AlphaTest-SoftEdgeUnlit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\AlphaTest-VertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\AutodeskInteractive.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Compositing.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Cubemaps\CubeBlend.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Cubemaps\CubeBlur.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Cubemaps\CubeBlurOdd.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Cubemaps\CubeCopy.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Decal.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Flare.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\GIDebug\ShowLightMask.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\GIDebug\TextureUV.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\GIDebug\UV1sAsPositions.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\GIDebug\VertexColors.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Illumin-BumpSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Illumin-Bumped.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Illumin-Diffuse.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Illumin-Glossy.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Illumin-Parallax.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Illumin-ParallaxSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Illumin-VertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-BlitCopy.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-BlitCopyDepth.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-BlitCopyWithDepth.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-BlitToDepth.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-BlitToDepth_MSAA.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-CombineDepthNormals.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-ConvertTexture.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-CubemapToEquirect.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-DeferredReflections.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-DeferredShading.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-DepthNormalsTexture.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-Flare.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-GUIRoundedRect.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-GUITexture.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-GUITextureBlit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-GUITextureClip.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-GUITextureClipText.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-Halo.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-MotionVectors.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-ODSWorldTexture.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-PrePassLighting.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-ScreenSpaceShadows.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Internal-StencilWrite.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Lightmap-BumpSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Lightmap-Bumped.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Lightmap-Diffuse.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Lightmap-Glossy.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Lightmap-VertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-BumpSpec-1DirectionalLight.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-BumpSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Bumped.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Diffuse.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Lightmap-Unlit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Particle-Add.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Particle-Alpha-VertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Particle-Alpha.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Particle-Multiply.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Skybox.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-VertexLit-OnlyDirectionalLights.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-VertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionBark.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionBarkRendertex.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionLeaves.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionLeavesRendertex.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\SpeedTree.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\SpeedTree8.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\SpeedTreeBillboard.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorAlbedoRenderTex.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorBark.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorBarkOptimized.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorBarkRendertex.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeaves.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesFast.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesFastOptimized.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesOptimized.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesRendertex.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorNormalRendertex.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Normal-BumpSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Normal-Bumped.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Normal-Diffuse.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Normal-DiffuseDetail.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Normal-DiffuseFast.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Normal-Glossy.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Normal-Parallax.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Normal-ParallaxSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Normal-VertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle Add.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle AddMultiply.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle AddSmooth.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle Alpha Blend.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle Anim Alpha Blend.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle Blend.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle Multiply.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle MultiplyDouble.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle Premultiply Blend.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle Standard Surface.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle Standard Unlit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Particle VertexLit Blended.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Reflect-BumpNolight.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Reflect-BumpSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Reflect-BumpVertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Reflect-Bumped.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Reflect-Diffuse.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Reflect-Glossy.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Reflect-Parallax.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Reflect-ParallaxSpec.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Reflect-VertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Skybox-Cubed.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Skybox-Panoramic.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Skybox-Procedural.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Skybox.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Sprites-Default.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Sprites-Diffuse.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Sprites-Mask.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Standard.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\StandardSpecular.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Details\VertexLit.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Details\WavingGrass.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Details\WavingGrassBillboard.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\AddPass.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\DiffuseBase.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\DiffuseBaseGen.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\FirstPass.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-AddPass.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-Base.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-FirstPass.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Standard-AddPass.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Standard-Base.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Standard-BaseGen.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Standard-FirstPass.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Terrain-Utilities.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Trees\BillboardTree.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Trees\CameraFacingBillboardTree.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\BrushPreview.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\GenNormalmap.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\PaintHeight.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\TerrainLayerUtils.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-CompositeOverdraw.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Default.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-DefaultETC1.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-DefaultFont.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Bumped.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Detail.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Refraction.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-RefractionDetail.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Transparent.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Overdraw.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Unlit-Detail.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Unlit-Text.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Unlit-TextDetail.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\UI\UI-Unlit-Transparent.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-Alpha.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-AlphaTest.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-Color.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-Normal.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VR\Shaders\BlitTexArraySlice.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VR\Shaders\BlitTexArraySliceToDepth.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VR\Shaders\BlitTexArraySliceToDepth_MSAA.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VR\Shaders\ClippingMask.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VR\Shaders\Internal-VRDistortion.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VR\Shaders\SpatialMappingOcclusion.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VR\Shaders\SpatialMappingWireframe.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VR\Shaders\VideoBackground.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VideoDecode.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VideoDecodeAndroid.shader" />
-    <None Include="Assets\Res\buildinshaders\DefaultResourcesExtra\VideoDecodeOSX.shader" />
-    <None Include="Assets\Res\buildinshaders\license.txt" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\AutoLight.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\GLSLSupport.glslinc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\HLSLSupport.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\Lighting.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\SpeedTree8Common.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\SpeedTreeBillboardCommon.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\SpeedTreeCommon.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\SpeedTreeVertex.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\SpeedTreeWind.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\TerrainEngine.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\TerrainPreview.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\TerrainSplatmapCommon.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\TerrainTool.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\Tessellation.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityBuiltin2xTreeLibrary.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityBuiltin3xTreeLibrary.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityCG.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityCG.glslinc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityCustomRenderTexture.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityDeferredLibrary.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityDeprecated.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityGBuffer.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityGlobalIllumination.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityImageBasedLighting.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityInstancing.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityLightingCommon.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityMetaPass.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityPBSLighting.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityShaderUtilities.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityShaderVariables.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityShadowLibrary.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnitySprites.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardBRDF.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardConfig.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardCore.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardCoreForward.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardCoreForwardSimple.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardInput.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardMeta.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardParticleEditor.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardParticleInstancing.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardParticleShadow.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardParticles.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardShadow.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardUtils.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStereoExtensions.glslinc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStereoSupport.glslinc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityUI.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Font.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Internal-BlendShape.compute" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Internal-Clear.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Internal-Colored.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Internal-ErrorShader.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Internal-Skinning-Util.cginc" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Internal-Skinning.compute" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\PerformanceTools\FrameDebuggerRenderTargetDisplay.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AR\Shaders\TangoARRender.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-BumpSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-Bumped.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-Diffuse.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-Glossy.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-Parallax.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-ParallaxSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-VertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AlphaTest-BumpSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AlphaTest-Bumped.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AlphaTest-Diffuse.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AlphaTest-Glossy.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AlphaTest-SoftEdgeUnlit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AlphaTest-VertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AutodeskInteractive.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Compositing.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Cubemaps\CubeBlend.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Cubemaps\CubeBlur.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Cubemaps\CubeBlurOdd.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Cubemaps\CubeCopy.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Decal.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Flare.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\GIDebug\ShowLightMask.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\GIDebug\TextureUV.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\GIDebug\UV1sAsPositions.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\GIDebug\VertexColors.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-BumpSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-Bumped.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-Diffuse.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-Glossy.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-Parallax.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-ParallaxSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-VertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-BlitCopy.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-BlitCopyDepth.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-BlitCopyWithDepth.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-BlitToDepth.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-BlitToDepth_MSAA.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-CombineDepthNormals.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-ConvertTexture.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-CubemapToEquirect.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-DeferredReflections.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-DeferredShading.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-DepthNormalsTexture.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-Flare.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-GUIRoundedRect.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-GUITexture.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-GUITextureBlit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-GUITextureClip.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-GUITextureClipText.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-Halo.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-MotionVectors.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-ODSWorldTexture.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-PrePassLighting.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-ScreenSpaceShadows.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-StencilWrite.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Lightmap-BumpSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Lightmap-Bumped.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Lightmap-Diffuse.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Lightmap-Glossy.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Lightmap-VertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-BumpSpec-1DirectionalLight.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-BumpSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Bumped.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Diffuse.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Lightmap-Unlit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Particle-Add.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Particle-Alpha-VertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Particle-Alpha.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Particle-Multiply.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Skybox.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-VertexLit-OnlyDirectionalLights.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-VertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionBark.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionBarkRendertex.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionLeaves.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionLeavesRendertex.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SpeedTree.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SpeedTree8.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SpeedTreeBillboard.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorAlbedoRenderTex.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorBark.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorBarkOptimized.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorBarkRendertex.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeaves.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesFast.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesFastOptimized.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesOptimized.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesRendertex.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorNormalRendertex.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-BumpSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-Bumped.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-Diffuse.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-DiffuseDetail.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-DiffuseFast.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-Glossy.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-Parallax.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-ParallaxSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-VertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Add.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle AddMultiply.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle AddSmooth.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Alpha Blend.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Anim Alpha Blend.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Blend.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Multiply.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle MultiplyDouble.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Premultiply Blend.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Standard Surface.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Standard Unlit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle VertexLit Blended.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-BumpNolight.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-BumpSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-BumpVertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-Bumped.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-Diffuse.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-Glossy.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-Parallax.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-ParallaxSpec.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-VertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Skybox-Cubed.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Skybox-Panoramic.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Skybox-Procedural.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Skybox.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Sprites-Default.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Sprites-Diffuse.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Sprites-Mask.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Standard.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\StandardSpecular.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Details\VertexLit.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Details\WavingGrass.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Details\WavingGrassBillboard.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\AddPass.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\DiffuseBase.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\DiffuseBaseGen.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\FirstPass.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-AddPass.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-Base.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-FirstPass.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Standard-AddPass.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Standard-Base.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Standard-BaseGen.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Standard-FirstPass.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Terrain-Utilities.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Trees\BillboardTree.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Trees\CameraFacingBillboardTree.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\BrushPreview.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\GenNormalmap.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\PaintHeight.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\TerrainLayerUtils.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-CompositeOverdraw.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Default.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-DefaultETC1.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-DefaultFont.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Bumped.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Detail.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Refraction.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-RefractionDetail.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Transparent.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Overdraw.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Unlit-Detail.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Unlit-Text.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Unlit-TextDetail.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Unlit-Transparent.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-Alpha.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-AlphaTest.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-Color.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-Normal.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\BlitTexArraySlice.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\BlitTexArraySliceToDepth.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\BlitTexArraySliceToDepth_MSAA.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\ClippingMask.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\Internal-VRDistortion.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\SpatialMappingOcclusion.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\SpatialMappingWireframe.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\VideoBackground.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VideoDecode.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VideoDecodeAndroid.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VideoDecodeOSX.shader" />
+    <None Include="Assets\Res\buildinresources\buildinshaders\license.txt" />
     <None Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\Unity.AssetBundleBrowser.Editor.asmdef" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
     <None Include="Assets\codeandweb.com\Readme.txt" />
