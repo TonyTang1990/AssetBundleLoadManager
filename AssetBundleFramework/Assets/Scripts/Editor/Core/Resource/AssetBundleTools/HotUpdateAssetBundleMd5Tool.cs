@@ -58,21 +58,59 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     /// <summary>
     /// AB目录
     /// </summary>
+    private string ABFolderPath
+    {
+        get
+        {
+            return mABFolderPath;
+        }
+        set
+        {
+            mABFolderPath = value;
+            doAnalyzeNeedDeleteAB();
+        }
+    }
     private string mABFolderPath;
 
     /// <summary>
     /// AB的Md5信息输出目录
     /// </summary>
-    private string mABMd5OutputFolderPath;
+    private string ABMd5OutputFolderPath
+    {
+        get;
+        set;
+    }
 
     /// <summary>
     /// AB的Md5对比数据旧文件路径
     /// </summary>
+    private string ABMd5CompareSourceFilePath
+    {
+        get
+        {
+            return mABMd5CompareSourceFilePath;
+        }
+        set
+        {
+            mABMd5CompareSourceFilePath = value;
+        }
+    }
     private string mABMd5CompareSourceFilePath;
 
     /// <summary>
     /// AB的Md5对比数据新文件路径
     /// </summary>
+    private string ABMd5CompareTargetFilePath
+    {
+        get
+        {
+            return mABMd5CompareTargetFilePath;
+        }
+        set
+        {
+            mABMd5CompareTargetFilePath = value;
+        }
+    }
     private string mABMd5CompareTargetFilePath;
 
     /// <summary>
@@ -103,7 +141,12 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     /// <summary>
     /// 删除的AB文件名列表
     /// </summary>
-    private List<KeyValuePair<string, string>> mDeleteABFileNameList = new List<KeyValuePair<string, string>>();
+    private List<KeyValuePair<string, string>> mNeedDeleteABFileNameList = new List<KeyValuePair<string, string>>();
+
+    /// <summary>
+    /// 已删除的AB文件名列表
+    /// </summary>
+    private List<KeyValuePair<string, string>> mDeletedABFileNameList = new List<KeyValuePair<string, string>>();
 
     /// <summary>
     /// 删除的AB滚动位置
@@ -157,14 +200,14 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     /// </summary>
     private void InitData()
     {
-        mABFolderPath = PlayerPrefs.GetString(ABFolderPathPreferenceKey);
-        mABMd5OutputFolderPath = PlayerPrefs.GetString(MD5OutputFolderPathPreferenceKey);
+        ABFolderPath = PlayerPrefs.GetString(ABFolderPathPreferenceKey);
+        ABMd5OutputFolderPath = PlayerPrefs.GetString(MD5OutputFolderPathPreferenceKey);
         mABMd5CompareSourceFilePath = PlayerPrefs.GetString(MD5ComparisonSourceFilePathPreferenceKey);
         mABMd5CompareTargetFilePath = PlayerPrefs.GetString(MD5ComparisonTargetFilePathPreferenceKey);
         mHotUpdateABOutputFolderPath = PlayerPrefs.GetString(NeedHotUpdateABListPreferenceKey);
         Debug.Log("读取配置:");
-        Debug.Log("AB目录:" + mABFolderPath);
-        Debug.Log("MD5输出目录:" + mABMd5OutputFolderPath);
+        Debug.Log("AB目录:" + ABFolderPath);
+        Debug.Log("MD5输出目录:" + ABMd5OutputFolderPath);
         Debug.Log("Md5对比旧文件路径:" + mABMd5CompareSourceFilePath);
         Debug.Log("Md5对比新文件路径:" + mABMd5CompareTargetFilePath);
         Debug.Log("热更新AB拷贝目录:" + mHotUpdateABOutputFolderPath);
@@ -175,14 +218,14 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     /// </summary>
     private void SaveData()
     {
-        PlayerPrefs.SetString(ABFolderPathPreferenceKey, mABFolderPath);
-        PlayerPrefs.SetString(MD5OutputFolderPathPreferenceKey, mABMd5OutputFolderPath);
+        PlayerPrefs.SetString(ABFolderPathPreferenceKey, ABFolderPath);
+        PlayerPrefs.SetString(MD5OutputFolderPathPreferenceKey, ABMd5OutputFolderPath);
         PlayerPrefs.SetString(MD5ComparisonSourceFilePathPreferenceKey, mABMd5CompareSourceFilePath);
         PlayerPrefs.SetString(MD5ComparisonTargetFilePathPreferenceKey, mABMd5CompareTargetFilePath);
         PlayerPrefs.SetString(NeedHotUpdateABListPreferenceKey, mHotUpdateABOutputFolderPath);
         Debug.Log("保存配置:");
-        Debug.Log("AB目录:" + mABFolderPath);
-        Debug.Log("MD5输出目录:" + mABMd5OutputFolderPath);
+        Debug.Log("AB目录:" + ABFolderPath);
+        Debug.Log("MD5输出目录:" + ABMd5OutputFolderPath);
         Debug.Log("Md5对比旧文件路径:" + mABMd5CompareSourceFilePath);
         Debug.Log("Md5对比新文件路径:" + mABMd5CompareTargetFilePath);
         Debug.Log("热更新AB拷贝目录:" + mHotUpdateABOutputFolderPath);
@@ -192,49 +235,65 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     {
         mWindowUiScrollPos = GUILayout.BeginScrollView(mWindowUiScrollPos);
         GUILayout.BeginVertical();
-        if (GUILayout.Button("选择AB目录"))
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("选择AB目录", GUILayout.Width(150.0f)))
         {
-            mABFolderPath = EditorUtility.OpenFolderPanel("AB目录", "请选择需要分析的AB所在目录!", "");
+            ABFolderPath = EditorUtility.OpenFolderPanel("AB目录", "请选择需要分析的AB所在目录!", "");
         }
-        GUILayout.Label("AB目录:" + mABFolderPath);
-        if(GUILayout.Button("选择MD5输出目录"))
+        GUILayout.Label("AB目录:" + ABFolderPath);
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("选择MD5输出目录", GUILayout.Width(150.0f)))
         {
-            mABMd5OutputFolderPath = EditorUtility.OpenFolderPanel("MD5输出目录", "请选择需要AB的MD5分析输出目录!", "");
+            ABMd5OutputFolderPath = EditorUtility.OpenFolderPanel("MD5输出目录", "请选择需要AB的MD5分析输出目录!", "");
         }
-        GUILayout.Label("MD5输出目录:" + mABMd5OutputFolderPath);
-        if (GUILayout.Button("计算目标目录AB的Md5"))
+        GUILayout.Label("MD5输出目录:" + ABMd5OutputFolderPath);
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("计算目标目录AB的Md5", GUILayout.Width(150.0f)))
         {
             doAssetBundleMd5Caculation();
         }
-        if (GUILayout.Button("删除已删除的AB"))
+        if (GUILayout.Button("删除已删除的AB", GUILayout.Width(150.0f)))
         {
-            doDeleteRemovedAB();
+            doDeleteDeletedABFiles();
         }
-        displayDeleteABResult();
-        if (GUILayout.Button("选择MD5对比旧文件"))
+        GUILayout.EndHorizontal();
+        displayDeletedABResult();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("选择MD5对比旧文件", GUILayout.Width(150.0f)))
         {
             mABMd5CompareSourceFilePath = EditorUtility.OpenFilePanel("MD5对比旧文件", "请选择需要对比的旧MD5分析文件路径!", "txt");
         }
         GUILayout.Label("MD5对比旧文件:" + mABMd5CompareSourceFilePath);
-        if (GUILayout.Button("选择MD5对比新文件"))
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("选择MD5对比新文件", GUILayout.Width(150.0f)))
         {
             mABMd5CompareTargetFilePath = EditorUtility.OpenFilePanel("MD5对比新文件", "请选择需要对比的新MD5分析文件路径!", "txt");
         }
         GUILayout.Label("MD5对比新文件:" + mABMd5CompareTargetFilePath);
-        if (GUILayout.Button("对比新老版本的MD5"))
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("对比新老版本的MD5", GUILayout.Width(150.0f)))
         {
             doAssetBundleMd5Comparison();
         }
+        GUILayout.EndHorizontal();
         displayComparisonResult();
-        if (GUILayout.Button("选择热更AB拷贝目录"))
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("选择热更AB拷贝目录", GUILayout.Width(150.0f)))
         {
             mHotUpdateABOutputFolderPath = EditorUtility.OpenFolderPanel("热更AB拷贝目录", "请选择热更AB拷贝目录!", "");
         }
         GUILayout.Label("热更AB拷贝目录:" + mHotUpdateABOutputFolderPath);
-        if (GUILayout.Button("拷贝需要热更的AB"))
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("拷贝需要热更的AB", GUILayout.Width(150.0f)))
         {
             doCopyHotUpdateAB();
         }
+        GUILayout.EndHorizontal();
         displayHotUpdateABCopyResult();
         GUILayout.EndVertical();
         GUILayout.EndScrollView();
@@ -245,14 +304,14 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     /// </summary>
     private void doAssetBundleMd5Caculation()
     {
-        if(Directory.Exists(mABFolderPath))
+        if(Directory.Exists(ABFolderPath))
         {
-            if(Directory.Exists(mABMd5OutputFolderPath))
+            if(Directory.Exists(ABMd5OutputFolderPath))
             {
                 var targetplatform = EditorUserBuildSettings.activeBuildTarget;
                 var md5filename = "ABMD5-" + Application.version + "-" + targetplatform + ".txt";
-                var md5filefullpath = mABMd5OutputFolderPath + Path.DirectorySeparatorChar + md5filename;
-                var abfilespath = Directory.GetFiles(mABFolderPath, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
+                var md5filefullpath = ABMd5OutputFolderPath + Path.DirectorySeparatorChar + md5filename;
+                var abfilespath = Directory.GetFiles(ABFolderPath, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
                     !f.EndsWith(".meta") && !f.EndsWith(".manifest")
                 );
                 if(!File.Exists(md5filefullpath))
@@ -297,65 +356,95 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     }
 
     /// <summary>
-    /// 删除已经移除的AB文件
+    /// 统计分析需要删除的AB文件
     /// </summary>
-    private void doDeleteRemovedAB()
+    private void doAnalyzeNeedDeleteAB()
     {
-        if (Directory.Exists(mABFolderPath))
+        if (Directory.Exists(ABFolderPath))
         {
-            mDeleteABFileNameList.Clear();
-            var foldername = new DirectoryInfo(mABFolderPath).Name;
-            var ab = AssetDatabase.LoadAssetAtPath<AssetBundle>(mABFolderPath + Path.DirectorySeparatorChar + foldername);          
+            mNeedDeleteABFileNameList.Clear();
+            var foldername = new DirectoryInfo(ABFolderPath).Name;
+            var ab = AssetBundle.LoadFromFile(ABFolderPath + Path.DirectorySeparatorChar + foldername);          
             if(ab != null)
             {
                 var abmanifest = ab.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
                 var valideallabnames = abmanifest.GetAllAssetBundles();
-                var existabfilespath = Directory.GetFiles(mABFolderPath, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
+                var existabfilespath = Directory.GetFiles(ABFolderPath, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
                     !f.EndsWith(".meta") && !f.EndsWith(".manifest")
-                );
+                ).ToList<string>();
                 foreach (var existabfilepath in existabfilespath)
                 {
                     var existabfilename = Path.GetFileName(existabfilepath);
-                    if (!valideallabnames.Contains(existabfilename))
+                    // GetAllAssetBundles得不到依赖信息AB自身，目录下的同名依赖信息文件需要单独排除
+                    if (!valideallabnames.Contains(existabfilename) && !existabfilename.Equals(foldername))
                     {
-                        mDeleteABFileNameList.Add(new KeyValuePair<string, string>(existabfilename, existabfilepath));
-                        Debug.LogError($"删除{existabfilepath}的AB文件!");
+                        mNeedDeleteABFileNameList.Add(new KeyValuePair<string, string>(existabfilename, existabfilepath));
+                        Debug.LogError($"需要删除的AB文件:{existabfilepath}!");
                     }
                 }
+                ab.Unload(true);
             }
             else
             {
-                Debug.LogError($"找不到AB目录:{mABFolderPath}下的Manifest:{foldername}文件!");
+                Debug.LogError($"找不到AB目录:{ABFolderPath}下的Manifest:{foldername}文件!");
             }
         }
         else
         {
-            Debug.LogError($"AB目录:{mABFolderPath}不存在,无法分析需要删除的AB!");
+            Debug.LogError($"AB目录:{ABFolderPath}不存在,无法分析需要删除的AB!");
         }
     }
 
     /// <summary>
     /// 显示删除的AB结果
     /// </summary>
-    private void displayDeleteABResult()
+    private void displayDeletedABResult()
     {
         GUILayout.BeginVertical();
         mDeleteABUiScrollPos = GUILayout.BeginScrollView(mDeleteABUiScrollPos);
-        if (mDeleteABFileNameList.Count > 0)
+        if (mDeletedABFileNameList.Count > 0)
         {
-            foreach (var deleteabfilename in mDeleteABFileNameList)
+            foreach (var deleteabfilename in mDeletedABFileNameList)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("已删除AB文件:" + deleteabfilename, GUILayout.Width(300.0f));
+                GUILayout.Label("已删除AB文件名:" + deleteabfilename.Key, GUILayout.Width(300.0f));
+                GUILayout.Label("已删除AB全路径:" + deleteabfilename.Value, GUILayout.Width(600.0f));
                 GUILayout.EndHorizontal();
             }
         }
         else
         {
-            GUILayout.Label("没有需要删除的AB!");
+            GUILayout.Label("未删除任何AB!");
         }
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
+    }
+
+    /// <summary>
+    /// 删除需要移除的AB文件
+    /// </summary>
+    private void doDeleteDeletedABFiles()
+    {
+        mDeletedABFileNameList.Clear();
+        if (mNeedDeleteABFileNameList.Count > 0)
+        {
+            foreach (var deleteabfilename in mNeedDeleteABFileNameList)
+            {
+                if(File.Exists(deleteabfilename.Value))
+                {
+                    File.Delete(deleteabfilename.Value);
+                    mDeletedABFileNameList.Add(deleteabfilename);
+                }
+                else
+                {
+                    Debug.LogError($"AB文件不存在:{deleteabfilename.Value}，删除失败!");
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("没有需要删除的AB!");
+        }
     }
 
     /// <summary>
@@ -461,7 +550,7 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
             var destinationfolderpath = mHotUpdateABOutputFolderPath + Path.DirectorySeparatorChar + mABMD5ComparisonTargetVersion;
             if(Directory.Exists(destinationfolderpath))
             {
-                Directory.Delete(destinationfolderpath);
+                Directory.Delete(destinationfolderpath, true);
             }
             Directory.CreateDirectory(destinationfolderpath);
             foreach (var changedabfile in mMD5ChangedABFileNameList)

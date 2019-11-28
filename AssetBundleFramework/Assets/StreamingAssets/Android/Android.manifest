@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 131503499
+CRC: 1002280987
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -96,5 +96,9 @@ AssetBundleManifest:
         Dependency_0: sharematerial
     Info_26:
       Name: testmd5comparison
+      Dependencies:
+        Dependency_0: shaderlist
+    Info_27:
+      Name: testmd5comparisonnew
       Dependencies:
         Dependency_0: shaderlist
