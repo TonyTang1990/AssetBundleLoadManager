@@ -175,7 +175,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// <summary>
     /// 资源热更列表文件名
     /// </summary>
-    private const string ResourceUpdateListFileName = "ResourceUpdateList.txt";
+    public const string ResourceUpdateListFileName = "ResourceUpdateList.txt";
 
     /// <summary>
     /// 本地资源热更记录文件目录路径

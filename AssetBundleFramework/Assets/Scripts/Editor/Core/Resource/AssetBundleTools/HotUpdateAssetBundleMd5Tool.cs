@@ -41,9 +41,14 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     private const string MD5ComparisonTargetFilePathPreferenceKey = "MD5ComparisonTargetFilePathKey";
 
     /// <summary>
-    /// 需要热更的AB拷贝输出目录
+    /// 热更新AB准备目录路径存储Key
     /// </summary>
-    private const string NeedHotUpdateABListPreferenceKey = "NeedHotUpdateABListKey";
+    private const string HotUpdateABPreparationPreferenceKey = "HotUpdateABPreparationABListKey";
+
+    /// <summary>
+    /// 热更新目录路径存储Key
+    /// </summary>
+    private const string HotUpdatePreparationPreferenceKey = "HotUpdatePreparationABListKey";
 
     /// <summary>
     /// 文件改变状态
@@ -119,6 +124,11 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     private string mHotUpdateABOutputFolderPath;
 
     /// <summary>
+    /// 热更新目录路径
+    /// </summary>
+    private string mHotUpdateOutputFolderPath;
+
+    /// <summary>
     /// MD5值有改变的文件名列表
     /// </summary>
     private List<KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>> mMD5ChangedABFileNameList = new List<KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>>();
@@ -134,11 +144,6 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     private List<string> mHotUpdateABFileNameList = new List<string>();
 
     /// <summary>
-    /// MD5比较结果滚动位置
-    /// </summary>
-    private Vector2 mMD5ResultUiScrollPos;
-
-    /// <summary>
     /// 删除的AB文件名列表
     /// </summary>
     private List<KeyValuePair<string, string>> mNeedDeleteABFileNameList = new List<KeyValuePair<string, string>>();
@@ -149,24 +154,34 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     private List<KeyValuePair<string, string>> mDeletedABFileNameList = new List<KeyValuePair<string, string>>();
 
     /// <summary>
-    /// 删除的AB滚动位置
-    /// </summary>
-    private Vector2 mDeleteABUiScrollPos;
-
-    /// <summary>
-    /// 热更AB拷贝结果滚动位置
-    /// </summary>
-    private Vector2 mHotUpdateABResultUiScrollPos;
-
-    /// <summary>
-    /// AB的MD5对比旧文件版本
+    /// AB的MD5对比旧文件版本号
     /// </summary>
     private string mABMD5ComparisonSourceVersion;
 
     /// <summary>
-    /// AB的MD5对比新文件版本
+    /// AB的MD5对比旧文件资源版本号
+    /// </summary>
+    private string mABMD5ComparisonSourceResourceVersion;
+
+    /// <summary>
+    /// AB的MD5对比新文件版本号
     /// </summary>
     private string mABMD5ComparisonTargetVersion;
+
+    /// <summary>
+    /// AB的MD5对比新文件资源版本号
+    /// </summary>
+    private string mABMD5ComparisonTargetResourceVersion;
+
+    /// <summary>
+    /// 热更新版本号(热更新准备任务使用)
+    /// </summary>
+    private string mHotUpdateVersion;
+
+    /// <summary>
+    /// 热更新资源版本号(热更新准备任务使用)
+    /// </summary>
+    private string mHotUpdateSourceVersion;
 
     /// <summary>
     /// 分隔符
@@ -204,13 +219,15 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
         ABMd5OutputFolderPath = PlayerPrefs.GetString(MD5OutputFolderPathPreferenceKey);
         mABMd5CompareSourceFilePath = PlayerPrefs.GetString(MD5ComparisonSourceFilePathPreferenceKey);
         mABMd5CompareTargetFilePath = PlayerPrefs.GetString(MD5ComparisonTargetFilePathPreferenceKey);
-        mHotUpdateABOutputFolderPath = PlayerPrefs.GetString(NeedHotUpdateABListPreferenceKey);
+        mHotUpdateABOutputFolderPath = PlayerPrefs.GetString(HotUpdateABPreparationPreferenceKey);
+        mHotUpdateOutputFolderPath = PlayerPrefs.GetString(HotUpdatePreparationPreferenceKey);
         Debug.Log("读取配置:");
         Debug.Log("AB目录:" + ABFolderPath);
         Debug.Log("MD5输出目录:" + ABMd5OutputFolderPath);
         Debug.Log("Md5对比旧文件路径:" + mABMd5CompareSourceFilePath);
         Debug.Log("Md5对比新文件路径:" + mABMd5CompareTargetFilePath);
-        Debug.Log("热更新AB拷贝目录:" + mHotUpdateABOutputFolderPath);
+        Debug.Log("热更新AB准备目录:" + mHotUpdateABOutputFolderPath);
+        Debug.Log("热更新目录:" + mHotUpdateOutputFolderPath);
     }
 
     /// <summary>
@@ -222,13 +239,15 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
         PlayerPrefs.SetString(MD5OutputFolderPathPreferenceKey, ABMd5OutputFolderPath);
         PlayerPrefs.SetString(MD5ComparisonSourceFilePathPreferenceKey, mABMd5CompareSourceFilePath);
         PlayerPrefs.SetString(MD5ComparisonTargetFilePathPreferenceKey, mABMd5CompareTargetFilePath);
-        PlayerPrefs.SetString(NeedHotUpdateABListPreferenceKey, mHotUpdateABOutputFolderPath);
+        PlayerPrefs.SetString(HotUpdateABPreparationPreferenceKey, mHotUpdateABOutputFolderPath);
+        PlayerPrefs.SetString(HotUpdatePreparationPreferenceKey, mHotUpdateOutputFolderPath);
         Debug.Log("保存配置:");
         Debug.Log("AB目录:" + ABFolderPath);
         Debug.Log("MD5输出目录:" + ABMd5OutputFolderPath);
         Debug.Log("Md5对比旧文件路径:" + mABMd5CompareSourceFilePath);
         Debug.Log("Md5对比新文件路径:" + mABMd5CompareTargetFilePath);
-        Debug.Log("热更新AB拷贝目录:" + mHotUpdateABOutputFolderPath);
+        Debug.Log("热更新AB准备目录:" + mHotUpdateABOutputFolderPath);
+        Debug.Log("热更新AB拷贝目录:" + mHotUpdateOutputFolderPath);
     }
 
     public void OnGUI()
@@ -282,19 +301,34 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
         GUILayout.EndHorizontal();
         displayComparisonResult();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("选择热更AB拷贝目录", GUILayout.Width(150.0f)))
+        if (GUILayout.Button("选择热更新AB准备目录", GUILayout.Width(150.0f)))
         {
-            mHotUpdateABOutputFolderPath = EditorUtility.OpenFolderPanel("热更AB拷贝目录", "请选择热更AB拷贝目录!", "");
+            mHotUpdateABOutputFolderPath = EditorUtility.OpenFolderPanel("热更新AB准备目录", "请选择热更新AB准备目录!", "");
         }
-        GUILayout.Label("热更AB拷贝目录:" + mHotUpdateABOutputFolderPath);
+        GUILayout.Label("热更新AB准备目录:" + mHotUpdateABOutputFolderPath);
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("拷贝需要热更的AB", GUILayout.Width(150.0f)))
+        if (GUILayout.Button("执行热更新AB准备任务", GUILayout.Width(150.0f)))
         {
-            doCopyHotUpdateAB();
+            doHotUpdateABPreparationTask();
         }
         GUILayout.EndHorizontal();
-        displayHotUpdateABCopyResult();
+        displayHotUpdateABPreparationResult();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("选择热更新目录", GUILayout.Width(150.0f)))
+        {
+            mHotUpdateOutputFolderPath = EditorUtility.OpenFolderPanel("热更新目录", "请选择热更新目录!", "");
+        }
+        GUILayout.Label("热更新目录:" + mHotUpdateOutputFolderPath);
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("执行热更新准备任务", GUILayout.Width(150.0f)))
+        {
+            doHotUpdatePreparationTask();
+        }
+        GUILayout.EndHorizontal();
+        displayHotUpdatePreparationResult();
+        displayNotice();
         GUILayout.EndVertical();
         GUILayout.EndScrollView();
     }
@@ -308,8 +342,12 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
         {
             if(Directory.Exists(ABMd5OutputFolderPath))
             {
+                VersionConfigModuleManager.Singleton.initVerisonConfigData();
+                var resourceversion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
                 var targetplatform = EditorUserBuildSettings.activeBuildTarget;
-                var md5filename = "ABMD5-" + Application.version + "-" + targetplatform + ".txt";
+                // 文件名格式: MD5+版本号+资源版本号+平台+时间戳(年_月_日_时_分_秒)+.txt
+                var nowdate = DateTime.Now;
+                var md5filename = $"MD5-{Application.version}-{resourceversion}-{targetplatform}-{nowdate.Year}_{nowdate.Month}_{nowdate.Day}_{nowdate.Hour}_{nowdate.Minute}_{nowdate.Second}.txt";
                 var md5filefullpath = ABMd5OutputFolderPath + Path.DirectorySeparatorChar + md5filename;
                 var abfilespath = Directory.GetFiles(ABFolderPath, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
                     !f.EndsWith(".meta") && !f.EndsWith(".manifest")
@@ -324,8 +362,11 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
                 using (var md5sw = new StreamWriter(md5filefullpath, false, Encoding.UTF8))
                 {
                     var md5hash = MD5.Create();
-                    //第一行是版本信息，后面才是AB详细(AB名+":"+MD5值+":"AB全路径)
+                    //第一行是版本号信息
+                    //第二行是资源版本号信息
+                    //后面是AB详细(AB名+":"+MD5值+":"AB全路径)
                     md5sw.WriteLine(Application.version);
+                    md5sw.WriteLine(resourceversion);
                     var sb = new StringBuilder();
                     foreach(var abfilepath in abfilespath)
                     {
@@ -401,7 +442,6 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     private void displayDeletedABResult()
     {
         GUILayout.BeginVertical();
-        mDeleteABUiScrollPos = GUILayout.BeginScrollView(mDeleteABUiScrollPos);
         if (mDeletedABFileNameList.Count > 0)
         {
             foreach (var deleteabfilename in mDeletedABFileNameList)
@@ -416,7 +456,6 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
         {
             GUILayout.Label("未删除任何AB!");
         }
-        GUILayout.EndScrollView();
         GUILayout.EndVertical();
     }
 
@@ -465,13 +504,18 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
                 {
                     using (var md52sr = new StreamReader(mABMd5CompareTargetFilePath))
                     {
+                        //第一行是版本号信息
+                        //第二行是资源版本号信息
+                        //后面是AB详细(AB名+":"+MD5值+":"AB全路径)
                         mABMD5ComparisonSourceVersion = md51sr.ReadLine();
+                        mABMD5ComparisonSourceResourceVersion = md51sr.ReadLine();
                         while (!md51sr.EndOfStream)
                         {
                             var lineinfo = md51sr.ReadLine().Split(SeparaterKeyChar);
                             md51map.Add(lineinfo[0],new KeyValuePair<string, string>(lineinfo[1], lineinfo[2]));
                         }
                         mABMD5ComparisonTargetVersion = md52sr.ReadLine();
+                        mABMD5ComparisonTargetResourceVersion = md52sr.ReadLine();
                         while (!md52sr.EndOfStream)
                         {
                             var lineinfo = md52sr.ReadLine().Split(SeparaterKeyChar);
@@ -519,7 +563,6 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
     private void displayComparisonResult()
     {
         GUILayout.BeginVertical();
-        mMD5ResultUiScrollPos = GUILayout.BeginScrollView(mMD5ResultUiScrollPos);
         if(mMD5ChangedABFileNameList.Count > 0)
         {
             foreach (var mdchangedabfilename in mMD5ChangedABFileNameList)
@@ -534,31 +577,34 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
         {
             GUILayout.Label("无变化!");
         }
-        GUILayout.EndScrollView();
         GUILayout.EndVertical();
     }
 
     /// <summary>
-    /// 执行拷贝热更新AB操作
+    /// 执行热更新AB准备任务
     /// </summary>
-    private void doCopyHotUpdateAB()
+    private void doHotUpdateABPreparationTask()
     {
         if (Directory.Exists(mHotUpdateABOutputFolderPath))
         {
             mHotUpdateABFileNameList.Clear();
-            // 创建对应版本的目录
-            var destinationfolderpath = mHotUpdateABOutputFolderPath + Path.DirectorySeparatorChar + mABMD5ComparisonTargetVersion;
-            if(Directory.Exists(destinationfolderpath))
+            // 创建版本号以及资源版本号对应输出目录
+            // 热更详细信息文件以及APK目录
+            var versionupdatefolderpath = mHotUpdateABOutputFolderPath + Path.DirectorySeparatorChar + mABMD5ComparisonTargetVersion;
+            // 热更AB拷贝目录+版本号目录+资源版本号目录
+            var resourceupdatefolderpath = versionupdatefolderpath + Path.DirectorySeparatorChar + mABMD5ComparisonTargetResourceVersion;
+            if (Directory.Exists(resourceupdatefolderpath))
             {
-                Directory.Delete(destinationfolderpath, true);
+                Directory.Delete(resourceupdatefolderpath, true);
             }
-            Directory.CreateDirectory(destinationfolderpath);
+            Directory.CreateDirectory(resourceupdatefolderpath);
+            // 拷贝需要热更的AB文件
             foreach (var changedabfile in mMD5ChangedABFileNameList)
             {
                 if (changedabfile.Value.Value == EChangedFileStatus.Changed || changedabfile.Value.Value == EChangedFileStatus.Add)
                 {
                     mHotUpdateABFileNameList.Add(changedabfile.Key);
-                    var abfiledestination = destinationfolderpath + Path.DirectorySeparatorChar + changedabfile.Key;
+                    var abfiledestination = resourceupdatefolderpath + Path.DirectorySeparatorChar + changedabfile.Key;
                     File.Copy(changedabfile.Value.Key, abfiledestination);
                     Debug.Log($"拷贝文件:{changedabfile.Value.Key}到{abfiledestination}");
                 }
@@ -566,17 +612,16 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
         }
         else
         {
-            Debug.LogError("热更AB拷贝目录不存在，请选择有效目录路径!");
+            Debug.LogError("热更新AB准备目录不存在，请选择有效目录路径!");
         }
     }
 
     /// <summary>
     /// 显示热更AB拷贝结果
     /// </summary>
-    private void displayHotUpdateABCopyResult()
+    private void displayHotUpdateABPreparationResult()
     {
         GUILayout.BeginVertical();
-        mHotUpdateABResultUiScrollPos = GUILayout.BeginScrollView(mHotUpdateABResultUiScrollPos);
         if (mHotUpdateABFileNameList.Count > 0)
         {
             foreach (var hotupdateabfilename in mHotUpdateABFileNameList)
@@ -590,8 +635,87 @@ public class HotUpdateAssetBundleMd5Tool : EditorWindow
         {
             GUILayout.Label("无需拷贝!");
         }
-        GUILayout.EndScrollView();
         GUILayout.EndVertical();
+    }
 
+    /// <summary>
+    /// 执行热更新准备任务
+    /// </summary>
+    private void doHotUpdatePreparationTask()
+    {
+        if (Directory.Exists(mHotUpdateOutputFolderPath))
+        {
+            mHotUpdateABFileNameList.Clear();
+            // 创建版本号以及资源版本号对应输出目录
+            // 对应版本的热更新目录
+            var versionupdatefilefolderpath = mHotUpdateOutputFolderPath + Path.DirectorySeparatorChar + mABMD5ComparisonTargetVersion;
+            // 确保热更新目录存在
+            if (!Directory.Exists(mHotUpdateOutputFolderPath))
+            {
+                Directory.CreateDirectory(mHotUpdateOutputFolderPath);
+            }
+            // 分析热更列表文件(根据热更目录的所有热更记录以及最新热更AB信息分析)
+            // 热更信息格式示例:
+            // 资源版本号:资源AB名;资源版本号:资源AB名;
+            var resourceupdatefilefullname = HotUpdateModuleManager.ResourceUpdateListFileName;
+            using (var sw = new StreamWriter(resourceupdatefilefullname, false))
+            {
+                //默认所有的带数字的子目录都算成资源版本号对应目录
+                var subfolders = Directory.GetDirectories(versionupdatefilefolderpath);
+                bool isfirstabfile = true;
+                foreach(var subfolder in subfolders)
+                {
+                    if (int.TryParse(subfolder, out int resourceversion))
+                    {
+                        var abfiles = Directory.GetFiles(subfolder);
+                        foreach(var abfile in abfiles)
+                        {
+                            if(!isfirstabfile)
+                            {
+                                sw.Write($"{resourceversion}:{abfile}");
+                            }
+                            else
+                            {
+                                isfirstabfile = false;
+                                sw.Write($";{resourceversion}:{abfile}");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError($"热更目录:{versionupdatefilefolderpath}有非法目录{subfolder}");
+                    }
+                }
+                Debug.Log($"热更新最新数据:{sw.ToString()}");
+            }
+        }
+        else
+        {
+            Debug.LogError("热更新准备目录不存在，请选择有效目录路径!");
+        }
+    }
+
+    /// <summary>
+    /// 显示热更新准备的结果
+    /// </summary>
+    private void displayHotUpdatePreparationResult()
+    {
+        GUILayout.BeginVertical();
+        GUILayout.Label("逻辑待添加!");
+        GUILayout.EndVertical();
+    }
+
+    /// <summary>
+    /// 显示提示信息
+    /// </summary>
+    private void displayNotice()
+    {
+        GUILayout.BeginVertical();
+        GUI.color = Color.yellow;
+        GUILayout.Label("注意事项:", "Box");
+        GUILayout.Label("请先执行热更新AB准备任务后手动拷贝相关版本热更资源(APK和AB)到热更新目录，然后再执行热更新准备任务!", "Box");
+        GUILayout.Label($"热更新准备任务不会自动拷贝对应版本APK和AB文件(需要手动拷贝),只会自动分析生成热更新信息文件({HotUpdateModuleManager.ResourceUpdateListFileName})!", "Box");
+        GUI.color = Color.white;
+        GUILayout.EndVertical();
     }
 }
