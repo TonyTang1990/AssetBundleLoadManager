@@ -13,18 +13,6 @@ ShaderVariantCollection:
       variants:
       - keywords: _SUNDISK_SIMPLE
         passType: 0
-  - first: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 799a72a7e5f5bec4ca234fd03e089e65, type: 3}
-    second:
-      variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
-        passType: 4
-      - keywords: SHADOWS_DEPTH
-        passType: 8
   - first: {fileID: 4800000, guid: 3b204f00b368bb847aa183ed5c36f944, type: 3}
     second:
       variants:
@@ -38,6 +26,25 @@ ShaderVariantCollection:
       - keywords: 
         passType: 0
   - first: {fileID: 4800000, guid: 5847946e7208ea441b9b8769976f4b3b, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 799a72a7e5f5bec4ca234fd03e089e65, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: 7fd06687c3b6449449979c2e4d04c8e9, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN _EMISSION
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: 80e46a0749a6daf44ad44a316009ddae, type: 3}
     second:
       variants:
       - keywords: 

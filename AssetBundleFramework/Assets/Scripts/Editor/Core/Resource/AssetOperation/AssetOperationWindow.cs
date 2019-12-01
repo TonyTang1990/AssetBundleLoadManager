@@ -42,7 +42,7 @@ public class AssetOperationWindow : EditorWindow
     /// </summary>
     private Vector2 uiScrollPos;
 
-    [MenuItem("Tools/Assets/Asset相关处理工具", false)]
+    [MenuItem("Tools/Assets/Asset相关处理工具", false, 101)]
     public static void dpAssetBrowser()
     {
         var assetoperationwindow = EditorWindow.GetWindow<AssetOperationWindow>();
@@ -53,9 +53,9 @@ public class AssetOperationWindow : EditorWindow
     {
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
-        includeIndirectDp = GUILayout.Toggle(includeIndirectDp, "是否包含间接引用");
-        GUILayout.Label("资源后缀过滤:");
-        postFixFilter = GUILayout.TextField(postFixFilter, GUILayout.MaxWidth(200.0f));
+        includeIndirectDp = GUILayout.Toggle(includeIndirectDp, "是否包含间接引用", GUILayout.Width(120.0f));
+        GUILayout.Label("资源后缀过滤:", GUILayout.Width(80.0f));
+        postFixFilter = GUILayout.TextField(postFixFilter, GUILayout.MaxWidth(150.0f));
         if (GUILayout.Button("查看选中Asset依赖", GUILayout.MaxWidth(150.0f)))
         {
             mAssetOperationType = EAssetOperationType.AssetDependencyBrowser;
@@ -577,13 +577,19 @@ public class AssetOperationWindow : EditorWindow
         // 3. 并排创建使用每一个有效材质的Cube渲染一帧
         // 4. 触发变体搜集并保存变体搜集文件
         Debug.Log("开始搜集Shader变体!");
+        EditorUtility.DisplayProgressBar("Shader变体收集", "打开Shader变体收集场景!", 0.0f);
         await openShaderVariantsCollectSceneAsync();
+        EditorUtility.DisplayProgressBar("Shader变体收集", "清除Shader变体数据!", 0.2f);
         await clearAllShaderVariantsAsync();
+        EditorUtility.DisplayProgressBar("Shader变体收集", "创建Shader变体收集所需Cube!", 0.3f);
         await createAllValideMaterialCudeAsync();
+        EditorUtility.DisplayProgressBar("Shader变体收集", "执行Shader变体收集!", 0.5f);
         await doShaderVariantsCollectAsync();
+        EditorUtility.DisplayProgressBar("Shader变体收集", "完成Shader变体收集!", 1.0f);
         Debug.Log("结束搜集Shader变体!");
         // 打开之前的场景
         EditorSceneManager.OpenScene(preactivescenepath);
+        EditorUtility.ClearProgressBar();
         mShaderVariantCollectionResult = true;
     }
 

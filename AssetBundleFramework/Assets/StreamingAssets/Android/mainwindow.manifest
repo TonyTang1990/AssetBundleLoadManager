@@ -3,7 +3,7 @@ CRC: 2627292317
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 70a43bc2b374337b3a7e771b49354723
+    Hash: 2fe5dba013bc08fcb599a183dd8d15bb
   TypeTreeHash:
     serializedVersion: 2
     Hash: 38dc45a1dd805075cf42870c43916350
@@ -38,4 +38,4 @@ ClassTypes:
 Assets:
 - Assets/Res/windows/MainWindow.prefab
 Dependencies:
-- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/mouseandkeyboardstudy
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/mouseandkeyboardstudy

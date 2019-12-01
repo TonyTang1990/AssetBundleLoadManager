@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3844306492
+CRC: 2689119256
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 03a03f3e52c9ecf719978d5827f139fd
+    Hash: 009ac05972580be2ebecce3ea15a0a17
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7f0bffc1563fad4b76a0da6fdabbfa72
@@ -19,6 +19,9 @@ Assets:
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-BumpSpec.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-VertexLit.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Default.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Premultiply
+  Blend.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Standard.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-VertexLit.shader
 - Assets/Res/actors/zombunny/Shaders/Rim Lit Bumped Specular.shader
 - Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants

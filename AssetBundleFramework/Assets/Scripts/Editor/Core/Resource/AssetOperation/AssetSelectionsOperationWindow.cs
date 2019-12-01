@@ -47,7 +47,9 @@ public class AssetSelectionsOperationWindow : EditorWindow
 
     private const string PrefabPosfix = ".prefab";
 
+    #if AB_PACKAGE_SYSTEM
     [MenuItem("Tools/Assets/操作选中对象资源窗口", false, 102)]
+    #endif
     public static void selectionAssetOperationWindow()
     {
         var sltassetoperationwindow = EditorWindow.GetWindow<AssetSelectionsOperationWindow>();

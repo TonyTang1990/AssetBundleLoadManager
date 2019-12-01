@@ -15,7 +15,7 @@ using UnityEngine;
 /// </summary>
 public class FBXAnimationExtract {
 
-    [MenuItem("Tools/AssetTools/FBX/提取FBX动画(且自动创建带AnimationClip的预制件对象) %&E", false, 100)]
+    [MenuItem("Tools/Assets/FBX/提取FBX动画(且自动创建带AnimationClip的预制件对象) %&E", false, 100)]
     public static void extractAnimations()
     {
         var objs = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);

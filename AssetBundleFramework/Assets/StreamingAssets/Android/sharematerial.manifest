@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1476879288
+CRC: 1168142438
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 37c78dbf6496b76765e28b295ad1dc3a
+    Hash: c6d8bf6a7b2902e96c156dcf88f1bac6
   TypeTreeHash:
     serializedVersion: 2
     Hash: fe397485c3cec1106b49e9ff95e8f8a2
@@ -16,8 +16,9 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 Assets:
+- Assets/Res/buildinresources/buildinmaterials/Default-Material.mat
 - Assets/Res/sharematerials/sharematerial.mat
 - Assets/Res/buildinresources/buildinmaterials/Default-ParticleSystem.mat
 - Assets/Res/buildinresources/buildinmaterials/Default-Particle.mat
 Dependencies:
-- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist

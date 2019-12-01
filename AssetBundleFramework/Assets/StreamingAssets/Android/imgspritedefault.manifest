@@ -3,7 +3,7 @@ CRC: 1283102537
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 61041b27d8308e6a2c97f104b6825bb1
+    Hash: 56602606c3698381385a05a2ff19e6f6
   TypeTreeHash:
     serializedVersion: 2
     Hash: 4d381bd757befc44e002beaab248b4f1
@@ -26,4 +26,4 @@ ClassTypes:
 Assets:
 - Assets/Res/prefabs/imagebuildin.prefab
 Dependencies:
-- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist

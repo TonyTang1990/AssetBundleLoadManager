@@ -28,7 +28,9 @@ using UnityEditor;
 /// </summary>
 public class AssetOrganizeTool {
 
+#if AB_PACKAGE_SYSTEM
     [MenuItem("Tools/Assets/整理选中Asset及其依赖资源", false, 101)]
+#endif
     public static void assetOrganize()
     {
         var selections = Selection.GetFiltered(typeof(object), SelectionMode.Assets);

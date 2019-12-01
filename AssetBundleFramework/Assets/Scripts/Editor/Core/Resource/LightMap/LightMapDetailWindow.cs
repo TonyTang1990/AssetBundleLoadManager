@@ -15,7 +15,7 @@ using UnityEditor.SceneManagement;
 
 public class LightMapDetailWindow : EditorWindow {
 
-    [MenuItem("Tools/Windows/LightMapDetail", false, 110)]
+    [MenuItem("Tools/LightMap/LightMapDetail", false, 110)]
     public static void OpenLightMapDetailWindow()
     {
         LightMapDetailWindow lmdw = EditorWindow.GetWindow<LightMapDetailWindow>();

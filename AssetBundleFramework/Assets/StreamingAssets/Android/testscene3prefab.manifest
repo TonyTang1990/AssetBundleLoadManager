@@ -3,7 +3,7 @@ CRC: 1214713020
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: db4a4d3bfd1b27cfcfe05d78f36869c9
+    Hash: 68566a6f2b8263ec232bfccaba109388
   TypeTreeHash:
     serializedVersion: 2
     Hash: 238ffd65c441c43998389f541a000a6b
@@ -40,4 +40,4 @@ ClassTypes:
 Assets:
 - Assets/Res/scenes/sceneprefabs/testscene3prefab.prefab
 Dependencies:
-- D:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/sharematerial
