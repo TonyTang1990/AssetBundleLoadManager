@@ -332,6 +332,10 @@ Tools->HotUpdate->热更新操作工具
 
 资源辅助工具五件套：
 
+Tools->AssetBundle->AssetBundle操作工具
+
+Tools->Assets->Asset相关处理
+
 1. AB删除判定工具
 
    ![DeleteRemovedAssetBundle](/img/Unity/AssetBundle-Framework/DeleteRemovedAssetBundle.png)
