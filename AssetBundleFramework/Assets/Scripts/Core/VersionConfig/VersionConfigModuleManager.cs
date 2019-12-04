@@ -174,7 +174,6 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
             var outterbytes = File.ReadAllBytes(OutterVersionConfigSaveFileFullPath);
             Debug.Log("包外版本信息:");
             var content = mUTF8Encoding.GetString(outterbytes);
-            Debug.Log(string.Format("content : {0}", content));
             OuterGameVersionConfig = JsonUtility.FromJson<VersionConfig>(content);
             Debug.Log(string.Format("VersionCode : {0} ResourceVersionCode : {1}", OuterGameVersionConfig.VersionCode, OuterGameVersionConfig.ResourceVersionCode));
         }

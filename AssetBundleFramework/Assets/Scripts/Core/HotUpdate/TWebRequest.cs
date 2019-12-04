@@ -220,7 +220,7 @@ public class TWebRequest {
             mCurrentInProgressWebRequest = UnityWebRequest.Get(task.URL);
             mCurrentInProgressWebRequest.timeout = task.TimeOut;
             yield return mCurrentInProgressWebRequest.SendWebRequest();
-            if (mCurrentInProgressWebRequest.isNetworkError)
+            if (mCurrentInProgressWebRequest.isNetworkError || mCurrentInProgressWebRequest.isHttpError)
             {
                 Debug.LogError(string.Format("{0}资源下载出错!", task.URL));
                 Debug.LogError(mCurrentInProgressWebRequest.error);

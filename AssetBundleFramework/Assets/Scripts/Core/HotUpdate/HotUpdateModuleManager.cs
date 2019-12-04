@@ -49,10 +49,13 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     }
 
     /// <summary>
-    /// 测试版本强更版本号
-    /// 待添加网络模块后从服务器端读取
+    /// 服务器端版本信息(暂时无后端，服务器版本信息通过静态资源更新访问)
     /// </summary>
-    public const double NewHotUpdateVersionCode = 2.0;
+    public VersionConfig ServerVersionConfig
+    {
+        get;
+        private set;
+    }
 
     /// <summary>
     /// 版本强更进度
@@ -64,6 +67,16 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
             return HotVersionUpdateRequest.CurrentProgress;
         }
     }
+
+    /// <summary>
+    /// 服务器版本文件名
+    /// </summary>
+    public const string ServerVersionConfigFileName = "ServerVersionConfig.json";
+
+    /// <summary>
+    /// 服务器版本信息资源更新完成回调
+    /// </summary>
+    private Action<bool> mServerVersionConfigHotUpdateCompleteCB;
 
     /// <summary>
     /// 热更新地址信息配置文件名
@@ -126,12 +139,6 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 版本强更完成回调
     /// </summary>
     private Action<bool> mVersionHotUpdateCompleteCB;
-
-    /// <summary>
-    /// 测试热更资源版本号
-    /// 待添加网络模块后从服务器端读取
-    /// </summary>
-    public const int NewHotUpdateResourceCode = 3;
 
     /// <summary>
     /// 资源热更进度
@@ -221,6 +228,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         mLocalUpdatedResourceMap = new SortedDictionary<int, List<string>>();
         LocalResourceUpdateListFilFolderPath = Application.persistentDataPath + "/ResourceUpdateList/";
         LocalResourceUpdateListFilePath = LocalResourceUpdateListFilFolderPath + ResourceUpdateListFileName;
+        Debug.Log($"资源热更新记录文件:{LocalResourceUpdateListFilePath}");
         mHotResourceUpdateRequest = new TWebRequest();
     }
 
@@ -299,7 +307,48 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         }
     }
 
-#region 版本强更部分
+    #region 服务器版本资源信息拉去部分
+    /// <summary>
+    /// 执行获取服务器版本信息
+    /// </summary>
+    /// <returns></returns>
+    public void doObtainServerVersionConfig(Action<bool> completecallback)
+    {
+        mServerVersionConfigHotUpdateCompleteCB = completecallback;
+        //拉取服务器热更资源信息与本地资源热更信息进行比较
+        TWebRequest twr = new TWebRequest();
+        //URL = 热更新URL + 服务器版本信息文件名(ServerVersionConfig.json)
+        var url = mHotUpdateURL + ServerVersionConfigFileName; ;
+        twr.enqueue(url, serverVersionConfigCompleteCB);
+        twr.startRequest();
+    }
+
+    /// <summary>
+    /// 服务器版本信息拉去回调
+    /// </summary>
+    /// <param name="url">下载地址</param>
+    /// <param name="downloadhandler">下载结果数据</param>
+    /// <param name="requeststatus">下载状态</param>
+    private void serverVersionConfigCompleteCB(string url, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
+    {
+        Debug.Log(string.Format("服务器版本信息资源列表地址 : {0}", url));
+        if (requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
+        {
+            Debug.Log(string.Format("服务器版本信息资源下载成功!服务器版本信息 : {0}", downloadhandler.text));
+            ServerVersionConfig = JsonUtility.FromJson<VersionConfig>(downloadhandler.text);
+            Debug.Log($"服务器版本信息:VersionCode : {ServerVersionConfig.VersionCode} ResourceVersionCode: {ServerVersionConfig.ResourceVersionCode}");
+            mServerVersionConfigHotUpdateCompleteCB?.Invoke(true);
+        }
+        else
+        {
+            Debug.LogError("服务器版本信息资源下载失败!");
+            mServerVersionConfigHotUpdateCompleteCB?.Invoke(false);
+            mServerVersionConfigHotUpdateCompleteCB = null;
+        }
+    }
+    #endregion
+
+    #region 版本强更部分
     /// <summary>
     /// 检查是否已经版本强更完成
     /// </summary>
@@ -386,7 +435,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         //引导版本强更
         mVersionHotUpdateCompleteCB = completecallback;
         HotVersionUpdateRequest.resetRequest();
-        var versionhotupdatefilepath = mHotUpdateURL + newhotupdateversioncode.ToString("0.0") + "/" + mVersionHotUpdateFileName;
+        var versionhotupdatefilepath = mHotUpdateURL + newhotupdateversioncode + "/" + mVersionHotUpdateFileName;
         HotVersionUpdateRequest.enqueue(versionhotupdatefilepath, versionHotUpdateCompleteCB, 1800);
         HotVersionUpdateRequest.startRequest();
     }
@@ -483,7 +532,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         //拉取服务器热更资源信息与本地资源热更信息进行比较
         TWebRequest twr = new TWebRequest();
         //URL = 基础URL + 当前版本号 + "/" + 热更资源信息文件名(ResourceUpdateList.txt)
-        var url = mHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + ResourceUpdateListFileName;
+        var url = mHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode + "/" + ResourceUpdateListFileName;
         mHotResourceUpdateRequest.resetRequest();
         twr.enqueue(url, resourceListHotUpdateCompleteCB);
         twr.startRequest();
@@ -529,7 +578,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                     if (!reslist.Contains(resname))
                     {
                         reslist.Add(resname);
-                        Debug.Log(string.Format("添加需要热更的资源信息,版本号 : {0}, 资源名 : {1}", resversion, resname));
+                        Debug.Log(string.Format("添加可能需要热更的资源信息,版本号 : {0}, 资源名 : {1}", resversion, resname));
                     }
                     else
                     {
@@ -565,7 +614,6 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                                 {
                                     neddhotupdatereslist.Add(hotupdateresource);
                                     mHotUpdateResourceTotalNumber++;
-                                    Debug.Log(string.Format("添加需要热更的资源信息,版本号 : {0}, 资源名 : {1}", hotupdateresourceinfo.Key, hotupdateresource));
                                 }
                             }
                         }
@@ -597,7 +645,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                         foreach (var res in resinfo.Value)
                         {
                             //URL = 基础URL + 当前版本号 + "/" + 需要热更的资源版本号 + "/" + 需要热更的资源名
-                            var finalurl = mHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode.ToString("0.0") + "/" + resinfo.Key + "/" + res;
+                            var finalurl = mHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode + "/" + resinfo.Key + "/" + res;
                             mHotResourceUpdateRequest.enqueue(finalurl, singleResourceHotUpdateCompleteCB);
                         }
                     }
@@ -658,7 +706,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                 Debug.Log("资源热更完成!");
                 mResourceHotUpdateCompleteCB(true);
                 mResourceHotUpdateCompleteCB = null;
-                VersionConfigModuleManager.Singleton.saveNewResoueceCodeConfig(NewHotUpdateResourceCode);
+                VersionConfigModuleManager.Singleton.saveNewResoueceCodeConfig(ServerVersionConfig.ResourceVersionCode);
             }
         }
         else

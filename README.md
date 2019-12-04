@@ -62,6 +62,8 @@ Manager统一管理：
 
 #### Demo使用说明
 
+Tools->Debug->资源调试工具
+
 1. AssetBundle和AssetDatabase资源加载模式切换![AssetDatabaseModuleSwitch](./img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png)
 
 2. AB依赖信息查看界面
@@ -258,14 +260,14 @@ Note:
 
 ### 热更测试说明
 
-当前测试阶段是使用的[HFS](http://www.rejetto.com/hfs/)快速搭建的一个资源本地资源服务器。
+之前是使用的[HFS](http://www.rejetto.com/hfs/)快速搭建的一个资源本地资源服务器，后来使用阿里的ISS静态资源服务器做了一个网络端的资源服务器。
 
 版本强更流程：
 
 1. 比较包内版本信息和包外版本信息检查是否强更过版本
 2. 如果强更过版本清空包外相关信息目录
-3. 通过服务器(暂时是本地写死模拟)下发的最新版本号和本地版本号作对比，决定是否强更版本
-4. 结合最新版本号和资源服务器地址(暂时是本地写死模拟)拼接出最终热更版本所在的资源服务器地址
+3. 通过资源服务器下载最新服务器版本信息(ServerVersionConfig.json)和本地版本号作对比，决定是否强更版本
+4. 结合最新版本号和资源服务器地址(Json配置)拼接出最终热更版本所在的资源服务器地址
 5. 下载对应版本号下的强更包并安装
 6. 安装完成，退出游戏重进
 
@@ -273,9 +275,9 @@ Note:
 
    1. 初始化本地热更过的资源列表信息(暂时存储在:Application.persistentDataPath + "/ResourceUpdateList/ResourceUpdateList.txt"里)
 
-   2. 通过服务器(暂时是本地写死模拟)下发的最新资源版本号和本地资源版本号作对比，决定是否资源热更
+   2. 通过资源服务器下载最新服务器版本信息(ServerVersionConfig.json)和本地资源版本号作对比，决定是否资源热更
 
-3. 结合最新版本号，最新资源版本号和资源服务器地址(暂时是本地写死模拟)拼接出最终资源热更所在的资源服务器地址
+3. 结合最新版本号，最新资源版本号和资源服务器地址(Json配置)拼接出最终资源热更所在的资源服务器地址
 
 4. 下载对应地址下的ResourceUpdateList.txt(里面填写了对应版本的详细资源热更信息)(这一步如果可以服务器下发的话可以省去)
 
@@ -291,13 +293,25 @@ Note:
 
 7. 直到所有资源热更完成，退出重进游戏
 
-Note:
-
-HFS的测试资源见目录(\HotUpdate\HFS)
-
 ### 流程图
 
 ![HotUpdateFlowChat](./img/Unity/HotUpdate/HotUpdateFlowChat.png)
+
+### 热更新辅助工具
+
+Tools->HotUpdate->热更新操作工具
+
+![HotUpdateToolsUI](/img/Unity/HotUpdate/HotUpdateToolsUI.png)
+
+主要分为以下4个步骤：
+
+1. 版本资源文件MD5计算(文件名格式:MD5+版本号+资源版本号+平台+时间戳+.txt)
+
+   ![AssetBundleMD5Caculation](/img/Unity/HotUpdate/AssetBundleMD5Caculation.png)
+
+2. 对比两个版本的MD5文件信息得出需要热更新的AB文件信息
+3. 执行热更新AB准备操作自动复制需要热更新的AB到热更新准备目录(然后手动拷贝需要强更或热更的资源到真正的热更新目录)
+4. 执行热更新准备操作，生成热更新所需的最新资源热更新信息文件(ResourceUpdateList.txt)和服务器最新版本信息文件(ServerVersionConfig.json)
 
 ## 导表模块
 
@@ -316,21 +330,25 @@ HFS的测试资源见目录(\HotUpdate\HFS)
 3. 支持内置资源提取(限材质和纹理，不包含Shader是考虑到Shader可以自行下载) 
 4. 支持shader变体搜集(半成品)
 
-资源辅助工具三件套：
+资源辅助工具五件套：
 
-1. 资源依赖查看工具
+1. AB删除判定工具
+
+   ![DeleteRemovedAssetBundle](/img/Unity/AssetBundle-Framework/DeleteRemovedAssetBundle.png)
+
+2. 资源依赖查看工具
 
    ![AssetDependenciesBrowser](./img/Unity/AssetBundle-Framework/AssetDependenciesBrowser.png)
 
-2. 内置资源依赖统计工具(只统计了*.mat和*.prefab，场景建议做成Prefab来统计)
+3. 内置资源依赖统计工具(只统计了*.mat和*.prefab，场景建议做成Prefab来统计)
 
    ![BuildInResourceReferenceAnalyze](./img/Unity/AssetBundle-Framework/BuildInResourceReferenceAnalyze.png)
 
- 3. 内置资源提取工具
+ 4. 内置资源提取工具
 
     ![BuildInResourceExtraction](./img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png)
 
-4. Shader变体搜集工具
+5. Shader变体搜集工具
 
    ![ShaderVariantsCollection](./img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png) 
 
@@ -342,6 +360,7 @@ HFS的测试资源见目录(\HotUpdate\HFS)
 4.  ~~支持真机资源热更以及版本强更(**热更模块**)~~
 5.  支持真机代码热更(Lua + XLua)
 6.  跨版本资源热更自动化分析
+7.  热更新资源正确性校验
 
 # 个人博客
 

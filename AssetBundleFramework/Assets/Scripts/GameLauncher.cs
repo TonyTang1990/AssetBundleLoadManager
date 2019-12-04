@@ -601,6 +601,14 @@ public class GameLauncher : MonoBehaviour {
     {
         DIYLog.Log("printVersionInfo()");
         VersionConfigModuleManager.Singleton.initVerisonConfigData();
+        if(HotUpdateModuleManager.Singleton.ServerVersionConfig != null)
+        {
+            DIYLog.Log($"服务器版本信息:VersionCode:{HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode} ResourceVersionCode : {HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode}");
+        }
+        else
+        {
+            DIYLog.LogError("未获取服务器的版本信息!");
+        }
     }
 
     /// <summary>
@@ -688,14 +696,30 @@ public class GameLauncher : MonoBehaviour {
     }
 
     /// <summary>
+    /// 获取服务器版本信息
+    /// </summary>
+    public void obtainServerVersionConfig()
+    {
+        DIYLog.Log("obtainServerVersionConfig()");
+        HotUpdateModuleManager.Singleton.doObtainServerVersionConfig(serverVersionConfigHotUpdateCompleteCallBack);
+    }
+
+    /// <summary>
     /// 版本强更测试
     /// </summary>
     public void testVersionwHotUpdate()
     {
         DIYLog.Log("testVersionwHotUpdate()");
-        if(HotUpdateModuleManager.Singleton.checkVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode))
+        if(HotUpdateModuleManager.Singleton.ServerVersionConfig != null)
         {
-            HotUpdateModuleManager.Singleton.doNewVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode, versionHotUpdateCompleteCallBack);
+            if (HotUpdateModuleManager.Singleton.checkVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
+            {
+                HotUpdateModuleManager.Singleton.doNewVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode, versionHotUpdateCompleteCallBack);
+            }
+        }
+        else
+        {
+            DIYLog.LogError("版本强更前，请先获取服务器版本信息!");
         }
     }
 
@@ -705,12 +729,28 @@ public class GameLauncher : MonoBehaviour {
     public void testResourceHotUpdate()
     {
         DIYLog.Log("testResourceHotUpdate()");
-        if (HotUpdateModuleManager.Singleton.checkResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode))
+        if (HotUpdateModuleManager.Singleton.ServerVersionConfig != null)
         {
-            HotUpdateModuleManager.Singleton.doResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode, resourceHotUpdateCompleteCallBack);
+            if (HotUpdateModuleManager.Singleton.checkResourceHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode))
+            {
+                HotUpdateModuleManager.Singleton.doResourceHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode, resourceHotUpdateCompleteCallBack);
+            }
+        }
+        else
+        {
+            DIYLog.LogError("资源热更新前，请先获取服务器版本信息!");
         }
     }
     
+    /// <summary>
+    /// 获取服务器版本信息回调
+    /// </summary>
+    /// <param name="result"></param>
+    private void serverVersionConfigHotUpdateCompleteCallBack(bool result)
+    {
+        DIYLog.Log(string.Format("获取服务器版本结果 result : {0}", result));
+    }
+
     /// <summary>
     /// 版本强更完成回调
     /// </summary>
@@ -740,10 +780,10 @@ public class GameLauncher : MonoBehaviour {
         HotUpdateModuleManager.Singleton.checkHasVersionHotUpdate();
         //TODO:
         //拉去服务器列表信息(网络那一套待开发,暂时用本地默认数值测试)
-        if(HotUpdateModuleManager.Singleton.checkVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode))
+        if(HotUpdateModuleManager.Singleton.checkVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
         {
             HotUpdateModuleManager.Singleton.doNewVersionHotUpdate(
-                HotUpdateModuleManager.NewHotUpdateVersionCode, 
+                HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode, 
                 (versionhotupdateresult) =>
                 {
                     if (versionhotupdateresult)
@@ -770,12 +810,12 @@ public class GameLauncher : MonoBehaviour {
     private void resourceHotUpdate()
     {
         //不需要强更走后判定资源热更流程
-        if (HotUpdateModuleManager.Singleton.checkResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode))
+        if (HotUpdateModuleManager.Singleton.checkResourceHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode))
         {
             //单独开启一个携程打印强更进度
             StartCoroutine(printVersionHotUpdateProgressCoroutine());
             HotUpdateModuleManager.Singleton.doResourceHotUpdate(
-                HotUpdateModuleManager.NewHotUpdateResourceCode,
+                HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode,
                 (resourcehotupdateresult) =>
                 {
                     if (resourcehotupdateresult)
@@ -816,22 +856,22 @@ public class GameLauncher : MonoBehaviour {
         VersionConfigModuleManager.Singleton.initVerisonConfigData();
         if (HotUpdateModuleManager.Singleton.HotUpdateSwitch)
         {
-            if (VersionConfigModuleManager.Singleton.needVersionHotUpdate(HotUpdateModuleManager.NewHotUpdateVersionCode))
+            if (VersionConfigModuleManager.Singleton.needVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
             {
-                DIYLog.Log(string.Format("服务器版本号 : {0}高于本地版本号 : {1}，需要强更！", HotUpdateModuleManager.NewHotUpdateVersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode));
+                DIYLog.Log(string.Format("服务器版本号 : {0}高于本地版本号 : {1}，需要强更！", HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode));
                 DIYLog.Log("不允许进游戏！");
             }
             else
             {
-                DIYLog.Log(string.Format("服务器版本号 : {0}小于或等于本地版本号 : {1}，不需要强更！", HotUpdateModuleManager.NewHotUpdateVersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode));
-                if (VersionConfigModuleManager.Singleton.needResourceHotUpdate(HotUpdateModuleManager.NewHotUpdateResourceCode))
+                DIYLog.Log(string.Format("服务器版本号 : {0}小于或等于本地版本号 : {1}，不需要强更！", HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode));
+                if (VersionConfigModuleManager.Singleton.needResourceHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode))
                 {
-                    DIYLog.Log(string.Format("服务器资源版本号 : {0}大于本地资源版本号 : {1}，需要资源热更！", HotUpdateModuleManager.NewHotUpdateResourceCode, VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode));
+                    DIYLog.Log(string.Format("服务器资源版本号 : {0}大于本地资源版本号 : {1}，需要资源热更！", HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode));
                     DIYLog.Log("不允许进游戏！");
                 }
                 else
                 {
-                    DIYLog.Log(string.Format("服务器资源版本号 : {0}小于或等于本地资源版本号 : {1}，不需要资源热更！", HotUpdateModuleManager.NewHotUpdateResourceCode, VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode));
+                    DIYLog.Log(string.Format("服务器资源版本号 : {0}小于或等于本地资源版本号 : {1}，不需要资源热更！", HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode));
                     DIYLog.Log("可以进游戏!");
                 }
             }

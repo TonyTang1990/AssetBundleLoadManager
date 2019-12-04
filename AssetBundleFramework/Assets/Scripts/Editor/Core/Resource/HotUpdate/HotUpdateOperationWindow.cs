@@ -174,8 +174,8 @@ public class HotUpdateOperationWindow : EditorWindow
     /// <summary>
     /// 热更新资源版本号(热更新准备任务使用)
     /// </summary>
-    private string mHotUpdateSourceVersion;
- 
+    private string mHotUpdateResourceVersion;
+
     /// <summary>
     /// 热更新准备操作结果
     /// </summary>
@@ -317,7 +317,13 @@ public class HotUpdateOperationWindow : EditorWindow
         displayHotUpdateABPreparationResult();
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("热更新目录:", GUILayout.Width(70.0f));
+        EditorGUILayout.LabelField("热更新版本号:", GUILayout.Width(100.0f));
+        mHotUpdateVersion = EditorGUILayout.TextField(mHotUpdateVersion, GUILayout.Width(100.0f));
+        EditorGUILayout.LabelField("热更新资源版本号:", GUILayout.Width(100.0f));
+        mHotUpdateResourceVersion = EditorGUILayout.TextField(mHotUpdateResourceVersion, GUILayout.Width(100.0f));
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("热更新目录:", GUILayout.Width(100.0f));
         HotUpdateOutputFolderPath = EditorGUILayout.TextField("", HotUpdateOutputFolderPath);
         if (GUILayout.Button("选择热更新目录", GUILayout.Width(150.0f)))
         {
@@ -612,9 +618,21 @@ public class HotUpdateOperationWindow : EditorWindow
     {
         if (Directory.Exists(HotUpdateOutputFolderPath))
         {
+            float versionnumber = 0f;
+            int resourcenumber = 0;
+            if(!float.TryParse(mHotUpdateVersion, out versionnumber))
+            {
+                Debug.LogError($"填写的版本号:{mHotUpdateVersion}无效，请填写有效的版本号!");
+                return false;
+            }
+            if(!int.TryParse(mHotUpdateResourceVersion, out resourcenumber))
+            {
+                Debug.LogError($"填写的资源版本号:{mHotUpdateResourceVersion}无效，请填写有效的资源版本号!");
+                return false;
+            }
             // 创建版本号以及资源版本号对应输出目录
             // 对应版本的热更新目录
-            var versionupdatefilefolderpath = HotUpdateOutputFolderPath + Path.DirectorySeparatorChar + mABMD5ComparisonTargetVersion;
+            var versionupdatefilefolderpath = HotUpdateOutputFolderPath + Path.DirectorySeparatorChar + versionnumber;
             // 确保热更新目录存在
             if (!Directory.Exists(versionupdatefilefolderpath))
             {
@@ -623,7 +641,7 @@ public class HotUpdateOperationWindow : EditorWindow
             // 分析热更列表文件(根据热更目录的所有热更记录以及最新热更AB信息分析)
             // 热更信息格式示例:
             // 资源版本号:资源AB名;资源版本号:资源AB名;
-            var resourceupdatefilefullname = HotUpdateOutputFolderPath + Path.DirectorySeparatorChar + HotUpdateModuleManager.ResourceUpdateListFileName;
+            var resourceupdatefilefullname = HotUpdateOutputFolderPath + Path.DirectorySeparatorChar + versionnumber + Path.DirectorySeparatorChar + HotUpdateModuleManager.ResourceUpdateListFileName;
             Debug.Log($"资源热更新文件:{resourceupdatefilefullname}");
             using (var sw = new StreamWriter(resourceupdatefilefullname, false))
             {
@@ -661,9 +679,17 @@ public class HotUpdateOperationWindow : EditorWindow
                 sw.Write(updatefilecontent);
                 Debug.Log($"热更新准备任务操作完成!");
                 Debug.Log($"热更新最新数据:{updatefilecontent}");
-                mHotUpdatePreparationResult = $"热更新最新数据:{updatefilecontent}";
-                return true;
+                mHotUpdatePreparationResult = $"热更新最新数据:{updatefilecontent}\n";
             }
+            var serverversionfilefullname = HotUpdateOutputFolderPath + Path.DirectorySeparatorChar + HotUpdateModuleManager.ServerVersionConfigFileName;
+            using (var sw = new StreamWriter(serverversionfilefullname, false))
+            {
+                var serverversionconfigcontent = "{" + "\"VersionCode\":" + versionnumber + ",\"ResourceVersionCode\":" + resourcenumber + "}";
+                sw.WriteLine(serverversionconfigcontent);
+                Debug.Log($"热更新最新版本号数据:{serverversionconfigcontent}");
+                mHotUpdatePreparationResult += $"热更新最新版本号数据:{serverversionconfigcontent}";
+            }
+            return true;
         }
         else
         {
@@ -693,7 +719,7 @@ public class HotUpdateOperationWindow : EditorWindow
         GUI.color = Color.yellow;
         GUILayout.Label("注意事项:", "Box");
         GUILayout.Label($"1. 请先执行热更新AB准备任务后手动拷贝相关版本热更资源(APK和AB)到热更新目录，然后再执行热更新准备任务!", "Box");
-        GUILayout.Label($"2. 热更新准备任务不会自动拷贝对应版本APK和AB文件(需要手动拷贝),只会自动分析生成热更新信息文件({HotUpdateModuleManager.ResourceUpdateListFileName})!", "Box");
+        GUILayout.Label($"2. 热更新准备任务不会自动拷贝对应版本APK和AB文件(需要手动拷贝),只会自动分析生成资源热更新信息文件({HotUpdateModuleManager.ResourceUpdateListFileName})和服务器最新版本信息文件({HotUpdateModuleManager.ServerVersionConfigFileName})!", "Box");
         GUI.color = Color.white;
         GUILayout.EndVertical();
     }

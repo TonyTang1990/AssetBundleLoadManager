@@ -142,7 +142,7 @@ public class AssetBundleOperationWindow : EditorWindow
                     if (!valideallabnames.Contains(existabfilename) && !existabfilename.Equals(foldername))
                     {
                         mNeedDeleteABFileNameList.Add(new KeyValuePair<string, string>(existabfilename, existabfilepath));
-                        Debug.LogError($"需要删除的AB文件:{existabfilepath}!");
+                        Debug.Log($"需要删除的AB文件:{existabfilepath}!");
                     }
                 }
                 ab.Unload(true);
@@ -171,9 +171,16 @@ public class AssetBundleOperationWindow : EditorWindow
             {
                 foreach (var deleteabfilename in mNeedDeleteABFileNameList)
                 {
+                    //连带Meta和Manifest文件一起删除
                     if (File.Exists(deleteabfilename.Value))
                     {
+                        var abmetafilename = deleteabfilename.Value + ".meta";
+                        var abmanifestfilename = deleteabfilename.Value + ".manifest";
+                        var abmanifestmetafilename = abmanifestfilename + ".meta";
                         File.Delete(deleteabfilename.Value);
+                        File.Delete(abmetafilename);
+                        File.Delete(abmanifestfilename);
+                        File.Delete(abmanifestmetafilename);
                         mDeletedABFileNameList.Add(deleteabfilename);
                     }
                     else
@@ -206,11 +213,12 @@ public class AssetBundleOperationWindow : EditorWindow
         GUILayout.BeginVertical();
         if (mDeletedABFileNameList.Count > 0)
         {
+            GUILayout.Label("已删除AB文件信息:", GUILayout.Width(100.0f));
             foreach (var deleteabfilename in mDeletedABFileNameList)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("已删除AB文件名:" + deleteabfilename.Key, GUILayout.Width(300.0f));
-                GUILayout.Label("已删除AB全路径:" + deleteabfilename.Value, GUILayout.Width(600.0f));
+                GUILayout.Label("文件名:" + deleteabfilename.Key, GUILayout.Width(250.0f));
+                GUILayout.Label("全路径:" + deleteabfilename.Value, GUILayout.Width(1200.0f));
                 GUILayout.EndHorizontal();
             }
         }
