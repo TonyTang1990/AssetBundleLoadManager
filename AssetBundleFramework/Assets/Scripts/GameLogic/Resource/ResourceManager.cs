@@ -31,6 +31,11 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     }
 
     /// <summary>
+    /// Shader变体搜集文件名
+    /// </summary>
+    private const string ShaderVariantsAssetName = "DIYShaderVariantsCollection";
+
+    /// <summary>
     /// 加载所有Shader
     /// </summary>
     /// <param name="resname">资源名</param>
@@ -43,7 +48,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
         resname,
         (abi) =>
         {
-            var svc = abi.loadAsset<ShaderVariantCollection>("DIYShaderVariantsCollection");
+            var svc = abi.loadAsset<ShaderVariantCollection>(ShaderVariantsAssetName);
             // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
             svc?.WarmUp();
             // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可

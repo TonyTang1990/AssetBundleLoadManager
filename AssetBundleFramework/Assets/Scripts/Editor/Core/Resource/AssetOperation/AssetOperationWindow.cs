@@ -544,6 +544,26 @@ public class AssetOperationWindow : EditorWindow
     private List<string> mMaterialNeedCollectedList = new List<string>();
 
     /// <summary>
+    /// Cube模板预制件资源路径
+    /// </summary>
+    private const string CubePrefabAssetPath = "Assets/Res/prefabs/pre_SVCCube.prefab";
+
+    /// <summary>
+    /// Shader变体收集资源文件路径
+    /// </summary>
+    private const string ShaderVariantsAssetPath = "/Res/shadervariants/";
+
+    /// <summary>
+    /// Shader变体搜集场景资源路径
+    /// </summary>
+    private const string ShaderVariantsCollectionSceneAssetPath = "Assets/Res/scenes/ShaderVariantsCollectScene.unity";
+
+    /// <summary>
+    /// Shader变体搜集资源文件名
+    /// </summary>
+    private const string ShaderVariantsAssetFileName = "DIYShaderVariantsCollection.shadervariants";
+
+    /// <summary>
     /// 显示变体搜集结果
     /// </summary>
     private void displayShaderVariantsCollectionResult()
@@ -567,7 +587,7 @@ public class AssetOperationWindow : EditorWindow
     {
         mShaderVariantCollectionResult = false;
         ShaderCollectRootFolderPath = Application.dataPath;
-        ShaderVariantOuputFolderPath = Application.dataPath + "/Res/shadervariants";
+        ShaderVariantOuputFolderPath = Application.dataPath + ShaderVariantsAssetPath;
         var preactivescene = EditorSceneManager.GetActiveScene();
         var preactivescenepath = preactivescene.path;
         Debug.Log(string.Format("之前打开的场景资源路径:{0}", preactivescenepath));
@@ -599,9 +619,17 @@ public class AssetOperationWindow : EditorWindow
     private async Task openShaderVariantsCollectSceneAsync()
     {
         Debug.Log("openShaderVariantsCollectScene()");
-        EditorSceneManager.OpenScene("Assets/Res/scenes/ShaderVariantsCollectScene.unity");
-        Debug.Log("打开Shader变体收集场景!");
-        await Task.Delay(1000);
+        var shadervariantssceneasset = AssetDatabase.LoadAssetAtPath<SceneAsset>(ShaderVariantsCollectionSceneAssetPath);
+        if(shadervariantssceneasset != null)
+        {
+            EditorSceneManager.OpenScene(ShaderVariantsCollectionSceneAssetPath);
+            Debug.Log("打开Shader变体收集场景!");
+            await Task.Delay(1000);
+        }
+        else
+        {
+            Debug.LogError($"找不到Shader变体搜集场景:{ShaderVariantsCollectionSceneAssetPath}");
+        }
     }
 
     /// <summary>
@@ -626,25 +654,33 @@ public class AssetOperationWindow : EditorWindow
         SVCCubeParentGo.transform.position = Vector3.zero;
         var posoffset = new Vector3(0.05f, 0f, 0f);
         var cubeworldpos = Vector3.zero;
-        var svccubetemplate = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Res/prefabs/pre_SVCCube.prefab");
-        var allmatassets = getAllValideMaterial();
-        mMaterialNeedCollectedList.Clear();
-        Debug.Log(string.Format("需要搜集的材质数量:{0}", allmatassets));
-        for (int i = 0, length = allmatassets.Count; i < length; i++)
+        var svccubetemplate = AssetDatabase.LoadAssetAtPath<GameObject>(CubePrefabAssetPath);
+        if(svccubetemplate != null)
         {
-            var matassetpath = AssetDatabase.GetAssetPath(allmatassets[i]);
-            mMaterialNeedCollectedList.Add(matassetpath);
-            var cube = GameObject.Instantiate<GameObject>(svccubetemplate);
-            cube.name = allmatassets[i].name + "Cube";
-            cube.transform.position = posoffset * i;
-            cube.GetComponent<MeshRenderer>().material = allmatassets[i];
-            cube.transform.SetParent(SVCCubeParentGo.transform);
+            var allmatassets = getAllValideMaterial();
+            mMaterialNeedCollectedList.Clear();
+            Debug.Log(string.Format("需要搜集的材质数量:{0}", allmatassets));
+            for (int i = 0, length = allmatassets.Count; i < length; i++)
+            {
+                var matassetpath = AssetDatabase.GetAssetPath(allmatassets[i]);
+                mMaterialNeedCollectedList.Add(matassetpath);
+                var cube = GameObject.Instantiate<GameObject>(svccubetemplate);
+                cube.name = allmatassets[i].name + "Cube";
+                cube.transform.position = posoffset * i;
+                cube.GetComponent<MeshRenderer>().material = allmatassets[i];
+                cube.transform.SetParent(SVCCubeParentGo.transform);
+            }
+            EditorSceneManager.SaveOpenScenes();
+            //延时等待一会，确保变体数据更新
+            Debug.Log("创建完Cube，开始等待5秒!");
+            await Task.Delay(5000);
+            Debug.Log("创建完Cube，等待5秒完成!");
         }
-        EditorSceneManager.SaveOpenScenes();
-        //延时等待一会，确保变体数据更新
-        Debug.Log("创建完Cube，开始等待5秒!");
-        await Task.Delay(5000);
-        Debug.Log("创建完Cube，等待5秒完成!");
+        else
+        {
+            EditorSceneManager.SaveOpenScenes();
+            Debug.LogError($"找不到Shader变体Cube模板资源:{CubePrefabAssetPath}!");
+        }
     }
 
     /// <summary>
@@ -653,10 +689,10 @@ public class AssetOperationWindow : EditorWindow
     private async Task doShaderVariantsCollectAsync()
     {
         Debug.Log("doShaderVariantsCollect()");
-        ShaderVariantOuputFolderPath = Application.dataPath + "/Res/shadervariants/";
+        ShaderVariantOuputFolderPath = Application.dataPath + ShaderVariantsAssetPath;
         var outputassetsindex = ShaderVariantOuputFolderPath.IndexOf("Assets");
         var outputrelativepath = ShaderVariantOuputFolderPath.Substring(outputassetsindex, ShaderVariantOuputFolderPath.Length - outputassetsindex);
-        var svcoutputfilepath = outputrelativepath + "DIYShaderVariantsCollection.shadervariants";
+        var svcoutputfilepath = outputrelativepath + ShaderVariantsAssetFileName;
         Debug.Log(string.Format("Shader变体文件输出目录:{0}", ShaderVariantOuputFolderPath));
         Debug.Log(string.Format("Shader变体文件输出相对路径:{0}", svcoutputfilepath));
         if (!Directory.Exists(ShaderVariantOuputFolderPath))
