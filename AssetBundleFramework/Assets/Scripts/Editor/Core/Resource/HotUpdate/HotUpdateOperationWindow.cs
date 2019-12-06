@@ -53,6 +53,11 @@ public class HotUpdateOperationWindow : EditorWindow
     #endregion
 
     /// <summary>
+    /// 项目路径Hash值(用于使得PlayerPrefs存储的Key值唯一)
+    /// </summary>
+    private int mProjectPathHashValue;
+
+    /// <summary>
     /// 文件改变状态
     /// </summary>
     private enum EChangedFileStatus
@@ -213,12 +218,13 @@ public class HotUpdateOperationWindow : EditorWindow
     /// </summary>
     private void InitData()
     {
-        ABFolderPath = PlayerPrefs.GetString(ABFolderPathPreferenceKey);
-        ABMd5OutputFolderPath = PlayerPrefs.GetString(MD5OutputFolderPathPreferenceKey);
-        ABMd5CompareSourceFilePath = PlayerPrefs.GetString(MD5ComparisonSourceFilePathPreferenceKey);
-        ABMd5CompareTargetFilePath = PlayerPrefs.GetString(MD5ComparisonTargetFilePathPreferenceKey);
-        HotUpdateABOutputFolderPath = PlayerPrefs.GetString(HotUpdateABPreparationPreferenceKey);
-        HotUpdateOutputFolderPath = PlayerPrefs.GetString(HotUpdatePreparationPreferenceKey);
+        mProjectPathHashValue = Application.dataPath.GetHashCode();
+        ABFolderPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{ABFolderPathPreferenceKey}");
+        ABMd5OutputFolderPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{MD5OutputFolderPathPreferenceKey}");
+        ABMd5CompareSourceFilePath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{MD5ComparisonSourceFilePathPreferenceKey}");
+        ABMd5CompareTargetFilePath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{MD5ComparisonTargetFilePathPreferenceKey}");
+        HotUpdateABOutputFolderPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{HotUpdateABPreparationPreferenceKey}");
+        HotUpdateOutputFolderPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{HotUpdatePreparationPreferenceKey}");
         Debug.Log("热更新操作窗口读取配置:");
         Debug.Log("AB目录:" + ABFolderPath);
         Debug.Log("MD5输出目录:" + ABMd5OutputFolderPath);
@@ -233,12 +239,12 @@ public class HotUpdateOperationWindow : EditorWindow
     /// </summary>
     private void SaveData()
     {
-        PlayerPrefs.SetString(ABFolderPathPreferenceKey, ABFolderPath);
-        PlayerPrefs.SetString(MD5OutputFolderPathPreferenceKey, ABMd5OutputFolderPath);
-        PlayerPrefs.SetString(MD5ComparisonSourceFilePathPreferenceKey, ABMd5CompareSourceFilePath);
-        PlayerPrefs.SetString(MD5ComparisonTargetFilePathPreferenceKey, ABMd5CompareTargetFilePath);
-        PlayerPrefs.SetString(HotUpdateABPreparationPreferenceKey, HotUpdateABOutputFolderPath);
-        PlayerPrefs.SetString(HotUpdatePreparationPreferenceKey, HotUpdateOutputFolderPath);
+        PlayerPrefs.SetString($"{mProjectPathHashValue}_{ABFolderPathPreferenceKey}", ABFolderPath);
+        PlayerPrefs.SetString($"{mProjectPathHashValue}_{MD5OutputFolderPathPreferenceKey}", ABMd5OutputFolderPath);
+        PlayerPrefs.SetString($"{mProjectPathHashValue}_{MD5ComparisonSourceFilePathPreferenceKey}", ABMd5CompareSourceFilePath);
+        PlayerPrefs.SetString($"{mProjectPathHashValue}_{MD5ComparisonTargetFilePathPreferenceKey}", ABMd5CompareTargetFilePath);
+        PlayerPrefs.SetString($"{mProjectPathHashValue}_{HotUpdateABPreparationPreferenceKey}", HotUpdateABOutputFolderPath);
+        PlayerPrefs.SetString($"{mProjectPathHashValue}_{HotUpdatePreparationPreferenceKey}", HotUpdateOutputFolderPath);
         Debug.Log("热更新操作窗口保存配置:");
         Debug.Log("AB目录:" + ABFolderPath);
         Debug.Log("MD5输出目录:" + ABMd5OutputFolderPath);
@@ -347,9 +353,9 @@ public class HotUpdateOperationWindow : EditorWindow
     /// </summary>
     private void doAssetBundleMd5Caculation()
     {
-        if(Directory.Exists(ABFolderPath))
+        if (Directory.Exists(ABFolderPath))
         {
-            if(Directory.Exists(ABMd5OutputFolderPath))
+            if (Directory.Exists(ABMd5OutputFolderPath))
             {
                 VersionConfigModuleManager.Singleton.initVerisonConfigData();
                 var resourceversion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
@@ -361,7 +367,7 @@ public class HotUpdateOperationWindow : EditorWindow
                 var abfilespath = Directory.GetFiles(ABFolderPath, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
                     !f.EndsWith(".meta") && !f.EndsWith(".manifest")
                 );
-                if(!File.Exists(md5filefullpath))
+                if (!File.Exists(md5filefullpath))
                 {
                     using (File.Create(md5filefullpath))
                     {
@@ -377,14 +383,14 @@ public class HotUpdateOperationWindow : EditorWindow
                     md5sw.WriteLine(Application.version);
                     md5sw.WriteLine(resourceversion);
                     var sb = new StringBuilder();
-                    foreach(var abfilepath in abfilespath)
+                    foreach (var abfilepath in abfilespath)
                     {
                         using (var abfilefs = File.OpenRead(abfilepath))
                         {
                             sb.Clear();
                             var abfilename = Path.GetFileName(abfilepath);
                             var md5value = md5hash.ComputeHash(abfilefs);
-                            foreach(var md5byte in md5value)
+                            foreach (var md5byte in md5value)
                             {
                                 sb.Append(md5byte.ToString("x2"));
                             }
@@ -407,7 +413,7 @@ public class HotUpdateOperationWindow : EditorWindow
             mAssetBundleMD5CaculationResult = "目标AB目录不存在，请选择有效目录!!";
         }
     }
-    
+
     /// <summary>
     /// 执行MD5对比
     /// </summary>
@@ -417,7 +423,7 @@ public class HotUpdateOperationWindow : EditorWindow
         {
             if (File.Exists(ABMd5CompareTargetFilePath))
             {
-                if(mMD5ChangedABFileNameList == null)
+                if (mMD5ChangedABFileNameList == null)
                 {
                     mMD5ChangedABFileNameList = new List<KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>>();
                 }
@@ -438,7 +444,7 @@ public class HotUpdateOperationWindow : EditorWindow
                         while (!md51sr.EndOfStream)
                         {
                             var lineinfo = md51sr.ReadLine().Split(SeparaterKeyChar);
-                            md51map.Add(lineinfo[0],new KeyValuePair<string, string>(lineinfo[1], lineinfo[2]));
+                            md51map.Add(lineinfo[0], new KeyValuePair<string, string>(lineinfo[1], lineinfo[2]));
                         }
                         mABMD5ComparisonTargetVersion = md52sr.ReadLine();
                         mABMD5ComparisonTargetResourceVersion = md52sr.ReadLine();
@@ -450,7 +456,7 @@ public class HotUpdateOperationWindow : EditorWindow
                     }
                 }
                 // 进行对比
-                foreach(var md51 in md51map)
+                foreach (var md51 in md51map)
                 {
                     if (md52map.ContainsKey(md51.Key))
                     {
@@ -503,7 +509,7 @@ public class HotUpdateOperationWindow : EditorWindow
     private void displayComparisonResult()
     {
         GUILayout.BeginVertical();
-        if(mMD5ChangedABFileNameList != null)
+        if (mMD5ChangedABFileNameList != null)
         {
             if (mMD5ChangedABFileNameList.Count > 0)
             {
@@ -534,12 +540,12 @@ public class HotUpdateOperationWindow : EditorWindow
     {
         if (Directory.Exists(HotUpdateABOutputFolderPath))
         {
-            if(mMD5ChangedABFileNameList == null)
+            if (mMD5ChangedABFileNameList == null)
             {
                 Debug.Log($"请先执行MD5对比操作!");
                 return false;
             }
-            if(mHotUpdateABFileNameList == null)
+            if (mHotUpdateABFileNameList == null)
             {
                 mHotUpdateABFileNameList = new List<string>();
             }
@@ -561,7 +567,7 @@ public class HotUpdateOperationWindow : EditorWindow
                 {
                     mHotUpdateABFileNameList.Add(changedabfile.Key);
                     var abfiledestination = resourceupdatefolderpath + Path.DirectorySeparatorChar + changedabfile.Key;
-                    if(File.Exists(changedabfile.Value.Key))
+                    if (File.Exists(changedabfile.Value.Key))
                     {
                         File.Copy(changedabfile.Value.Key, abfiledestination);
                         Debug.Log($"拷贝文件:{changedabfile.Value.Key}到{abfiledestination}");
@@ -588,7 +594,7 @@ public class HotUpdateOperationWindow : EditorWindow
     private void displayHotUpdateABPreparationResult()
     {
         GUILayout.BeginVertical();
-        if(mHotUpdateABFileNameList != null)
+        if (mHotUpdateABFileNameList != null)
         {
             if (mHotUpdateABFileNameList.Count > 0)
             {
@@ -620,12 +626,12 @@ public class HotUpdateOperationWindow : EditorWindow
         {
             float versionnumber = 0f;
             int resourcenumber = 0;
-            if(!float.TryParse(mHotUpdateVersion, out versionnumber))
+            if (!float.TryParse(mHotUpdateVersion, out versionnumber))
             {
                 Debug.LogError($"填写的版本号:{mHotUpdateVersion}无效，请填写有效的版本号!");
                 return false;
             }
-            if(!int.TryParse(mHotUpdateResourceVersion, out resourcenumber))
+            if (!int.TryParse(mHotUpdateResourceVersion, out resourcenumber))
             {
                 Debug.LogError($"填写的资源版本号:{mHotUpdateResourceVersion}无效，请填写有效的资源版本号!");
                 return false;
@@ -649,16 +655,16 @@ public class HotUpdateOperationWindow : EditorWindow
                 var subfolders = Directory.GetDirectories(versionupdatefilefolderpath, "*", SearchOption.TopDirectoryOnly);
                 bool isfirstabfile = true;
                 var updatefilecontent = string.Empty;
-                foreach(var subfolder in subfolders)
+                foreach (var subfolder in subfolders)
                 {
                     var resourcefoldername = new DirectoryInfo(subfolder).Name;
                     if (int.TryParse(resourcefoldername, out int resourceversion))
                     {
                         var abfiles = Directory.GetFiles(subfolder);
-                        foreach(var abfile in abfiles)
+                        foreach (var abfile in abfiles)
                         {
                             var abfilename = Path.GetFileName(abfile);
-                            if(!isfirstabfile)
+                            if (!isfirstabfile)
                             {
                                 updatefilecontent += $";{resourceversion}:{abfilename}";
                             }
