@@ -97,6 +97,17 @@ public class TWebRequest {
     }
 
     /// <summary>
+    /// 是否完成
+    /// </summary>
+    public bool IsComplete
+    {
+        get
+        {
+            return TWRequestStatus == TWebRequestStatus.TW_Comlete || TWRequestStatus == TWebRequestStatus.TW_Stop;
+        }
+    }
+
+    /// <summary>
     /// 当前进度
     /// 当前进度的计算方式：
     /// (完成的任务个数 + 进行时的任务进度) / 总的任务个数
@@ -107,7 +118,7 @@ public class TWebRequest {
     {
         get
         {
-            return (mTotalWebRequestNumber - mWebRequestTaskQueue.Count + (1 - (mCurrentInProgressWebRequest != null ? mCurrentInProgressWebRequest.downloadProgress : 0.0f))) / mTotalWebRequestNumber;
+            return (mTotalWebRequestNumber - mWebRequestTaskQueue.Count + (mCurrentInProgressWebRequest != null ? mCurrentInProgressWebRequest.downloadProgress : 0.0f)) / mTotalWebRequestNumber;
         }
     }
 
