@@ -18,7 +18,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Asset处理窗口
 /// </summary>
-public class AssetOperationWindow : EditorWindow
+public class AssetOperationWindow : BaseEditorWindow
 {
     /// <summary>
     /// Asset处理类型
@@ -45,7 +45,7 @@ public class AssetOperationWindow : EditorWindow
     [MenuItem("Tools/Assets/Asset相关处理工具", false, 101)]
     public static void dpAssetBrowser()
     {
-        var assetoperationwindow = EditorWindow.GetWindow<AssetOperationWindow>();
+        var assetoperationwindow = EditorWindow.GetWindow<AssetOperationWindow>(false, "Asset处理工具");
         assetoperationwindow.Show();
     }
 

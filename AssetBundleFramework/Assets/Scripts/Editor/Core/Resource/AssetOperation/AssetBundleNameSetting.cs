@@ -18,19 +18,34 @@ public class AssetBundleNameSetting
     [MenuItem("Assets/Create/自动设置AB名 #&s", false)]
     public static void QuickSetABName()
     {
-        var assetpath = AssetDatabase.GetAssetPath(Selection.activeObject);
-        var assetimporter = AssetImporter.GetAtPath(assetpath);
-        if(assetimporter != null)
+        foreach(var obj in Selection.objects)
         {
-            assetimporter.assetBundleName = Selection.activeObject.name.ToLower();
-            DIYLog.Log(string.Format("设置资源:{0}的AB名字为:{1}", assetpath, Selection.activeObject.name.ToLower()));
-            AssetDatabase.SaveAssets();
+            AutoSetAssetBundleName(obj);
+        }
+    }
+
+    /// <summary>
+    /// 自动设置指定对象AssetBundle名
+    /// </summary>
+    /// <param name="obj"></param>
+    private static void AutoSetAssetBundleName(Object obj)
+    {
+        if(obj != null)
+        {
+            var assetpath = AssetDatabase.GetAssetPath(obj);
+            var assetimporter = AssetImporter.GetAtPath(assetpath);
+            if (assetimporter != null)
+            {
+                assetimporter.assetBundleName = obj.name.ToLower();
+                DIYLog.Log(string.Format("设置资源:{0}的AB名字为:{1}", assetpath, obj.name.ToLower()));
+                AssetDatabase.SaveAssets();
+            }
         }
     }
 
     [MenuItem("Assets/Create/自动设置AB名 #s", true)]
     private static bool ValidateQuickSetABName()
     {
-        return Selection.activeObject != null;
+        return Selection.objects != null;
     }
 }

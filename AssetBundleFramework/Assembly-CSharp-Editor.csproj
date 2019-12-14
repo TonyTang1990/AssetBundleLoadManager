@@ -60,6 +60,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Editor\BaseEditorWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Build\BuildPreprocess.cs" />
+    <Compile Include="Assets\Scripts\Editor\Build\BuildWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ABBuilder.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ABHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AnimationClipPackageAsset.cs" />

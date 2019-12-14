@@ -627,8 +627,8 @@ public class GameLauncher : MonoBehaviour {
         {
             if (int.TryParse(param2, out newresourceversioncode))
             {
-                VersionConfigModuleManager.Singleton.saveNewVersionCodeConfig(newversioncode);
-                VersionConfigModuleManager.Singleton.saveNewResoueceCodeConfig(newresourceversioncode);
+                VersionConfigModuleManager.Singleton.saveNewVersionCodeOuterConfig(newversioncode);
+                VersionConfigModuleManager.Singleton.saveNewResoueceCodeOuterConfig(newresourceversioncode);
             }
             else
             {

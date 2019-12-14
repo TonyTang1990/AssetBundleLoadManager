@@ -18,7 +18,7 @@ using UnityEngine;
 /// HotUpdateOperationWindow.cs
 /// 热更新操作窗口
 /// </summary>
-public class HotUpdateOperationWindow : EditorWindow
+public class HotUpdateOperationWindow : BaseEditorWindow
 {
     #region 存储相关Key
     /// <summary>
@@ -194,29 +194,14 @@ public class HotUpdateOperationWindow : EditorWindow
     [MenuItem("Tools/HotUpdate/热更新操作工具", false, 102)]
     public static void hotUpdateOpterationWindow()
     {
-        var hotupdateoperationwindow = EditorWindow.GetWindow<HotUpdateOperationWindow>();
+        var hotupdateoperationwindow = EditorWindow.GetWindow<HotUpdateOperationWindow>(false, "热更新工具");
         hotupdateoperationwindow.Show();
     }
-
-    private void OnEnable()
-    {
-        InitData();
-    }
-
-    private void OnDisable()
-    {
-        SaveData();
-    }
-
-    private void OnDestroy()
-    {
-        SaveData();
-    }
-
+    
     /// <summary>
     /// 初始化窗口数据
     /// </summary>
-    private void InitData()
+    protected override void InitData()
     {
         mProjectPathHashValue = Application.dataPath.GetHashCode();
         ABFolderPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{ABFolderPathPreferenceKey}");
@@ -237,7 +222,7 @@ public class HotUpdateOperationWindow : EditorWindow
     /// <summary>
     /// 保存数据
     /// </summary>
-    private void SaveData()
+    protected override void SaveData()
     {
         PlayerPrefs.SetString($"{mProjectPathHashValue}_{ABFolderPathPreferenceKey}", ABFolderPath);
         PlayerPrefs.SetString($"{mProjectPathHashValue}_{MD5OutputFolderPathPreferenceKey}", ABMd5OutputFolderPath);
@@ -624,9 +609,9 @@ public class HotUpdateOperationWindow : EditorWindow
     {
         if (Directory.Exists(HotUpdateOutputFolderPath))
         {
-            float versionnumber = 0f;
+            double versionnumber = 0f;
             int resourcenumber = 0;
-            if (!float.TryParse(mHotUpdateVersion, out versionnumber))
+            if (!double.TryParse(mHotUpdateVersion, out versionnumber))
             {
                 Debug.LogError($"填写的版本号:{mHotUpdateVersion}无效，请填写有效的版本号!");
                 return false;

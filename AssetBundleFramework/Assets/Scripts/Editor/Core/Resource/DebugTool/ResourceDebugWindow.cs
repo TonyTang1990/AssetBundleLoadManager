@@ -14,7 +14,7 @@ using UnityEngine;
 /// ResourceDebugWindow.cs
 /// 资源(AssetBundle和AssetDatabase两种模式都支持)辅助调试工具UI窗口
 /// </summary>
-public class ResourceDebugWindow : EditorWindow
+public class ResourceDebugWindow : BaseEditorWindow
 {
     /// <summary>
     /// AB辅助工具类型
@@ -94,7 +94,7 @@ public class ResourceDebugWindow : EditorWindow
     [MenuItem("Tools/Debug/资源调试工具", false, 103)]
     public static void openConvenientUIWindow()
     {
-        ResourceDebugWindow window = EditorWindow.GetWindow<ResourceDebugWindow>();
+        ResourceDebugWindow window = EditorWindow.GetWindow<ResourceDebugWindow>(false, "资源调试工具");
         window.Show();
     }
 

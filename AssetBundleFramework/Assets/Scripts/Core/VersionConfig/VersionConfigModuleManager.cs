@@ -27,6 +27,15 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
         private set;
     }
 
+#if UNITY_EDITOR
+    /// <summary> 包内资源版本信息文件存储全路径 /// </summary>
+    public string InnerVersionConfigSaveFileFullPath
+    {
+        get;
+        private set;
+    }
+#endif
+
     /// <summary> 包外资源版本信息文件存储目录路径 /// </summary>
     public string OutterVersionConfigSaveFileFolderPath
     {
@@ -86,6 +95,9 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     public VersionConfigModuleManager()
     {
         InnerVersionConfigFilePath = ConfigFolderPath + mVersionConfigFileName;
+#if UNITY_EDITOR
+        InnerVersionConfigSaveFileFullPath = Application.dataPath + Path.DirectorySeparatorChar + "Resources" + Path.DirectorySeparatorChar + InnerVersionConfigFilePath + ".json";
+#endif
         OutterVersionConfigSaveFileFolderPath = Application.persistentDataPath + "/" + ConfigFolderPath;
         OutterVersionConfigSaveFileFullPath = OutterVersionConfigSaveFileFolderPath + mVersionConfigFileName + ".json";
         GameVersionConfig = null;
@@ -94,10 +106,10 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     }
 
     /// <summary>
-    /// 存储最新版本号信息
+    /// 存储最新版本号信息到包外
     /// </summary>
     /// <param name="versioncode">版本号</param>
-    public void saveNewVersionCodeConfig(double versioncode)
+    public void saveNewVersionCodeOuterConfig(double versioncode)
     {
         //TODO:包外版本信息存储
         Debug.Log(string.Format("VersionConfigSaveFileFullPath : {0}", OutterVersionConfigSaveFileFullPath));
@@ -126,10 +138,10 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     }
 
     /// <summary>
-    /// 存储最新资源版本号信息
+    /// 存储最新资源版本号信息到包外
     /// </summary>
     /// <param name="resourceversioncode">资源版本号</param>
-    public void saveNewResoueceCodeConfig(int resourceversioncode)
+    public void saveNewResoueceCodeOuterConfig(int resourceversioncode)
     {
         //TODO:包外版本信息存储
         Debug.Log(string.Format("VersionConfigSaveFileFullPath : {0}", OutterVersionConfigSaveFileFullPath));
@@ -156,6 +168,64 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
             verisionconfigfs.Close();
         }
     }
+
+    #region 限Editor使用
+#if UNITY_EDITOR
+    /// <summary>
+    /// 存储最新版本号信息到包内
+    /// </summary>
+    /// <param name="versioncode">版本号</param>
+    public void saveNewVersionCodeInnerConfig(double versioncode)
+    {
+        Debug.Log($"存储最新版本号:{versioncode}到包内!");
+        Debug.Log(string.Format("InnerVersionConfigSaveFileFullPath : {0}", InnerVersionConfigSaveFileFullPath));
+
+        if (GameVersionConfig == null)
+        {
+            Debug.LogError("找不到版本信息!无法存储新的版本信息!");
+            return;
+        }
+
+        GameVersionConfig.VersionCode = versioncode;
+        Debug.Log("newverisoncode = " + versioncode);
+
+        var versionconfigdata = JsonUtility.ToJson(GameVersionConfig);
+        using (var verisionconfigfs = File.Open(InnerVersionConfigSaveFileFullPath, FileMode.Create))
+        {
+            byte[] versionconfiginfo = mUTF8Encoding.GetBytes(versionconfigdata);
+            verisionconfigfs.Write(versionconfiginfo, 0, versionconfiginfo.Length);
+            verisionconfigfs.Close();
+        }
+    }
+
+    /// <summary>
+    /// 存储最新资源版本号信息到包外
+    /// </summary>
+    /// <param name="resourceversioncode">资源版本号</param>
+    public void saveNewResoueceCodeInnerConfig(int resourceversioncode)
+    {
+        Debug.Log($"存储最新资源版本号:{resourceversioncode}到包内!");
+        Debug.Log(string.Format("InnerVersionConfigSaveFileFullPath : {0}", InnerVersionConfigSaveFileFullPath));
+
+        if (GameVersionConfig == null)
+        {
+            Debug.LogError("找不到包内版本信息!无法存储新的版本信息!");
+            return;
+        }
+
+        GameVersionConfig.ResourceVersionCode = resourceversioncode;
+        Debug.Log("newresourceversioncode = " + resourceversioncode);
+
+        var versionconfigdata = JsonUtility.ToJson(GameVersionConfig);
+        using (var verisionconfigfs = File.Open(InnerVersionConfigSaveFileFullPath, FileMode.Create))
+        {
+            byte[] versionconfiginfo = mUTF8Encoding.GetBytes(versionconfigdata);
+            verisionconfigfs.Write(versionconfiginfo, 0, versionconfiginfo.Length);
+            verisionconfigfs.Close();
+        }
+    }
+#endif
+    #endregion
 
     /// <summary>
     /// 初始化读取版本信息

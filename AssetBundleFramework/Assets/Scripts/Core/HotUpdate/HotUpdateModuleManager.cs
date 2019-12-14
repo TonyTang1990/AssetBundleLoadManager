@@ -431,7 +431,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     {
         Debug.Log("doNewVersionHotUpdate()");
         //写入当前版本信息到包外
-        VersionConfigModuleManager.Singleton.saveNewVersionCodeConfig(VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode);
+        VersionConfigModuleManager.Singleton.saveNewVersionCodeOuterConfig(VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode);
         //引导版本强更
         mVersionHotUpdateCompleteCB = completecallback;
         HotVersionUpdateRequest.resetRequest();
@@ -706,7 +706,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                 Debug.Log("资源热更完成!");
                 mResourceHotUpdateCompleteCB(true);
                 mResourceHotUpdateCompleteCB = null;
-                VersionConfigModuleManager.Singleton.saveNewResoueceCodeConfig(ServerVersionConfig.ResourceVersionCode);
+                VersionConfigModuleManager.Singleton.saveNewResoueceCodeOuterConfig(ServerVersionConfig.ResourceVersionCode);
             }
         }
         else

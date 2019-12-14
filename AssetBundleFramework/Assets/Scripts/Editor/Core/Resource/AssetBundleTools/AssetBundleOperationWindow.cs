@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AssetBundleOperationWindow.cs
  * Author:                  TONYTANG
  * Create Date:             2019//12/01
@@ -13,17 +13,17 @@ using UnityEngine;
 
 /// <summary>
 /// AssetBundleOperationWindow.cs
-/// AB²Ù×÷´¦Àí´°¿Ú
+/// ABæ“ä½œå¤„ç†çª—å£
 /// </summary>
-public class AssetBundleOperationWindow : EditorWindow
+public class AssetBundleOperationWindow : BaseEditorWindow
 {
     /// <summary>
-    /// ABÄ¿Â¼´æ´¢Key
+    /// ABç›®å½•å­˜å‚¨Key
     /// </summary>
     private const string ABOT_ABFolderPathPreferenceKey = "ABOT_ABFolderPathKey";
 
     /// <summary>
-    /// ABÄ¿Â¼
+    /// ABç›®å½•
     /// </summary>
     private string ABFolderPath
     {
@@ -39,60 +39,45 @@ public class AssetBundleOperationWindow : EditorWindow
     private string mABFolderPath;
 
     /// <summary>
-    /// ÕûÌåUI¹ö¶¯Î»ÖÃ
+    /// æ•´ä½“UIæ»šåŠ¨ä½ç½®
     /// </summary>
     private Vector2 mWindowUiScrollPos;
 
     /// <summary>
-    /// É¾³ıµÄABÎÄ¼şÃûÁĞ±í
+    /// åˆ é™¤çš„ABæ–‡ä»¶ååˆ—è¡¨
     /// </summary>
     private List<KeyValuePair<string, string>> mNeedDeleteABFileNameList = new List<KeyValuePair<string, string>>();
 
     /// <summary>
-    /// ÒÑÉ¾³ıµÄABÎÄ¼şÃûÁĞ±í
+    /// å·²åˆ é™¤çš„ABæ–‡ä»¶ååˆ—è¡¨
     /// </summary>
     private List<KeyValuePair<string, string>> mDeletedABFileNameList = new List<KeyValuePair<string, string>>();
 
-    [MenuItem("Tools/AssetBundle/AssetBundle²Ù×÷¹¤¾ß", false, 102)]
+    [MenuItem("Tools/AssetBundle/AssetBundleæ“ä½œå·¥å…·", false, 102)]
     public static void assetBundleOpterationWindow()
     {
-        var assetbundleoperationwindow = EditorWindow.GetWindow<AssetBundleOperationWindow>();
+        var assetbundleoperationwindow = EditorWindow.GetWindow<AssetBundleOperationWindow>(false, "ABå¤„ç†å·¥å…·");
         assetbundleoperationwindow.Show();
     }
 
-    private void OnEnable()
-    {
-        InitData();
-    }
-
-    private void OnDisable()
-    {
-        SaveData();
-    }
-
-    private void OnDestroy()
-    {
-        SaveData();
-    }
-
     /// <summary>
-    /// ³õÊ¼»¯´°¿ÚÊı¾İ
+    /// åˆå§‹åŒ–çª—å£æ•°æ®
     /// </summary>
-    private void InitData()
+    protected override void InitData()
     {
         ABFolderPath = PlayerPrefs.GetString(ABOT_ABFolderPathPreferenceKey);
-        Debug.Log("AssetBundle²Ù×÷´°¿Ú¶ÁÈ¡ÅäÖÃ:");
-        Debug.Log("ABÄ¿Â¼:" + ABFolderPath);
+        Debug.Log("AssetBundleæ“ä½œçª—å£è¯»å–é…ç½®:");
+        Debug.Log("ABç›®å½•:" + ABFolderPath);
     }
 
     /// <summary>
-    /// ±£´æÊı¾İ
+    /// ä¿å­˜æ•°æ®
     /// </summary>
-    private void SaveData()
+    protected override void SaveData()
     {
         PlayerPrefs.SetString(ABOT_ABFolderPathPreferenceKey, ABFolderPath);
-        Debug.Log("AssetBundle²Ù×÷´°¿Ú±£´æÅäÖÃ:");
-        Debug.Log("ABÄ¿Â¼:" + ABFolderPath);
+        Debug.Log("AssetBundleæ“ä½œçª—å£ä¿å­˜é…ç½®:");
+        Debug.Log("ABç›®å½•:" + ABFolderPath);
     }
 
     public void OnGUI()
@@ -100,15 +85,15 @@ public class AssetBundleOperationWindow : EditorWindow
         mWindowUiScrollPos = GUILayout.BeginScrollView(mWindowUiScrollPos);
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("ABÄ¿Â¼:", GUILayout.Width(50.0f));
+        EditorGUILayout.LabelField("ABç›®å½•:", GUILayout.Width(50.0f));
         EditorGUILayout.TextField("", ABFolderPath);
-        if (GUILayout.Button("Ñ¡ÔñABÄ¿Â¼", GUILayout.Width(150.0f)))
+        if (GUILayout.Button("é€‰æ‹©ABç›®å½•", GUILayout.Width(150.0f)))
         {
-            ABFolderPath = EditorUtility.OpenFolderPanel("ABÄ¿Â¼", "ÇëÑ¡ÔñĞèÒª·ÖÎöµÄABËùÔÚÄ¿Â¼!", "");
+            ABFolderPath = EditorUtility.OpenFolderPanel("ABç›®å½•", "è¯·é€‰æ‹©éœ€è¦åˆ†æçš„ABæ‰€åœ¨ç›®å½•!", "");
         }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("·ÖÎö²¢É¾³ıÒÑÉ¾³ıAB", GUILayout.Width(150.0f)))
+        if (GUILayout.Button("åˆ†æå¹¶åˆ é™¤å·²åˆ é™¤AB", GUILayout.Width(150.0f)))
         {
             doAnalyzeAndDeleteDeletedABFiles();
         }
@@ -119,7 +104,7 @@ public class AssetBundleOperationWindow : EditorWindow
     }
 
     /// <summary>
-    /// Í³¼Æ·ÖÎöĞèÒªÉ¾³ıµÄABÎÄ¼ş
+    /// ç»Ÿè®¡åˆ†æéœ€è¦åˆ é™¤çš„ABæ–‡ä»¶
     /// </summary>
     private void doAnalyzeNeedDeleteAB()
     {
@@ -138,28 +123,28 @@ public class AssetBundleOperationWindow : EditorWindow
                 foreach (var existabfilepath in existabfilespath)
                 {
                     var existabfilename = Path.GetFileName(existabfilepath);
-                    // GetAllAssetBundlesµÃ²»µ½ÒÀÀµĞÅÏ¢AB×ÔÉí£¬Ä¿Â¼ÏÂµÄÍ¬ÃûÒÀÀµĞÅÏ¢ÎÄ¼şĞèÒªµ¥¶ÀÅÅ³ı
+                    // GetAllAssetBundleså¾—ä¸åˆ°ä¾èµ–ä¿¡æ¯ABè‡ªèº«ï¼Œç›®å½•ä¸‹çš„åŒåä¾èµ–ä¿¡æ¯æ–‡ä»¶éœ€è¦å•ç‹¬æ’é™¤
                     if (!valideallabnames.Contains(existabfilename) && !existabfilename.Equals(foldername))
                     {
                         mNeedDeleteABFileNameList.Add(new KeyValuePair<string, string>(existabfilename, existabfilepath));
-                        Debug.Log($"ĞèÒªÉ¾³ıµÄABÎÄ¼ş:{existabfilepath}!");
+                        Debug.Log($"éœ€è¦åˆ é™¤çš„ABæ–‡ä»¶:{existabfilepath}!");
                     }
                 }
                 ab.Unload(true);
             }
             else
             {
-                Debug.LogError($"ÕÒ²»µ½ABÄ¿Â¼:{ABFolderPath}ÏÂµÄManifest:{foldername}ÎÄ¼ş!");
+                Debug.LogError($"æ‰¾ä¸åˆ°ABç›®å½•:{ABFolderPath}ä¸‹çš„Manifest:{foldername}æ–‡ä»¶!");
             }
         }
         else
         {
-            Debug.LogError($"ABÄ¿Â¼:{ABFolderPath}²»´æÔÚ,ÎŞ·¨·ÖÎöĞèÒªÉ¾³ıµÄAB!");
+            Debug.LogError($"ABç›®å½•:{ABFolderPath}ä¸å­˜åœ¨,æ— æ³•åˆ†æéœ€è¦åˆ é™¤çš„AB!");
         }
     }
 
     /// <summary>
-    /// ·ÖÎö²¢É¾³ıĞèÒªÒÆ³ıµÄABÎÄ¼ş
+    /// åˆ†æå¹¶åˆ é™¤éœ€è¦ç§»é™¤çš„ABæ–‡ä»¶
     /// </summary>
     private bool doAnalyzeAndDeleteDeletedABFiles()
     {
@@ -171,7 +156,7 @@ public class AssetBundleOperationWindow : EditorWindow
             {
                 foreach (var deleteabfilename in mNeedDeleteABFileNameList)
                 {
-                    //Á¬´øMetaºÍManifestÎÄ¼şÒ»ÆğÉ¾³ı
+                    //è¿å¸¦Metaå’ŒManifestæ–‡ä»¶ä¸€èµ·åˆ é™¤
                     if (File.Exists(deleteabfilename.Value))
                     {
                         var abmetafilename = deleteabfilename.Value + ".meta";
@@ -185,46 +170,46 @@ public class AssetBundleOperationWindow : EditorWindow
                     }
                     else
                     {
-                        Debug.LogError($"ABÎÄ¼ş²»´æÔÚ:{deleteabfilename.Value}£¬É¾³ıÊ§°Ü!");
+                        Debug.LogError($"ABæ–‡ä»¶ä¸å­˜åœ¨:{deleteabfilename.Value}ï¼Œåˆ é™¤å¤±è´¥!");
                         return false;
                     }
                 }
-                Debug.Log("·ÖÎö²¢É¾³ıĞèÒªÒÆ³ıµÄABÎÄ¼ş²Ù×÷Íê³É!");
+                Debug.Log("åˆ†æå¹¶åˆ é™¤éœ€è¦ç§»é™¤çš„ABæ–‡ä»¶æ“ä½œå®Œæˆ!");
                 return true;
             }
             else
             {
-                Debug.Log("Ã»ÓĞĞèÒªÉ¾³ıµÄAB!");
+                Debug.Log("æ²¡æœ‰éœ€è¦åˆ é™¤çš„AB!");
                 return true;
             }
         }
         else
         {
-            Debug.Log("ÇëÏÈÖ´ĞĞABÎÄ¼şÉ¾³ı·ÖÎö!");
+            Debug.Log("è¯·å…ˆæ‰§è¡ŒABæ–‡ä»¶åˆ é™¤åˆ†æ!");
             return false;
         }
     }
 
     /// <summary>
-    /// ÏÔÊ¾É¾³ıµÄAB½á¹û
+    /// æ˜¾ç¤ºåˆ é™¤çš„ABç»“æœ
     /// </summary>
     private void displayDeletedABResult()
     {
         GUILayout.BeginVertical();
         if (mDeletedABFileNameList.Count > 0)
         {
-            GUILayout.Label("ÒÑÉ¾³ıABÎÄ¼şĞÅÏ¢:", GUILayout.Width(100.0f));
+            GUILayout.Label("å·²åˆ é™¤ABæ–‡ä»¶ä¿¡æ¯:", GUILayout.Width(100.0f));
             foreach (var deleteabfilename in mDeletedABFileNameList)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("ÎÄ¼şÃû:" + deleteabfilename.Key, GUILayout.Width(250.0f));
-                GUILayout.Label("È«Â·¾¶:" + deleteabfilename.Value, GUILayout.Width(1200.0f));
+                GUILayout.Label("æ–‡ä»¶å:" + deleteabfilename.Key, GUILayout.Width(250.0f));
+                GUILayout.Label("å…¨è·¯å¾„:" + deleteabfilename.Value, GUILayout.Width(1200.0f));
                 GUILayout.EndHorizontal();
             }
         }
         else
         {
-            GUILayout.Label("Î´É¾³ıÈÎºÎAB!");
+            GUILayout.Label("æœªåˆ é™¤ä»»ä½•AB!");
         }
         GUILayout.EndVertical();
     }
