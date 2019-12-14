@@ -34,7 +34,7 @@ public class NativeMessageHandler : MonoBehaviour {
     public void resUnityMsg(string msg)
     {
         Debug.Log(string.Format("resUnityMsg : {0}", msg));
-        if(TxtNativeOutput != null)
+        if (TxtNativeOutput != null)
         {
             TxtNativeOutput.text = msg;
         }

@@ -443,16 +443,20 @@ public class HotUpdateOperationWindow : BaseEditorWindow
                 // 进行对比
                 foreach (var md51 in md51map)
                 {
-                    if (md52map.ContainsKey(md51.Key))
+                     if (md52map.ContainsKey(md51.Key))
                     {
+                        //如果写入老版MD5的路径可能会因为老版MD5生成不是在同一台电脑上，绝对路径不对
+                        //所以这里采用写入最新的MD5的路径确保能得到正确的AB路径
                         if (!md52map[md51.Key].Key.Equals(md51.Value.Key))
                         {
-                            mMD5ChangedABFileNameList.Add(new KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>(md51.Key, new KeyValuePair<string, EChangedFileStatus>(md51.Value.Value, EChangedFileStatus.Changed)));
+                            //mMD5ChangedABFileNameList.Add(new KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>(md51.Key, new KeyValuePair<string, EChangedFileStatus>(md51.Value.Value, EChangedFileStatus.Changed)));
+                            mMD5ChangedABFileNameList.Add(new KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>(md51.Key, new KeyValuePair<string, EChangedFileStatus>(md52map[md51.Key].Value, EChangedFileStatus.Changed)));
                         }
                     }
                     else
                     {
-                        mMD5ChangedABFileNameList.Add(new KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>(md51.Key, new KeyValuePair<string, EChangedFileStatus>(md51.Value.Value, EChangedFileStatus.Delete)));
+                        //mMD5ChangedABFileNameList.Add(new KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>(md51.Key, new KeyValuePair<string, EChangedFileStatus>(md51.Value.Value, EChangedFileStatus.Delete)));
+                        mMD5ChangedABFileNameList.Add(new KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>(md51.Key, new KeyValuePair<string, EChangedFileStatus>(md52map[md51.Key].Value, EChangedFileStatus.Delete)));
                     }
                 }
                 foreach (var md52 in md52map)
