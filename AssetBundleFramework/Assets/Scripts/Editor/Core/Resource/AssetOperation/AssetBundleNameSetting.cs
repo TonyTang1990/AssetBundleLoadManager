@@ -22,6 +22,7 @@ public class AssetBundleNameSetting
         {
             AutoSetAssetBundleName(obj);
         }
+        AssetDatabase.SaveAssets();
     }
 
     /// <summary>
@@ -38,7 +39,6 @@ public class AssetBundleNameSetting
             {
                 assetimporter.assetBundleName = obj.name.ToLower();
                 DIYLog.Log(string.Format("设置资源:{0}的AB名字为:{1}", assetpath, obj.name.ToLower()));
-                AssetDatabase.SaveAssets();
             }
         }
     }
