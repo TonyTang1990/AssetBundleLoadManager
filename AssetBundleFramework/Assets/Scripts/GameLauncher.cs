@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TUI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -201,11 +202,11 @@ public class GameLauncher : MonoBehaviour {
     }
 
     /// <summary>
-    /// 加载Sprite
+    /// 加载Image Sprite
     /// </summary>
-    public void onLoadSprite()
+    public void onLoadImageSprite()
     {
-        DIYLog.Log("onLoadSprite()");
+        DIYLog.Log("onLoadImageSprite()");
         var param1 = InputParam1.text;
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
@@ -218,6 +219,21 @@ public class GameLauncher : MonoBehaviour {
             var sp = abi.getAsset<Sprite>(image, param2);
             image.sprite = sp;
         });
+
+    }
+
+    /// <summary>
+    /// 加载TImage Sprite
+    /// </summary>
+    public void onLoadTImageSprite()
+    {
+        DIYLog.Log("onLoadTImageSprite()");
+        var param1 = InputParam1.text;
+        DIYLog.Log("Param1 = " + param1);
+        var param2 = InputParam2.text;
+        DIYLog.Log("Param2 = " + param2);
+        var timage = mMainWindow.transform.Find("timgBG").GetComponent<TImage>();
+        AtlasManager.Singleton.setImageSprite(timage, param1, param2);
     }
 
     /// <summary>

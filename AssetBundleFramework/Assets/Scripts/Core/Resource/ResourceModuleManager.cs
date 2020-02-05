@@ -137,6 +137,16 @@ public class ResourceModuleManager : SingletonTemplate<ResourceModuleManager>
         CurrentResourceModule.requstResource(resname, completehandler, loadtype, loadmethod);
     }
 
+    /// <summary>
+    /// 获取指定AB名字的资源加载信息
+    /// </summary>
+    /// <param name="abname"></param>
+    /// <returns></returns>
+    public AbstractResourceInfo getSpecificARI(string abname)
+    {
+        return CurrentResourceModule.getSpecificARI(abname);
+    }
+
     public void Update()
     {
         CurrentResourceModule.Update();

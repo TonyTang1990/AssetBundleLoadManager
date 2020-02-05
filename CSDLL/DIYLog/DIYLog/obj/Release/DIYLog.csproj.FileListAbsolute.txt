@@ -14,3 +14,11 @@ D:\TonyTang\Work\Projects\Unity\MyGitHubProjects\AssetBundleLoadManager\CSDLL\DI
 D:\TonyTang\Work\Projects\Unity\MyGitHubProjects\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\obj\Release\DIYLog.csproj.CopyComplete
 D:\TonyTang\Work\Projects\Unity\MyGitHubProjects\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\obj\Release\DIYLog.dll
 D:\TonyTang\Work\Projects\Unity\MyGitHubProjects\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\obj\Release\DIYLog.pdb
+G:\Projects\GitHubProjects\AssetBundleFramework\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\bin\Release\DIYLog.dll
+G:\Projects\GitHubProjects\AssetBundleFramework\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\bin\Release\DIYLog.pdb
+G:\Projects\GitHubProjects\AssetBundleFramework\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\bin\Release\UnityEngine.CoreModule.dll
+G:\Projects\GitHubProjects\AssetBundleFramework\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\obj\Release\DIYLog.csprojAssemblyReference.cache
+G:\Projects\GitHubProjects\AssetBundleFramework\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\obj\Release\DIYLog.csproj.CoreCompileInputs.cache
+G:\Projects\GitHubProjects\AssetBundleFramework\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\obj\Release\DIYLog.csproj.CopyComplete
+G:\Projects\GitHubProjects\AssetBundleFramework\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\obj\Release\DIYLog.dll
+G:\Projects\GitHubProjects\AssetBundleFramework\AssetBundleLoadManager\CSDLL\DIYLog\DIYLog\obj\Release\DIYLog.pdb

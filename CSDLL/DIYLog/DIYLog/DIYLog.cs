@@ -62,4 +62,30 @@ public static class DIYLog
             Debug.LogError(msg);
         }
     }
+
+    /// <summary>
+    /// 条件检查assert
+    /// </summary>
+    /// <param name="condition"></param>
+    /// <param name="msg"></param>
+    public static void Assert(bool condition, string msg = "")
+    {
+        if (mLogSwitch)
+        {
+            Debug.Assert(condition, msg);
+        }
+    }
+
+    /// <summary>
+    /// 条件检查assert
+    /// </summary>
+    /// <param name="condition"></param>
+    /// <param name="obj"></param>
+    public static void Assert(bool condition, Object obj)
+    {
+        if (mLogSwitch)
+        {
+            Debug.Assert(condition, obj);
+        }
+    }
 }

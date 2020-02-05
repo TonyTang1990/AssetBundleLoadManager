@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AbstractResourceModule.cs
  * Author:                  TONYTANG
  * Create Date:             2019//04/07
@@ -10,16 +10,16 @@ using UnityEngine;
 
 /// <summary>
 /// AbstractResourceModule.cs
-/// ×ÊÔ´¼ÓÔØÄ£Ê½Ä£¿é³éÏó(ÓÃÓÚÇø·Ö²»Í¬µÄ×ÊÔ´¼ÓÔØÄ£Ê½ e.g. AssetBundle || AssetDatabase)
+/// èµ„æºåŠ è½½æ¨¡å¼æ¨¡å—æŠ½è±¡(ç”¨äºåŒºåˆ†ä¸åŒçš„èµ„æºåŠ è½½æ¨¡å¼ e.g. AssetBundle || AssetDatabase)
 /// </summary>
 public abstract class AbstractResourceModule {
 
-    /// <summary> Âß¼­²ã×ÊÔ´¼ÓÔØÍê³ÉÎ¯ÍĞ /// </summary>
+    /// <summary> é€»è¾‘å±‚èµ„æºåŠ è½½å®Œæˆå§”æ‰˜ /// </summary>
     /// <param name="abinfo"></param>
     public delegate void LoadResourceCompleteHandler(AbstractResourceInfo abinfo);
 
     /// <summary>
-    /// ×ÊÔ´¼ÓÔØÄ£Ê½
+    /// èµ„æºåŠ è½½æ¨¡å¼
     /// </summary>
     public ResourceLoadMode ResLoadMode
     {
@@ -28,7 +28,7 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// ÊÇ·ñ¿ªÆô×ÊÔ´»ØÊÕ¼ì²â(ÓĞĞ©Çé¿öÏÂ²»ÊÊºÏÆµ·±»ØÊÕ´´½¨£¬±ÈÈçÕ½¶·³¡¾°)
+    /// æ˜¯å¦å¼€å¯èµ„æºå›æ”¶æ£€æµ‹(æœ‰äº›æƒ…å†µä¸‹ä¸é€‚åˆé¢‘ç¹å›æ”¶åˆ›å»ºï¼Œæ¯”å¦‚æˆ˜æ–—åœºæ™¯)
     /// </summary>
     public bool EnableResourceRecyclingUnloadUnsed
     {
@@ -37,23 +37,23 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// ×ÊÔ´°×Ãûµ¥Ó³ÉäMap(ÓÃDictionaryÖ»ÊÇÎªÁË¿ìËÙ·ÃÎÊ)
-    /// KeyÎª×ÊÔ´Ãû£¬ValueÒ²Îª×ÊÔ´Ãû
-    /// ÔÚ°×Ãûµ¥ÀïµÄ×ÊÔ´£¬Ö»ÒªÉÏ²ã¼ÓÔØ¸Ã×ÊÔ´£¬Ò»ÂÉÒÔPreLoadĞÎÊ½¼ÓÔØ×ÊÔ´
-    /// ÕâÀïÖ÷ÒªÊÇÎªÁË±ÜÃâÒòÎªÉÏ²ãÂß¼­´úÂëµ¼ÖÂ´íÎóµÄ×ÊÔ´±»Æµ·±¼ÓÔØĞ¶ÔØ
-    /// ±ÈÈç: Res.cs    public bool SetImageSprite(UnityEngine.UI.Image image, string spName)
+    /// èµ„æºç™½åå•æ˜ å°„Map(ç”¨Dictionaryåªæ˜¯ä¸ºäº†å¿«é€Ÿè®¿é—®)
+    /// Keyä¸ºèµ„æºåï¼ŒValueä¹Ÿä¸ºèµ„æºå
+    /// åœ¨ç™½åå•é‡Œçš„èµ„æºï¼Œåªè¦ä¸Šå±‚åŠ è½½è¯¥èµ„æºï¼Œä¸€å¾‹ä»¥PreLoadå½¢å¼åŠ è½½èµ„æº
+    /// è¿™é‡Œä¸»è¦æ˜¯ä¸ºäº†é¿å…å› ä¸ºä¸Šå±‚é€»è¾‘ä»£ç å¯¼è‡´é”™è¯¯çš„èµ„æºè¢«é¢‘ç¹åŠ è½½å¸è½½
+    /// æ¯”å¦‚: Res.cs    public bool SetImageSprite(UnityEngine.UI.Image image, string spName)
     /// </summary>
     protected Dictionary<string, string> mResourceWhileListMap;
 
     /// <summary>
-    /// ËùÓĞÒÑ¼ÓÔØµÄ×ÊÔ´µÄĞÅÏ¢Ó³ÉäMap
-    /// KeyÎªAB¼ÓÔØÀàĞÍ£¬ValueÎª¸Ã¼ÓÔØÀàĞÍÒÑ¾­¼ÓÔØµÄ×ÊÔ´ĞÅÏ¢Ó³ÉäMap(KeyÎªABÃû×Ö£¬ValueÎª×ÊÔ´¼ÓÔØĞÅÏ¢)
+    /// æ‰€æœ‰å·²åŠ è½½çš„èµ„æºçš„ä¿¡æ¯æ˜ å°„Map
+    /// Keyä¸ºABåŠ è½½ç±»å‹ï¼ŒValueä¸ºè¯¥åŠ è½½ç±»å‹å·²ç»åŠ è½½çš„èµ„æºä¿¡æ¯æ˜ å°„Map(Keyä¸ºABåå­—ï¼ŒValueä¸ºèµ„æºåŠ è½½ä¿¡æ¯)
     /// </summary>
     protected Dictionary<ResourceLoadType, Dictionary<string, AbstractResourceInfo>> mAllLoadedResourceInfoMap;
 
-    #region FSP¼ÆËã²¿·Ö
+    #region FSPè®¡ç®—éƒ¨åˆ†
     /// <summary>
-    /// µ±Ç°FPS
+    /// å½“å‰FPS
     /// </summary>
     public int CurrentFPS
     {
@@ -65,23 +65,23 @@ public abstract class AbstractResourceModule {
     protected int mCurrentFPS;
 
     /// <summary>
-    /// ¾­ÀúµÄÊ±¼ä
+    /// ç»å†çš„æ—¶é—´
     /// </summary>
     private float mTotalDeltaTime;
 
     /// <summary>
-    /// ¾­ÀúµÄÖ¡Êı
+    /// ç»å†çš„å¸§æ•°
     /// </summary>
     private int mFrameCount;
 
     /// <summary>
-    /// FPS¸üĞÂ¼ä¸ôÆµÂÊ
+    /// FPSæ›´æ–°é—´éš”é¢‘ç‡
     /// </summary>
     private float mFPSUpdateInterval;
     #endregion
 
     /// <summary>
-    /// ×ÊÔ´¼ÓÔØÄ£¿é³õÊ¼»¯
+    /// èµ„æºåŠ è½½æ¨¡å—åˆå§‹åŒ–
     /// </summary>
     public virtual void init()
     {
@@ -96,7 +96,7 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// ¿ªÆô×ÊÔ´²»ÔÙÊ¹ÓÃ»ØÊÕ¼ì²â
+    /// å¼€å¯èµ„æºä¸å†ä½¿ç”¨å›æ”¶æ£€æµ‹
     /// </summary>
     public void startResourceRecyclingTask()
     {
@@ -104,16 +104,16 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// ¶ÓÁĞÀï²»ÔÙÓĞ×ÊÔ´ĞèÒª¼ÓÔØÊ±¼ì²é²»ÔÙÊ¹ÓÃµÄ×ÊÔ´
+    /// é˜Ÿåˆ—é‡Œä¸å†æœ‰èµ„æºéœ€è¦åŠ è½½æ—¶æ£€æŸ¥ä¸å†ä½¿ç”¨çš„èµ„æº
     /// </summary>
     protected abstract IEnumerator checkUnsedResource();
 
     /// <summary>
-    /// Ìí¼ÓÖ¸¶¨×ÊÔ´µ½°×Ãûµ¥
+    /// æ·»åŠ æŒ‡å®šèµ„æºåˆ°ç™½åå•
     /// Note:
-    /// Ä¬ÈÏ°×Ãûµ¥ÀïµÄ×ÊÔ´¶¼ÒÔResourceLoadType.Preload·½Ê½¼ÓÔØ
+    /// é»˜è®¤ç™½åå•é‡Œçš„èµ„æºéƒ½ä»¥ResourceLoadType.Preloadæ–¹å¼åŠ è½½
     /// </summary>
-    /// <param name="resname">×ÊÔ´Ãû(¼ÈABÃû)</param>
+    /// <param name="resname">èµ„æºå(æ—¢ABå)</param>
     public void addToWhiteList(string resname)
     {
         if (!mResourceWhileListMap.ContainsKey(resname))
@@ -122,22 +122,22 @@ public abstract class AbstractResourceModule {
         }
         else
         {
-            ResourceLogger.logErr(string.Format("×ÊÔ´ : {0}ÖØ¸´Ìí¼Ó°×Ãûµ¥!", resname));
+            ResourceLogger.logErr(string.Format("èµ„æº : {0}é‡å¤æ·»åŠ ç™½åå•!", resname));
         }
     }
 
     /// <summary>
-    /// ÇëÇó×ÊÔ´
-    /// ÉÏ²ã×ÊÔ´¼ÓÔØÍ³Ò»Èë¿Ú
+    /// è¯·æ±‚èµ„æº
+    /// ä¸Šå±‚èµ„æºåŠ è½½ç»Ÿä¸€å…¥å£
     /// </summary>
-    /// <param name="resname">×ÊÔ´ABÃû</param>
-    /// <param name="completehandler">¼ÓÔØÍê³ÉÉÏ²ã»Øµ÷</param>
-    /// <param name="loadtype">×ÊÔ´¼ÓÔØÀàĞÍ</param>
-    /// <param name="loadmethod">×ÊÔ´¼ÓÔØ·½Ê½</param>
+    /// <param name="resname">èµ„æºABå</param>
+    /// <param name="completehandler">åŠ è½½å®Œæˆä¸Šå±‚å›è°ƒ</param>
+    /// <param name="loadtype">èµ„æºåŠ è½½ç±»å‹</param>
+    /// <param name="loadmethod">èµ„æºåŠ è½½æ–¹å¼</param>
     public void requstResource(string resname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        // ÔÚ°×Ãûµ¥ÀïµÄ×ÊÔ´Ò»ÂÉÒÔÔ¤¼ÓÔØĞÎÊ½¼ÓÔØ£¬
-        // ±ÜÃâÒòÎªÉÏ²ãÂß¼­´íÎó¼ÓÔØºó±»Æµ·±¼ÓÔØĞ¶ÔØ
+        // åœ¨ç™½åå•é‡Œçš„èµ„æºä¸€å¾‹ä»¥é¢„åŠ è½½å½¢å¼åŠ è½½ï¼Œ
+        // é¿å…å› ä¸ºä¸Šå±‚é€»è¾‘é”™è¯¯åŠ è½½åè¢«é¢‘ç¹åŠ è½½å¸è½½
         if (mResourceWhileListMap.ContainsKey(resname))
         {
             loadtype = ResourceLoadType.Preload;
@@ -147,16 +147,16 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// ÕæÕıµÄÇëÇó×ÊÔ´(ÓÉ²»Í¬µÄ×ÊÔ´Ä£¿éÈ¥ÊµÏÖ)
+    /// çœŸæ­£çš„è¯·æ±‚èµ„æº(ç”±ä¸åŒçš„èµ„æºæ¨¡å—å»å®ç°)
     /// </summary>
-    /// <param name="resname">×ÊÔ´ABÃû</param>
-    /// <param name="completehandler">¼ÓÔØÍê³ÉÉÏ²ã»Øµ÷</param>
-    /// <param name="loadtype">×ÊÔ´¼ÓÔØÀàĞÍ</param>
-    /// <param name="loadmethod">×ÊÔ´¼ÓÔØ·½Ê½</param>
+    /// <param name="resname">èµ„æºABå</param>
+    /// <param name="completehandler">åŠ è½½å®Œæˆä¸Šå±‚å›è°ƒ</param>
+    /// <param name="loadtype">èµ„æºåŠ è½½ç±»å‹</param>
+    /// <param name="loadmethod">èµ„æºåŠ è½½æ–¹å¼</param>
     protected abstract void realRequestResource(string resname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync);
 
     /// <summary>
-    /// ¸üĞÂÈë¿Ú
+    /// æ›´æ–°å…¥å£
     /// </summary>
     public virtual void Update()
     {
@@ -171,9 +171,36 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// ÊÍ·Å¿ÉÊÍ·ÅµÄÔ¤¼ÓÔØ×ÊÔ´(µİ¹éÅĞ¶¨£¬²»ÏŞÖÆ»ØÊÕÊıÁ¿)
+    /// è·å–æŒ‡å®šABåå­—çš„èµ„æºåŠ è½½ä¿¡æ¯
+    /// </summary>
+    /// <param name="abname"></param>
+    /// <returns></returns>
+    public AbstractResourceInfo getSpecificARI(string abname)
+    {
+        if(!string.IsNullOrEmpty(abname))
+        {
+            foreach (var loadedresourceinfomap in mAllLoadedResourceInfoMap)
+            {
+                AbstractResourceInfo ari;
+                if (loadedresourceinfomap.Value.TryGetValue(abname, out ari))
+                {
+                    return ari;
+                }
+            }
+            DIYLog.LogError($"æ‰¾ä¸åˆ°ABå:{abname}çš„èµ„æºåŠ è½½ä¿¡æ¯!");
+            return null;
+        }
+        else
+        {
+            DIYLog.LogError("ä¸å…è®¸ä¼ ç©ºABåå­—,è·å–å¯¹åº”èµ„æºåŠ è½½ä¿¡æ¯å¤±è´¥!");
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// é‡Šæ”¾å¯é‡Šæ”¾çš„é¢„åŠ è½½èµ„æº(é€’å½’åˆ¤å®šï¼Œä¸é™åˆ¶å›æ”¶æ•°é‡)
     /// Note:
-    /// ÇĞ³¡¾°Ç°µ÷ÓÃ£¬È·±£ËùÓĞÔ¤¼ÓÔØ×ÊÔ´ÕıÈ·ÊÍ·Å
+    /// åˆ‡åœºæ™¯å‰è°ƒç”¨ï¼Œç¡®ä¿æ‰€æœ‰é¢„åŠ è½½èµ„æºæ­£ç¡®é‡Šæ”¾
     /// </summary>
     public void unloadAllUnsedPreloadLoadedResources()
     {
@@ -181,9 +208,9 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// Ìá¹©¸øÍâ²¿µÄ´¥·¢Ğ¶ÔØËùÓĞÕı³£¼ÓÔØ²»ÔÙÊ¹ÓÃµÄ×ÊÔ´(µİ¹éÅĞ¶¨£¬²»ÏŞÖÆ»ØÊÕÊıÁ¿)
+    /// æä¾›ç»™å¤–éƒ¨çš„è§¦å‘å¸è½½æ‰€æœ‰æ­£å¸¸åŠ è½½ä¸å†ä½¿ç”¨çš„èµ„æº(é€’å½’åˆ¤å®šï¼Œä¸é™åˆ¶å›æ”¶æ•°é‡)
     /// Note:
-    /// Í¬²½½Ó¿Ú£¬»ØÊÕÊıÁ¿»á±È½Ï´ó£¬Ö»½¨ÒéÇĞ³¡¾°Ê±³¡¾°Ğ¶ÔØºóµ÷ÓÃÒ»´Î
+    /// åŒæ­¥æ¥å£ï¼Œå›æ”¶æ•°é‡ä¼šæ¯”è¾ƒå¤§ï¼Œåªå»ºè®®åˆ‡åœºæ™¯æ—¶åœºæ™¯å¸è½½åè°ƒç”¨ä¸€æ¬¡
     /// </summary>
     public void unloadAllUnsedNormalLoadedResources()
     {
@@ -191,31 +218,31 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// Ğ¶ÔØÖ¸¶¨ÀàĞÍ²»ÔÙÊ¹ÓÃµÄ×ÊÔ´(Note:²»Ö§³ÖĞ¶ÔØ³£×¤×ÊÔ´ÀàĞÍ)
+    /// å¸è½½æŒ‡å®šç±»å‹ä¸å†ä½¿ç”¨çš„èµ„æº(Note:ä¸æ”¯æŒå¸è½½å¸¸é©»èµ„æºç±»å‹)
     /// </summary>
-    /// <param name="resourceloadtype">×ÊÔ´¼ÓÔØÀàĞÍ</param>
+    /// <param name="resourceloadtype">èµ„æºåŠ è½½ç±»å‹</param>
     protected void unloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
     {
         if (resourceloadtype == ResourceLoadType.PermanentLoad)
         {
-            ResourceLogger.logErr("²»ÔÊĞíĞ¶ÔØ³£×¤AB×ÊÔ´!");
+            ResourceLogger.logErr("ä¸å…è®¸å¸è½½å¸¸é©»ABèµ„æº!");
             return;
         }
         doUnloadSpecificLoadTypeUnsedResource(resourceloadtype);
     }
 
     /// <summary>
-    /// ÕæÕıÖ´ĞĞ×ÊÔ´Ğ¶ÔØÖ¸¶¨ÀàĞÍ²»ÔÙÊ¹ÓÃµÄ×ÊÔ´½Ó¿Ú
+    /// çœŸæ­£æ‰§è¡Œèµ„æºå¸è½½æŒ‡å®šç±»å‹ä¸å†ä½¿ç”¨çš„èµ„æºæ¥å£
     /// </summary>
-    /// <param name="resourceloadtype">×ÊÔ´¼ÓÔØÀàĞÍ</param>
+    /// <param name="resourceloadtype">èµ„æºåŠ è½½ç±»å‹</param>
     protected abstract void doUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype);
 
     /// <summary>
-    /// ¸üĞÂÒÑ¼ÓÔØABµÄ¼ÓÔØÀàĞÍ
+    /// æ›´æ–°å·²åŠ è½½ABçš„åŠ è½½ç±»å‹
     /// </summary>
-    /// <param name="resname">×ÊÔ´Ãû</param>
-    /// <param name="oldloadtype">¾ÉµÄ¼ÓÔØÀàĞÍ</param>
-    /// <param name="newloadtype">ĞÂµÄ¼ÒÔÚÀàĞÍ</param>
+    /// <param name="resname">èµ„æºå</param>
+    /// <param name="oldloadtype">æ—§çš„åŠ è½½ç±»å‹</param>
+    /// <param name="newloadtype">æ–°çš„å®¶åœ¨ç±»å‹</param>
     protected void updateLoadedResourceInfoLoadType(string resname, ResourceLoadType oldloadtype, ResourceLoadType newloadtype)
     {
         if (mAllLoadedResourceInfoMap[oldloadtype].ContainsKey(resname))
@@ -223,18 +250,18 @@ public abstract class AbstractResourceModule {
             var abi = mAllLoadedResourceInfoMap[oldloadtype][resname];
             mAllLoadedResourceInfoMap[newloadtype].Add(resname, abi);
             mAllLoadedResourceInfoMap[oldloadtype].Remove(resname);
-            ResourceLogger.log(string.Format("ÒÑ¼ÓÔØµÄ×ÊÔ´ : {0}´Ó×ÊÔ´ÀàĞÍ : {1}¸üĞÂµ½×ÊÔ´ÀàĞÍ : {2}£¡", resname, oldloadtype, newloadtype));
+            ResourceLogger.log(string.Format("å·²åŠ è½½çš„èµ„æº : {0}ä»èµ„æºç±»å‹ : {1}æ›´æ–°åˆ°èµ„æºç±»å‹ : {2}ï¼", resname, oldloadtype, newloadtype));
         }
         else
         {
-            ResourceLogger.logErr(string.Format("×ÊÔ´ÀàĞÍ : {0}ÀïÕÒ²»µ½ÒÑ¼ÓÔØµÄ×ÊÔ´ : {1}£¬ÎŞ·¨¸üĞÂ¸Ã×ÊÔ´µÄ¼ÓÔØÀàĞÍ£¡", oldloadtype, resname));
+            ResourceLogger.logErr(string.Format("èµ„æºç±»å‹ : {0}é‡Œæ‰¾ä¸åˆ°å·²åŠ è½½çš„èµ„æº : {1}ï¼Œæ— æ³•æ›´æ–°è¯¥èµ„æºçš„åŠ è½½ç±»å‹ï¼", oldloadtype, resname));
         }
     }
 
     /// <summary>
-    /// »ñÈ¡Ö¸¶¨¼ÓÔØÀàĞÍµÄÒÑ¼ÓÔØ×ÊÔ´ĞÅÏ¢Ó³ÉäMap
+    /// è·å–æŒ‡å®šåŠ è½½ç±»å‹çš„å·²åŠ è½½èµ„æºä¿¡æ¯æ˜ å°„Map
     /// </summary>
-    /// <param name="loadtype">×ÊÔ´¼ÓÔØÀàĞÍ</param>
+    /// <param name="loadtype">èµ„æºåŠ è½½ç±»å‹</param>
     /// <returns></returns>
     public Dictionary<string, AbstractResourceInfo> getSpecificLoadTypeARIMap(ResourceLoadType loadtype)
     {
@@ -244,19 +271,19 @@ public abstract class AbstractResourceModule {
         }
         else
         {
-            ResourceLogger.logErr(string.Format("ÕÒ²»µ½×ÊÔ´ÀàĞÍ : {0}µÄÒÑ¼ÓÔØABĞÅÏ¢!", loadtype));
+            ResourceLogger.logErr(string.Format("æ‰¾ä¸åˆ°èµ„æºç±»å‹ : {0}çš„å·²åŠ è½½ABä¿¡æ¯!", loadtype));
             return null;
         }
     }
 
-    #region µ÷ÊÔ¿ª·¢¹¤¾ß
+    #region è°ƒè¯•å¼€å‘å·¥å…·
     /// <summary>
-    /// »ñÈ¡Õı³£ÒÑ¼ÓÔØ²»¿ÉÓÃµÄABÊıÁ¿(²»°üº¬³£×¤AB)
+    /// è·å–æ­£å¸¸å·²åŠ è½½ä¸å¯ç”¨çš„ABæ•°é‡(ä¸åŒ…å«å¸¸é©»AB)
     /// </summary>
     public int getNormalUnsedABNumber()
     {
         var unsednumber = 0;
-        // ¼ì²é»ØÊÕ²»ÔÙÊ¹ÓÃµÄAB
+        // æ£€æŸ¥å›æ”¶ä¸å†ä½¿ç”¨çš„AB
         foreach (var loadedab in mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad])
         {
             if (loadedab.Value.IsUnsed)
@@ -268,12 +295,12 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// »ñÈ¡Ô¤¼ÓÔØÒÑ¼ÓÔØ²»¿ÉÓÃµÄABÊıÁ¿(²»°üº¬³£×¤AB)
+    /// è·å–é¢„åŠ è½½å·²åŠ è½½ä¸å¯ç”¨çš„ABæ•°é‡(ä¸åŒ…å«å¸¸é©»AB)
     /// </summary>
     public int getPreloadUnsedABNumber()
     {
         var unsednumber = 0;
-        // ¼ì²é»ØÊÕ²»ÔÙÊ¹ÓÃµÄAB
+        // æ£€æŸ¥å›æ”¶ä¸å†ä½¿ç”¨çš„AB
         foreach (var loadedab in mAllLoadedResourceInfoMap[ResourceLoadType.Preload])
         {
             if (loadedab.Value.IsUnsed)
@@ -285,7 +312,7 @@ public abstract class AbstractResourceModule {
     }
 
     /// <summary>
-    /// ´òÓ¡µ±Ç°×ÊÔ´ËùÓĞÊ¹ÓÃÕßĞÅÏ¢ÒÔ¼°Ë÷Òı¼ÆÊı(¿ª·¢ÓÃ)
+    /// æ‰“å°å½“å‰èµ„æºæ‰€æœ‰ä½¿ç”¨è€…ä¿¡æ¯ä»¥åŠç´¢å¼•è®¡æ•°(å¼€å‘ç”¨)
     /// </summary>
     public void printAllLoadedResourceOwnersAndRefCount()
     {

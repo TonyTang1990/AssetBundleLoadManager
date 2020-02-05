@@ -163,9 +163,8 @@ public abstract class AbstractResourceInfo {
         var ownerindex = mReferenceOwnerList.FindIndex((ow) => ow.Target.Equals(owner));
         if (ownerindex != -1)
         {
-            ResourceLogger.log(string.Format("资源:{0}找到指定绑定对象:{1},解除绑定并减少资源索引计数!", AssetBundleName, owner));
+            ResourceLogger.log(string.Format("资源:{0}找到指定绑定对象:{1},解除绑定!", AssetBundleName, owner));
             mReferenceOwnerList.RemoveAt(ownerindex);
-            release();
             return true;
         }
         else

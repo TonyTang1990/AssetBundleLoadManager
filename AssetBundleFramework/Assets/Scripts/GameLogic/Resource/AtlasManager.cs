@@ -5,6 +5,7 @@
  */
 
 using System;
+using TUI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,6 +54,39 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
         {
             var sprite = abi.getAsset<Sprite>(img, spritename);
             img.sprite = sprite;
+        },
+        loadtype,
+        loadmethod);
+    }
+
+    /// <summary>
+    /// 设置Image指定图片
+    /// </summary>
+    /// <param name="timg">Image组件</param>
+    /// <param name="atlasname">图集名</param>
+    /// <param name="spritename">图片名</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="loadmethod">资源加载方式</param>
+    /// <returns></returns>
+    public void setImageSprite(TImage timg, string atlasname, string spritename, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    {
+        DIYLog.Assert(timg == null, "setImageSprite不允许传空TImage!");
+        ResourceModuleManager.Singleton.requstResource(atlasname,
+        (abi) =>
+        {
+            // 清除老的资源引用
+            if (timg.ABI != null)
+            {
+                timg.ABI.releaseOwner(timg);
+            }
+            if (abi != null)
+            {
+                var sprite = abi.getAsset<Sprite>(timg, spritename);
+                timg.sprite = sprite;
+            }
+            timg.ABI = abi;
+            timg.AtlasName = atlasname;
+            timg.SpriteName = spritename;
         },
         loadtype,
         loadmethod);
