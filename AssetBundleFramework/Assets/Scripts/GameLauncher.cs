@@ -45,6 +45,11 @@ public class GameLauncher : MonoBehaviour {
     public Text TxtNativeOutput;
 
     /// <summary>
+    /// 测试背景访问资源
+    /// </summary>
+    public TImage TImgBG;
+
+    /// <summary>
     /// 窗口实例对象
     /// </summary>
     private GameObject mMainWindow;
@@ -90,6 +95,8 @@ public class GameLauncher : MonoBehaviour {
 
         DontDestroyOnLoad(UIRoot);
 
+        initSingletons();
+
         addMonoComponents();
 
         nativeInitilization();
@@ -111,6 +118,16 @@ public class GameLauncher : MonoBehaviour {
     private void OnDestroy()
     {
         Application.logMessageReceived -= VisibleLogUtility.getInstance().HandleLog;
+    }
+
+    /// <summary>
+    /// 初始化单例
+    /// </summary>
+    private void initSingletons()
+    {
+        // 因为SingletonTemplate采用的是惰性初始化(即第一次调用的时候初始化)
+        // 会造成单例构造函数无法一开始被触发的问题
+        AtlasManager.Singleton.startUp();
     }
 
     /// <summary>
@@ -235,6 +252,35 @@ public class GameLauncher : MonoBehaviour {
         var timage = mMainWindow.transform.Find("timgBG").GetComponent<TImage>();
         AtlasManager.Singleton.setImageSprite(timage, param1, param2);
     }
+
+    /// <summary>
+    /// 加载TImage Sprite Atlas
+    /// </summary>
+    public void onLoadTImageSpriteAtlas()
+    {
+        DIYLog.Log("onLoadTImageSpriteAtlas()");
+        var param1 = InputParam1.text;
+        DIYLog.Log("Param1 = " + param1);
+        var param2 = InputParam2.text;
+        DIYLog.Log("Param2 = " + param2);
+        var timage = mMainWindow.transform.Find("timgBG").GetComponent<TImage>();
+        AtlasManager.Singleton.setImageSpriteAtlas(timage, param1, param2);
+    }
+
+
+    /// <summary>
+    /// 加载背景TImage Sprite Atlas
+    /// </summary>
+    public void onLoadTImageBGSpriteAtlas()
+    {
+        DIYLog.Log("onLoadTImageBGSpriteAtlas()");
+        var param1 = InputParam1.text;
+        DIYLog.Log("Param1 = " + param1);
+        var param2 = InputParam2.text;
+        DIYLog.Log("Param2 = " + param2);
+        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
+    }
+
 
     /// <summary>
     /// 播放背景音乐
@@ -896,6 +942,26 @@ public class GameLauncher : MonoBehaviour {
         {
             DIYLog.Log("热更开关未打开，不允许热更！");
             DIYLog.Log("可以进游戏!");
+        }
+    }
+
+    /// <summary>
+    /// 强制卸载指定AB
+    /// </summary>
+    public void forceUnloadSpecificAB()
+    {
+        DIYLog.Log("forceUnloadSpecificAB()");
+        if(ResourceModuleManager.Singleton.CurrentResourceModule.ResLoadMode == ResourceLoadMode.AssetBundle)
+        {
+            var param1 = InputParam1.text;
+            DIYLog.Log("Param1 = " + param1);
+            var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
+            assetbundleresourcemodule.forceUnloadSpecificResource(param1);
+
+        }
+        else
+        {
+            DIYLog.Log("未处于AB状态，无法卸载指定AB!");
         }
     }
 }

@@ -26,6 +26,7 @@ public class AssetOperationWindow : BaseEditorWindow
     public enum EAssetOperationType
     {
         Invalide = 1,                               // 无效类型
+        FastSetAssetABName,                         // 快速设置选中Asset指定AB名字
         AssetDependencyBrowser,                     // Asset依赖文件查看类型
         AssetBuildInResourceRefAnalyze,             // Asset内置资源引用统计类型
         AssetBuildInResourceRefExtraction,          // Asset内置资源引用提取类型
@@ -61,6 +62,18 @@ public class AssetOperationWindow : BaseEditorWindow
             mAssetOperationType = EAssetOperationType.AssetDependencyBrowser;
             refreshAssetDepBrowserSelections();
         }
+        GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
+        GUILayout.BeginVertical();
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("AB名字:", GUILayout.Width(50.0f));
+        fastSetABName = GUILayout.TextField(fastSetABName, GUILayout.MaxWidth(150.0f));
+        if (GUILayout.Button("设置选中Asset AB名字", GUILayout.MaxWidth(150.0f)))
+        {
+            mAssetOperationType = EAssetOperationType.FastSetAssetABName;
+            doSetAssetABName();
+        }
+        GUILayout.Label("AB名字为空表示以Asset自身名字小写为AB名", GUILayout.Width(300.0f));
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
         GUILayout.Space(10);
@@ -107,6 +120,9 @@ public class AssetOperationWindow : BaseEditorWindow
         GUILayout.EndHorizontal();
         switch (mAssetOperationType)
         {
+            case EAssetOperationType.FastSetAssetABName:
+                displayFastSetABNameResult();
+                break;
             case EAssetOperationType.AssetDependencyBrowser:
                 displayAssetDependencyBrowserResult();
                 break;
@@ -124,6 +140,38 @@ public class AssetOperationWindow : BaseEditorWindow
                 break;
         }
     }
+
+    #region 快速设置Asset AB名字
+    /// <summary>
+    /// 快速设置的AB名字
+    /// </summary>
+    private string fastSetABName = string.Empty;
+
+    /// <summary>
+    /// 设置选中Asset AB名字
+    /// </summary>
+    private void doSetAssetABName()
+    {
+        for (int i = 0, length = Selection.objects.Length; i < length; i++)
+        {
+            var obj = Selection.objects[i];
+            EditorUtility.DisplayProgressBar("设置选中Asset AB名字", $"当前处理Asset:{obj.name}!", (i + 1) / length);
+            AssetBundleNameSetting.AutoSetAssetBundleName(obj, fastSetABName);
+        }
+        EditorUtility.ClearProgressBar();
+        AssetDatabase.SaveAssets();
+    }
+
+    /// <summary>
+    /// 显示快速设置Asset AB名字结果
+    /// </summary>
+    private void displayFastSetABNameResult()
+    {
+        GUILayout.BeginVertical();
+        GUILayout.Label($"快速设置AB名字为:{fastSetABName}!", GUILayout.Width(200.0f));
+        GUILayout.EndVertical();
+    }
+    #endregion
 
     #region Asset依赖文件查看
     /// <summary>
@@ -165,7 +213,6 @@ public class AssetOperationWindow : BaseEditorWindow
     private void showAssetDpUI(string assetpath, List<string> dpassetpathlist)
     {
         GUILayout.BeginVertical();
-        uiScrollPos = GUILayout.BeginScrollView(uiScrollPos, GUILayout.MaxWidth(2000.0f), GUILayout.MaxHeight(800.0f));
         GUILayout.Label("主Asset路径:");
         GUILayout.Label(assetpath);
         GUILayout.Label("依赖Asset路径:");
@@ -183,7 +230,6 @@ public class AssetOperationWindow : BaseEditorWindow
                 }
             }
         }
-        GUILayout.EndScrollView();
         GUILayout.EndVertical();
     }
 

@@ -7,6 +7,7 @@
 using System;
 using TUI;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 /// <summary>
@@ -18,6 +19,31 @@ using UnityEngine.UI;
 /// </summary>
 public class AtlasManager : SingletonTemplate<AtlasManager>
 {
+    public AtlasManager()
+    {
+        DIYLog.Log("添加SpriteAtals图集延时绑定回调!");
+        SpriteAtlasManager.atlasRequested += onAtlasRequested;
+    }
+
+    /// <summary>
+    /// 响应SpriteAtlas图集加载回调
+    /// </summary>
+    /// <param name="atlasname"></param>
+    /// <param name="callback"></param>
+    private void onAtlasRequested(string atlasname, Action<SpriteAtlas> callback)
+    {
+        DIYLog.Log($"加载SpriteAtlas:{atlasname}");
+        // Later Bind -- 依赖使用SpriteAtlas的加载都会触发这里
+        ResourceModuleManager.Singleton.requstResource(
+        atlasname,
+        (abi) =>
+        {
+            DIYLog.Log($"Later Bind加载SpriteAtlas:{atlasname}");
+            var sa = abi.loadAsset<SpriteAtlas>(atlasname);
+            callback(sa);
+        });
+    }
+
     /// <summary>
     /// 加载指定图集
     /// </summary>
@@ -83,6 +109,43 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
             {
                 var sprite = abi.getAsset<Sprite>(timg, spritename);
                 timg.sprite = sprite;
+            }
+            timg.ABI = abi;
+            timg.AtlasName = atlasname;
+            timg.SpriteName = spritename;
+        },
+        loadtype,
+        loadmethod);
+    }
+
+    /// <summary>
+    /// 设置Image指定图片(从Sprite Atlas里)
+    /// </summary>
+    /// <param name="timg">Image组件</param>
+    /// <param name="atlasname">图集名</param>
+    /// <param name="spritename">图片名</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="loadmethod">资源加载方式</param>
+    /// <returns></returns>
+    public void setImageSpriteAtlas(TImage timg, string atlasname, string spritename, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    {
+        DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
+        ResourceModuleManager.Singleton.requstResource(atlasname,
+        (abi) =>
+        {
+            DIYLog.Log("加载SpriteAtlas AB完成!");
+            // 清除老的资源引用
+            if (timg.ABI != null)
+            {
+                timg.ABI.releaseOwner(timg);
+            }
+            if (abi != null)
+            {
+                DIYLog.Log("加载SpriteAtlas之前!");
+                var spriteatlas = abi.getAsset<SpriteAtlas>(timg, atlasname);
+                DIYLog.Log("加载SpriteAtlas之后!");
+                timg.sprite = spriteatlas.GetSprite(spritename);
+                DIYLog.Log("SpriteAtlas.GetSprite()之后!");
             }
             timg.ABI = abi;
             timg.AtlasName = atlasname;

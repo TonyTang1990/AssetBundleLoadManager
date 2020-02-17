@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2943462087
+CRC: 3932272108
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b779559e247385f28b06c326d80b8afd
+    Hash: 21f6c4cf49be5d4969b2d5c338e3d881
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 30cfb1b490401925646edac496ebdb97
+    Hash: 7bf1cca8489964fb063769860fb7f232
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -41,3 +41,4 @@ Assets:
 - Assets/Res/windows/MainWindow.prefab
 Dependencies:
 - G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/mouseandkeyboardstudy
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/playerpreview

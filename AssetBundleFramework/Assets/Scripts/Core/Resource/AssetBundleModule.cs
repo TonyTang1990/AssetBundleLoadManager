@@ -291,6 +291,14 @@ public class AssetBundleModule : AbstractResourceModule
         var loader = AssetBundleLoaderFactory.create();
         loader.AssetBundleName = resname;
         loader.DepABNames = depabnames;
+        if(depabnames != null)
+        {
+            DIYLog.Log($"{resname}资源依赖的AB资源如下:");
+            foreach (var depabname in depabnames)
+            {
+                DIYLog.Log($"{depabname}");
+            }
+        }
         return loader;
     }    
     

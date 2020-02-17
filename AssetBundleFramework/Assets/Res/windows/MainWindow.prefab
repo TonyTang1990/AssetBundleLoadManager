@@ -359,7 +359,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 350f7b799fef05d4286bbaf16433ca8a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fa083a5d42ffc554ca02163ea18a200d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -368,8 +368,8 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  AtlasName: MouseAndKeyboardStudy
-  SpriteName: mouseandkeyboardstudy
+  AtlasName: SDAichiPreview
+  SpriteName: SDAichiPreview
 --- !u!1 &1554162762065698
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,10 +2,9 @@ fileFormatVersion: 2
 guid: 677789be31bae4f4ab134d7830071b4c
 TextureImporter:
   fileIDToRecycleName:
-    21300000: TutorialCellSpriteSheet
-    21300002: LightModelShader
-    21300004: SimpleShaderBG
-    21300006: TextureShader
+    21300000: LightModelShader
+    21300002: SimpleShaderBG
+    21300004: TextureShader
   externalObjects: {}
   serializedVersion: 9
   mipmaps:

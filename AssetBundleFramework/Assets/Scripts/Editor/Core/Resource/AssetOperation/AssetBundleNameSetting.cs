@@ -29,7 +29,8 @@ public class AssetBundleNameSetting
     /// 自动设置指定对象AssetBundle名
     /// </summary>
     /// <param name="obj"></param>
-    private static void AutoSetAssetBundleName(Object obj)
+    /// <param name="abname">指定AB名字，为空表示使用Asset自身名字小写作为AB名字</param>
+    public static void AutoSetAssetBundleName(Object obj, string abname = "")
     {
         if(obj != null)
         {
@@ -37,8 +38,9 @@ public class AssetBundleNameSetting
             var assetimporter = AssetImporter.GetAtPath(assetpath);
             if (assetimporter != null)
             {
-                assetimporter.assetBundleName = obj.name.ToLower();
-                DIYLog.Log(string.Format("设置资源:{0}的AB名字为:{1}", assetpath, obj.name.ToLower()));
+                var newabname = string.IsNullOrEmpty(abname) ? obj.name.ToLower() : abname;
+                assetimporter.assetBundleName = newabname;
+                DIYLog.Log(string.Format("设置资源:{0}的AB名字为:{1}", assetpath, newabname));
             }
         }
     }

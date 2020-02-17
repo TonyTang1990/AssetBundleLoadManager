@@ -24,4 +24,12 @@ public class SingletonTemplate<T> where T : class, new()
     {
 
     }
+
+    /// <summary>
+    /// 提供一个方法触发第一次构造函数调用
+    /// </summary>
+    public void startUp()
+    {
+
+    }
 }

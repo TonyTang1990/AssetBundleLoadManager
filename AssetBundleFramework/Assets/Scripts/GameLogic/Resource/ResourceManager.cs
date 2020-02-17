@@ -20,17 +20,6 @@ using UnityEngine;
 public class ResourceManager : SingletonTemplate<ResourceManager>
 {
     /// <summary>
-    /// 模块名
-    /// </summary>
-    public string ModuleName
-    {
-        get
-        {
-            return this.GetType().ToString();
-        }
-    }
-
-    /// <summary>
     /// Shader变体搜集文件名
     /// </summary>
     private const string ShaderVariantsAssetName = "DIYShaderVariantsCollection";

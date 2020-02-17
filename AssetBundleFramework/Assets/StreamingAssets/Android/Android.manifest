@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3882042780
+CRC: 2054525881
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -57,48 +57,52 @@ AssetBundleManifest:
       Name: zombunnyanimations
       Dependencies: {}
     Info_16:
-      Name: backgroundmusic
+      Name: playerpreview
       Dependencies: {}
     Info_17:
-      Name: sfx1
+      Name: backgroundmusic
       Dependencies: {}
     Info_18:
+      Name: sfx1
+      Dependencies: {}
+    Info_19:
       Name: imgspritedefault
       Dependencies:
         Dependency_0: shaderlist
-    Info_19:
+    Info_20:
       Name: testscene3prefab
       Dependencies:
         Dependency_0: sharematerial
-    Info_20:
+    Info_21:
       Name: mainwindow
       Dependencies:
         Dependency_0: mouseandkeyboardstudy
-    Info_21:
+        Dependency_1: playerpreview
+    Info_22:
+      Name: testmd5comparison
+      Dependencies:
+        Dependency_0: sharematerial
+    Info_23:
       Name: pre_zombunny
       Dependencies:
         Dependency_0: shaderlist
         Dependency_1: zombunnyanimations
-    Info_22:
+    Info_24:
       Name: testscene2prefab2
       Dependencies:
         Dependency_0: sharematerial
-    Info_23:
+    Info_25:
       Name: pre_cube
       Dependencies:
         Dependency_0: sharematerial
-    Info_24:
+    Info_26:
       Name: sfxtemplate
       Dependencies: {}
-    Info_25:
-      Name: testscene2prefab
-      Dependencies:
-        Dependency_0: sharematerial
-    Info_26:
-      Name: testmd5comparison
-      Dependencies:
-        Dependency_0: sharematerial
     Info_27:
       Name: testmd5comparisonresourceupdate
+      Dependencies:
+        Dependency_0: sharematerial
+    Info_28:
+      Name: testscene2prefab
       Dependencies:
         Dependency_0: sharematerial
