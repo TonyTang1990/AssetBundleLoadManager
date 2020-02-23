@@ -192,7 +192,18 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                         }
                         else if (assetpathes.Length > 1)
                         {
-                            ResourceLogger.logErr(string.Format("资源名 : {0}里存在同名Asset : {1}资源！请先纠正Asset取名！", AssetBundleName, assetname));
+                            ResourceLogger.logWar(string.Format("资源名 : {0}里存在同名Asset : {1}资源！建议纠正Asset取名！", AssetBundleName, assetname));
+                            // 有同名的情况下遍历选取第一个符合类型条件的资源
+                            foreach (var assetpath in assetpathes)
+                            {
+                                T asset = AssetDatabase.LoadAssetAtPath<T>(assetpath);
+                                if (asset != null)
+                                {
+                                    mLoadedAssetMap.Add(assetname, asset);
+                                    return asset;
+                                }
+                            }
+                            ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), AssetBundleName, assetname));
                             return null;
                         }
                         else
