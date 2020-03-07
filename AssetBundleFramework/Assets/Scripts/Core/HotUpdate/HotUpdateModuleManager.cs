@@ -451,7 +451,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         Debug.Log(string.Format("版本强更资源地址 : {0}", url));
         if (requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
         {
-            Debug.Log(string.Format("版本强更资源下载成功!版本强更资源信息 : {0}", downloadhandler.text));
+            Debug.Log("版本强更资源下载成功!版本强更资源信息");
             try
             {
                 Debug.Log("安装包下载完成!");
