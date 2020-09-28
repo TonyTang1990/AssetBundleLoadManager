@@ -253,7 +253,7 @@ public class AssetBundleModule : AbstractResourceModule
                 abloader.LoadSelfABCompleteNotifier = onABLoadCompleteNotifier;
                 if (loadmethod == ResourceLoadMethod.Sync)
                 {
-                    ResourceLogger.log(string.Format("请求同步加载一个正在异步加载的资源 : {0}", abloader.AssetBundleName));
+                    ResourceLogger.log(string.Format("请求同步加载一个异步加载状态:{0}的资源 : {1}", abloader.LoadState.ToString(), abloader.AssetBundleName));
                     //重置AB加载状态，走同步加载模式
                     abloader.LoadState = ResourceLoadState.None;
                     abloader.startLoad();

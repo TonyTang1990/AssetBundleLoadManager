@@ -241,7 +241,6 @@ public class AssetBundleLoader : FactoryObj
     /// </summary>
     private void loadSelfAssetBundle()
     {
-        ResourceLogger.log(string.Format("加载AB:{0}", AssetBundleName));
         if (LoadMethod == ResourceLoadMethod.Sync)
         {
             LoadState = ResourceLoadState.Loading;
@@ -268,6 +267,7 @@ public class AssetBundleLoader : FactoryObj
         //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
         if (System.IO.File.Exists(abpath))
         {
+            Debug.Log(string.Format("开始同步加载AB:{0}", AssetBundleName));
             ab = AssetBundle.LoadFromFile(abpath);
         }
         else

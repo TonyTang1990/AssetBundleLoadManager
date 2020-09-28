@@ -488,6 +488,16 @@ public class GameLauncher : MonoBehaviour {
         }
 
         // 测试大批量异步加载资源后立刻同步加载其中一个该源
+        mRMM.requstResource(
+        "pre_zombunny",
+        (abi) =>
+        {
+            mActorInstance = abi.instantiateAsset("pre_Zombunny");
+            Debug.Log($"异步加载pre_zombunny完成!");
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
+
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
         mRMM.requstResource(
         "tutorialcellspritesheet",
@@ -528,27 +538,7 @@ public class GameLauncher : MonoBehaviour {
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Async);
-
-        mRMM.requstResource(
-        "pre_zombunny",
-        (abi) =>
-        {
-            mActorInstance = abi.instantiateAsset("pre_Zombunny");
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-        //测试异步加载后立刻同步加载
-        mRMM.requstResource(
-        "pre_zombunny",
-        (abi) =>
-        {
-            mActorInstance2 = abi.instantiateAsset("pre_Zombunny");
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Sync);
-        DIYLog.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
-
+        
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
         Material mat = null;
         mRMM.requstResource(
@@ -582,6 +572,23 @@ public class GameLauncher : MonoBehaviour {
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Async);
+
+        CoroutineManager.Singleton.startCoroutine(DoAsyncLoadResource());
+    }
+
+    private IEnumerator DoAsyncLoadResource()
+    {
+        yield return new WaitForEndOfFrame();
+        //测试异步加载后同步加载同一资源
+        mRMM.requstResource(
+        "pre_zombunny",
+        (abi) =>
+        {
+            mActorInstance2 = abi.instantiateAsset("pre_Zombunny");
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Sync);
+        DIYLog.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
     }
 
     /// <summary>

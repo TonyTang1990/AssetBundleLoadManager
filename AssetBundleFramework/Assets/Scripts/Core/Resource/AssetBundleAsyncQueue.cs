@@ -93,7 +93,7 @@ public class AssetBundleAsyncQueue {
                 //LoadState == ResourceLoadState.None表明同步加载该资源已经完成，无需再异步返回
                 if (CurrentLoadingAssetBundleLoader.LoadState == ResourceLoadState.None)
                 {
-                    //ResourceLogger.logWar("有资源还未开始异步加载就被同步加载打断!");
+                    ResourceLogger.logWar("有资源还未开始异步加载就被同步加载打断!");
                 }
                 else
                 {
@@ -106,6 +106,7 @@ public class AssetBundleAsyncQueue {
                     //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFileAsync()直接报错
                     if (System.IO.File.Exists(abpath))
                     {
+                        Debug.Log(string.Format("开始异步加载AB : {0}！", CurrentLoadingAssetBundleLoader.AssetBundleName));
                         abrequest = AssetBundle.LoadFromFileAsync(abpath);
                     }
                     else
@@ -116,6 +117,7 @@ public class AssetBundleAsyncQueue {
                     abrequest = AssetBundle.LoadFromFileAsync(abpath);
 #endif
                     yield return abrequest;
+                    Debug.Log(string.Format("等待异步加载AB : {0}！", abname));
                     //如果异步加载AB时，同步请求来了，打断异步后续逻辑
                     //LoadState == ResourceLoadState.None表明同步加载该资源已经完成，无需再异步返回
                     if (CurrentLoadingAssetBundleLoader.LoadState == ResourceLoadState.None)
