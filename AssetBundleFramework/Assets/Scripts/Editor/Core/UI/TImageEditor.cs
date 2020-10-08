@@ -165,8 +165,8 @@ namespace TUI
                 else
                 {
                     //为了资源管理，设置相关图集信息
-                    m_AltasName.stringValue = "";
-                    m_SpriteName.stringValue = "";
+                    m_AltasName.stringValue = string.Empty;
+                    m_SpriteName.stringValue = string.Empty;
                 }
                 Debug.Log($"更新TImage:{name}的图集名:{m_AltasName}和图片名:{m_SpriteName}");
                 //源代码基础上注释的一行，找不到方法DisableSpriteOptimizations

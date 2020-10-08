@@ -93,7 +93,9 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\LightMap\LightMapDetailWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\ScriptAutomation\ScriptKeywordProcesser.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\SpriteDrawUtility.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\UI\TButtonEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TImageEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\UI\TRawImageEditor.cs" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

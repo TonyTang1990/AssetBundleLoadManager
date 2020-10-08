@@ -89,7 +89,9 @@
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonMonoBehaviourTemplate.cs" />
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonTemplate.cs" />
     <Compile Include="Assets\Scripts\Core\Timer\Timer.cs" />
+    <Compile Include="Assets\Scripts\Core\UI\TButton.cs" />
     <Compile Include="Assets\Scripts\Core\UI\TImage.cs" />
+    <Compile Include="Assets\Scripts\Core\UI\TRawImage.cs" />
     <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfig.cs" />
     <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfigModuleManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_author_InfoBuffer.cs" />

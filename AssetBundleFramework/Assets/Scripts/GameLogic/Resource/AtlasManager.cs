@@ -101,7 +101,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
         (abi) =>
         {
             // 清除老的资源引用
-            if (timg.ABI != null)
+            if (timg.ABI != null && !string.IsNullOrEmpty(timg.AtlasName))
             {
                 timg.ABI.releaseOwner(timg);
             }
@@ -135,7 +135,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
         {
             DIYLog.Log("加载SpriteAtlas AB完成!");
             // 清除老的资源引用
-            if (timg.ABI != null)
+            if (timg.ABI != null && !string.IsNullOrEmpty(timg.AtlasName))
             {
                 timg.ABI.releaseOwner(timg);
             }
@@ -150,6 +150,37 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
             timg.ABI = abi;
             timg.AtlasName = atlasname;
             timg.SpriteName = spritename;
+        },
+        loadtype,
+        loadmethod);
+    }
+
+    /// <summary>
+    /// 设置Image指定图片
+    /// </summary>
+    /// <param name="trawimg">Image组件</param>
+    /// <param name="texturename">纹理名</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="loadmethod">资源加载方式</param>
+    /// <returns></returns>
+    public void setRawImage(TRawImage trawimg, string texturename, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    {
+        DIYLog.Assert(trawimg == null, "setRawImage不允许传空TRawImage!");
+        ResourceModuleManager.Singleton.requstResource(texturename,
+        (abi) =>
+        {
+            // 清除老的资源引用
+            if (trawimg.ABI != null && !string.IsNullOrEmpty(trawimg.TextureName))
+            {
+                trawimg.ABI.releaseOwner(trawimg);
+            }
+            if (abi != null)
+            {
+                var texture = abi.getAsset<Texture>(trawimg, texturename);
+                trawimg.texture = texture;
+            }
+            trawimg.ABI = abi;
+            trawimg.TextureName = texturename;
         },
         loadtype,
         loadmethod);

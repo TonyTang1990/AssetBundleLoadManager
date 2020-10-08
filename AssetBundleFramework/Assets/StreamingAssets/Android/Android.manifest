@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2054525881
+CRC: 1807822204
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -106,3 +106,12 @@ AssetBundleManifest:
       Name: testscene2prefab
       Dependencies:
         Dependency_0: sharematerial
+    Info_29:
+      Name: chaichaifengjing
+      Dependencies: {}
+    Info_30:
+      Name: chaichainingwang
+      Dependencies: {}
+    Info_31:
+      Name: chaichaishenqingzhushi
+      Dependencies: {}

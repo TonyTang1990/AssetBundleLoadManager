@@ -45,9 +45,19 @@ public class GameLauncher : MonoBehaviour {
     public Text TxtNativeOutput;
 
     /// <summary>
-    /// 测试背景访问资源
+    /// 测试背景TImage访问资源
     /// </summary>
     public TImage TImgBG;
+
+    /// <summary>
+    /// 测试背景TRawImage访问资源
+    /// </summary>
+    public TRawImage TRawImgBG;
+
+    /// <summary>
+    /// 测试TButton
+    /// </summary>
+    public TButton DIYButton;
 
     /// <summary>
     /// 窗口实例对象
@@ -106,7 +116,15 @@ public class GameLauncher : MonoBehaviour {
 
     private void Start ()
     {
+        addListeners();
+    }
 
+    /// <summary>
+    /// 添加监听
+    /// </summary>
+    private void addListeners()
+    {
+        DIYButton.LongTimePressedClick = onTButtonListenerClick;
     }
 
     private void Update()
@@ -249,8 +267,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        var timage = mMainWindow.transform.Find("timgBG").GetComponent<TImage>();
-        AtlasManager.Singleton.setImageSprite(timage, param1, param2);
+        AtlasManager.Singleton.setImageSprite(TImgBG, param1, param2);
     }
 
     /// <summary>
@@ -263,8 +280,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        var timage = mMainWindow.transform.Find("timgBG").GetComponent<TImage>();
-        AtlasManager.Singleton.setImageSpriteAtlas(timage, param1, param2);
+        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
     }
 
 
@@ -280,7 +296,19 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param2 = " + param2);
         AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
     }
-
+    
+    /// <summary>
+    /// 加载TRawImage
+    /// </summary>
+    public void onLoadTRawImageSprite()
+    {
+        DIYLog.Log("onLoadTRawImageSprite()");
+        var param1 = InputParam1.text;
+        DIYLog.Log("Param1 = " + param1);
+        TRawImgBG.printTRawImageInfo();
+        AtlasManager.Singleton.setRawImage(TRawImgBG, param1);
+        TRawImgBG.printTRawImageInfo();
+    }
 
     /// <summary>
     /// 播放背景音乐
@@ -970,5 +998,21 @@ public class GameLauncher : MonoBehaviour {
         {
             DIYLog.Log("未处于AB状态，无法卸载指定AB!");
         }
+    }
+    
+    /// <summary>
+    /// 自定义按钮点击挂载指定响应
+    /// </summary>
+    public void onTButtonClick()
+    {
+        DIYLog.Log("onTButtonClick()");
+    }
+
+    /// <summary>
+    /// 自定义按钮点击监听响应
+    /// </summary>
+    public void onTButtonListenerClick()
+    {
+        DIYLog.Log("onTButtonListenerClick()");
     }
 }

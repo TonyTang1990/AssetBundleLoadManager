@@ -116,8 +116,8 @@ public class AssetBundleAsyncQueue {
 #else
                     abrequest = AssetBundle.LoadFromFileAsync(abpath);
 #endif
-                    yield return abrequest;
                     Debug.Log(string.Format("等待异步加载AB : {0}！", abname));
+                    yield return abrequest;
                     //如果异步加载AB时，同步请求来了，打断异步后续逻辑
                     //LoadState == ResourceLoadState.None表明同步加载该资源已经完成，无需再异步返回
                     if (CurrentLoadingAssetBundleLoader.LoadState == ResourceLoadState.None)
