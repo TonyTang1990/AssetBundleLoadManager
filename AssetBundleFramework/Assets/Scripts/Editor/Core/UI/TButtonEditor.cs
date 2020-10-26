@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             TButtonEditor.cs
  * Author:                  TONYTANG
  * Create Date:             2020//10/08
@@ -23,17 +23,17 @@ namespace TUI
         SerializedProperty m_OnClickProperty;
 
         /// <summary>
-        /// ³¤°´µã»÷¿ª¹Ø
+        /// é•¿æŒ‰ç‚¹å‡»å¼€å…³
         /// </summary>
         SerializedProperty m_EnableLongtimePress;
 
         /// <summary>
-        /// ³¤°´µã»÷ÊÇ·ñÖ»ÓĞÒ»´Î(·´Ö®ÎŞÊı´Î)
+        /// é•¿æŒ‰ç‚¹å‡»æ˜¯å¦åªæœ‰ä¸€æ¬¡(åä¹‹æ— æ•°æ¬¡)
         /// </summary>
         SerializedProperty m_IsLongtimePressOnlyOnce;
 
         /// <summary>
-        /// ³¤°´µã»÷Ê±³¤¶¨Òå
+        /// é•¿æŒ‰ç‚¹å‡»æ—¶é•¿å®šä¹‰
         /// </summary>
         SerializedProperty m_LongtimePressTimeInterval;
 

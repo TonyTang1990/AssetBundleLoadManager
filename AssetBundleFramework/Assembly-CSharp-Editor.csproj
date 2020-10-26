@@ -79,6 +79,9 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ShaderPackageAsset.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\TexturePackageAsset.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\AssetBundleOperationWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollectRule.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollectSetting.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundletWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetBundleNameSetting.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOperationWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeHelper.cs" />

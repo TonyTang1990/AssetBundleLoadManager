@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             TRawImageEditor.cs
  * Author:                  TONYTANG
  * Create Date:             2020//10/08
@@ -15,7 +15,7 @@ namespace TUI
 {
     /// <summary>
     /// TRawImageEditor.cs
-    /// TRawImage½M¼şµÄ×Ô¶¨Òå±à¼­Æ÷½çÃæ
+    /// TRawImageçµ„ä»¶çš„è‡ªå®šä¹‰ç¼–è¾‘å™¨ç•Œé¢
     /// </summary>
     [CustomEditor(typeof(TRawImage), true)]
     [CanEditMultipleObjects]
@@ -30,7 +30,7 @@ namespace TUI
         GUIContent m_UVRectContent;
 
         /// <summary>
-        /// Í¼Æ¬Ãû×ÖÊôĞÔ
+        /// å›¾ç‰‡åå­—å±æ€§
         /// </summary>
         SerializedProperty m_TextureName;
 
@@ -59,9 +59,9 @@ namespace TUI
             EditorGUILayout.PropertyField(m_Texture);
             if (EditorGUI.EndChangeCheck())
             {
-                // ¼ì²âÉèÖÃ±ä»¯£¬¼ÇÂ¼×îĞÂµÄÎÆÀíÒıÓÃÃû
+                // æ£€æµ‹è®¾ç½®å˜åŒ–ï¼Œè®°å½•æœ€æ–°çš„çº¹ç†å¼•ç”¨å
                 m_TextureName.stringValue = m_Texture.objectReferenceValue != null ? m_Texture.objectReferenceValue.name : string.Empty;
-                Debug.Log($"TRawImage:{this.target.name}Í¼Æ¬ÃûÉèÖÃÓĞ±ä»¯£¬×îĞÂÍ¼Æ¬Ãû:{m_TextureName.stringValue}");
+                Debug.Log($"TRawImage:{this.target.name}å›¾ç‰‡åè®¾ç½®æœ‰å˜åŒ–ï¼Œæœ€æ–°å›¾ç‰‡å:{m_TextureName.stringValue}");
             }
 
             AppearanceControlsGUI();
