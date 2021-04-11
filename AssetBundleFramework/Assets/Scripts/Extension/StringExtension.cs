@@ -23,4 +23,24 @@ public static class StringExtension {
     {
         return string.IsNullOrEmpty(s);
     }
+
+    /// <summary>
+    /// ÒÆ³ýÊ×¸ö×Ö·û
+    /// </summary>
+    public static string RemoveFirstChar(this System.String str)
+    {
+        if (string.IsNullOrEmpty(str))
+            return str;
+        return str.Substring(1);
+    }
+
+    /// <summary>
+    /// ÒÆ³ýÄ©Î²×Ö·û
+    /// </summary>
+    public static string RemoveLastChar(this System.String str)
+    {
+        if (string.IsNullOrEmpty(str))
+            return str;
+        return str.Substring(0, str.Length - 1);
+    }
 }

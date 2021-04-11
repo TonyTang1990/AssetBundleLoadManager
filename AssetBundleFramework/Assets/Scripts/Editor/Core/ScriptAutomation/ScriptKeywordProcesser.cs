@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Principal;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -48,7 +49,7 @@ public class ScriptKeywordProcesser : UnityEditor.AssetModificationProcessor
 
         var filecontent = File.ReadAllText(assetpath);
         filecontent = replaceKeywords(filecontent);
-        File.WriteAllText(assetpath, filecontent);
+        File.WriteAllText(assetpath, filecontent, Encoding.UTF8);
         AssetDatabase.Refresh();
     }
 
