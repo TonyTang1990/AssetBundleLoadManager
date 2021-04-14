@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: f58baf1ef16ac1046b3d7dfba2f74d44
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 100100000
   userData: 
-  assetBundleName: testscene2prefab
+  assetBundleName: 
   assetBundleVariant: 

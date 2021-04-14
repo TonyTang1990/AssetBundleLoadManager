@@ -162,7 +162,7 @@ public class AssetDatabaseLoader : FactoryObj
     {
         //通过资源名(即AB名)定位相关资源
         var assetspath = AssetDatabase.GetAssetPathsFromAssetBundle(AssetBundlePath);
-        if(assetspath.Length == 0)
+        if(string.IsNullOrEmpty(AssetBundlePath))
         {
             ResourceLogger.logErr(string.Format("找不到资源名 : {0}的资源!", AssetBundlePath));
         }

@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 4ced0812fe25ae24ba932966d5c304de
-timeCreated: 1521604248
-licenseType: Pro
 AudioImporter:
   externalObjects: {}
   serializedVersion: 6
@@ -20,5 +18,5 @@ AudioImporter:
   ambisonic: 0
   3D: 1
   userData: 
-  assetBundleName: sfx1
+  assetBundleName: 
   assetBundleVariant: 

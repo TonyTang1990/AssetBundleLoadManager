@@ -1,10 +1,7 @@
 fileFormatVersion: 2
 guid: a0261d3250039a143bc47539107df994
-timeCreated: 1538404139
-licenseType: Free
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 100100000
   userData: 
-  assetBundleName: testscene2prefab2
+  assetBundleName: 
   assetBundleVariant: 
