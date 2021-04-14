@@ -19,7 +19,7 @@ namespace MotionFramework.Editor
 		public static string GetDefaultOutputRootPath()
 		{
 			string projectPath = EditorUtilities.GetProjectPath();
-			return $"{projectPath}/BuildBundles";
+			return $"{projectPath}/Assets/StreamingAssets";
 		}
 
 		/// <summary>

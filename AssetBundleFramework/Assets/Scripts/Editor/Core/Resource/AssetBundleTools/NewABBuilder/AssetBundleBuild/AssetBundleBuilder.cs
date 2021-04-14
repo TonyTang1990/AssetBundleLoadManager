@@ -79,9 +79,9 @@ namespace MotionFramework.Editor
 				throw new Exception("[BuildPatch] 输出目录不能为空");
 
 			// 检测补丁包是否已经存在
-			string packageDirectory = GetPackageDirectory();
-			if (Directory.Exists(packageDirectory))
-				throw new Exception($"[BuildPatch] 补丁包已经存在：{packageDirectory}");
+			//string packageDirectory = GetPackageDirectory();
+			//if (Directory.Exists(packageDirectory))
+			//	throw new Exception($"[BuildPatch] 补丁包已经存在：{packageDirectory}");
 
 			// 如果是强制重建
 			if (IsForceRebuild)
@@ -185,7 +185,8 @@ namespace MotionFramework.Editor
 		}
 		private string GetOutputDirectory()
 		{
-			return $"{_outputRoot}/{BuildTarget}/{AssetBundleBuildConstData.UnityManifestFileName}";
+            return $"{_outputRoot}/{BuildTarget}";
+            //{AssetBundleBuildConstData.UnityManifestFileName}";
 		}
 		private string GetPackageDirectory()
 		{

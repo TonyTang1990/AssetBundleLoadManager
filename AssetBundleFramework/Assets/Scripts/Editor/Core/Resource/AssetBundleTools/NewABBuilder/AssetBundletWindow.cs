@@ -57,10 +57,10 @@ public class AssetBundletWindow : EditorWindow
     /// </summary>
     private string LastOpenFolderPath = "Assets/";
 
-    [MenuItem("Tools/New AssetBundle/AB资源搜集窗口", priority = 200)]
+    [MenuItem("Tools/New AssetBundle/AB资源搜集打包窗口", priority = 200)]
     static void ShowWindow()
     {
-        var assetbundlewindow = EditorWindow.GetWindow<AssetBundletWindow>(false, "AB资源搜集");
+        var assetbundlewindow = EditorWindow.GetWindow<AssetBundletWindow>(false, "AB资源搜集打包");
         assetbundlewindow.Show();
     }
 

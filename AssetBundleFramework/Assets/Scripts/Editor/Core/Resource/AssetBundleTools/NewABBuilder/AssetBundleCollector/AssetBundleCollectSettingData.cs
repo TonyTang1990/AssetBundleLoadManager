@@ -92,6 +92,14 @@ namespace MotionFramework.Editor
 			types.Add(typeof(LabelNone));
 			types.Add(typeof(LabelByFilePath));
 			types.Add(typeof(LabelByFolderPath));
+            for (int i = 0; i < types.Count; i++)
+            {
+                Type type = types[i];
+                if (_cacheTypes.ContainsKey(type.Name) == false)
+                {
+                    _cacheTypes.Add(type.Name, type);
+                }
+            }
 
             CheckCollectorSettingValidation();
         }

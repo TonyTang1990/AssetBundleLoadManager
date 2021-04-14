@@ -57,9 +57,9 @@ public static class AssetBundlePath {
     /// <summary>
     /// 获取AB加载全路径(含热更加载逻辑判定)
     /// </summary>
-    /// <param name="abname"></param>
+    /// <param name="abpath"></param>
     /// <returns></returns>
-    public static string GetABLoadFullPath(string abname)
+    public static string GetABLoadFullPath(string abpath)
     {
         //TODO:
         //热更逻辑路径判定
@@ -71,16 +71,16 @@ public static class AssetBundlePath {
         //{ 
         //    返回包内资源路径
         //}
-        var outterabfullpath = ABHotUpdatePath + abname;
-        if (IsABExitInOutterPath(abname))
+        var outterabfullpath = ABHotUpdatePath + abpath;
+        if (IsABExitInOutterPath(abpath))
         {
-            ResourceLogger.log(string.Format("使用包外资源 : {0}", abname));
+            ResourceLogger.log(string.Format("使用包外资源 : {0}", abpath));
             return outterabfullpath;
         }
         else
         {
-            ResourceLogger.log(string.Format("使用包内资源 : {0}", abname));
-            return ABBuildinPath + abname;
+            ResourceLogger.log(string.Format("使用包内资源 : {0}", abpath));
+            return ABBuildinPath + abpath;
         }
     }
 

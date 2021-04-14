@@ -209,41 +209,41 @@ public class AssetBundleModule : AbstractResourceModule
     /// <summary>
     /// 真正的请求资源
     /// </summary>
-    /// <param name="resname">资源AB名</param>
+    /// <param name="respath">资源AB路径</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
-    protected override void realRequestResource(string resname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    protected override void realRequestResource(string respath, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
         // 如果资源已经加载完成，直接返回
-        if (mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].ContainsKey(resname))
+        if (mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].ContainsKey(respath))
         {
-            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad][resname]);
+            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad][respath]);
             if (loadtype > ResourceLoadType.NormalLoad)
             {
-                updateLoadedResourceInfoLoadType(resname, ResourceLoadType.NormalLoad, loadtype);
+                updateLoadedResourceInfoLoadType(respath, ResourceLoadType.NormalLoad, loadtype);
             }
         }
-        else if (mAllLoadedResourceInfoMap[ResourceLoadType.Preload].ContainsKey(resname))
+        else if (mAllLoadedResourceInfoMap[ResourceLoadType.Preload].ContainsKey(respath))
         {
-            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.Preload][resname]);
+            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.Preload][respath]);
             if (loadtype > ResourceLoadType.Preload)
             {
-                updateLoadedResourceInfoLoadType(resname, ResourceLoadType.Preload, loadtype);
+                updateLoadedResourceInfoLoadType(respath, ResourceLoadType.Preload, loadtype);
             }
         }
-        else if (mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad].ContainsKey(resname))
+        else if (mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad].ContainsKey(respath))
         {
-            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad][resname]);
+            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad][respath]);
         }
         else
         {
             // 确保同一个资源加载的Loader是同一个
             // 保证同一个资源加载完成时上层所有加载该资源的回调正确
             AssetBundleLoader abloader = null;
-            if (mABRequestTaskMap.ContainsKey(resname))
+            if (mABRequestTaskMap.ContainsKey(respath))
             {
-                abloader = mABRequestTaskMap[resname];
+                abloader = mABRequestTaskMap[respath];
                 // 之前有请求resname资源，但还未完成
                 // 比如先异步请求resname，在异步完成前来了一个同步请求resname
                 // 修改加载方式并添加回调，调用同步加载方式，异步加载会在同步加载完成时一起回调
@@ -253,7 +253,7 @@ public class AssetBundleModule : AbstractResourceModule
                 abloader.LoadSelfABCompleteNotifier = onABLoadCompleteNotifier;
                 if (loadmethod == ResourceLoadMethod.Sync)
                 {
-                    ResourceLogger.log(string.Format("请求同步加载一个异步加载状态:{0}的资源 : {1}", abloader.LoadState.ToString(), abloader.AssetBundleName));
+                    ResourceLogger.log(string.Format("请求同步加载一个异步加载状态:{0}的资源 : {1}", abloader.LoadState.ToString(), abloader.AssetBundlePath));
                     //重置AB加载状态，走同步加载模式
                     abloader.LoadState = ResourceLoadState.None;
                     abloader.startLoad();
@@ -261,12 +261,12 @@ public class AssetBundleModule : AbstractResourceModule
             }
             else
             {
-                abloader = createABLoader(resname);
+                abloader = createABLoader(respath);
                 abloader.LoadMethod = loadmethod;
                 abloader.LoadType = loadtype;
                 abloader.LoadABCompleteCallBack = completehandler;
                 abloader.LoadSelfABCompleteNotifier = onABLoadCompleteNotifier;
-                mABRequestTaskMap.Add(resname, abloader);
+                mABRequestTaskMap.Add(respath, abloader);
                 abloader.startLoad();
             }
         }
@@ -289,7 +289,7 @@ public class AssetBundleModule : AbstractResourceModule
     {
         var depabnames = getAssetBundleDpInfo(resname);
         var loader = AssetBundleLoaderFactory.create();
-        loader.AssetBundleName = resname;
+        loader.AssetBundlePath = resname;
         loader.DepABNames = depabnames;
         if(depabnames != null)
         {
@@ -311,7 +311,7 @@ public class AssetBundleModule : AbstractResourceModule
     public static AssetBundleInfo createAssetBundleInfo(string abname, AssetBundle ab)
     {
         var abi = AssetBundleInfoFactory.create();
-        abi.AssetBundleName = abname;
+        abi.AssetBundlePath = abname;
         abi.Bundle = ab;
         abi.onResourceUnloadedCallback = onABUnloaded;
         return abi;
@@ -327,7 +327,7 @@ public class AssetBundleModule : AbstractResourceModule
         //AB卸载数据统计
         if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
         {
-            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(abi.AssetBundleName);
+            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(abi.AssetBundlePath);
         }
         // AB卸载时ABAssetBundleInfo回收时回收重用
         AssetBundleInfoFactory.recycle(abi);
@@ -364,7 +364,7 @@ public class AssetBundleModule : AbstractResourceModule
                     {
                         if (i < mMaxUnloadABNumberPerFrame)
                         {
-                            mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedABInfoList[i].AssetBundleName);
+                            mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedABInfoList[i].AssetBundlePath);
                             mUnsedABInfoList[i].dispose();
                         }
                         else
@@ -383,7 +383,7 @@ public class AssetBundleModule : AbstractResourceModule
     /// <param name="abl">AB加载任务信息</param>
     private void onABLoadCompleteNotifier(AssetBundleLoader abl)
     {
-        var abname = abl.AssetBundleName;
+        var abname = abl.AssetBundlePath;
         if (mABRequestTaskMap.ContainsKey(abname))
         {
             mABRequestTaskMap.Remove(abname);
@@ -440,7 +440,7 @@ public class AssetBundleModule : AbstractResourceModule
                 // 有可卸载的AB
                 for (int i = 0; i < mUnsedABInfoList.Count; i++)
                 {
-                    mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedABInfoList[i].AssetBundleName);
+                    mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedABInfoList[i].AssetBundlePath);
                     mUnsedABInfoList[i].dispose();
                 }
                 mUnsedABInfoList.Clear();
@@ -477,7 +477,7 @@ public class AssetBundleModule : AbstractResourceModule
 
         if (arinfo != null)
         {
-            mAllLoadedResourceInfoMap[resourceloadtype].Remove(arinfo.AssetBundleName);
+            mAllLoadedResourceInfoMap[resourceloadtype].Remove(arinfo.AssetBundlePath);
             arinfo.dispose();
             ResourceLogger.log(string.Format("AB资源 : {0}已强制卸载！", abname));
         }

@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7ce5c43323d93c48a41c9418676201f, type: 3}
   m_Name: AssetBundleCollectSetting
   m_EditorClassIdentifier: 
-  AssetBundleCollectors: []
+  AssetBundleCollectors:
+  - CollectFolderPath: Assets/Res/atlas
+    CollectRule: 0
+    BuildRule: 1

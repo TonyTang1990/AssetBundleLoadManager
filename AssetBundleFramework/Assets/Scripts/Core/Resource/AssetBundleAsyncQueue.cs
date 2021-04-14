@@ -73,7 +73,7 @@ public class AssetBundleAsyncQueue {
         }
         else
         {
-            ResourceLogger.logErr(string.Format("严重错误，同步加载资源 : {0} 不应该添加到异步加载队列里！", abl.AssetBundleName));
+            ResourceLogger.logErr(string.Format("严重错误，同步加载资源 : {0} 不应该添加到异步加载队列里！", abl.AssetBundlePath));
         }
     }
 
@@ -98,7 +98,7 @@ public class AssetBundleAsyncQueue {
                 else
                 {
                     CurrentLoadingAssetBundleLoader.LoadState = ResourceLoadState.Loading;
-                    var abname = CurrentLoadingAssetBundleLoader.AssetBundleName;
+                    var abname = CurrentLoadingAssetBundleLoader.AssetBundlePath;
                     var abpath = AssetBundlePath.GetABLoadFullPath(abname);
                     AssetBundleCreateRequest abrequest = null;
 #if UNITY_EDITOR
@@ -106,12 +106,12 @@ public class AssetBundleAsyncQueue {
                     //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFileAsync()直接报错
                     if (System.IO.File.Exists(abpath))
                     {
-                        Debug.Log(string.Format("开始异步加载AB : {0}！", CurrentLoadingAssetBundleLoader.AssetBundleName));
+                        Debug.Log(string.Format("开始异步加载AB : {0}！", CurrentLoadingAssetBundleLoader.AssetBundlePath));
                         abrequest = AssetBundle.LoadFromFileAsync(abpath);
                     }
                     else
                     {
-                        Debug.LogError(string.Format("AB : {0}文件不存在！", CurrentLoadingAssetBundleLoader.AssetBundleName));
+                        Debug.LogError(string.Format("AB : {0}文件不存在！", CurrentLoadingAssetBundleLoader.AssetBundlePath));
                     }
 #else
                     abrequest = AssetBundle.LoadFromFileAsync(abpath);
@@ -129,7 +129,7 @@ public class AssetBundleAsyncQueue {
                         var assetbundle = abrequest.assetBundle;
                         if (assetbundle == null)
                         {
-                            ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", CurrentLoadingAssetBundleLoader.AssetBundleName));
+                            ResourceLogger.logErr(string.Format("Failed to load AssetBundle : {0}!", CurrentLoadingAssetBundleLoader.AssetBundlePath));
                         }
                         CurrentLoadingAssetBundleLoader.onSelfABLoadComplete(assetbundle);
                     }

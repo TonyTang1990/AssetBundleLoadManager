@@ -468,7 +468,7 @@ public class ResourceDebugWindow : BaseEditorWindow
         EditorGUILayout.BeginVertical();
         EditorGUILayout.Space();
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abl.AssetBundleName), GUILayout.Width(150.0f));
+        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abl.AssetBundlePath), GUILayout.Width(150.0f));
         EditorGUILayout.LabelField(string.Format("加载状态 : {0}", abl.LoadState), GUILayout.Width(150.0f));
         EditorGUILayout.LabelField(string.Format("加载方式 : {0}", abl.LoadMethod), GUILayout.Width(150.0f));
         EditorGUILayout.LabelField(string.Format("加载类型 : {0}", abl.LoadType), GUILayout.Width(150.0f));        
@@ -480,7 +480,7 @@ public class ResourceDebugWindow : BaseEditorWindow
         for (int i = 0, length = abl.DepAssetBundleInfoList.Count; i < length; i++)
         {
             var depabi = abl.DepAssetBundleInfoList[i];
-            EditorGUILayout.LabelField(i + ". " + depabi.AssetBundleName, GUILayout.Width(150.0f));
+            EditorGUILayout.LabelField(i + ". " + depabi.AssetBundlePath, GUILayout.Width(150.0f));
         }
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.LabelField("未加载完成的依赖资源列表 :", GUILayout.Width(200.0f));
@@ -501,7 +501,7 @@ public class ResourceDebugWindow : BaseEditorWindow
     private void displayOneAssetBundleInfoUI(AbstractResourceInfo abi)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abi.AssetBundleName), GUILayout.Width(250.0f));
+        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abi.AssetBundlePath), GUILayout.Width(250.0f));
         EditorGUILayout.LabelField(string.Format("是否就绪 : {0}", abi.mIsReady), GUILayout.Width(100.0f));
         EditorGUILayout.LabelField(string.Format("引用计数 : {0}", abi.RefCount), GUILayout.Width(100.0f));
         EditorGUILayout.LabelField(string.Format("最近使用时间 : {0}", abi.LastUsedTime), GUILayout.Width(150.0f));

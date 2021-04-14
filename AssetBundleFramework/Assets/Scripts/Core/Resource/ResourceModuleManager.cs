@@ -128,13 +128,13 @@ public class ResourceModuleManager : SingletonTemplate<ResourceModuleManager>
     /// 请求资源
     /// 资源加载统一入口
     /// </summary>
-    /// <param name="resname">资源AB名</param>
+    /// <param name="respath">资源AB路径</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
-    public void requstResource(string resname, AbstractResourceModule.LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void requstResource(string respath, AbstractResourceModule.LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        CurrentResourceModule.requstResource(resname, completehandler, loadtype, loadmethod);
+        CurrentResourceModule.requstResource(respath, completehandler, loadtype, loadmethod);
     }
 
     /// <summary>

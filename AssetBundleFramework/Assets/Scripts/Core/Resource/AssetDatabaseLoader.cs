@@ -25,9 +25,9 @@ public class AssetDatabaseLoader : FactoryObj
     public delegate void LoadResourceCompleteNotifier(AssetDatabaseLoader adl);
 
     /// <summary>
-    /// 加载任务对应的资源名字
+    /// 加载任务对应的资源路径
     /// </summary>
-    public string AssetBundleName
+    public string AssetBundlePath
     {
         get;
         set;
@@ -88,7 +88,7 @@ public class AssetDatabaseLoader : FactoryObj
 
     public AssetDatabaseLoader()
     {
-        AssetBundleName = string.Empty;
+        AssetBundlePath = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
@@ -107,29 +107,29 @@ public class AssetDatabaseLoader : FactoryObj
         }
         else if (LoadState == ResourceLoadState.Waiting)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}处于等待加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundleName));
+            ResourceLogger.logErr(string.Format("AB : {0}处于等待加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
         }
         else if (LoadState == ResourceLoadState.Loading)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}处于加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundleName));
+            ResourceLogger.logErr(string.Format("AB : {0}处于加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
         }
         else if (LoadState == ResourceLoadState.SelfComplete)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundleName));
+            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
         }
         else if (LoadState == ResourceLoadState.AllComplete)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身以及依赖AB加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundleName));
+            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身以及依赖AB加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
         }
         else if (LoadState == ResourceLoadState.Error)
         {
-            ResourceLogger.logErr(string.Format("AB:{0}处于Error状态，无法加载!", AssetBundleName));
+            ResourceLogger.logErr(string.Format("AB:{0}处于Error状态，无法加载!", AssetBundlePath));
         }
     }
 
     public void recycle()
     {
-        AssetBundleName = string.Empty;
+        AssetBundlePath = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
@@ -141,7 +141,7 @@ public class AssetDatabaseLoader : FactoryObj
     /// </summary>
     private void loadAsset()
     {
-        ResourceLogger.log(string.Format("加载资源:{0}", AssetBundleName));
+        ResourceLogger.log(string.Format("加载资源:{0}", AssetBundlePath));
         //暂时默认都当同步处理
         if (LoadMethod == ResourceLoadMethod.Sync)
         {
@@ -161,14 +161,14 @@ public class AssetDatabaseLoader : FactoryObj
     private void loadAssetSync()
     {
         //通过资源名(即AB名)定位相关资源
-        var assetspath = AssetDatabase.GetAssetPathsFromAssetBundle(AssetBundleName);
+        var assetspath = AssetDatabase.GetAssetPathsFromAssetBundle(AssetBundlePath);
         if(assetspath.Length == 0)
         {
-            ResourceLogger.logErr(string.Format("找不到资源名 : {0}的资源!", AssetBundleName));
+            ResourceLogger.logErr(string.Format("找不到资源名 : {0}的资源!", AssetBundlePath));
         }
         else
         {
-            mResourceInfo = createAssetDatabaseInfo(AssetBundleName, assetspath);
+            mResourceInfo = createAssetDatabaseInfo(AssetBundlePath, assetspath);
             mResourceInfo.updateLastUsedTime();
         }
 
@@ -196,7 +196,7 @@ public class AssetDatabaseLoader : FactoryObj
     private AssetDatabaseInfo createAssetDatabaseInfo(string resname, string[] assetspath)
     {
         var adi = AssetDatabaseInfoFactory.create();
-        adi.AssetBundleName = resname;
+        adi.AssetBundlePath = resname;
         adi.AssetsPath = assetspath;
         adi.onResourceUnloadedCallback = onResourceUnloaded;
         return adi;
@@ -212,7 +212,7 @@ public class AssetDatabaseLoader : FactoryObj
         //资源卸载数据统计
         if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
         {
-            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(adi.AssetBundleName);
+            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(adi.AssetBundlePath);
         }
         // 资源卸载时资源AssetDatabaseInfo回收时回收重用
         AssetDatabaseInfoFactory.recycle(adi);

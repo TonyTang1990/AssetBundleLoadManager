@@ -130,30 +130,30 @@ public abstract class AbstractResourceModule {
     /// 请求资源
     /// 上层资源加载统一入口
     /// </summary>
-    /// <param name="resname">资源AB名</param>
+    /// <param name="respath">资源AB路径</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
-    public void requstResource(string resname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void requstResource(string respath, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
         // 在白名单里的资源一律以预加载形式加载，
         // 避免因为上层逻辑错误加载后被频繁加载卸载
-        if (mResourceWhileListMap.ContainsKey(resname))
+        if (mResourceWhileListMap.ContainsKey(respath))
         {
             loadtype = ResourceLoadType.Preload;
         }
 
-        realRequestResource(resname, completehandler, loadtype, loadmethod);
+        realRequestResource(respath, completehandler, loadtype, loadmethod);
     }
 
     /// <summary>
     /// 真正的请求资源(由不同的资源模块去实现)
     /// </summary>
-    /// <param name="resname">资源AB名</param>
+    /// <param name="respath">资源AB路径</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
-    protected abstract void realRequestResource(string resname, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync);
+    protected abstract void realRequestResource(string respath, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync);
 
     /// <summary>
     /// 更新入口

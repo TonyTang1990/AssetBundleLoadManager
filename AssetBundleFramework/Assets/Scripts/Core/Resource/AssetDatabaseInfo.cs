@@ -30,7 +30,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
 
     public AssetDatabaseInfo()
     {
-        AssetBundleName = string.Empty;
+        AssetBundlePath = string.Empty;
         LastUsedTime = 0.0f;
         mIsReady = false;
         mIsAllAssetLoaded = false;
@@ -60,7 +60,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         }
         else
         {
-            ResourceLogger.logErr(string.Format("AB:{0}里加载GameObject Asset:{1}失败!", AssetBundleName, assetname));
+            ResourceLogger.logErr(string.Format("AB:{0}里加载GameObject Asset:{1}失败!", AssetBundlePath, assetname));
             return null;
         }
     }
@@ -86,13 +86,13 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
             }
             else
             {
-                ResourceLogger.logWar(string.Format("AB : {0}里不存在Asset : {1}，获取Asset失败!", AssetBundleName, assetname));
+                ResourceLogger.logWar(string.Format("AB : {0}里不存在Asset : {1}，获取Asset失败!", AssetBundlePath, assetname));
                 return null;
             }
         }
         else
         {
-            ResourceLogger.logErr(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", AssetBundleName, assetname));
+            ResourceLogger.logErr(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", AssetBundlePath, assetname));
             return null;
         }
     }
@@ -131,7 +131,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                             }
                             else
                             {
-                                ResourceLogger.logErr(string.Format("资源名 : {0}里有同名资源！Asset资源 : {1}添加失败!请优化取名，避免重名Asset！", AssetBundleName, assetname));
+                                ResourceLogger.logErr(string.Format("资源名 : {0}里有同名资源！Asset资源 : {1}添加失败!请优化取名，避免重名Asset！", AssetBundlePath, assetname));
                             }
                         }
                     }
@@ -153,7 +153,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
             {
                 if (AssetsPath == null)
                 {
-                    ResourceLogger.logErr(string.Format("资源名 : {0}资源丢失，不存在！", AssetBundleName));
+                    ResourceLogger.logErr(string.Format("资源名 : {0}资源丢失，不存在！", AssetBundlePath));
                     return null;
                 }
                 else
@@ -169,13 +169,13 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                         }
                         else
                         {
-                            ResourceLogger.logErr(string.Format("找不到资源名 : {0}里 Asset资源 : {1}!", AssetBundleName, assetname));
+                            ResourceLogger.logErr(string.Format("找不到资源名 : {0}里 Asset资源 : {1}!", AssetBundlePath, assetname));
                             return null;
                         }
                     }
                     else
                     {
-                        var assetpathes = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(AssetBundleName, assetname);
+                        var assetpathes = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(AssetBundlePath, assetname);
                         if (assetpathes.Length == 1)
                         {
                             T asset = AssetDatabase.LoadAssetAtPath<T>(assetpathes[0]);
@@ -186,13 +186,13 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                             }
                             else
                             {
-                                ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), AssetBundleName, assetname));
+                                ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), AssetBundlePath, assetname));
                                 return null;
                             }
                         }
                         else if (assetpathes.Length > 1)
                         {
-                            ResourceLogger.logWar(string.Format("资源名 : {0}里存在同名Asset : {1}资源！建议纠正Asset取名！", AssetBundleName, assetname));
+                            ResourceLogger.logWar(string.Format("资源名 : {0}里存在同名Asset : {1}资源！建议纠正Asset取名！", AssetBundlePath, assetname));
                             // 有同名的情况下遍历选取第一个符合类型条件的资源
                             foreach (var assetpath in assetpathes)
                             {
@@ -203,12 +203,12 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                                     return asset;
                                 }
                             }
-                            ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), AssetBundleName, assetname));
+                            ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), AssetBundlePath, assetname));
                             return null;
                         }
                         else
                         {
-                            ResourceLogger.logErr(string.Format("找不到资源名: {0}，Asset : {1}资源！", AssetBundleName, assetname));
+                            ResourceLogger.logErr(string.Format("找不到资源名: {0}，Asset : {1}资源！", AssetBundlePath, assetname));
                             return null;
                         }
                     }
@@ -217,7 +217,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         }
         else
         {
-            ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", AssetBundleName, assetname));
+            ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", AssetBundlePath, assetname));
             return null;
         }
     }
@@ -243,7 +243,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
     /// </summary>
     private void unloadResource()
     {
-        ResourceLogger.log(string.Format("卸载资源:{0}", AssetBundleName));
+        ResourceLogger.log(string.Format("卸载资源:{0}", AssetBundlePath));
         foreach(var loadedasset in mLoadedAssetMap)
         {
             var asset = loadedasset.Value;
@@ -260,7 +260,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                 //AssetDatabase模式不支持卸载资源，
                 //因为并非真实的模拟AssetBundle资源加载行为，只是单纯的把所需资源自身加载进来
                 //Resources.UnloadAsset(loadedasset.Value);
-                ResourceLogger.log(string.Format("假卸载资源:{0}的Asset : {1}", AssetBundleName, loadedasset.Value.name));
+                ResourceLogger.log(string.Format("假卸载资源:{0}的Asset : {1}", AssetBundlePath, loadedasset.Value.name));
             }
         }
         mLoadedAssetMap.Clear();
@@ -272,7 +272,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
     /// </summary>
     public void recycle()
     {
-        AssetBundleName = string.Empty;
+        AssetBundlePath = string.Empty;
         LastUsedTime = 0.0f;
         mIsReady = false;
         mIsAllAssetLoaded = false;
