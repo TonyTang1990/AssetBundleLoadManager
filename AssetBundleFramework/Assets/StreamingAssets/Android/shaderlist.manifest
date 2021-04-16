@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 184654913
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7ab198797a2d5f426cb0429d7de85916
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7f0bffc1563fad4b76a0da6fdabbfa72
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 200
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Standard
+  Unlit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-BumpSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Default.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Premultiply
+  Blend.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Standard.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-VertexLit.shader
+- Assets/Res/actors/zombunny/Shaders/Rim Lit Bumped Specular.shader
+- Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Diffuse.shader
+Dependencies: []

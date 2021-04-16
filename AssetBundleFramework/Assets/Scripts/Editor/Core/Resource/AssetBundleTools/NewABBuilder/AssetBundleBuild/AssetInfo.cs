@@ -14,7 +14,15 @@ namespace MotionFramework.Editor
 	{
 		public string AssetPath { private set; get; }
 		public bool IsCollectAsset { private set; get; }
+
+        /// <summary>
+        /// 是否是场景Asset
+        /// </summary>
 		public bool IsSceneAsset { private set; get; }
+
+        /// <summary>
+        /// 是否是视频Asset
+        /// </summary>
 		public bool IsVideoAsset { private set; get; }
 
 		/// <summary>
@@ -38,6 +46,6 @@ namespace MotionFramework.Editor
 			IsCollectAsset = AssetBundleCollectSettingData.IsCollectAsset(assetPath);
 			IsSceneAsset = AssetDatabase.GetMainAssetTypeAtPath(assetPath) == typeof(SceneAsset);
 			IsVideoAsset = AssetDatabase.GetMainAssetTypeAtPath(assetPath) == typeof(UnityEngine.Video.VideoClip);
-		}
+        }
 	}
 }

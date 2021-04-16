@@ -67,7 +67,7 @@ namespace MotionFramework.Editor
         private static void LoadSettingData()
 		{
 			// 加载配置文件
-			mSetting = AssetDatabase.LoadAssetAtPath<AssetBundleCollectSetting>(AssetBundleCollectSettingSaveFolderRelativePath);
+			mSetting = AssetDatabase.LoadAssetAtPath<AssetBundleCollectSetting>(AssetBundleCollectSettingFileRelativePath);
 			if (mSetting == null)
 			{
 				Debug.LogWarning($"Create new {nameof(AssetBundleCollectSetting)}.asset : {AssetBundleCollectSettingFileRelativePath}");
@@ -91,7 +91,8 @@ namespace MotionFramework.Editor
             List<Type> types = new List<Type>();
 			types.Add(typeof(LabelNone));
 			types.Add(typeof(LabelByFilePath));
-			types.Add(typeof(LabelByFolderPath));
+            types.Add(typeof(LabelByFolderPath));
+            types.Add(typeof(LableByConstName));
             for (int i = 0; i < types.Count; i++)
             {
                 Type type = types[i];
@@ -317,7 +318,7 @@ namespace MotionFramework.Editor
 
 			// 根据规则设置获取标签名称
 			IAssetCollector collector = GetCollectorInstance(findWrapper.GetCollectorClassName());
-			return collector.GetAssetBundleLabel(assetpath);
+			return collector.GetAssetBundleLabel(assetpath, findWrapper);
 		}
 
         /// <summary>

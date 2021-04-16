@@ -17,12 +17,12 @@ public static class AssetBundleBuildConstData
     /// <summary>
     /// AssetBundle文件默认的后缀名
     /// </summary>
-    public const string AssetBundleDefaultVariant = "bundle";
+    public const string AssetBundleDefaultVariant = "";
 
     /// <summary>
     /// AssetBundle文件默认的后缀名
     /// </summary>
-    public const string AssetBundleDefaultVariantWithPoint = ".bundle";
+    public const string AssetBundleDefaultVariantWithPoint = "";
 
     /// <summary>
     /// 构建输出的Unity清单文件名称

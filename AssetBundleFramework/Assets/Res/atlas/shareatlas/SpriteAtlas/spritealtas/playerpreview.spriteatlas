@@ -1,0 +1,153 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: playerpreview
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: a01ff135560330342b49a7c248683f7a, type: 3}
+    totalSpriteSurfaceArea: 2200000
+    bindAsDefault: 1
+    storedHash:
+      serializedVersion: 2
+      Hash: 752aba31557506eb16e3ec7635e3ddc6
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c1803b40c84600d49b69fe72296b7d6c, type: 3}
+  - {fileID: 21300000, guid: 67af805093fc5ec489f0b51695e632f2, type: 3}
+  - {fileID: 21300000, guid: 90b1ed70895a1fd4c813379aaccfad05, type: 3}
+  - {fileID: 21300000, guid: e1e03890298d1b5458fd3daba598135e, type: 3}
+  - {fileID: 21300000, guid: 814d5ca0d7607ed40a74213699bcccf3, type: 3}
+  - {fileID: 21300000, guid: 9789323163a5cf8448667d735310cc0d, type: 3}
+  - {fileID: 21300000, guid: 787c2731caa9b6445b7119f089eadbee, type: 3}
+  - {fileID: 21300000, guid: c2729151f1b3e1f41b42d83b87ea50d0, type: 3}
+  - {fileID: 21300000, guid: c6af21914d342094c8761beaa19f7f15, type: 3}
+  - {fileID: 21300000, guid: 667b3591ef246064e9928af6a56c27c9, type: 3}
+  - {fileID: 21300000, guid: 47843462155fc4947ba1619d7188f2b5, type: 3}
+  - {fileID: 21300000, guid: 4564a39272438bd449a319d3aca78020, type: 3}
+  - {fileID: 21300000, guid: fe1dd5924428dca48a23113e0440fde9, type: 3}
+  - {fileID: 21300000, guid: 96dc20c2f1f9a47429ea0e79f6301cff, type: 3}
+  - {fileID: 21300000, guid: 6c0f04c29ef8a2f4393326f93e96ed49, type: 3}
+  - {fileID: 21300000, guid: eca7f1d26bea0014fb9295297b6c0054, type: 3}
+  - {fileID: 21300000, guid: 7d537c335c267cf4fb35cc7de17ae45d, type: 3}
+  - {fileID: 21300000, guid: ff0e41f3dffa45d439aec058790df672, type: 3}
+  - {fileID: 21300000, guid: c3995474d7917c94a9248ea8ff33fc95, type: 3}
+  - {fileID: 21300000, guid: 06988b84001a8cb4a8a0b9aaaa236b61, type: 3}
+  - {fileID: 21300000, guid: 7032c694d965a454184c56e51893fd8e, type: 3}
+  - {fileID: 21300000, guid: be42fba44d35ba945890fa6af795e8c7, type: 3}
+  - {fileID: 21300000, guid: 3d58c0b40d60df34a8edae36f54c202a, type: 3}
+  - {fileID: 21300000, guid: 1a9c88c412dad4e4fa458bd7dc0dc0fe, type: 3}
+  - {fileID: 21300000, guid: 2669bb6582a801e47abfe35f86ab95ab, type: 3}
+  - {fileID: 21300000, guid: a812c3c55e18fb64e9f0fec774637821, type: 3}
+  - {fileID: 21300000, guid: 2fd57be54c30fdd49adc21f7cacfbb9b, type: 3}
+  - {fileID: 21300000, guid: 145b40f50ff56864facffe01f43e114e, type: 3}
+  - {fileID: 21300000, guid: 5acdb2f5c0135614fb312d7ca281f1f4, type: 3}
+  - {fileID: 21300000, guid: 62bad2375fc971743a02e3b730947164, type: 3}
+  - {fileID: 21300000, guid: f74c5247e930ec947a1dff086bd9b0a3, type: 3}
+  - {fileID: 21300000, guid: 7cc47c570fa11534e830b04d64690010, type: 3}
+  - {fileID: 21300000, guid: 56808308024e50d47ab83f842c8e2171, type: 3}
+  - {fileID: 21300000, guid: cdd31078afb00124ebdd4a7a29d9ec6e, type: 3}
+  - {fileID: 21300000, guid: 2e8659f898e77c347b53531d8f092e55, type: 3}
+  - {fileID: 21300000, guid: 4d90eaf81d4c9bb498f3f1d71522ae88, type: 3}
+  - {fileID: 21300000, guid: 3d9dfe291d79682458958ea61b42660a, type: 3}
+  - {fileID: 21300000, guid: ac1c5ad95079b794cb74b3371be68f8a, type: 3}
+  - {fileID: 21300000, guid: ba94bcf9af0838d429ba6f466874818d, type: 3}
+  - {fileID: 21300000, guid: a12abb3aa6ef2c04fb3f0acc790ca3d5, type: 3}
+  - {fileID: 21300000, guid: 0a6b552b28e7c514899182461af9f4a8, type: 3}
+  - {fileID: 21300000, guid: 4d8c673b5594922419135a0cc55c9c49, type: 3}
+  - {fileID: 21300000, guid: 7a2e8ebb3c83cca4e88c59bd24a10db1, type: 3}
+  - {fileID: 21300000, guid: 608b596c77b3ecd4ba527f0a0bb02f1c, type: 3}
+  - {fileID: 21300000, guid: ed392c3d13801f243b976b922f2c4834, type: 3}
+  - {fileID: 21300000, guid: fa083a5d42ffc554ca02163ea18a200d, type: 3}
+  - {fileID: 21300000, guid: faafb9bdbbe042f4c9d7b1b40fbfd4fc, type: 3}
+  - {fileID: 21300000, guid: b02beafd2170ffa4795c246a97897010, type: 3}
+  - {fileID: 21300000, guid: 9ae2880e1366c4b428e2266fee4f6526, type: 3}
+  - {fileID: 21300000, guid: 2942d17ef033bb74090ab77a05a55318, type: 3}
+  - {fileID: 21300000, guid: ab3b759e590a2a74b92305fe97c7667c, type: 3}
+  - {fileID: 21300000, guid: d032ae9ebed06b141a464e511e5da537, type: 3}
+  - {fileID: 21300000, guid: 5aa2f1ee4a2d83d4d863c9b2ba8a2351, type: 3}
+  - {fileID: 21300000, guid: af72f6ee7fa0b424ebebf3e3957d605b, type: 3}
+  - {fileID: 21300000, guid: 9f5cdcbfb6716544a8aaa4569d04480e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - SDPreview
+  - SDFukuiPreview
+  - SDGunmaPreview
+  - SDSpainMadridPreview
+  - SDFukuokaPreview
+  - SDNaraPreview
+  - SDNagasakiPreview
+  - SDShizuokaPreview
+  - SDNewFukuokaPreview
+  - SDYamanashiPreview
+  - SDTokushimaPreview
+  - SDShimanePreview
+  - SDHokkaidoPreview
+  - SDSagaPreview
+  - SDOkinawaPreview
+  - SDOoitaPreview
+  - SDShigaPreview
+  - SDKochiPreview
+  - SDKagoshimaPreview
+  - SDWakayamaPreview
+  - SDSpaceCommandPreview
+  - SDOsakaPreview
+  - SDSaitamaPreview
+  - SDGifuPreview
+  - SDNewHokkaidoPreview
+  - SDIshikawaPreview
+  - SDKanagawaPreview
+  - SDBlackPreview
+  - SDTokyoPreview
+  - SDKumamotoPreview
+  - SDOkayamaPreview
+  - SDIwatePreview
+  - SDTochigiPreview
+  - SDEhimePreview
+  - SDKyotoPreview
+  - SDTottoriPreview
+  - SDFukushimaPreview
+  - SDIvarakiPreview
+  - SDMikanButoriPreview
+  - SDHiroshimaPreview
+  - SDMiePreview
+  - SDMiyagiPreview
+  - SDYamaguchiPreview
+  - SDHyogoPreview
+  - SDMiyazakiPreview
+  - SDAichiPreview
+  - SDKagawaPreview
+  - SDAomoriPreview
+  - SDNewOsakaPreview
+  - SDToyamaPreview
+  - SDNiigataPreview
+  - SDAkitaPreview
+  - SDChibaPreview
+  - SDYamagataPreview
+  - SDNaganoPreview
+  m_Tag: playerpreview
+  m_IsVariant: 0

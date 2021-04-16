@@ -32,6 +32,11 @@ public class Collector
     /// </summary>
     public EAssetBundleBuildRule BuildRule;
 
+    /// <summary>
+    /// 固定名字(仅当收集打包规则为LoadByConstName时有效)
+    /// </summary>
+    public string ConstName;
+
     public Collector()
     {
 
@@ -42,6 +47,7 @@ public class Collector
         CollectFolderPath = collectrelativefolderpath;
         CollectRule = collectrule;
         BuildRule = buildrule;
+        ConstName = string.Empty;
     }
 
     /// <summary>
@@ -50,13 +56,17 @@ public class Collector
     /// <returns></returns>
     public string GetCollectorClassName()
     {
-        if(BuildRule == EAssetBundleBuildRule.LoadByFilePath)
+        if (BuildRule == EAssetBundleBuildRule.LoadByFilePath)
         {
             return typeof(LabelByFilePath).Name;
         }
-        else if(BuildRule == EAssetBundleBuildRule.LoadByFolderPath)
+        else if (BuildRule == EAssetBundleBuildRule.LoadByFolderPath)
         {
             return typeof(LabelByFolderPath).Name;
+        }
+        else if (BuildRule == EAssetBundleBuildRule.LoadByConstName)
+        {
+            return typeof(LableByConstName).Name;
         }
         else
         {

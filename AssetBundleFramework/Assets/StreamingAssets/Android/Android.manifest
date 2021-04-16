@@ -1,10 +1,7 @@
 ManifestFileVersion: 0
-CRC: 3901249814
+CRC: 2175465078
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: assets/res/atlas/shareatlas/spriteatlas/playerpreview.bundle
-      Dependencies: {}
-    Info_1:
-      Name: assets/res/atlas/shareatlas/tutorialatlas.bundle
+      Name: shaderlist
       Dependencies: {}

@@ -170,9 +170,9 @@ public class AssetBundleLoader : FactoryObj
         mABInfo = null;
     }
 
-    public AssetBundleLoader(string abname, string[] depnames)
+    public AssetBundleLoader(string abpath, string[] depnames)
     {
-        AssetBundlePath = abname;
+        AssetBundlePath = abpath;
         DepABNames = depnames;
         LoadABCompleteCallBack = null;
         LoadSelfABCompleteNotifier = null;

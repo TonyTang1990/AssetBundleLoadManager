@@ -27,14 +27,14 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <summary>
     /// 加载所有Shader
     /// </summary>
-    /// <param name="resname">资源名</param>
+    /// <param name="respath">资源路径</param>
     /// <param name="callback">资源会动啊</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
-    public void loadAllShader(string resname, Action callback, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void loadAllShader(string respath, Action callback, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
         ResourceModuleManager.Singleton.requstResource(
-        resname,
+        respath,
         (abi) =>
         {
             var svc = abi.loadAsset<ShaderVariantCollection>(ShaderVariantsAssetName);
@@ -51,19 +51,19 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <summary>
     /// 获取一个UI实例资源对象
     /// </summary>
-    /// <param name="resname">资源名</param>
+    /// <param name="respath">资源路径</param>
     /// <param name="assetname">Asset名</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
     /// <returns></returns>
-    public void getUIInstance(string resname, string assetname = null, Action<GameObject> callback = null, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void getUIInstance(string respath, string assetname = null, Action<GameObject> callback = null, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
         if (string.IsNullOrEmpty(assetname))
         {
-            assetname = resname;
+            assetname = respath;
         }
-        ResourceModuleManager.Singleton.requstResource(resname,
+        ResourceModuleManager.Singleton.requstResource(respath,
         (abi) =>
         {
             var uiinstance = abi.instantiateAsset(assetname);

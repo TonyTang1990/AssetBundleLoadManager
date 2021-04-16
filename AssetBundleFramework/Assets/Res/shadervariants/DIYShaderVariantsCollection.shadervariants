@@ -20,6 +20,11 @@ ShaderVariantCollection:
         passType: 4
       - keywords: SHADOWS_DEPTH _ALPHABLEND_ON
         passType: 8
+  - first: {fileID: 4800000, guid: 41ad5ef6ea1a6e344aafe63b72df6d31, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
   - first: {fileID: 4800000, guid: 454baa29fe74dd443ba5deaf77b9385e, type: 3}
     second:
       variants:
@@ -30,18 +35,13 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 4800000, guid: 799a72a7e5f5bec4ca234fd03e089e65, type: 3}
-    second:
-      variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
-        passType: 4
-      - keywords: SHADOWS_DEPTH
-        passType: 8
   - first: {fileID: 4800000, guid: 7fd06687c3b6449449979c2e4d04c8e9, type: 3}
     second:
       variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN _EMISSION
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _EMISSION
         passType: 4
+      - keywords: DIRECTIONAL
+        passType: 5
       - keywords: SHADOWS_DEPTH
         passType: 8
   - first: {fileID: 4800000, guid: 80e46a0749a6daf44ad44a316009ddae, type: 3}
@@ -49,12 +49,17 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 4800000, guid: aa7328509854146409587a766f1ae94e, type: 3}
+  - first: {fileID: 4800000, guid: a2980b94f15f6b046bd55fedcd4c093a, type: 3}
     second:
       variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
-        passType: 4
+      - keywords: 
+        passType: 0
   - first: {fileID: 4800000, guid: b5e89177ebfc60542b6b21cffe43edcd, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: bc164b740c3248e4a9c8cdb8536ec377, type: 3}
     second:
       variants:
       - keywords: 
@@ -72,7 +77,7 @@ ShaderVariantCollection:
   - first: {fileID: 4800000, guid: ea0ffaac7aab41e4e97cb6244787fa38, type: 3}
     second:
       variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
         passType: 4
       - keywords: SHADOWS_DEPTH
         passType: 8

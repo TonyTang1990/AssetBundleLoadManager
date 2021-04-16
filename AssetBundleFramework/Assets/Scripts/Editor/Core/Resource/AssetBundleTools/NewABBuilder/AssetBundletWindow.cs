@@ -264,7 +264,7 @@ public class AssetBundletWindow : EditorWindow
     {
         GUILayout.BeginVertical();
         EditorGUILayout.LabelField("AB打包资源搜集:", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f));
-        for (int i = 0, length = AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i < length; i++)
+        for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
         {
             DisplayOneCollect(AssetBundleCollectSettingData.Setting.AssetBundleCollectors[i]);
         }
@@ -296,6 +296,14 @@ public class AssetBundletWindow : EditorWindow
         if (collector.CollectRule == EAssetBundleCollectRule.Ignore)
         {
             collector.BuildRule = EAssetBundleBuildRule.Ignore;
+        }
+        if(collector.BuildRule == EAssetBundleBuildRule.LoadByConstName)
+        {
+            collector.ConstName = EditorGUILayout.TextField(collector.ConstName, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
+        }
+        else
+        {
+            collector.ConstName = string.Empty;
         }
         if (GUILayout.Button("-", GUILayout.Width(30.0f), GUILayout.Height(20.0f)))
         {

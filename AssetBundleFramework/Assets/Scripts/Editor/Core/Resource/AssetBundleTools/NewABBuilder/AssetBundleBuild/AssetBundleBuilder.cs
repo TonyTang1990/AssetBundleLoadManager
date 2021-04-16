@@ -43,7 +43,6 @@ namespace MotionFramework.Editor
 		public bool IsDisableWriteTypeTree = false;
 		public bool IsIgnoreTypeTreeChanges = false;
 
-
 		/// <summary>
 		/// AssetBuilder
 		/// </summary>
@@ -119,13 +118,21 @@ namespace MotionFramework.Editor
 			Log($"构建列表里总共有{buildMap.Count}个资源需要构建");
 			for (int i = 0; i < buildMap.Count; i++)
 			{
+                // Shader单独打包
 				AssetInfo assetInfo = buildMap[i];
 				AssetBundleBuild buildInfo = new AssetBundleBuild();
-				buildInfo.assetBundleName = assetInfo.AssetBundleLabel;
-				buildInfo.assetBundleVariant = assetInfo.AssetBundleVariant;
-				buildInfo.assetNames = new string[] { assetInfo.AssetPath };
-				buildInfoList.Add(buildInfo);
-			}
+                buildInfo.assetBundleName = assetInfo.AssetBundleLabel;
+                buildInfo.assetBundleVariant = assetInfo.AssetBundleVariant;
+                if(buildInfo.assetBundleName != "shaderlist")
+                {
+                    buildInfo.assetNames = new string[] { assetInfo.AssetPath };
+                }
+                else
+                {
+                    buildInfo.assetNames = new string[] { Path.GetFileNameWithoutExtension(assetInfo.AssetPath) };
+                }
+                buildInfoList.Add(buildInfo);
+            }
 
 			// 开始构建
 			Log($"开始构建......");
@@ -216,6 +223,7 @@ namespace MotionFramework.Editor
 					continue;
 				if (ValidateAsset(mainAssetPath) == false)
 					continue;
+
 
 				List<AssetInfo> depends = GetDependencies(mainAssetPath);
 				for (int i = 0; i < depends.Count; i++)
@@ -438,8 +446,15 @@ namespace MotionFramework.Editor
 			for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
 			{
 				Collector wrapper = AssetBundleCollectSettingData.Setting.AssetBundleCollectors[i];
-				AppendData(content, $"Directory : {wrapper.CollectFolderPath} || CollectRule : {wrapper.CollectRule} || BuildRule : {wrapper.BuildRule}");
-			}
+                if(wrapper.BuildRule != EAssetBundleBuildRule.LoadByConstName)
+                {
+                    AppendData(content, $"Directory : {wrapper.CollectFolderPath} || CollectRule : {wrapper.CollectRule} || BuildRule : {wrapper.BuildRule}");
+                }
+                else
+                {
+                    AppendData(content, $"Directory : {wrapper.CollectFolderPath} || CollectRule : {wrapper.CollectRule} || BuildRule : {wrapper.BuildRule} || ConstName : {wrapper.ConstName}");
+                }
+            }
 
 			AppendData(content, "");
 			AppendData(content, $"--构建参数--");

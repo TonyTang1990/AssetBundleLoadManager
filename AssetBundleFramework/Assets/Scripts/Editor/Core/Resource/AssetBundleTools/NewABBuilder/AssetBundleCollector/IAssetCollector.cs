@@ -11,6 +11,8 @@ namespace MotionFramework.Editor
 		/// <summary>
 		/// 获取资源的打包标签
 		/// </summary>
-		string GetAssetBundleLabel(string assetPath);
+        /// <param name="assetPath"></param>
+        /// <param name="collector">搜集器(可为空)</param>
+		string GetAssetBundleLabel(string assetPath, Collector collector = null);
 	}
 }
