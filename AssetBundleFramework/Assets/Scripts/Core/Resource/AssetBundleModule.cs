@@ -6,6 +6,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -78,80 +79,79 @@ public class AssetBundleModule : AbstractResourceModule
     #endregion
 
     #region AB依赖信息部分
-
     /// <summary>
-    /// AB依赖信息映射map
-    /// Key为AB名字，Value为该AB依赖的AB信息
+    /// AssetBundle打包信息
     /// </summary>
-    public Dictionary<string, string[]> AssetBundleDpMap
+    public AssetBundleBuildInfoAsset AssetBundleBuildInfo
     {
         get
         {
-            return mAssetBundleDpMap;
+            return mAssetBundleBuildInfo;
         }
     }
-    private Dictionary<string, string[]> mAssetBundleDpMap;
-
+    private AssetBundleBuildInfoAsset mAssetBundleBuildInfo;
+    
     /// <summary>
-    /// 加载所有AB依赖信息
+    /// 加载AssetBundle打包信息
     /// </summary>
-    /// <returns></returns>
-    public void loadAllDpInfo()
+    private void loadAssetBundleBuildInfo()
     {
-        if (mAssetBundleDpMap.Count > 0)
+        // 确保之前加载的AB打包信息卸载彻底
+        if(mAssetBundleBuildInfo != null)
         {
-            //强制卸载一次老的，确保加载的是最新的依赖信息
-            forceUnloadSpecificResource(AssetBundlePath.DependencyFileName);
-            Debug.Log("重新加载依赖文件！");
+            Resources.UnloadAsset(mAssetBundleBuildInfo);
+            mAssetBundleBuildInfo = null;
         }
-        // 依赖AB加载完即可卸载，所以作为NormalLoad方式加载
-        requstResource(AssetBundlePath.DependencyFileName, onLoadAllDpInfoComplete, ResourceLoadType.NormalLoad, ResourceLoadMethod.Sync);
-    }
-
-    /// <summary>
-    /// 加载AB依赖文件信息完成回调
-    /// </summary>
-    /// <param name="ari"></param>
-    private void onLoadAllDpInfoComplete(AbstractResourceInfo ari)
-    {
-        mAssetBundleDpMap.Clear();
-        var abi = ari as AssetBundleInfo;
-        if (abi.Bundle == null)
+        // AssetBundle打包信息比较特殊，在未加载完成前拿不到AB名字映射
+        // 所以这里单独特殊加载,不走正常流程
+        var abpath = AssetBundlePath.GetABLoadFullPath(ResourceConstData.AssetBundleBuildInfoAssetName);
+        AssetBundle ab = null;
+        ab = AssetBundle.LoadFromFile(abpath);
+        if(ab != null)
         {
-            Debug.LogError("找不到ab依赖配置文件");
-            return;
-        }
-        //修改成读AssetBundleManifest方式
-        AssetBundleManifest manifest = abi.loadAsset<AssetBundleManifest>(AssetBundlePath.DependencyAssetName);
-        if (manifest == null)
-        {
-            Debug.Log(string.Format("Failed to load {0}.manifest!", AssetBundlePath.DependencyAssetName));
-            return;
-        }
-
-        var allabnames = manifest.GetAllAssetBundles();
-
-        foreach (var abname in allabnames)
-        {
-            var abdeparray = manifest.GetAllDependencies(abname);
-            mAssetBundleDpMap[abname] = abdeparray;
-        }
-        Debug.Log("AB依赖文件信息加载成功!");
-    }
-
-    /// <summary>
-    /// 获取AssetBundle锁依赖的AB信息
-    /// </summary>
-    /// <param name="abname"></param>
-    /// <returns></returns>
-    private string[] getAssetBundleDpInfo(string abname)
-    {
-        if (mAssetBundleDpMap.ContainsKey(abname))
-        {
-            return mAssetBundleDpMap[abname];
+            mAssetBundleBuildInfo = ab.LoadAsset<AssetBundleBuildInfoAsset>(ResourceConstData.AssetBundleBuildInfoAssetName);
+            mAssetBundleBuildInfo.init();
+            ab.Unload(false);
+            Debug.Log("AssetBundle打包信息文件加载成功!");
         }
         else
         {
+            Debug.LogError($"找不到AssetBundle打包信息文件:{ResourceConstData.AssetBundleBuildInfoAssetName}");
+        }
+    }
+    
+    /// <summary>
+    /// 获取AssetBundle所依赖的AB信息
+    /// </summary>
+    /// <param name="abpath"></param>
+    /// <returns></returns>
+    private string[] getAssetBundleDpInfo(string abpath)
+    {
+        if (mAssetBundleBuildInfo.ABPathDepMap.ContainsKey(abpath))
+        {
+            return mAssetBundleBuildInfo.ABPathDepMap[abpath];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 获取指定Asset路径的AB名
+    /// </summary>
+    /// <param name="assetpath"></param>
+    /// <returns></returns>
+    private string getAssetPathAssetBundleName(string assetpath)
+    {
+        var abpath = mAssetBundleBuildInfo.getAssetABPath(assetpath);
+        if(!string.IsNullOrEmpty(abpath))
+        {
+            return abpath;
+        }
+        else
+        {
+            Debug.LogError($"找不到Asset路径:{assetpath}的AB路径信息!");
             return null;
         }
     }
@@ -161,7 +161,7 @@ public class AssetBundleModule : AbstractResourceModule
     /// </summary>
     public void printAllResourceDpInfo()
     {
-        foreach (var abinfo in mAssetBundleDpMap)
+        foreach (var abinfo in mAssetBundleBuildInfo.ABPathDepMap)
         {
             ResourceLogger.log(string.Format("AB Name:{0}", abinfo.Key));
             foreach (var dpfile in abinfo.Value)
@@ -181,7 +181,6 @@ public class AssetBundleModule : AbstractResourceModule
         // 初始化ABLoader和ABInfo可重用的基础数量
         AssetBundleLoaderFactory.initialize(20);             // 考虑到大部分都是采用同步加载，所以AssetBundleLoader并不需要初始化太多
         AssetBundleInfoFactory.initialize(200);
-        mAssetBundleDpMap = new Dictionary<string, string[]>();
 
         ResLoadMode = ResourceLoadMode.AssetBundle;
 
@@ -203,7 +202,8 @@ public class AssetBundleModule : AbstractResourceModule
             AssetBundleAsyncQueueList.Add(abaq);
             abaq.startABAsyncLoad();
         }
-        loadAllDpInfo();
+        // AB打包信息无依赖关系可以先行
+        loadAssetBundleBuildInfo();
     }
 
     /// <summary>
@@ -215,35 +215,48 @@ public class AssetBundleModule : AbstractResourceModule
     /// <param name="loadmethod">资源加载方式</param>
     protected override void realRequestResource(string respath, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        // 如果资源已经加载完成，直接返回
-        if (mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].ContainsKey(respath))
+        // AB运行时统一转成小写,避免和AB打包那方输出的信息不一致
+        respath = respath.ToLower();
+        var abpath = string.Empty;
+        // 因为依赖AB加载也是走统一入口，所以要区分是AB路径还是Asset路径
+        if (!mAssetBundleBuildInfo.isABPath(respath))
         {
-            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad][respath]);
+            // AB依赖信息文件和AB打包
+            abpath = getAssetPathAssetBundleName(respath);
+        }
+        else
+        {
+            abpath = respath;
+        }
+        // 如果资源已经加载完成，直接返回
+        if (mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].ContainsKey(abpath))
+        {
+            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad][abpath]);
             if (loadtype > ResourceLoadType.NormalLoad)
             {
-                updateLoadedResourceInfoLoadType(respath, ResourceLoadType.NormalLoad, loadtype);
+                updateLoadedResourceInfoLoadType(abpath, ResourceLoadType.NormalLoad, loadtype);
             }
         }
-        else if (mAllLoadedResourceInfoMap[ResourceLoadType.Preload].ContainsKey(respath))
+        else if (mAllLoadedResourceInfoMap[ResourceLoadType.Preload].ContainsKey(abpath))
         {
-            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.Preload][respath]);
+            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.Preload][abpath]);
             if (loadtype > ResourceLoadType.Preload)
             {
-                updateLoadedResourceInfoLoadType(respath, ResourceLoadType.Preload, loadtype);
+                updateLoadedResourceInfoLoadType(abpath, ResourceLoadType.Preload, loadtype);
             }
         }
-        else if (mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad].ContainsKey(respath))
+        else if (mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad].ContainsKey(abpath))
         {
-            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad][respath]);
+            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad][abpath]);
         }
         else
         {
             // 确保同一个资源加载的Loader是同一个
             // 保证同一个资源加载完成时上层所有加载该资源的回调正确
             AssetBundleLoader abloader = null;
-            if (mABRequestTaskMap.ContainsKey(respath))
+            if (mABRequestTaskMap.ContainsKey(abpath))
             {
-                abloader = mABRequestTaskMap[respath];
+                abloader = mABRequestTaskMap[abpath];
                 // 之前有请求resname资源，但还未完成
                 // 比如先异步请求resname，在异步完成前来了一个同步请求resname
                 // 修改加载方式并添加回调，调用同步加载方式，异步加载会在同步加载完成时一起回调
@@ -261,12 +274,12 @@ public class AssetBundleModule : AbstractResourceModule
             }
             else
             {
-                abloader = createABLoader(respath);
+                abloader = createABLoader(abpath);
                 abloader.LoadMethod = loadmethod;
                 abloader.LoadType = loadtype;
                 abloader.LoadABCompleteCallBack = completehandler;
                 abloader.LoadSelfABCompleteNotifier = onABLoadCompleteNotifier;
-                mABRequestTaskMap.Add(respath, abloader);
+                mABRequestTaskMap.Add(abpath, abloader);
                 abloader.startLoad();
             }
         }
@@ -283,17 +296,17 @@ public class AssetBundleModule : AbstractResourceModule
     /// <summary>
     /// 创建AB资源加载对象
     /// </summary>
-    /// <param name="resname">资源名</param>
+    /// <param name="abpath">AB路径</param>
     /// <returns></returns>
-    private AssetBundleLoader createABLoader(string resname)
+    private AssetBundleLoader createABLoader(string abpath)
     {
-        var depabnames = getAssetBundleDpInfo(resname);
+        var depabnames = getAssetBundleDpInfo(abpath);
         var loader = AssetBundleLoaderFactory.create();
-        loader.AssetBundlePath = resname;
-        loader.DepABNames = depabnames;
+        loader.AssetBundlePath = abpath;
+        loader.DepABPaths = depabnames;
         if(depabnames != null)
         {
-            DIYLog.Log($"{resname}资源依赖的AB资源如下:");
+            DIYLog.Log($"{abpath}资源依赖的AB资源如下:");
             foreach (var depabname in depabnames)
             {
                 DIYLog.Log($"{depabname}");

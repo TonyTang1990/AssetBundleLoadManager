@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -18,17 +19,18 @@ public class ModelManager : SingletonTemplate<ModelManager>
     /// <summary>
     /// 获取模型实例对象
     /// </summary>
-    /// <param name="resname"></param>
+    /// <param name="respath"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
     /// <param name="loadmethod"></param>
-    public void getModelInstance(string resname, Action<GameObject> callback, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void getModelInstance(string respath, Action<GameObject> callback, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
         ResourceModuleManager.Singleton.requstResource(
-        resname,
+        respath,
         (abi) =>
         {
-            var modelinstance = abi.instantiateAsset(resname);
+            var assetname = Path.GetFileName(respath);
+            var modelinstance = abi.instantiateAsset(assetname);
 #if UNITY_EDITOR
             ResourceUtility.FindMeshRenderShaderBack(modelinstance);
 #endif

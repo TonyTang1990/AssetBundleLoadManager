@@ -251,8 +251,11 @@ public class AssetBundletWindow : EditorWindow
     /// </summary>
     private void ExecuteBuild()
     {
+        var timecounter = new TimeCounter();
+        timecounter.Start("AssetBundleBuild");
         mAssetBuilder.PreAssetBuild();
         mAssetBuilder.PostAssetBuild();
+        timecounter.End();
     }
     #endregion
 
@@ -278,6 +281,10 @@ public class AssetBundletWindow : EditorWindow
                 Debug.Log($"添加资源搜集目录:{chosenfolderpath}成功!");
             }
         }
+        if (GUILayout.Button("保存", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
+        {
+            AssetBundleCollectSettingData.SaveFile();
+        }
         GUILayout.EndVertical();
     }
 
@@ -289,7 +296,6 @@ public class AssetBundletWindow : EditorWindow
     {
         GUILayout.BeginHorizontal("Box");
         EditorGUILayout.LabelField(collector.CollectFolderPath, GUILayout.ExpandWidth(true), GUILayout.Height(20.0f));
-        var precollectrule = collector.CollectRule;
         collector.CollectRule = (EAssetBundleCollectRule)EditorGUILayout.EnumPopup(collector.CollectRule, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
         collector.BuildRule = (EAssetBundleBuildRule)EditorGUILayout.EnumPopup(collector.BuildRule, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
         // 强制Igore规则的目录打包规则为Ignore

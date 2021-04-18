@@ -19,15 +19,6 @@ using UnityEngine;
 /// </summary>
 public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
 {
-    /// <summary>
-    /// 资源名(AB名)对应的资源Asset路径
-    /// </summary>
-    public string[] AssetsPath
-    {
-        get;
-        set;
-    }
-
     public AssetDatabaseInfo()
     {
         AssetBundlePath = string.Empty;
@@ -37,7 +28,6 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         RefCount = 0;
         mReferenceOwnerList = new List<System.WeakReference>();
         mLoadedAssetMap = new Dictionary<string, UnityEngine.Object>();
-        AssetsPath = null;
     }
 
     /// <summary>
@@ -110,32 +100,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         {
             if (!mIsAllAssetLoaded)
             {
-                foreach(var assetpath in AssetsPath)
-                {
-                    var allassets = AssetDatabase.LoadAllAssetsAtPath(assetpath);
-                    foreach (var asset in allassets)
-                    {
-                        var assetname = asset.name;
-                        if (!mLoadedAssetMap.ContainsKey(assetname))
-                        {
-                            mLoadedAssetMap.Add(assetname, asset);
-                        }
-                        else
-                        {
-                            if (typeof(T) == typeof(Sprite))
-                            {
-                                // 暂时用重复的覆盖老(Sprite覆盖Texture2D)的(解决单张图作为Sprite时，Texture2D和Sprite同名的问题)
-                                // 问题: 
-                                // 1. 此方式不会缓存图集的Texture2D(暂时可以通过sprite.Texture的方式访问Texture2D)
-                                mLoadedAssetMap[assetname] = asset;
-                            }
-                            else
-                            {
-                                ResourceLogger.logErr(string.Format("资源名 : {0}里有同名资源！Asset资源 : {1}添加失败!请优化取名，避免重名Asset！", AssetBundlePath, assetname));
-                            }
-                        }
-                    }
-                }
+                // AB打包更新后，编辑器没有加载所有Asset一说
                 mIsAllAssetLoaded = true;
             }
         }
@@ -151,67 +116,17 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
             }
             else
             {
-                if (AssetsPath == null)
+                var assetpath = $"{AssetBundlePath}/{assetname}";
+                T asset = AssetDatabase.LoadAssetAtPath<T>(assetpath);
+                if (asset != null)
                 {
-                    ResourceLogger.logErr(string.Format("资源名 : {0}资源丢失，不存在！", AssetBundlePath));
-                    return null;
+                    mLoadedAssetMap.Add(assetname, asset);
+                    return asset;
                 }
                 else
                 {
-                    // 图集需要全部加载才能加载到指定Sprite
-                    // 暂时通过加载AssetBundle里所有的资源来加载查找指定sprite
-                    if (typeof(T) == typeof(Sprite))
-                    {
-                        loadAllAsset<T>();
-                        if (mLoadedAssetMap.ContainsKey(assetname))
-                        {
-                            return mLoadedAssetMap[assetname] as T;
-                        }
-                        else
-                        {
-                            ResourceLogger.logErr(string.Format("找不到资源名 : {0}里 Asset资源 : {1}!", AssetBundlePath, assetname));
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        var assetpathes = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(AssetBundlePath, assetname);
-                        if (assetpathes.Length == 1)
-                        {
-                            T asset = AssetDatabase.LoadAssetAtPath<T>(assetpathes[0]);
-                            if (asset != null)
-                            {
-                                mLoadedAssetMap.Add(assetname, asset);
-                                return asset;
-                            }
-                            else
-                            {
-                                ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), AssetBundlePath, assetname));
-                                return null;
-                            }
-                        }
-                        else if (assetpathes.Length > 1)
-                        {
-                            ResourceLogger.logWar(string.Format("资源名 : {0}里存在同名Asset : {1}资源！建议纠正Asset取名！", AssetBundlePath, assetname));
-                            // 有同名的情况下遍历选取第一个符合类型条件的资源
-                            foreach (var assetpath in assetpathes)
-                            {
-                                T asset = AssetDatabase.LoadAssetAtPath<T>(assetpath);
-                                if (asset != null)
-                                {
-                                    mLoadedAssetMap.Add(assetname, asset);
-                                    return asset;
-                                }
-                            }
-                            ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), AssetBundlePath, assetname));
-                            return null;
-                        }
-                        else
-                        {
-                            ResourceLogger.logErr(string.Format("找不到资源名: {0}，Asset : {1}资源！", AssetBundlePath, assetname));
-                            return null;
-                        }
-                    }
+                    ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), AssetBundlePath, assetname));
+                    return null;
                 }
             }
         }
@@ -279,7 +194,6 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         RefCount = 0;
         mReferenceOwnerList.Clear();
         mLoadedAssetMap.Clear();
-        AssetsPath = null;
     }
 }
 #endif

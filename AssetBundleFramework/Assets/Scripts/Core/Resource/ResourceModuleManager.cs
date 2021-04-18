@@ -118,10 +118,10 @@ public class ResourceModuleManager : SingletonTemplate<ResourceModuleManager>
     /// <summary>
     /// 添加指定资源到白名单
     /// </summary>
-    /// <param name="resname">资源名(既AB名)</param>
-    public void addToWhiteList(string resname)
+    /// <param name="respath">资源路径</param>
+    public void addToWhiteList(string respath)
     {
-        CurrentResourceModule.addToWhiteList(resname);
+        CurrentResourceModule.addToWhiteList(respath);
     }
 
     /// <summary>

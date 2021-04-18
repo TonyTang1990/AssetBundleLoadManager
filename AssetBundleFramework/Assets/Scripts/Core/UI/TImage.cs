@@ -30,10 +30,10 @@ namespace TUI
         }
 
         /// <summary>
-        /// 当前图片图集名
+        /// 当前图片图集路径
         /// </summary>
         [HideInInspector]
-        public string AtlasName;
+        public string AtlasPath;
 
         /// <summary>
         /// 当前图片名
@@ -46,7 +46,7 @@ namespace TUI
         /// </summary>
         public void printTImageInfo()
         {
-            DIYLog.Log($"AtlasName = {AtlasName} SpriteName = {SpriteName}");
+            DIYLog.Log($"AtlasName = {AtlasPath} SpriteName = {SpriteName}");
             var refcount = ABI != null ? ABI.RefCount.ToString() : "无";
             DIYLog.Log($"AtlasName引用计数 = {refcount}");
         }

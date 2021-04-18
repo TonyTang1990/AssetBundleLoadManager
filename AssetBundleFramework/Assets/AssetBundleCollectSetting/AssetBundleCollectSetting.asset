@@ -49,3 +49,15 @@ MonoBehaviour:
     CollectRule: 0
     BuildRule: 3
     ConstName: shaderlist
+  - CollectFolderPath: Assets/Res/buildinresources/buildinshaders/DefaultResources
+    CollectRule: 0
+    BuildRule: 3
+    ConstName: shaderlist
+  - CollectFolderPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra
+    CollectRule: 0
+    BuildRule: 3
+    ConstName: shaderlist
+  - CollectFolderPath: Assets/Res/actors
+    CollectRule: 1
+    BuildRule: 4
+    ConstName: 

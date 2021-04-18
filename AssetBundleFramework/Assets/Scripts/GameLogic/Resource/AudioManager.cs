@@ -6,6 +6,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -106,15 +107,15 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// <summary>
     /// 播放音效
     /// </summary>
-    /// <param name="resname">资源名</param>
-    /// <param name="sfxname">音效名</param>
-    public void playSFXSound(string resname, string sfxname)
+    /// <param name="respath">资源路径</param>
+    public void playSFXSound(string respath)
     {
         var sfxgo = mAudioGoPool.Pop(mSFXGoTemplate);
-        ResourceModuleManager.Singleton.requstResource(resname,
+        ResourceModuleManager.Singleton.requstResource(respath,
         (abi) =>
         {
             var sfxaudioinfo = ObjectPool.Singleton.pop<SFXAudioInfo>();
+            var sfxname = Path.GetFileName(respath);
             var ac = abi.getAsset<AudioClip>(sfxgo, sfxname);
             var audiosource = sfxgo.GetComponent<AudioSource>();
             sfxaudioinfo.SFXAudioGo = sfxgo;
@@ -136,10 +137,9 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// <summary>
     /// 播放背景音乐
     /// </summary>
-    /// <param name="resname">资源名</param>
-    /// <param name="assetname">Asset名</param>
+    /// <param name="respath">资源路径</param>
     /// <param name="loop">是否循环播放</param>
-    public void playBGM(string resname, string assetname = null, bool loop = true)
+    public void playBGM(string respath, bool loop = true)
     {
         //背景音效是挂载DontDestroyOnLoad上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
         if (mCurrentBGMARI != null)
@@ -147,12 +147,8 @@ public class AudioManager : SingletonTemplate<AudioManager>
             mCurrentBGMARI.releaseOwner(mBGMAudioSource);
         }
 
-        if(string.IsNullOrEmpty(assetname))
-        {
-            assetname = resname;
-        }
-
-        ResourceModuleManager.Singleton.requstResource(resname,
+        var assetname = Path.GetFileName(respath);
+        ResourceModuleManager.Singleton.requstResource(respath,
         (ari) =>
         {
             mCurrentBGMARI = ari;

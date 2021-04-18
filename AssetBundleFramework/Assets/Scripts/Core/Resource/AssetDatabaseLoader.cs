@@ -160,15 +160,13 @@ public class AssetDatabaseLoader : FactoryObj
     /// </summary>
     private void loadAssetSync()
     {
-        //通过资源名(即AB名)定位相关资源
-        var assetspath = AssetDatabase.GetAssetPathsFromAssetBundle(AssetBundlePath);
         if(string.IsNullOrEmpty(AssetBundlePath))
         {
             ResourceLogger.logErr(string.Format("找不到资源名 : {0}的资源!", AssetBundlePath));
         }
         else
         {
-            mResourceInfo = createAssetDatabaseInfo(AssetBundlePath, assetspath);
+            mResourceInfo = createAssetDatabaseInfo(AssetBundlePath);
             mResourceInfo.updateLastUsedTime();
         }
 
@@ -190,14 +188,12 @@ public class AssetDatabaseLoader : FactoryObj
     /// <summary>
     /// 创建AssetDatabaseInfo对象信息
     /// </summary>
-    /// <param name="resname">资源名</param>
-    /// <param name="assetspath">资源名resname对应的资源路径列表</param>
+    /// <param name="respath">资源路径</param>
     /// <returns></returns>
-    private AssetDatabaseInfo createAssetDatabaseInfo(string resname, string[] assetspath)
+    private AssetDatabaseInfo createAssetDatabaseInfo(string respath)
     {
         var adi = AssetDatabaseInfoFactory.create();
-        adi.AssetBundlePath = resname;
-        adi.AssetsPath = assetspath;
+        adi.AssetBundlePath = respath;
         adi.onResourceUnloadedCallback = onResourceUnloaded;
         return adi;
     }

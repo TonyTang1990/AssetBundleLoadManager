@@ -1,7 +1,64 @@
 ManifestFileVersion: 0
-CRC: 2175465078
+CRC: 4261029540
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: shaderlist
       Dependencies: {}
+    Info_1:
+      Name: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+      Dependencies: {}
+    Info_2:
+      Name: assets/res/atlas/shareatlas/tutorialatlas
+      Dependencies: {}
+    Info_3:
+      Name: assets/res/audios/music/backgroundmusic
+      Dependencies: {}
+    Info_4:
+      Name: assets/res/audios/sfx/sfx1/coins
+      Dependencies: {}
+    Info_5:
+      Name: assets/res/audios/sfx/sfx1/correct
+      Dependencies: {}
+    Info_6:
+      Name: assets/res/audios/sfx/sfx1/explosion
+      Dependencies: {}
+    Info_7:
+      Name: assets/res/windows/mainwindow
+      Dependencies:
+        Dependency_0: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+        Dependency_1: assets/res/atlas/shareatlas/tutorialatlas
+    Info_8:
+      Name: assets/res/prefabs/imagebuildin
+      Dependencies:
+        Dependency_0: assets/res/buildinresources/buildinmaterials
+    Info_9:
+      Name: assets/res/buildinresources/buildinmaterials
+      Dependencies:
+        Dependency_0: shaderlist
+    Info_10:
+      Name: assets/res/prefabs/pre_svccube
+      Dependencies: {}
+    Info_11:
+      Name: assets/res/prefabs/rawimagebuildin
+      Dependencies:
+        Dependency_0: assets/res/buildinresources/buildinmaterials
+        Dependency_1: assets/res/buildinresources/buildintextures
+    Info_12:
+      Name: assets/res/buildinresources/buildintextures
+      Dependencies: {}
+    Info_13:
+      Name: assets/res/prefabs/sfxtemplate
+      Dependencies: {}
+    Info_14:
+      Name: assets/res/prefabs/testmd5comparison
+      Dependencies:
+        Dependency_0: assets/res/buildinresources/buildinmaterials
+    Info_15:
+      Name: assets/res/prefabs/testmd5comparisonresourceupdate
+      Dependencies:
+        Dependency_0: assets/res/buildinresources/buildinmaterials
+    Info_16:
+      Name: assets/res/sharematerials/sharematerial
+      Dependencies:
+        Dependency_0: shaderlist

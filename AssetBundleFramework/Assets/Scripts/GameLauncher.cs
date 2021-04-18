@@ -213,7 +213,7 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadWindowPrefab()
     {
         DIYLog.Log("onLoadWindowPrefab()");
-        ResourceManager.Singleton.getUIInstance("mainwindow", "mainwindow", (arg) =>
+        ResourceManager.Singleton.getUIInstance("Assets/Res/windows/MainWindow", (arg) =>
         {
             mMainWindow = arg;
             mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
@@ -247,14 +247,7 @@ public class GameLauncher : MonoBehaviour {
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-        mRMM.requstResource(
-        param1,
-        (abi) =>
-        {
-            var sp = abi.getAsset<Sprite>(image, param2);
-            image.sprite = sp;
-        });
-
+        AtlasManager.Singleton.setImageSprite(image, param1);
     }
 
     /// <summary>
@@ -267,7 +260,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSprite(TImgBG, param1, param2);
+        AtlasManager.Singleton.setImageSprite(TImgBG, param1);
     }
 
     /// <summary>
@@ -280,7 +273,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
+        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1);
     }
 
 
@@ -294,7 +287,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
+        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1);
     }
     
     /// <summary>
@@ -316,7 +309,7 @@ public class GameLauncher : MonoBehaviour {
     public void onPlayBGM()
     {
         DIYLog.Log("onPlayBGM()");
-        AudioManager.Singleton.playBGM("backgroundmusic");
+        AudioManager.Singleton.playBGM("Assets/Res/audios/music/backgroundmusic");
 
         //if (mBGMAudioSource != null)
         //{
@@ -348,7 +341,7 @@ public class GameLauncher : MonoBehaviour {
     public void onPlaySound()
     {
         DIYLog.Log("onPlaySound()");
-        AudioManager.Singleton.playSFXSound("sfx1", "explosion");
+        AudioManager.Singleton.playSFXSound("Assets/Res/audios/sfx/sfx1/explosion");
         //mRMM.requstResource(
         //"sfxtemplate",
         //(abi) =>
@@ -379,7 +372,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("onLoadMaterial()");
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
         var image = btnloadmat.GetComponent<Image>();
-        ResourceManager.Singleton.getShareMaterial(image, "sharematerial", "sharematerial", (arg)=>
+        ResourceManager.Singleton.getShareMaterial(image, "Assets/Res/sharematerials/sharematerial", (arg)=>
         {
             Material mat = arg;
             image.material = mat;

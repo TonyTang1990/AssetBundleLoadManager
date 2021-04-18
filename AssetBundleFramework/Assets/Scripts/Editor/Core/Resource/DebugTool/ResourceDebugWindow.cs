@@ -205,7 +205,7 @@ public class ResourceDebugWindow : BaseEditorWindow
         {
             var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
             GUILayout.BeginVertical();
-            var alldepinfo = assetbundleresourcemodule.AssetBundleDpMap;
+            var alldepinfo = assetbundleresourcemodule.AssetBundleBuildInfo.ABPathDepMap;
             if (!mTextFilter.Equals(string.Empty))
             {
                 if (mFilterTextChanged)
@@ -468,7 +468,7 @@ public class ResourceDebugWindow : BaseEditorWindow
         EditorGUILayout.BeginVertical();
         EditorGUILayout.Space();
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abl.AssetBundlePath), GUILayout.Width(150.0f));
+        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abl.AssetBundlePath), GUILayout.Width(500.0f));
         EditorGUILayout.LabelField(string.Format("加载状态 : {0}", abl.LoadState), GUILayout.Width(150.0f));
         EditorGUILayout.LabelField(string.Format("加载方式 : {0}", abl.LoadMethod), GUILayout.Width(150.0f));
         EditorGUILayout.LabelField(string.Format("加载类型 : {0}", abl.LoadType), GUILayout.Width(150.0f));        
@@ -501,7 +501,7 @@ public class ResourceDebugWindow : BaseEditorWindow
     private void displayOneAssetBundleInfoUI(AbstractResourceInfo abi)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abi.AssetBundlePath), GUILayout.Width(250.0f));
+        EditorGUILayout.LabelField(string.Format("资源名 : {0}", abi.AssetBundlePath), GUILayout.Width(500.0f));
         EditorGUILayout.LabelField(string.Format("是否就绪 : {0}", abi.mIsReady), GUILayout.Width(100.0f));
         EditorGUILayout.LabelField(string.Format("引用计数 : {0}", abi.RefCount), GUILayout.Width(100.0f));
         EditorGUILayout.LabelField(string.Format("最近使用时间 : {0}", abi.LastUsedTime), GUILayout.Width(150.0f));
@@ -549,7 +549,7 @@ public class ResourceDebugWindow : BaseEditorWindow
         if(isAssetBundleModule())
         {
             var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-            var alldepinfomap = assetbundleresourcemodule.AssetBundleDpMap;
+            var alldepinfomap = assetbundleresourcemodule.AssetBundleBuildInfo.ABPathDepMap;
             using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Application.dataPath + "/../alldepab.txt"))
             {
                 foreach (var depinfo in alldepinfomap)

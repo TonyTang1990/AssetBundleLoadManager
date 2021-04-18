@@ -113,16 +113,16 @@ public abstract class AbstractResourceModule {
     /// Note:
     /// 默认白名单里的资源都以ResourceLoadType.Preload方式加载
     /// </summary>
-    /// <param name="resname">资源名(既AB名)</param>
-    public void addToWhiteList(string resname)
+    /// <param name="respath">资源路径</param>
+    public void addToWhiteList(string respath)
     {
-        if (!mResourceWhileListMap.ContainsKey(resname))
+        if (!mResourceWhileListMap.ContainsKey(respath))
         {
-            mResourceWhileListMap.Add(resname, resname);
+            mResourceWhileListMap.Add(respath, respath);
         }
         else
         {
-            ResourceLogger.logErr(string.Format("资源 : {0}重复添加白名单!", resname));
+            ResourceLogger.logErr(string.Format("资源 : {0}重复添加白名单!", respath));
         }
     }
 
@@ -142,7 +142,6 @@ public abstract class AbstractResourceModule {
         {
             loadtype = ResourceLoadType.Preload;
         }
-
         realRequestResource(respath, completehandler, loadtype, loadmethod);
     }
 

@@ -100,6 +100,15 @@ namespace MotionFramework.Editor
 				Directory.CreateDirectory(OutputDirectory);
 				Log($"创建输出目录：{OutputDirectory}");
 			}
+
+            // AssetBundle打包信息输出目录不存在
+            var assetbundlebuildinfofolderpath = Application.dataPath + ResourceConstData.AssetBundleBuildInfoAssetRelativePath;
+            Debug.Log($"AssetBudnle打包信息输出目录:{assetbundlebuildinfofolderpath}");
+            if (!Directory.Exists(assetbundlebuildinfofolderpath))
+            {
+                Directory.CreateDirectory(assetbundlebuildinfofolderpath);
+                Log($"创建打包信息Asset输出目录：{assetbundlebuildinfofolderpath}");
+            }
 		}
 
 		/// <summary>
@@ -118,31 +127,23 @@ namespace MotionFramework.Editor
 			Log($"构建列表里总共有{buildMap.Count}个资源需要构建");
 			for (int i = 0; i < buildMap.Count; i++)
 			{
-                // Shader单独打包
-				AssetInfo assetInfo = buildMap[i];
+            	AssetInfo assetInfo = buildMap[i];
 				AssetBundleBuild buildInfo = new AssetBundleBuild();
                 buildInfo.assetBundleName = assetInfo.AssetBundleLabel;
                 buildInfo.assetBundleVariant = assetInfo.AssetBundleVariant;
-                if(buildInfo.assetBundleName != "shaderlist")
-                {
-                    buildInfo.assetNames = new string[] { assetInfo.AssetPath };
-                }
-                else
-                {
-                    buildInfo.assetNames = new string[] { Path.GetFileNameWithoutExtension(assetInfo.AssetPath) };
-                }
+                buildInfo.assetNames = new string[] { assetInfo.AssetPath };
                 buildInfoList.Add(buildInfo);
             }
 
-			// 开始构建
-			Log($"开始构建......");
+            // 开始构建
+            Log($"开始构建......");
 			BuildAssetBundleOptions opt = MakeBuildOptions();
 			AssetBundleManifest unityManifest = BuildPipeline.BuildAssetBundles(OutputDirectory, buildInfoList.ToArray(), opt, BuildTarget);
 			if (unityManifest == null)
 				throw new Exception("[BuildPatch] 构建过程中发生错误！");
 
-			// 视频单独打包
-			PackVideo(buildMap);
+            // 视频单独打包
+            PackVideo(buildMap);
 			//// 加密资源文件
 			//List<string> encryptList = EncryptFiles(unityManifest);
 
@@ -152,16 +153,63 @@ namespace MotionFramework.Editor
 			//CreatePatchManifestFile(unityManifest, buildMap, encryptList);
 			// 3. 创建说明文件
 			CreateReadmeFile(unityManifest);
-			//// 4. 复制更新文件
-			//CopyUpdateFiles();
+            //// 4. 复制更新文件
+            //CopyUpdateFiles();
 
-			Log("构建完成！");
+            // 更新AssetBundle打包信息Asset并单独打包(为了方便统一走一套热更新机制)
+            // Note:
+            // AssetBundle打包信息Asset没有记录自身Asset打包信息
+            PackAssetBundleBuildInfoAsset(buildInfoList, unityManifest);
+
+            Log("构建完成！");
 		}
 
-		/// <summary>
-		/// 获取构建选项
-		/// </summary>
-		private BuildAssetBundleOptions MakeBuildOptions()
+        /// <summary>
+        /// 更新AssetBundle打包编译信息Asset
+        /// </summary>
+        /// <param name="buildinfolist"></param>
+        /// <param name="abmanifest"></param>
+        private void UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuild> buildinfolist, AssetBundleManifest abmanifest)
+        {
+            // Note: AssetBundle打包信息统一存小写，确保和AB打包那方一致
+            var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBundleBuildInfoAssetRelativePath}/{ResourceConstData.AssetBundleBuildInfoAssetName}.asset";
+            var assetbundlebuildasset = AssetDatabase.LoadAssetAtPath<AssetBundleBuildInfoAsset>(assetbundlebuildinfoassetrelativepath);
+            if (assetbundlebuildasset == null)
+            {
+                assetbundlebuildasset = new AssetBundleBuildInfoAsset();
+                AssetDatabase.CreateAsset(assetbundlebuildasset, assetbundlebuildinfoassetrelativepath);
+            }
+            assetbundlebuildasset.AssetBuildInfoList.Clear();
+
+            // Asset打包信息构建
+            foreach (var bi in buildinfolist)
+            {
+                var abbi = new AssetBuildInfo();
+                // 剔除后缀(默认采用无后缀形式加载，同目录同名不同类型采用泛型加载匹配)
+                abbi.AssetPath = bi.assetNames[0].Substring(0, bi.assetNames[0].Length - Path.GetExtension(bi.assetNames[0]).Length).ToLower();
+                abbi.ABPath = bi.assetBundleName.ToLower();
+                abbi.ABVariantPath = bi.assetBundleVariant.ToLower();
+                assetbundlebuildasset.AssetBuildInfoList.Add(abbi);
+            }
+
+            // AssetBundle打包信息构建
+            assetbundlebuildasset.AssetBundleBuildInfoList.Clear();
+            var allassetbundles = abmanifest.GetAllAssetBundles();
+            foreach (var assetbundle in allassetbundles)
+            {
+                var depassetbundles = abmanifest.GetDirectDependencies(assetbundle);
+                var abbi2 = new AssetBundleBuildInfo(assetbundle, depassetbundles);
+                assetbundlebuildasset.AssetBundleBuildInfoList.Add(abbi2);
+            }
+
+            EditorUtility.SetDirty(assetbundlebuildasset);
+            AssetDatabase.SaveAssets();
+        }
+
+        /// <summary>
+        /// 获取构建选项
+        /// </summary>
+        private BuildAssetBundleOptions MakeBuildOptions()
 		{
 			// For the new build system, unity always need BuildAssetBundleOptions.CollectDependencies and BuildAssetBundleOptions.DeterministicAssetBundle
 			// 除非设置ForceRebuildAssetBundle标记，否则会进行增量打包
@@ -306,7 +354,7 @@ namespace MotionFramework.Editor
 				return false;
 
 			string ext = System.IO.Path.GetExtension(assetPath);
-			if (ext == "" || ext == ".dll" || ext == ".cs" || ext == ".js" || ext == ".boo" || ext == ".meta")
+			if (ext == "" || ext == ".dll" || ext == ".cs" || ext == ".js" || ext == ".boo" || ext == ".meta" || ext == ".tpsheet")
 				return false;
 
 			return true;
@@ -478,6 +526,31 @@ namespace MotionFramework.Editor
 			sb.Append(data);
 			sb.Append("\r\n");
 		}
-		#endregion
-	}
+
+        /// <summary>
+        /// AssetBundle打包信息单独打包(为了方便统一走一套热更新机制)
+        /// </summary>
+        private void PackAssetBundleBuildInfoAsset(List<AssetBundleBuild> buildinfolist, AssetBundleManifest abmanifest)
+        {
+            UpdateAssetBundleBuildInfoAsset(buildinfolist, abmanifest);
+
+            var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBundleBuildInfoAssetRelativePath}/{ResourceConstData.AssetBundleBuildInfoAssetName}.asset";
+            // AssetBundle打包信息单独打包
+            var buildinfos = new List<AssetBundleBuild>();
+            var buildinfo = new AssetBundleBuild();
+            buildinfo.assetBundleName = ResourceConstData.AssetBundleBuildInfoAssetName;
+            buildinfo.assetBundleVariant = AssetBundleBuildConstData.AssetBundleDefaultVariant;
+            buildinfo.assetNames = new string[] { assetbundlebuildinfoassetrelativepath };
+            buildinfos.Add(buildinfo);
+
+            Log($"开始构建AssetBundle打包信息Asset......");
+            BuildAssetBundleOptions opt = MakeBuildOptions();
+            AssetBundleManifest unityManifest = BuildPipeline.BuildAssetBundles(OutputDirectory, buildinfos.ToArray(), opt, BuildTarget);
+            if (unityManifest == null)
+            {
+                throw new Exception("[AssetBundle打包信息Asset] 构建过程中发生错误！");
+            }
+        }
+        #endregion
+    }
 }

@@ -1,0 +1,24 @@
+ManifestFileVersion: 0
+CRC: 3359661121
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 814e796b06d6369a26bcbc06bc35e091
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: fe397485c3cec1106b49e9ff95e8f8a2
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/buildinresources/buildinmaterials/Default-Material.mat
+- Assets/Res/buildinresources/buildinmaterials/Default-ParticleSystem.mat
+- Assets/Res/buildinresources/buildinmaterials/Default-Particle.mat
+- Assets/Res/buildinresources/buildinmaterials/Sprites-Default.mat
+Dependencies:
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist

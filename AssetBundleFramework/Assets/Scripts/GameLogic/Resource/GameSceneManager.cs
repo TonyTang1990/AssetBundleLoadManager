@@ -34,8 +34,8 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// <summary>
     /// 同步加载场景
     /// </summary>
-    /// <param name="scenename"></param>
-    public void loadSceneSync(string scenename)
+    /// <param name="scenepath"></param>
+    public void loadSceneSync(string scenepath)
     {
         // 预加载资源类型需要在切换场景前卸载掉，切换场景后可能有新的预加载资源加载进来
         ResourceModuleManager.Singleton.unloadAllUnsedPreloadLoadedResources();
@@ -53,14 +53,14 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         ResourceModuleManager.Singleton.unloadAllUnsedNormalLoadedResources();
 
         ResourceModuleManager.Singleton.requstResource(
-        scenename,
+        scenepath,
         (abi) =>
         {
             mCurrentSceneARI = abi;
             mCurrentSceneARI.retain();
         });
 
-        SceneManager.LoadScene(scenename);
+        SceneManager.LoadScene(scenepath);
     }
 
     /// <summary>

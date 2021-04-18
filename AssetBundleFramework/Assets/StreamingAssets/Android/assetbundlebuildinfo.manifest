@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 2444594265
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2d54bd37cf7d7f52affe92b3a31f39ce
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f41db6f9fa161859a68aa480aba06f13
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: cf30ac501386e034b961fa0efc257509, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/assetbundlebuildinfo/AssetBundleBuildInfo.asset
+Dependencies: []

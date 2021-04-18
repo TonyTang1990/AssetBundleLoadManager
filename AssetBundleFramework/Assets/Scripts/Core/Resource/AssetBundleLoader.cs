@@ -29,18 +29,18 @@ public class AssetBundleLoader : FactoryObj
     }
 
     /// <summary>
-    /// 依赖的AB名字数组
+    /// 依赖的AB路径数组
     /// </summary>
-    public string[] DepABNames
+    public string[] DepABPaths
     {
         get
         {
-            return mDepABNames;
+            return mDepABPaths;
         }
         set
         {
-            mDepABNames = value;
-            mDepABCount = mDepABNames == null ? 0 : mDepABNames.Length;
+            mDepABPaths = value;
+            mDepABCount = mDepABPaths == null ? 0 : mDepABPaths.Length;
             if (mDepAssetBundleInfoList == null)
             {
                 mDepAssetBundleInfoList = new List<AssetBundleInfo>();
@@ -59,14 +59,14 @@ public class AssetBundleLoader : FactoryObj
             }
 #if UNITY_EDITOR
             //Editor模式下的调试功能
-            if (DepABNames != null)
+            if (DepABPaths != null)
             {
-                mUnloadedAssetBundleName.AddRange(DepABNames);
+                mUnloadedAssetBundleName.AddRange(DepABPaths);
             }
 #endif
         }
     }
-    private string[] mDepABNames;
+    private string[] mDepABPaths;
 
     /// <summary>
     /// 所有AB资源加载完成逻辑层回调
@@ -161,7 +161,7 @@ public class AssetBundleLoader : FactoryObj
     public AssetBundleLoader()
     {
         AssetBundlePath = string.Empty;
-        DepABNames = null;
+        DepABPaths = null;
         LoadABCompleteCallBack = null;
         LoadSelfABCompleteNotifier = null;
         LoadMethod = ResourceLoadMethod.Sync;
@@ -173,7 +173,7 @@ public class AssetBundleLoader : FactoryObj
     public AssetBundleLoader(string abpath, string[] depnames)
     {
         AssetBundlePath = abpath;
-        DepABNames = depnames;
+        DepABPaths = depnames;
         LoadABCompleteCallBack = null;
         LoadSelfABCompleteNotifier = null;
         LoadMethod = ResourceLoadMethod.Sync;
@@ -227,11 +227,11 @@ public class AssetBundleLoader : FactoryObj
         }
         else
         {
-            foreach (var dpab in DepABNames)
+            foreach (var dpabpath in DepABPaths)
             {
                 // 依赖AB统一采用ResourceLoadType.NormalLoad方式，不采用被依赖资源AB的ResourceLoadType
                 // 只要被依赖AB不被卸载就不会导致依赖AB被卸载
-                ResourceModuleManager.Singleton.requstResource(dpab, onDepABLoadComplete, ResourceLoadType.NormalLoad, LoadMethod);
+                ResourceModuleManager.Singleton.requstResource(dpabpath, onDepABLoadComplete, ResourceLoadType.NormalLoad, LoadMethod);
             }
         }
     }
@@ -355,7 +355,7 @@ public class AssetBundleLoader : FactoryObj
     public void recycle()
     {
         AssetBundlePath = string.Empty;
-        mDepABNames = null;
+        mDepABPaths = null;
         LoadABCompleteCallBack = null;
         LoadSelfABCompleteNotifier = null;
         LoadMethod = ResourceLoadMethod.Sync;
