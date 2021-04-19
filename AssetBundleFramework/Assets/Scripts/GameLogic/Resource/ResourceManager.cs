@@ -45,31 +45,31 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     }
 
     /// <summary>
-    /// 获取一个UI实例资源对象
+    /// 获取一个实例资源对象
     /// </summary>
     /// <param name="respath">资源路径</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
     /// <returns></returns>
-    public void getUIInstance(string respath, Action<GameObject> callback = null, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void getPrefabInstance(string respath, Action<GameObject> callback = null, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
         ResourceModuleManager.Singleton.requstResource(respath,
         (abi) =>
         {
             var assetname = Path.GetFileName(respath);
-            var uiinstance = abi.instantiateAsset(assetname);
+            var prefabinstance = abi.instantiateAsset(assetname);
 #if UNITY_EDITOR
-            ResourceUtility.FindMeshRenderShaderBack(uiinstance);
+            ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
 #endif
-            callback?.Invoke(uiinstance);
+            callback?.Invoke(prefabinstance);
         },
         loadtype,
         loadmethod);
     }
 
     /// <summary>
-    /// 获取一个共享的材质
+    /// 获取一个材质
     /// </summary>
     /// <param name="owner">资源绑定对象</param>
     /// <param name="respath">资源路径</param>
@@ -77,7 +77,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
     /// <returns></returns>
-    public void getShareMaterial(UnityEngine.Object owner, string respath, Action<Material> callback = null, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void getMaterial(UnityEngine.Object owner, string respath, Action<Material> callback = null, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
         ResourceModuleManager.Singleton.requstResource(respath,
         (abi) =>
@@ -88,6 +88,27 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             ResourceUtility.FindMaterialShaderBack(material);
 #endif
             callback?.Invoke(material);
+        },
+        loadtype,
+        loadmethod);
+    }
+
+    /// <summary>
+    /// 获取指定音效
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <param name="respath"></param>
+    /// <param name="callback"></param>
+    /// <param name="loadtype"></param>
+    /// <param name="loadmethod"></param>
+    public void getAudioClip(UnityEngine.Object owner, string respath, Action<AudioClip> callback = null, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    {
+        ResourceModuleManager.Singleton.requstResource(respath,
+        (ari) =>
+        {
+            var assetname = Path.GetFileName(respath);
+            var clip = ari.getAsset<AudioClip>(owner, assetname);
+            callback?.Invoke(clip);
         },
         loadtype,
         loadmethod);

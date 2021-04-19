@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 4261029540
+CRC: 1978909176
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -62,3 +62,6 @@ AssetBundleManifest:
       Name: assets/res/sharematerials/sharematerial
       Dependencies:
         Dependency_0: shaderlist
+    Info_17:
+      Name: assetbundlebuildinfo
+      Dependencies: {}

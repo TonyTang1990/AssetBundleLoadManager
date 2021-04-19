@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -60,7 +61,8 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
             mCurrentSceneARI.retain();
         });
 
-        SceneManager.LoadScene(scenepath);
+        var scenename = Path.GetFileNameWithoutExtension(scenepath);
+        SceneManager.LoadScene(scenename);
     }
 
     /// <summary>

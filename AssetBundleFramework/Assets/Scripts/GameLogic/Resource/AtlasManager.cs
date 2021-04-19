@@ -67,20 +67,19 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     }
 
     /// <summary>
-    /// 设置Image指定图片
+    /// 设置Image指定图集图片
     /// </summary>
     /// <param name="img">Image组件</param>
-    /// <param name="spritepath">图集路径</param>
+    /// <param name="atlaspath">图集路径</param>
+    /// <param name="spritename">Sprite名</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
     /// <returns></returns>
-    public void setImageSprite(Image img, string spritepath, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void setImageAtlasSprite(Image img, string atlaspath, string spritename, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        ResourceModuleManager.Singleton.requstResource(spritepath,
+        ResourceModuleManager.Singleton.requstResource(atlaspath,
         (abi) =>
         {
-            // Sprite肯定是小写
-            var spritename = Path.GetFileName(spritepath).ToLower();
             var sprite = abi.getAsset<Sprite>(img, spritename);
             img.sprite = sprite;
         },
@@ -89,19 +88,43 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     }
 
     /// <summary>
-    /// 设置Image指定图片
+    /// 设置Image指定图片(单图的时候)
     /// </summary>
-    /// <param name="timg">Image组件</param>
+    /// <param name="img">Image组件</param>
     /// <param name="spritepath">Sprite路径</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
     /// <returns></returns>
-    public void setImageSprite(TImage timg, string spritepath, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void setImageSingleSprite(Image img, string spritepath, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        DIYLog.Assert(timg == null, "setImageSprite不允许传空TImage!");
+        DIYLog.Assert(img == null, "setImageSingleSprite!");
         ResourceModuleManager.Singleton.requstResource(spritepath,
         (abi) =>
         {
+            var spritename = Path.GetFileNameWithoutExtension(spritepath);
+            var sprite = abi.getAsset<Sprite>(img, spritename);
+            img.sprite = sprite;
+        },
+        loadtype,
+        loadmethod);
+    }
+
+    /// <summary>
+    /// 设置Image指定图片(从Sprite Atlas里)
+    /// </summary>
+    /// <param name="timg">Image组件</param>
+    /// <param name="atlaspath">图集路径</param>
+    /// <param name="spritename">Sprite名</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="loadmethod">资源加载方式</param>
+    /// <returns></returns>
+    public void setImageSpriteAtlas(TImage timg, string atlaspath, string spritename, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    {
+        DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
+        ResourceModuleManager.Singleton.requstResource(atlaspath,
+        (abi) =>
+        {
+            DIYLog.Log("加载SpriteAtlas AB完成!");
             // 清除老的资源引用
             if (timg.ABI != null && !string.IsNullOrEmpty(timg.AtlasPath))
             {
@@ -109,12 +132,14 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
             }
             if (abi != null)
             {
-                // Sprite肯定是小写
-                var spritename = Path.GetFileName(spritepath).ToLower();
-                var sprite = abi.getAsset<Sprite>(timg, spritename);
-                timg.sprite = sprite;
+                var atlasname = Path.GetFileNameWithoutExtension(atlaspath);
+                DIYLog.Log("加载SpriteAtlas之前!");
+                var spriteatlas = abi.getAsset<SpriteAtlas>(timg, atlasname);
+                DIYLog.Log("加载SpriteAtlas之后!");
+                timg.sprite = spriteatlas.GetSprite(spritename);
+                DIYLog.Log("SpriteAtlas.GetSprite()之后!");
                 timg.ABI = abi;
-                timg.AtlasPath = spritepath;
+                timg.AtlasPath = atlaspath;
                 timg.SpriteName = spritename;
             }
             else
@@ -129,35 +154,29 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     }
 
     /// <summary>
-    /// 设置Image指定图片(从Sprite Atlas里)
+    /// 设置TImage指定图片(单图的时候)
     /// </summary>
-    /// <param name="timg">Image组件</param>
+    /// <param name="timg">TImage组件</param>
     /// <param name="spritepath">Sprite路径</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
     /// <returns></returns>
-    public void setImageSpriteAtlas(TImage timg, string spritepath, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void setTImageSingleSprite(TImage timg, string spritepath, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
+        DIYLog.Assert(timg == null, "setTImageSingleSprite!");
         ResourceModuleManager.Singleton.requstResource(spritepath,
         (abi) =>
         {
-            DIYLog.Log("加载SpriteAtlas AB完成!");
             // 清除老的资源引用
             if (timg.ABI != null && !string.IsNullOrEmpty(timg.AtlasPath))
             {
                 timg.ABI.releaseOwner(timg);
             }
-            var atlasname = Path.GetFileName(spritepath);
             if (abi != null)
             {
-                DIYLog.Log("加载SpriteAtlas之前!");
-                // Sprite肯定是小写
-                var spritename = Path.GetFileName(spritepath).ToLower();
-                var spriteatlas = abi.getAsset<SpriteAtlas>(timg, atlasname);
-                DIYLog.Log("加载SpriteAtlas之后!");
-                timg.sprite = spriteatlas.GetSprite(spritename);
-                DIYLog.Log("SpriteAtlas.GetSprite()之后!");
+                var spritename = Path.GetFileNameWithoutExtension(spritepath);
+                var sprite = abi.getAsset<Sprite>(timg, spritename);
+                timg.sprite = sprite;
                 timg.ABI = abi;
                 timg.AtlasPath = spritepath;
                 timg.SpriteName = spritename;

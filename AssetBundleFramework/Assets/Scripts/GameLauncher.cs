@@ -213,7 +213,7 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadWindowPrefab()
     {
         DIYLog.Log("onLoadWindowPrefab()");
-        ResourceManager.Singleton.getUIInstance("Assets/Res/windows/MainWindow", (arg) =>
+        ResourceManager.Singleton.getPrefabInstance("Assets/Res/windows/MainWindow", (arg) =>
         {
             mMainWindow = arg;
             mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
@@ -247,7 +247,7 @@ public class GameLauncher : MonoBehaviour {
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-        AtlasManager.Singleton.setImageSprite(image, param1);
+        AtlasManager.Singleton.setImageSingleSprite(image, param1);
     }
 
     /// <summary>
@@ -260,7 +260,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSprite(TImgBG, param1);
+        AtlasManager.Singleton.setTImageSingleSprite(TImgBG, param1);
     }
 
     /// <summary>
@@ -273,7 +273,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1);
+        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
     }
 
 
@@ -287,7 +287,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1);
+        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
     }
     
     /// <summary>
@@ -372,7 +372,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("onLoadMaterial()");
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
         var image = btnloadmat.GetComponent<Image>();
-        ResourceManager.Singleton.getShareMaterial(image, "Assets/Res/sharematerials/sharematerial", (arg)=>
+        ResourceManager.Singleton.getMaterial(image, "Assets/Res/sharematerials/sharematerial", (arg)=>
         {
             Material mat = arg;
             image.material = mat;
@@ -391,9 +391,9 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadActorPrefab()
     {
         DIYLog.Log("onLoadActorPrefab()");
-        ModelManager.Singleton.getModelInstance("pre_zombunny", (arg) =>
+        ModelManager.Singleton.getModelInstance("Assets/Res/actors/zombunny/pre_Zombunny", (instance) =>
         {
-            mActorInstance = arg;
+            mActorInstance = instance;
         });
         //mRMM.requstResource(
         //"pre_zombunny",
@@ -486,15 +486,11 @@ public class GameLauncher : MonoBehaviour {
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
         var param1 = InputParam1.text;
         DIYLog.Log("Param1 = " + param1);
-        mRMM.requstResource(
-        param1,
-        (abi) =>
-        {
-            var sp = abi.getAsset<Sprite>(image, param1);
-            image.sprite = sp;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
+        AtlasManager.Singleton.setImageSingleSprite(
+            image, 
+            param1, 
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
     }
 
     /// <summary>
@@ -509,90 +505,69 @@ public class GameLauncher : MonoBehaviour {
         }
 
         // 测试大批量异步加载资源后立刻同步加载其中一个该源
-        mRMM.requstResource(
-        "pre_zombunny",
-        (abi) =>
+        ResourceManager.Singleton.getPrefabInstance(
+        "Assets/Res/actors/zombunny/pre_Zombunny",
+        (instance) =>
         {
-            mActorInstance = abi.instantiateAsset("pre_Zombunny");
+            mActorInstance = instance;
             Debug.Log($"异步加载pre_zombunny完成!");
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Async);
 
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-        mRMM.requstResource(
-        "tutorialcellspritesheet",
-        (abi) =>
-        {
-            var sp = abi.getAsset<Sprite>(image, "TextureShader");
-            image.sprite = sp;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
+        AtlasManager.Singleton.setImageSingleSprite(
+            image, 
+            "Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet/TextureShader",
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
+        AtlasManager.Singleton.setImageSingleSprite(
+            image,
+            "Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient",
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
+        AtlasManager.Singleton.setImageSingleSprite(
+            image,
+            "Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture",
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
+        AtlasManager.Singleton.setImageSingleSprite(
+            image,
+            "Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse",
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
 
-        mRMM.requstResource(
-        "ambient",
-        (abi) =>
-        {
-            var sp = abi.getAsset<Sprite>(image, "ambient");
-            image.sprite = sp;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-        mRMM.requstResource(
-        "basictexture",
-        (abi) =>
-        {
-            var sp = abi.getAsset<Sprite>(image, "basictexture");
-            image.sprite = sp;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-        mRMM.requstResource(
-        "diffuse",
-        (abi) =>
-        {
-            var sp = abi.getAsset<Sprite>(image, "diffuse");
-            image.sprite = sp;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-        
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
-        Material mat = null;
-        mRMM.requstResource(
-        "sharematerial",
-        (abi) =>
-        {
-            var matasset = abi.getAsset<Material>(btnloadmat.gameObject, "sharematerial");
-            mat = GameObject.Instantiate<Material>(matasset);
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-        btnloadmat.GetComponent<Image>().material = mat;
+        ResourceManager.Singleton.getMaterial(
+            btnloadmat.gameObject, 
+            "Assets/Res/sharematerials/sharematerial",
+            (mat) =>
+            {
+                btnloadmat.GetComponent<Image>().material = mat;
+            },
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
 
-        mRMM.requstResource(
-        "sfxtemplate",
-        (abi) =>
-        {
-            mSFXInstance = abi.instantiateAsset("SFXTemplate");
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
+        ResourceManager.Singleton.getPrefabInstance(
+            "Assets/Res/prefabs/SFXTemplate",
+            (instance) =>
+            {
+                mSFXInstance = instance;
+            },
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
 
-        mRMM.requstResource(
-        "sfx1",
-        (abi) =>
-        {
-            var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");
-            var audiosource = mSFXInstance.GetComponent<AudioSource>();
-            audiosource.clip = ac;
-            audiosource.Play();
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
+        ResourceManager.Singleton.getAudioClip(
+            mSFXInstance, 
+            "Assets/Res/audios/sfx/sfx1/explosion",
+            (audioclip) =>
+            {
+                var audiosource = mSFXInstance.GetComponent<AudioSource>();
+                audiosource.clip = audioclip;
+                audiosource.Play();
+            },
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
 
         CoroutineManager.Singleton.startCoroutine(DoAsyncLoadResource());
     }
@@ -601,11 +576,11 @@ public class GameLauncher : MonoBehaviour {
     {
         yield return new WaitForEndOfFrame();
         //测试异步加载后同步加载同一资源
-        mRMM.requstResource(
-        "pre_zombunny",
-        (abi) =>
+        ResourceManager.Singleton.getPrefabInstance(
+        "Assets/Res/actors/zombunny/pre_Zombunny",
+        (instance) =>
         {
-            mActorInstance2 = abi.instantiateAsset("pre_Zombunny");
+            mActorInstance2 = instance;
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Sync);

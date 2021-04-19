@@ -73,7 +73,7 @@ public class AssetBundleBuildInfoAssetEditor : Editor
             EditorGUILayout.BeginVertical("box");
             var assetbundlebuildinfomemberproperty = AssetBuildBuildInfoListProperty.GetArrayElementAtIndex(i);
             var abpathmemberproperty = assetbundlebuildinfomemberproperty.FindPropertyRelative("ABPath");
-            var depabpathmemberproperty = assetbundlebuildinfomemberproperty.FindPropertyRelative("DepABPath");
+            var depabpathmemberproperty = assetbundlebuildinfomemberproperty.FindPropertyRelative("DepABPathList");
             EditorGUILayout.LabelField("AB路径:", GUILayout.Width(70.0f), GUILayout.Height(20.0f));
             EditorGUILayout.LabelField(abpathmemberproperty.stringValue, mTextAreaStyle, GUILayout.Width(600.0f), GUILayout.Height(20.0f));
             if(depabpathmemberproperty.arraySize > 0)

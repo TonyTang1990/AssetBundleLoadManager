@@ -1,6 +1,6 @@
 ﻿构建平台：Android
 构建版本：1
-构建时间：2021/4/18 14:41:06
+构建时间：2021/4/19 15:41:14
 
 --配置信息--
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : LoadByFolderPath
@@ -18,11 +18,12 @@ Directory : Assets/Res/actors || CollectRule : Ignore || BuildRule : Ignore
 
 --构建参数--
 CompressOption：ChunkBasedCompressionLZ4
-ForceRebuild：False
+ForceRebuild：True
 DisableWriteTypeTree：False
 IgnoreTypeTreeChanges：False
 
 --构建清单--
+assetbundlebuildinfo
 assets/res/atlas/shareatlas/spriteatlas/playerpreview
 assets/res/atlas/shareatlas/tutorialatlas
 assets/res/audios/music/backgroundmusic

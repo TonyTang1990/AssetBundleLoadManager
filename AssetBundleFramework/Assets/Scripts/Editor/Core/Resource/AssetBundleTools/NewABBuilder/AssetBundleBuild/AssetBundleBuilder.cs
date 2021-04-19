@@ -120,7 +120,8 @@ namespace MotionFramework.Editor
 
 			// 准备工作
 			List<AssetBundleBuild> buildInfoList = new List<AssetBundleBuild>();
-			List<AssetInfo> buildMap = GetBuildMap();
+            Dictionary<string, AssetBundleBuildInfo> abbuildinfomap = new Dictionary<string, AssetBundleBuildInfo>();
+			List<AssetInfo> buildMap = GetBuildMap(ref abbuildinfomap);
 			if (buildMap.Count == 0)
 				throw new Exception("[BuildPatch] 构建列表不能为空");
 
@@ -134,6 +135,17 @@ namespace MotionFramework.Editor
                 buildInfo.assetNames = new string[] { assetInfo.AssetPath };
                 buildInfoList.Add(buildInfo);
             }
+            // AssetBundleBuildInfoAsset打包信息单独打包
+            var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBundleBuildInfoAssetRelativePath}/{ResourceConstData.AssetBundleBuildInfoAssetName}.asset";
+            var buildinfo = new AssetBundleBuild();
+            buildinfo.assetBundleName = ResourceConstData.AssetBundleBuildInfoAssetName;
+            buildinfo.assetBundleVariant = AssetBundleBuildConstData.AssetBundleDefaultVariant;
+            buildinfo.assetNames = new string[] { assetbundlebuildinfoassetrelativepath };
+            buildInfoList.Add(buildinfo);
+            abbuildinfomap.Add(assetbundlebuildinfoassetrelativepath, new AssetBundleBuildInfo(ResourceConstData.AssetBundleBuildInfoAssetName.ToLower()));
+
+            // 更新AB打包信息Asset(e.g. 比如Asset打包信息,AB打包依赖信息)
+            UpdateAssetBundleBuildInfoAsset(buildInfoList, abbuildinfomap);
 
             // 开始构建
             Log($"开始构建......");
@@ -156,11 +168,6 @@ namespace MotionFramework.Editor
             //// 4. 复制更新文件
             //CopyUpdateFiles();
 
-            // 更新AssetBundle打包信息Asset并单独打包(为了方便统一走一套热更新机制)
-            // Note:
-            // AssetBundle打包信息Asset没有记录自身Asset打包信息
-            PackAssetBundleBuildInfoAsset(buildInfoList, unityManifest);
-
             Log("构建完成！");
 		}
 
@@ -169,7 +176,7 @@ namespace MotionFramework.Editor
         /// </summary>
         /// <param name="buildinfolist"></param>
         /// <param name="abmanifest"></param>
-        private void UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuild> buildinfolist, AssetBundleManifest abmanifest)
+        private void UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuild> buildinfolist, Dictionary<string, AssetBundleBuildInfo> abbuildinfomap)
         {
             // Note: AssetBundle打包信息统一存小写，确保和AB打包那方一致
             var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBundleBuildInfoAssetRelativePath}/{ResourceConstData.AssetBundleBuildInfoAssetName}.asset";
@@ -194,13 +201,7 @@ namespace MotionFramework.Editor
 
             // AssetBundle打包信息构建
             assetbundlebuildasset.AssetBundleBuildInfoList.Clear();
-            var allassetbundles = abmanifest.GetAllAssetBundles();
-            foreach (var assetbundle in allassetbundles)
-            {
-                var depassetbundles = abmanifest.GetDirectDependencies(assetbundle);
-                var abbi2 = new AssetBundleBuildInfo(assetbundle, depassetbundles);
-                assetbundlebuildasset.AssetBundleBuildInfoList.Add(abbi2);
-            }
+            assetbundlebuildasset.AssetBundleBuildInfoList = abbuildinfomap.Values.ToList();
 
             EditorUtility.SetDirty(assetbundlebuildasset);
             AssetDatabase.SaveAssets();
@@ -252,7 +253,7 @@ namespace MotionFramework.Editor
 		/// <summary>
 		/// 准备工作
 		/// </summary>
-		private List<AssetInfo> GetBuildMap()
+		private List<AssetInfo> GetBuildMap(ref Dictionary<string, AssetBundleBuildInfo> abbuildinfomap)
 		{
 			int progressBarCount = 0;
 			Dictionary<string, AssetInfo> allAsset = new Dictionary<string, AssetInfo>();
@@ -306,6 +307,7 @@ namespace MotionFramework.Editor
 			for (int i = 0; i < removeList.Count; i++)
 			{
 				allAsset.Remove(removeList[i]);
+                Debug.Log($"移除零依赖资源:{removeList[i]}");
 			}
 
 			// 设置资源标签
@@ -317,7 +319,44 @@ namespace MotionFramework.Editor
 				progressBarCount++;
 				EditorUtility.DisplayProgressBar("进度", $"设置资源标签：{progressBarCount}/{allAsset.Count}", (float)progressBarCount / allAsset.Count);
 			}
-			EditorUtility.ClearProgressBar();
+
+            // 整理Asset所有有效的Asset依赖
+            // 设置资源标签
+            TimeCounter timercounter = new TimeCounter();
+            timercounter.Start("AB依赖分析");
+            progressBarCount = 0;
+            foreach (KeyValuePair<string, AssetInfo> pair in allAsset)
+            {
+                AssetBundleBuildInfo abbuildinfo = null;
+                if (!abbuildinfomap.TryGetValue(pair.Value.AssetBundleLabel, out abbuildinfo))
+                {
+                    // 统一小写，确保和AssetBuildInfo那方一致
+                    var assetbundlelabletolower = pair.Value.AssetBundleLabel.ToLower();
+                    abbuildinfo = new AssetBundleBuildInfo(assetbundlelabletolower);
+                    abbuildinfomap.Add(pair.Value.AssetBundleLabel, abbuildinfo);
+                }
+                var directdepends = AssetDatabase.GetDependencies(pair.Key, false);
+                foreach(var directdepend in directdepends)
+                {
+                    AssetInfo assetinfo = null;
+                    // allAsset里包含的才是有效的Asset
+                    if(allAsset.TryGetValue(directdepend, out assetinfo))
+                    {
+                        // 统一小写，确保和AssetBuildInfo那方一致
+                        var assetablablelower = assetinfo.AssetBundleLabel.ToLower();
+                        if (!pair.Value.AssetBundleLabel.Equals(assetinfo.AssetBundleLabel) && !abbuildinfo.DepABPathList.Contains(assetablablelower))
+                        {
+                            abbuildinfo.DepABPathList.Add(assetablablelower);
+                        }
+                    }
+                }
+                // 进度条
+                progressBarCount++;
+                EditorUtility.DisplayProgressBar("进度", $"整理AB依赖关系：{progressBarCount}/{allAsset.Count}", (float)progressBarCount / allAsset.Count);
+            }
+            timercounter.End();
+
+            EditorUtility.ClearProgressBar();
 
 			// 返回结果
 			return allAsset.Values.ToList();
@@ -342,10 +381,10 @@ namespace MotionFramework.Editor
 			return depends;
 		}
 
-		/// <summary>
-		/// 检测资源是否有效
-		/// </summary>
-		private bool ValidateAsset(string assetPath)
+        /// <summary>
+        /// 检测资源是否有效
+        /// </summary>
+        private bool ValidateAsset(string assetPath)
 		{
 			if (!assetPath.StartsWith("Assets/"))
 				return false;
@@ -526,31 +565,6 @@ namespace MotionFramework.Editor
 			sb.Append(data);
 			sb.Append("\r\n");
 		}
-
-        /// <summary>
-        /// AssetBundle打包信息单独打包(为了方便统一走一套热更新机制)
-        /// </summary>
-        private void PackAssetBundleBuildInfoAsset(List<AssetBundleBuild> buildinfolist, AssetBundleManifest abmanifest)
-        {
-            UpdateAssetBundleBuildInfoAsset(buildinfolist, abmanifest);
-
-            var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBundleBuildInfoAssetRelativePath}/{ResourceConstData.AssetBundleBuildInfoAssetName}.asset";
-            // AssetBundle打包信息单独打包
-            var buildinfos = new List<AssetBundleBuild>();
-            var buildinfo = new AssetBundleBuild();
-            buildinfo.assetBundleName = ResourceConstData.AssetBundleBuildInfoAssetName;
-            buildinfo.assetBundleVariant = AssetBundleBuildConstData.AssetBundleDefaultVariant;
-            buildinfo.assetNames = new string[] { assetbundlebuildinfoassetrelativepath };
-            buildinfos.Add(buildinfo);
-
-            Log($"开始构建AssetBundle打包信息Asset......");
-            BuildAssetBundleOptions opt = MakeBuildOptions();
-            AssetBundleManifest unityManifest = BuildPipeline.BuildAssetBundles(OutputDirectory, buildinfos.ToArray(), opt, BuildTarget);
-            if (unityManifest == null)
-            {
-                throw new Exception("[AssetBundle打包信息Asset] 构建过程中发生错误！");
-            }
-        }
         #endregion
     }
 }

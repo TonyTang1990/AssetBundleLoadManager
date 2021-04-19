@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 463773227
+CRC: 999032232
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fefffd4894bb72b2d678e2276700c614
+    Hash: af33c44549bb622102941aa780829340
   TypeTreeHash:
     serializedVersion: 2
     Hash: 383566a52df1cdfb844fe5d8bcbab65b
@@ -24,4 +24,4 @@ ClassTypes:
 Assets:
 - Assets/Res/prefabs/imagebuildin.prefab
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/buildinresources/buildinmaterials
+- F:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/buildinresources/buildinmaterials

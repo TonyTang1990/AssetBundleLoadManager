@@ -339,10 +339,10 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-vertexlit
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-bumpspec
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-diffuse
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-diffuse
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-bumpspec
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-glossy
@@ -357,19 +357,19 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-bumped
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-bumpspec
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-vertexlit
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-diffuse
+    ABPath: shaderlist
+    ABVariantPath: 
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-bumpspec
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-glossy
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-softedgeunlit
-    ABPath: shaderlist
-    ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-vertexlit
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ar/shaders/tangoarrender
@@ -414,25 +414,25 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/gidebug/vertexcolors
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-bumped
-    ABPath: shaderlist
-    ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-bumpspec
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-vertexlit
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-diffuse
     ABPath: shaderlist
     ABVariantPath: 
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-bumped
+    ABPath: shaderlist
+    ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-glossy
+    ABPath: shaderlist
+    ABVariantPath: 
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-bumpspec
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-parallax
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-parallaxspec
-    ABPath: shaderlist
-    ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-vertexlit
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-blitcopydepth
@@ -486,19 +486,19 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-stencilwrite
     ABPath: shaderlist
     ABVariantPath: 
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-diffuse
+    ABPath: shaderlist
+    ABVariantPath: 
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-vertexlit
+    ABPath: shaderlist
+    ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-bumped
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-bumpspec
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-diffuse
-    ABPath: shaderlist
-    ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-glossy
-    ABPath: shaderlist
-    ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-vertexlit
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-bumped
@@ -537,10 +537,10 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/softocclusion/treesoftocclusionbarkrendertex
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/softocclusion/treesoftocclusionleaves
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/softocclusion/treesoftocclusionleavesrendertex
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/softocclusion/treesoftocclusionleavesrendertex
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/softocclusion/treesoftocclusionleaves
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/speedtree
@@ -555,13 +555,16 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatoralbedorendertex
     ABPath: shaderlist
     ABVariantPath: 
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorbarkrendertex
+    ABPath: shaderlist
+    ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorbarkoptimized
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorbark
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorbarkrendertex
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorleavesrendertex
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorleaves
@@ -576,9 +579,6 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorleavesfast
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorleavesrendertex
-    ABPath: shaderlist
-    ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatornormalrendertex
     ABPath: shaderlist
     ABVariantPath: 
@@ -588,13 +588,13 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-bumpspec
     ABPath: shaderlist
     ABVariantPath: 
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-glossy
+    ABPath: shaderlist
+    ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-diffusedetail
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-diffusefast
-    ABPath: shaderlist
-    ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-glossy
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-parallax
@@ -703,6 +703,9 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/addpass
     ABPath: shaderlist
     ABVariantPath: 
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/terrain-utilities
+    ABPath: shaderlist
+    ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/diffusebase
     ABPath: shaderlist
     ABVariantPath: 
@@ -712,13 +715,13 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/firstpass
     ABPath: shaderlist
     ABVariantPath: 
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/trees/billboardtree
+    ABPath: shaderlist
+    ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/specular-addpass
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/specular-base
-    ABPath: shaderlist
-    ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/terrain-utilities
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/specular-firstpass
@@ -734,9 +737,6 @@ MonoBehaviour:
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/standard-firstpass
-    ABPath: shaderlist
-    ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/trees/billboardtree
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/trees/camerafacingbillboardtree
@@ -766,10 +766,10 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-bumped
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-detail
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-transparent
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-transparent
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-detail
     ABPath: shaderlist
     ABVariantPath: 
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-refraction
@@ -838,47 +838,52 @@ MonoBehaviour:
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/vr/shaders/videobackground
     ABPath: shaderlist
     ABVariantPath: 
+  - AssetPath: assets/res/assetbundlebuildinfo/assetbundlebuildinfo
+    ABPath: assetbundlebuildinfo
+    ABVariantPath: 
   AssetBundleBuildInfoList:
   - ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    DepABPath: []
+    DepABPathList: []
   - ABPath: assets/res/atlas/shareatlas/tutorialatlas
-    DepABPath: []
+    DepABPathList: []
   - ABPath: assets/res/audios/music/backgroundmusic
-    DepABPath: []
+    DepABPathList: []
   - ABPath: assets/res/audios/sfx/sfx1/coins
-    DepABPath: []
+    DepABPathList: []
   - ABPath: assets/res/audios/sfx/sfx1/correct
-    DepABPath: []
+    DepABPathList: []
   - ABPath: assets/res/audios/sfx/sfx1/explosion
-    DepABPath: []
-  - ABPath: assets/res/buildinresources/buildinmaterials
-    DepABPath:
-    - shaderlist
-  - ABPath: assets/res/buildinresources/buildintextures
-    DepABPath: []
+    DepABPathList: []
+  - ABPath: assets/res/windows/mainwindow
+    DepABPathList:
+    - assets/res/atlas/shareatlas/tutorialatlas
+    - assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - ABPath: shaderlist
+    DepABPathList: []
   - ABPath: assets/res/prefabs/imagebuildin
-    DepABPath:
+    DepABPathList:
     - assets/res/buildinresources/buildinmaterials
+  - ABPath: assets/res/buildinresources/buildinmaterials
+    DepABPathList:
+    - shaderlist
   - ABPath: assets/res/prefabs/pre_svccube
-    DepABPath: []
+    DepABPathList: []
   - ABPath: assets/res/prefabs/rawimagebuildin
-    DepABPath:
-    - assets/res/buildinresources/buildinmaterials
+    DepABPathList:
     - assets/res/buildinresources/buildintextures
+    - assets/res/buildinresources/buildinmaterials
+  - ABPath: assets/res/buildinresources/buildintextures
+    DepABPathList: []
   - ABPath: assets/res/prefabs/sfxtemplate
-    DepABPath: []
+    DepABPathList: []
   - ABPath: assets/res/prefabs/testmd5comparison
-    DepABPath:
+    DepABPathList:
     - assets/res/buildinresources/buildinmaterials
   - ABPath: assets/res/prefabs/testmd5comparisonresourceupdate
-    DepABPath:
+    DepABPathList:
     - assets/res/buildinresources/buildinmaterials
   - ABPath: assets/res/sharematerials/sharematerial
-    DepABPath:
+    DepABPathList:
     - shaderlist
-  - ABPath: assets/res/windows/mainwindow
-    DepABPath:
-    - assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    - assets/res/atlas/shareatlas/tutorialatlas
-  - ABPath: shaderlist
-    DepABPath: []
+  - ABPath: assetbundlebuildinfo
+    DepABPathList: []

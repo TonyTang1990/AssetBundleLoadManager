@@ -44,14 +44,20 @@ public class AssetBundleBuildInfo
     public string ABPath;
 
     /// <summary>
-    /// 依赖的AB路径数组
+    /// 依赖的AB路径列表
     /// </summary>
-    public string[] DepABPath;
+    public List<string> DepABPathList;
 
-    public AssetBundleBuildInfo(string abpath, string[] depabpath)
+    public AssetBundleBuildInfo(string abpath)
     {
         ABPath = abpath;
-        DepABPath = depabpath;
+        DepABPathList = new List<string>();
+    }
+
+    public AssetBundleBuildInfo(string abpath, List<string> depabpathlist)
+    {
+        ABPath = abpath;
+        DepABPathList = depabpathlist;
     }
 }
 
@@ -119,7 +125,7 @@ public class AssetBundleBuildInfoAsset : ScriptableObject
         {
             if (!ABPathDepMap.ContainsKey(AssetBundleBuildInfoList[i].ABPath))
             {
-                ABPathDepMap.Add(AssetBundleBuildInfoList[i].ABPath, AssetBundleBuildInfoList[i].DepABPath);
+                ABPathDepMap.Add(AssetBundleBuildInfoList[i].ABPath, AssetBundleBuildInfoList[i].DepABPathList.ToArray());
             }
         }
     }

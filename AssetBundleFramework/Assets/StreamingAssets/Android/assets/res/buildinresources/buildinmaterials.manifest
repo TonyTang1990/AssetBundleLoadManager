@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3359661121
+CRC: 936027671
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 814e796b06d6369a26bcbc06bc35e091
+    Hash: 09d7c8b7bcfa6554b0440907fc80702b
   TypeTreeHash:
     serializedVersion: 2
     Hash: fe397485c3cec1106b49e9ff95e8f8a2
@@ -21,4 +21,4 @@ Assets:
 - Assets/Res/buildinresources/buildinmaterials/Default-Particle.mat
 - Assets/Res/buildinresources/buildinmaterials/Sprites-Default.mat
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist
+- F:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist

@@ -4,6 +4,7 @@
  * Create Date:             2018//10/20
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -98,7 +99,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
         mSFXGoTemplate.AddComponent<AudioSource>();
         mAudioGoPool.Init(mSFXGoTemplate, 5);
         var bgmgo = new GameObject("BGMAudio");
-        Object.DontDestroyOnLoad(bgmgo);
+        UnityEngine.Object.DontDestroyOnLoad(bgmgo);
         mBGMAudioSource = bgmgo.AddComponent<AudioSource>();
 
         ObjectPool.Singleton.initialize<SFXAudioInfo>(5);
