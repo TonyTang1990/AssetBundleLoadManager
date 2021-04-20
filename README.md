@@ -378,7 +378,7 @@ Tools->Assets->Asset相关处理
 # 待做事项
 
 1.  ~~编辑器模式支持AssetDatabase的资源回收以及类型分类( 1. 正常加载 2.预加载 3. 永久加载)~~
-2.  优化AssetBundle模式绑定同一组件对象时，老的资源无法及时释放问题(因为没有挂载任何有效信息，现阶段的抽象无法反推原有组件绑定的资源信息，无法及时释放老的资源加载信息)(考虑重写部分组件来解决此问题 e.g. 重写Image成TImage后保持索引基数对象来保证关联性)
+2.  ~~优化AssetBundle模式绑定同一组件对象时，老的资源无法及时释放问题(因为没有挂载任何有效信息，现阶段的抽象无法反推原有组件绑定的资源信息，无法及时释放老的资源加载信息)(考虑重写部分组件来解决此问题 e.g. 重写Image成TImage后保持索引基数对象来保证关联性)~~
 3.  支持编辑器模式下AssetDatabase资源异步加载(方便暴露出AssetBundle加载模式下的异步问题)
 4.  ~~支持真机资源热更以及版本强更(**热更模块**)~~
 5.  支持真机代码热更(Lua + XLua)
@@ -400,3 +400,7 @@ Tools->Assets->Asset相关处理
 感谢tangzx/ABSystem作者的无私分享，tangzx/ABSystem的Github链接:
 
 [tangzx/ABSystem](https://github.com/tangzx/ABSystem)
+
+感谢MotionFramework作者的无私分享,MotionFramework的Github连接:
+
+[MotionFramework](https://github.com/gmhevinci/MotionFramework)
