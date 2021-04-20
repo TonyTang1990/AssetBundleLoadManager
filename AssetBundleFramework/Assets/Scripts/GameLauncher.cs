@@ -517,11 +517,6 @@ public class GameLauncher : MonoBehaviour {
 
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
         AtlasManager.Singleton.setImageSingleSprite(
-            image, 
-            "Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet/TextureShader",
-            ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Async);
-        AtlasManager.Singleton.setImageSingleSprite(
             image,
             "Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient",
             ResourceLoadType.NormalLoad,
@@ -555,7 +550,7 @@ public class GameLauncher : MonoBehaviour {
                 mSFXInstance = instance;
             },
             ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Async);
+            ResourceLoadMethod.Sync);
 
         ResourceManager.Singleton.getAudioClip(
             mSFXInstance, 

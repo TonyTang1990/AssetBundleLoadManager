@@ -58,6 +58,6 @@ MonoBehaviour:
     BuildRule: 3
     ConstName: shaderlist
   - CollectFolderPath: Assets/Res/actors
-    CollectRule: 1
-    BuildRule: 4
+    CollectRule: 0
+    BuildRule: 1
     ConstName: 

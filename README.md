@@ -62,6 +62,36 @@ Manager统一管理：
 
 #### Demo使用说明
 
+**--------------------------2021/4/21重大更新即将来临-------------------------**
+
+Note:
+
+**2021/4/20新版AB打包工具重新开始编写，对后续加载接口也有影响，所以下面部分Demo展示可能已经不是最新的了，新版AB打包还未完成，需要等待更新。**
+
+**新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展，还未完成未完，需要等待更新。**
+
+**主要变动如下:**
+
+**1. 打包AB的策略由抽象的目录打包策略设定决定**
+
+**2. 打包后的AB保留目录结构，确保AB模式和AssetDatabase模式加载都面向Asset路径保持一致性**
+
+这里先简单的看下新的AB搜集和打包界面:
+
+![AssetBundleCollectWindow](./img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG)
+
+![AssetBundleBuildWindow](./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG)
+
+关于Asset路径与AB路径关联信息以及AB依赖信息最终都存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbundlebuildinfo的AB里)，通过Asset路径如何加载到对应AB以及依赖AB的关键就在这里。
+
+让我们先来看下大致数据信息结构:
+
+![AssetBundleBuildInfoView1](./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG)
+
+![AssetBundleBuildInfoView2](./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG)
+
+**--------------------------2021/4/21重大更新即将来临-------------------------**
+
 Tools->Debug->资源调试工具
 
 1. AssetBundle和AssetDatabase资源加载模式切换![AssetDatabaseModuleSwitch](./img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png)
@@ -84,15 +114,13 @@ Tools->Debug->资源调试工具
 
 6. 点击加载窗口预制件按钮后:
 
-```CS
-    mRMM.requstResource(
-    "mainwindow",
-    (abi) =>
-    {
-        mMainWindow = abi.instantiateAsset("MainWindow");
-        mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-    });
-```
+   ```CS
+           ResourceManager.Singleton.getPrefabInstance("Assets/Res/windows/MainWindow", (arg) =>
+           {
+               mMainWindow = arg;
+               mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+           });
+   ```
 
 ​	![AssetBundleLoadManagerUIAfterLoadWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png)
 可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)
@@ -100,108 +128,94 @@ Tools->Debug->资源调试工具
 5. 点击测试异步和同步加载按钮后
 
 ```CS
-    Debug.Log("onTestAsynAndSyncABLoad()");
-    if(mMainWindow == null)
+   /// <summary>
+    /// 测试AB异步和同步加载
+    /// </summary>
+    public void onTestAsynAndSyncABLoad()
     {
-        onLoadWindowPrefab();
+        DIYLog.Log("onTestAsynAndSyncABLoad()");
+        if(mMainWindow == null)
+        {
+            onLoadWindowPrefab();
+        }
+
+        // 测试大批量异步加载资源后立刻同步加载其中一个该源
+        ResourceManager.Singleton.getPrefabInstance(
+        "Assets/Res/actors/zombunny/pre_Zombunny",
+        (instance) =>
+        {
+            mActorInstance = instance;
+            Debug.Log($"异步加载pre_zombunny完成!");
+        },
+        ResourceLoadType.NormalLoad,
+        ResourceLoadMethod.Async);
+
+        var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
+        AtlasManager.Singleton.setImageSingleSprite(
+            image,
+            "Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient",
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
+        AtlasManager.Singleton.setImageSingleSprite(
+            image,
+            "Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture",
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
+        AtlasManager.Singleton.setImageSingleSprite(
+            image,
+            "Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse",
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
+
+        var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
+        ResourceManager.Singleton.getMaterial(
+            btnloadmat.gameObject, 
+            "Assets/Res/sharematerials/sharematerial",
+            (mat) =>
+            {
+                btnloadmat.GetComponent<Image>().material = mat;
+            },
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
+
+        ResourceManager.Singleton.getPrefabInstance(
+            "Assets/Res/prefabs/SFXTemplate",
+            (instance) =>
+            {
+                mSFXInstance = instance;
+            },
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Sync);
+
+        ResourceManager.Singleton.getAudioClip(
+            mSFXInstance, 
+            "Assets/Res/audios/sfx/sfx1/explosion",
+            (audioclip) =>
+            {
+                var audiosource = mSFXInstance.GetComponent<AudioSource>();
+                audiosource.clip = audioclip;
+                audiosource.Play();
+            },
+            ResourceLoadType.NormalLoad,
+            ResourceLoadMethod.Async);
+
+        CoroutineManager.Singleton.startCoroutine(DoAsyncLoadResource());
     }
 
-    // 测试大批量异步加载资源后立刻同步加载其中一个该源
-    var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-    mRMM.requstResource(
-        "tutorialcellspritesheet",
-        (abi) =>
+    private IEnumerator DoAsyncLoadResource()
+    {
+        yield return new WaitForEndOfFrame();
+        //测试异步加载后同步加载同一资源
+        ResourceManager.Singleton.getPrefabInstance(
+        "Assets/Res/actors/zombunny/pre_Zombunny",
+        (instance) =>
         {
-            var sp = abi.getAsset<Sprite>(image, "TextureShader");
-            image.sprite = sp;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-    mRMM.requstResource(
-        "ambient",
-        (abi) =>
-        {
-            var sp = abi.getAsset<Sprite>(image, "ambient");
-            image.sprite = sp;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-    mRMM.requstResource(
-        "basictexture",
-        (abi) =>
-        {
-            var sp = abi.getAsset<Sprite>(image, "basictexture");
-            image.sprite = sp;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-    mRMM.requstResource(
-        "diffuse",
-        (abi) =>
-        {
-            var sp = abi.getAsset<Sprite>(image, "diffuse");
-            image.sprite = sp;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-    mRMM.requstResource(
-        "pre_zombunny",
-        (abi) =>
-        {
-            mActorInstance = abi.instantiateAsset("pre_Zombunny");
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-    //测试异步加载后立刻同步加载
-    GameObject actorinstance2 = null;
-    mRMM.requstResource(
-        "pre_zombunny",
-        (abi) =>
-        {
-            actorinstance2 = abi.instantiateAsset("pre_Zombunny");
+            mActorInstance2 = instance;
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Sync);
-    Debug.Log("actorinstance2.transform.name = " + actorinstance2.transform.name);
-
-    var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
-    Material mat = null;
-    mRMM.requstResource(
-        "sharematerial",
-        (abi) =>
-        {
-            var matasset = abi.getAsset<Material>(btnloadmat.gameObject, "sharematerial");
-            mat = GameObject.Instantiate<Material>(matasset);
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-    btnloadmat.GetComponent<Image>().material = mat;
-
-    mRMM.requstResource(
-        "sfxtemplate",
-        (abi) =>
-        {
-            mSFXInstance = abi.instantiateAsset("SFXTemplate");
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-    mRMM.requstResource(
-        "sfx1",
-        (abi) =>
-        {
-            var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");
-            var audiosource = mSFXInstance.GetComponent<AudioSource>();
-            audiosource.clip = ac;
-            audiosource.Play();
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
+        DIYLog.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
+    }
 ```
 
 ​	![AssetBundleLoadManagerUIAfterLoadSprites](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadResources.png)
@@ -229,7 +243,12 @@ Note:
     "shaderlist",
     (abi) =>
     {
-        abi.loadAllAsset<UnityEngine.Object>();
+        var svc = abi.loadAsset<ShaderVariantCollection>(ResourceConstData.ShaderVariantsAssetName);
+            // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+            svc?.WarmUp();
+            // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
+            abi.loadAllAsset<Shader>();
+            callback?.Invoke();
     },
     ResourceLoadType.PermanentLoad);          // Shader常驻
 ```

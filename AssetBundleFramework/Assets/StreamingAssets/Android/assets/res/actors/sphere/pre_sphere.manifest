@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 2787471898
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d245c9c9063b2413752526f11e98da5c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 60fef5ad0a4038542d2122e46dcc34a2
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/actors/sphere/pre_Sphere.prefab
+Dependencies:
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/sharematerials/sharematerial

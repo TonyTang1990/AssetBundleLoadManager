@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 2909775978
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d3b9cdcbd21363f1ea0d15475a52db0a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 51a16e16d5113854a16091e54ae5bb0d
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/actors/zombunny/Materials/EyesMaterial.mat
+Dependencies:
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist

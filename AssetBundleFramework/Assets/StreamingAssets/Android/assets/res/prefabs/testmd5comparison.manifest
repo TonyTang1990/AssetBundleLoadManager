@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4231088588
+CRC: 3096824314
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0fae50f5ff5e5e4f681c45b9b45957a8
+    Hash: 201f0c64f2dd380cac90a4aa4a975a35
   TypeTreeHash:
     serializedVersion: 2
     Hash: 43917c7e82ed3ae0a408b3ea37ec80f7
@@ -26,4 +26,4 @@ ClassTypes:
 Assets:
 - Assets/Res/prefabs/TestMd5Comparison.prefab
 Dependencies:
-- F:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/buildinresources/buildinmaterials
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/buildinresources/buildinmaterials

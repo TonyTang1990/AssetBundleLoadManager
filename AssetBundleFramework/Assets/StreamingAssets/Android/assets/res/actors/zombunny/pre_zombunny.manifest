@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 2103843914
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 29ead5c022733aef35524614c7aae735
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f98fb72295b3909d74ffedc0d76189f3
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/actors/zombunny/pre_Zombunny.prefab
+Dependencies:
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/materials/eyesmaterial
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/materials/zombunnymaterial
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/zombunnyanimations/death
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/zombunnyanimations/idle
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/zombunnyanimations/move
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/zombunny

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1084859581
+CRC: 947136468
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b4941a52f50cf0af136db474c029822a
+    Hash: 5fab19febc92a4456b44fd1893fb6655
   TypeTreeHash:
     serializedVersion: 2
     Hash: d3837db6c09ca0d566041a55d4c9862d
@@ -40,5 +40,5 @@ ClassTypes:
 Assets:
 - Assets/Res/windows/MainWindow.prefab
 Dependencies:
-- F:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/atlas/shareatlas/spriteatlas/playerpreview
-- F:/TonyTang/Work/Projects/Unity/MyGitHubProjects/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/atlas/shareatlas/tutorialatlas
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/atlas/shareatlas/spriteatlas/playerpreview
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/atlas/shareatlas/tutorialatlas

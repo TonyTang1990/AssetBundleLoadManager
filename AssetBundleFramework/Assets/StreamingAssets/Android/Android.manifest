@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1978909176
+CRC: 2369638312
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -63,5 +63,56 @@ AssetBundleManifest:
       Dependencies:
         Dependency_0: shaderlist
     Info_17:
+      Name: assets/res/shaders/rim lit bumped specular
+      Dependencies:
+        Dependency_0: shaderlist
+    Info_18:
       Name: assetbundlebuildinfo
       Dependencies: {}
+    Info_19:
+      Name: assets/res/actors/cube/pre_cube
+      Dependencies:
+        Dependency_0: assets/res/sharematerials/sharematerial
+    Info_20:
+      Name: assets/res/actors/sphere/pre_sphere
+      Dependencies:
+        Dependency_0: assets/res/sharematerials/sharematerial
+    Info_21:
+      Name: assets/res/actors/zombunny/materials/eyesmaterial
+      Dependencies:
+        Dependency_0: shaderlist
+    Info_22:
+      Name: assets/res/actors/zombunny/textures/zombunnydiffuse
+      Dependencies: {}
+    Info_23:
+      Name: assets/res/actors/zombunny/materials/zombunnymaterial
+      Dependencies:
+        Dependency_0: assets/res/shaders/rim lit bumped specular
+        Dependency_1: assets/res/actors/zombunny/textures/zombunnydiffuse
+        Dependency_2: assets/res/actors/zombunny/textures/zombunnynormals
+    Info_24:
+      Name: assets/res/actors/zombunny/textures/zombunnynormals
+      Dependencies: {}
+    Info_25:
+      Name: assets/res/actors/zombunny/zombunnyanimations/death
+      Dependencies: {}
+    Info_26:
+      Name: assets/res/actors/zombunny/zombunnyanimations/idle
+      Dependencies: {}
+    Info_27:
+      Name: assets/res/actors/zombunny/pre_zombunny
+      Dependencies:
+        Dependency_0: assets/res/actors/zombunny/materials/eyesmaterial
+        Dependency_1: assets/res/actors/zombunny/materials/zombunnymaterial
+        Dependency_2: assets/res/actors/zombunny/zombunnyanimations/death
+        Dependency_3: assets/res/actors/zombunny/zombunnyanimations/idle
+        Dependency_4: assets/res/actors/zombunny/zombunnyanimations/move
+        Dependency_5: assets/res/actors/zombunny/zombunny
+    Info_28:
+      Name: assets/res/actors/zombunny/zombunnyanimations/move
+      Dependencies: {}
+    Info_29:
+      Name: assets/res/actors/zombunny/zombunny
+      Dependencies:
+        Dependency_0: assets/res/actors/zombunny/materials/eyesmaterial
+        Dependency_1: assets/res/actors/zombunny/materials/zombunnymaterial
