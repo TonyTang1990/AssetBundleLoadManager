@@ -139,12 +139,12 @@ namespace MotionFramework.Editor
             var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBundleBuildInfoAssetRelativePath}/{ResourceConstData.AssetBundleBuildInfoAssetName}.asset";
             var buildinfo = new AssetBundleBuild();
             buildinfo.assetBundleName = ResourceConstData.AssetBundleBuildInfoAssetName;
-            buildinfo.assetBundleVariant = AssetBundleBuildConstData.AssetBundleDefaultVariant;
+            buildinfo.assetBundleVariant = ResourceConstData.AssetBundleDefaultVariant;
             buildinfo.assetNames = new string[] { assetbundlebuildinfoassetrelativepath };
             buildInfoList.Add(buildinfo);
             abbuildinfomap.Add(assetbundlebuildinfoassetrelativepath, new AssetBundleBuildInfo(ResourceConstData.AssetBundleBuildInfoAssetName.ToLower()));
 
-            // 更新AB打包信息Asset(e.g. 比如Asset打包信息,AB打包依赖信息)
+            // 更新AB打包信息Asset(e.g.比如Asset打包信息, AB打包依赖信息)
             UpdateAssetBundleBuildInfoAsset(buildInfoList, abbuildinfomap);
 
             // 开始构建
@@ -417,7 +417,7 @@ namespace MotionFramework.Editor
 			{
 				string label = AssetBundleCollectSettingData.GetAssetBundleLabel(assetInfo.AssetPath);
 				assetInfo.AssetBundleLabel = EditorUtilities.GetRegularPath(label);
-				assetInfo.AssetBundleVariant = AssetBundleBuildConstData.AssetBundleDefaultVariant;
+				assetInfo.AssetBundleVariant = ResourceConstData.AssetBundleDefaultVariant;
 			}
 		}
 		#endregion

@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 2367645947
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6ed32ac98b2b1cd8c7e2eeb42d8742c4
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 51a16e16d5113854a16091e54ae5bb0d
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/sharematerials/sharematerial.mat
+Dependencies:
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist.bundle

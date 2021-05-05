@@ -71,7 +71,7 @@ public static class AssetBundlePath {
         //{ 
         //    返回包内资源路径
         //}
-        var outterabfullpath = ABHotUpdatePath + abpath;
+        var outterabfullpath = ABHotUpdatePath + abpath + ResourceConstData.AssetBundleDefaultVariantWithPoint;
         if (IsABExitInOutterPath(abpath))
         {
             ResourceLogger.log(string.Format("使用包外资源 : {0}", abpath));
@@ -80,7 +80,7 @@ public static class AssetBundlePath {
         else
         {
             ResourceLogger.log(string.Format("使用包内资源 : {0}", abpath));
-            return ABBuildinPath + abpath;
+            return ABBuildinPath + abpath + ResourceConstData.AssetBundleDefaultVariantWithPoint;
         }
     }
 

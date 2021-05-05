@@ -21,10 +21,6 @@ MonoBehaviour:
     CollectRule: 0
     BuildRule: 1
     ConstName: 
-  - CollectFolderPath: Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas
-    CollectRule: 1
-    BuildRule: 4
-    ConstName: 
   - CollectFolderPath: Assets/Res/windows
     CollectRule: 0
     BuildRule: 1
@@ -45,10 +41,6 @@ MonoBehaviour:
     CollectRule: 0
     BuildRule: 1
     ConstName: 
-  - CollectFolderPath: Assets/Res/shadervariants
-    CollectRule: 0
-    BuildRule: 3
-    ConstName: shaderlist
   - CollectFolderPath: Assets/Res/buildinresources/buildinshaders/DefaultResources
     CollectRule: 0
     BuildRule: 3
@@ -57,7 +49,15 @@ MonoBehaviour:
     CollectRule: 0
     BuildRule: 3
     ConstName: shaderlist
+  - CollectFolderPath: Assets/Res/shadervariants
+    CollectRule: 0
+    BuildRule: 3
+    ConstName: shaderlist
   - CollectFolderPath: Assets/Res/actors
     CollectRule: 0
-    BuildRule: 1
+    BuildRule: 2
+    ConstName: 
+  - CollectFolderPath: Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas
+    CollectRule: 1
+    BuildRule: 4
     ConstName: 

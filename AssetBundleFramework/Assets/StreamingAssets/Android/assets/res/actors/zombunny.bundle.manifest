@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 1130851946
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e966900622ff10b1ec21d6543b5294d9
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f98fb72295b3909d74ffedc0d76189f3
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/actors/zombunny/pre_Zombunny.prefab
+- Assets/Res/actors/zombunny/Zombunny.fbx
+Dependencies:
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/materials.bundle
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/zombunnyanimations.bundle

@@ -33,4 +33,14 @@ public static class ResourceConstData
     /// AssetBundle打包信息Asset相对存储目录
     /// </summary>
     public const string AssetBundleBuildInfoAssetRelativePath = "/Res/assetbundlebuildinfo";
+
+    /// <summary>
+    /// AssetBundle文件默认的后缀名
+    /// </summary>
+    public const string AssetBundleDefaultVariant = "bundle";
+
+    /// <summary>
+    /// AssetBundle文件默认的后缀名
+    /// </summary>
+    public const string AssetBundleDefaultVariantWithPoint = ".bundle";
 }

@@ -1,0 +1,28 @@
+ManifestFileVersion: 0
+CRC: 3404021180
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 40a4c1fde2fba6bbb4e49e87a161f8b8
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ea5a42e0fd8ea905efa7aa926a3b8944
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/Light_Off.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/LoadingScreen.jpg
+- Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Instanced_Draw_Call.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Draw_Call_Result_Picture.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/MultipleTexture.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/Light_On.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/MouseAndKeyboardStudy.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet.png
+Dependencies: []

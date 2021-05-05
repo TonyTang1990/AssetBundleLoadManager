@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 3394790914
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7f2454579de6402e0ff3cfa01b0c4fd3
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7e9ee104d6bb707fb2602b751e6f78b1
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/shaders/Rim Lit Bumped Specular.shader
+Dependencies:
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist.bundle

@@ -80,8 +80,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
         ResourceModuleManager.Singleton.requstResource(atlaspath,
         (abi) =>
         {
-            // Sprite统一为小写
-            spritename = spritename.ToLower();
+            spritename = spritename;
             var sprite = abi.getAsset<Sprite>(img, spritename);
             img.sprite = sprite;
         },
@@ -103,8 +102,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
         ResourceModuleManager.Singleton.requstResource(spritepath,
         (abi) =>
         {
-            // Sprite统一为小写
-            var spritename = Path.GetFileNameWithoutExtension(spritepath).ToLower();
+            var spritename = Path.GetFileNameWithoutExtension(spritepath);
             var sprite = abi.getAsset<Sprite>(img, spritename);
             img.sprite = sprite;
         },
@@ -139,8 +137,6 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 DIYLog.Log("加载SpriteAtlas之前!");
                 var spriteatlas = abi.getAsset<SpriteAtlas>(timg, atlasname);
                 DIYLog.Log("加载SpriteAtlas之后!");
-                // Sprite统一为小写
-                spritename = spritename.ToLower();
                 timg.sprite = spriteatlas.GetSprite(spritename);
                 DIYLog.Log("SpriteAtlas.GetSprite()之后!");
                 timg.ABI = abi;
@@ -179,8 +175,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
             }
             if (abi != null)
             {
-                // Sprite统一为小写
-                var spritename = Path.GetFileNameWithoutExtension(spritepath).ToLower();
+                var spritename = Path.GetFileNameWithoutExtension(spritepath);
                 var sprite = abi.getAsset<Sprite>(timg, spritename);
                 timg.sprite = sprite;
                 timg.ABI = abi;
