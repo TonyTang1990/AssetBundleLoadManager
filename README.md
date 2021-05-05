@@ -7,14 +7,14 @@
 ### 功能支持
 
 1. 支持编辑器和真机加载AssetBundle同步和异步加载(统一采用callback风格)
-2. 加载Asset暂时是采用同步加载(AssetBundle.LoadAsset & AssetBundle.LoadAllAssets)
+2. 设计上没有考虑支持Asset异步加载统一都是同步加载(AssetBundle.LoadAsset & AssetBundle.LoadAllAssets)
 3. 支持三种基本的资源加载类型(NormalLoad -- 正常加载(可通过Tick检测判定正常卸载) Preload -- 预加载(切场景才会卸载) PermanentLoad -- 永久加载(常驻内存永不卸载))
 4. 基于UnityEngine.Object的AB索引生命周期绑定
 5. 底层统一管理AB索引计数，管理资源加载释放
 6. 支持卸载频率，卸载帧率门槛，单次卸载数量等设置。采用Long Time Unused First Unload(越久没用越先卸载)原则卸载。
 7. 支持最大AB异步加载携程数量配置(采用队列模式)
-8. 支持编辑器下使用AssetDatabase模式(只需设置AB名字，无需打包AB，暂时只支持同步)
-9. 采用[AssetBundleBrowser](https://github.com/Unity-Technologies/AssetBundles-Browser)工具打包AB
+8. 支持编辑器下使用AssetDatabase模式(只需设置AB名字，无需打包AB，暂时只支持同步--**2021/4/21新版打包修改后不需要设置AB名字，直接采用全路径加载**)
+9. 采用[AssetBundleBrowser](https://github.com/Unity-Technologies/AssetBundles-Browser)工具打包AB(**2021/4/21新版AB打包修改后不再采用**)
 
 ### 类说明
 
@@ -26,7 +26,7 @@ Manager统一管理：
 资源加载类：
 
     - ResourceLoadMethod(资源加载方式枚举类型 -- 同步 or 异步)
-    - ResourceLoadMode(资源加载模式 -- AssetBundle or AssetDatabase(**限Editor模式下可切换，且当前仅支持同步加载方式**))
+    - ResourceLoadMode(资源加载模式 -- AssetBundle or AssetDatabase(**限Editor模式下可切换，且当前仅支持同步加载方式，异步加载待支持**))
     - ResourceLoadState(资源加载状态 -- 错误，等待加载， 加载中，完成之类的)
     - ResourceLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
     - ResourceModuleManager(资源加载模块统一入口管理类)
@@ -41,6 +41,7 @@ Manager统一管理：
     - AssetDatabaseModule(AssetDatabase模式下的实际加载管理模块)
     - AssetDatabaseLoader(AssetDatabase模式下的资源加载任务类)
     - AssetDatabaseInfo(AssetDatabase模式下资源加载信息类)
+    - ResourceConstData(资源打包加载相关常量数据)
     - ResourceLoadAnalyse(资源加载统计分析工具)
 
 ### AB加载管理方案
@@ -68,7 +69,7 @@ Note:
 
 **2021/4/20新版AB打包工具重新开始编写，对后续加载接口也有影响，所以下面部分Demo展示以及热更新展示可能已经不是最新的了，新版AB打包还未完成，需要等待更新。**
 
-**新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展，还未完成未完，需要等待更新。**
+**新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展，资源加载和打包部分修改完成(2021/5/5)，热更新相关部分还待修改。**
 
 **主要变动如下:**
 
@@ -82,7 +83,7 @@ Note:
 
 ![AssetBundleBuildWindow](./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG)
 
-关于Asset路径与AB路径关联信息以及AB依赖信息最终都存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbundlebuildinfo的AB里)，通过Asset路径如何加载到对应AB以及依赖AB的关键就在这里。
+关于Asset路径与AB路径关联信息以及AB依赖信息最终都存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbundlebuildinfo的AB里)，通过Asset路径如何加载到对应AB以及依赖AB的关键就在这里。(这里和MotionFramework自定义Manifest文件输出不一样，采用打包AB的方式，为了和热更新AB走一套机制)
 
 让我们先来看下大致数据信息结构:
 
