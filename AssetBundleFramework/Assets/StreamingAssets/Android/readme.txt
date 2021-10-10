@@ -1,6 +1,6 @@
 ﻿构建平台：Android
 构建版本：1
-构建时间：2021/5/5 12:21:47
+构建时间：2021/10/10 23:08:23
 
 --配置信息--
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : LoadByFolderPath
@@ -15,6 +15,7 @@ Directory : Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra || 
 Directory : Assets/Res/shadervariants || CollectRule : Collect || BuildRule : LoadByConstName || ConstName : shaderlist
 Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : LoadByFolderPath
 Directory : Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas || CollectRule : Ignore || BuildRule : Ignore
+Directory : Assets/Res/assetbuildinfo || CollectRule : Ignore || BuildRule : Ignore
 
 --构建参数--
 CompressOption：ChunkBasedCompressionLZ4
@@ -23,7 +24,7 @@ DisableWriteTypeTree：False
 IgnoreTypeTreeChanges：False
 
 --构建清单--
-assetbundlebuildinfo.bundle
+assetbuildinfo.bundle
 assets/res/actors/cube.bundle
 assets/res/actors/sphere.bundle
 assets/res/actors/zombunny.bundle

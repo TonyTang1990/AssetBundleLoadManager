@@ -101,13 +101,13 @@ namespace MotionFramework.Editor
 				Log($"创建输出目录：{OutputDirectory}");
 			}
 
-            // AssetBundle打包信息输出目录不存在
-            var assetbundlebuildinfofolderpath = Application.dataPath + ResourceConstData.AssetBundleBuildInfoAssetRelativePath;
-            Debug.Log($"AssetBudnle打包信息输出目录:{assetbundlebuildinfofolderpath}");
-            if (!Directory.Exists(assetbundlebuildinfofolderpath))
+            // Asset打包信息输出目录不存在
+            var assetbuildinfofolderpath = Application.dataPath + ResourceConstData.AssetBuildInfoAssetRelativePath;
+            Debug.Log($"Asset打包信息输出目录:{assetbuildinfofolderpath}");
+            if (!Directory.Exists(assetbuildinfofolderpath))
             {
-                Directory.CreateDirectory(assetbundlebuildinfofolderpath);
-                Log($"创建打包信息Asset输出目录：{assetbundlebuildinfofolderpath}");
+                Directory.CreateDirectory(assetbuildinfofolderpath);
+                Log($"创建打包信息Asset输出目录：{assetbuildinfofolderpath}");
             }
 		}
 
@@ -135,14 +135,14 @@ namespace MotionFramework.Editor
                 buildInfo.assetNames = new string[] { assetInfo.AssetPath };
                 buildInfoList.Add(buildInfo);
             }
-            // AssetBundleBuildInfoAsset打包信息单独打包
-            var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBundleBuildInfoAssetRelativePath}/{ResourceConstData.AssetBundleBuildInfoAssetName}.asset";
+            // AssetBuildInfoAsset打包信息单独打包
+            var assetbuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBuildInfoAssetRelativePath}/{ResourceConstData.AssetBuildInfoAssetName}.asset";
             var buildinfo = new AssetBundleBuild();
-            buildinfo.assetBundleName = ResourceConstData.AssetBundleBuildInfoAssetName;
+            buildinfo.assetBundleName = ResourceConstData.AssetBuildInfoAssetName;
             buildinfo.assetBundleVariant = ResourceConstData.AssetBundleDefaultVariant;
-            buildinfo.assetNames = new string[] { assetbundlebuildinfoassetrelativepath };
+            buildinfo.assetNames = new string[] { assetbuildinfoassetrelativepath };
             buildInfoList.Add(buildinfo);
-            abbuildinfomap.Add(assetbundlebuildinfoassetrelativepath, new AssetBundleBuildInfo(ResourceConstData.AssetBundleBuildInfoAssetName.ToLower()));
+            abbuildinfomap.Add(assetbuildinfoassetrelativepath, new AssetBundleBuildInfo(ResourceConstData.AssetBuildInfoAssetName.ToLower()));
 
             // 更新AB打包信息Asset(e.g.比如Asset打包信息, AB打包依赖信息)
             UpdateAssetBundleBuildInfoAsset(buildInfoList, abbuildinfomap);
@@ -179,11 +179,11 @@ namespace MotionFramework.Editor
         private void UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuild> buildinfolist, Dictionary<string, AssetBundleBuildInfo> abbuildinfomap)
         {
             // Note: AssetBundle打包信息统一存小写，确保和AB打包那方一致
-            var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBundleBuildInfoAssetRelativePath}/{ResourceConstData.AssetBundleBuildInfoAssetName}.asset";
-            var assetbundlebuildasset = AssetDatabase.LoadAssetAtPath<AssetBundleBuildInfoAsset>(assetbundlebuildinfoassetrelativepath);
+            var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBuildInfoAssetRelativePath}/{ResourceConstData.AssetBuildInfoAssetName}.asset";
+            var assetbundlebuildasset = AssetDatabase.LoadAssetAtPath<AssetBuildInfoAsset>(assetbundlebuildinfoassetrelativepath);
             if (assetbundlebuildasset == null)
             {
-                assetbundlebuildasset = new AssetBundleBuildInfoAsset();
+                assetbundlebuildasset = new AssetBuildInfoAsset();
                 AssetDatabase.CreateAsset(assetbundlebuildasset, assetbundlebuildinfoassetrelativepath);
             }
             assetbundlebuildasset.AssetBuildInfoList.Clear();

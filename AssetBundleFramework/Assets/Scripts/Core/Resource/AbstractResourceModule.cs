@@ -51,6 +51,21 @@ public abstract class AbstractResourceModule {
     /// </summary>
     protected Dictionary<ResourceLoadType, Dictionary<string, AbstractResourceInfo>> mAllLoadedResourceInfoMap;
 
+    #region Asset打包信息
+    /// <summary>
+    /// Asset打包信息
+    /// </summary>
+    public AssetBuildInfoAsset AssetBuildInfo
+    {
+        get
+        {
+            return mAssetBuildInfo;
+        }
+    }
+    protected AssetBuildInfoAsset mAssetBuildInfo;
+
+    #endregion
+
     #region FSP计算部分
     /// <summary>
     /// 当前FPS
@@ -94,6 +109,11 @@ public abstract class AbstractResourceModule {
         mAllLoadedResourceInfoMap.Add(ResourceLoadType.PermanentLoad, new Dictionary<string, AbstractResourceInfo>());
         mFPSUpdateInterval = 1.0f;
     }
+
+    /// <summary>
+    /// 加载AssetBundle打包信息
+    /// </summary>
+    public abstract void loadAssetBundleBuildInfo();
 
     /// <summary>
     /// 开启资源不再使用回收检测

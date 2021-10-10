@@ -80,43 +80,31 @@ public class AssetBundleModule : AbstractResourceModule
 
     #region AB依赖信息部分
     /// <summary>
-    /// AssetBundle打包信息
+    /// 加载Asset打包信息
     /// </summary>
-    public AssetBundleBuildInfoAsset AssetBundleBuildInfo
-    {
-        get
-        {
-            return mAssetBundleBuildInfo;
-        }
-    }
-    private AssetBundleBuildInfoAsset mAssetBundleBuildInfo;
-    
-    /// <summary>
-    /// 加载AssetBundle打包信息
-    /// </summary>
-    private void loadAssetBundleBuildInfo()
+    public override void loadAssetBundleBuildInfo()
     {
         // 确保之前加载的AB打包信息卸载彻底
-        if(mAssetBundleBuildInfo != null)
+        if(mAssetBuildInfo != null)
         {
-            Resources.UnloadAsset(mAssetBundleBuildInfo);
-            mAssetBundleBuildInfo = null;
+            Resources.UnloadAsset(mAssetBuildInfo);
+            mAssetBuildInfo = null;
         }
         // AssetBundle打包信息比较特殊，在未加载完成前拿不到AB名字映射
         // 所以这里单独特殊加载,不走正常流程
-        var abpath = AssetBundlePath.GetABLoadFullPath(ResourceConstData.AssetBundleBuildInfoAssetName);
+        var abpath = AssetBundlePath.GetABLoadFullPath(ResourceConstData.AssetBuildInfoAssetName);
         AssetBundle ab = null;
         ab = AssetBundle.LoadFromFile(abpath);
         if(ab != null)
         {
-            mAssetBundleBuildInfo = ab.LoadAsset<AssetBundleBuildInfoAsset>(ResourceConstData.AssetBundleBuildInfoAssetName);
-            mAssetBundleBuildInfo.init();
+            mAssetBuildInfo = ab.LoadAsset<AssetBuildInfoAsset>(ResourceConstData.AssetBuildInfoAssetName);
+            mAssetBuildInfo.init();
             ab.Unload(false);
-            Debug.Log("AssetBundle打包信息文件加载成功!");
+            Debug.Log("Asset打包信息文件加载成功!");
         }
         else
         {
-            Debug.LogError($"找不到AssetBundle打包信息文件:{ResourceConstData.AssetBundleBuildInfoAssetName}");
+            Debug.LogError($"找不到Asset打包信息文件:{ResourceConstData.AssetBuildInfoAssetName}");
         }
     }
     
@@ -127,9 +115,9 @@ public class AssetBundleModule : AbstractResourceModule
     /// <returns></returns>
     private string[] getAssetBundleDpInfo(string abpath)
     {
-        if (mAssetBundleBuildInfo.ABPathDepMap.ContainsKey(abpath))
+        if (mAssetBuildInfo.ABPathDepMap.ContainsKey(abpath))
         {
-            return mAssetBundleBuildInfo.ABPathDepMap[abpath];
+            return mAssetBuildInfo.ABPathDepMap[abpath];
         }
         else
         {
@@ -144,7 +132,7 @@ public class AssetBundleModule : AbstractResourceModule
     /// <returns></returns>
     private string getAssetPathAssetBundleName(string assetpath)
     {
-        var abpath = mAssetBundleBuildInfo.getAssetABPath(assetpath);
+        var abpath = mAssetBuildInfo.getAssetABPath(assetpath);
         if(!string.IsNullOrEmpty(abpath))
         {
             return abpath;
@@ -161,7 +149,7 @@ public class AssetBundleModule : AbstractResourceModule
     /// </summary>
     public void printAllResourceDpInfo()
     {
-        foreach (var abinfo in mAssetBundleBuildInfo.ABPathDepMap)
+        foreach (var abinfo in mAssetBuildInfo.ABPathDepMap)
         {
             ResourceLogger.log(string.Format("AB Name:{0}", abinfo.Key));
             foreach (var dpfile in abinfo.Value)
@@ -202,8 +190,6 @@ public class AssetBundleModule : AbstractResourceModule
             AssetBundleAsyncQueueList.Add(abaq);
             abaq.startABAsyncLoad();
         }
-        // AB打包信息无依赖关系可以先行
-        loadAssetBundleBuildInfo();
     }
 
     /// <summary>
@@ -219,7 +205,7 @@ public class AssetBundleModule : AbstractResourceModule
         respath = respath.ToLower();
         var abpath = string.Empty;
         // 因为依赖AB加载也是走统一入口，所以要区分是AB路径还是Asset路径
-        if (!mAssetBundleBuildInfo.isABPath(respath))
+        if (!mAssetBuildInfo.isABPath(respath))
         {
             // AB依赖信息文件和AB打包
             abpath = getAssetPathAssetBundleName(respath);

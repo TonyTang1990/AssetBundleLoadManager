@@ -105,6 +105,7 @@ public class ResourceModuleManager : SingletonTemplate<ResourceModuleManager>
 #endif
         Debug.Log(string.Format("当前资源加载模式 : {0}", mResLoadMode));
         CurrentResourceModule.init();
+        CurrentResourceModule.loadAssetBundleBuildInfo();
     }
 
     /// <summary>

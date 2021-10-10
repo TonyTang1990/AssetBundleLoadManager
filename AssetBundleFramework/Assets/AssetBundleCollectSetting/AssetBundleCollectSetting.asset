@@ -61,3 +61,7 @@ MonoBehaviour:
     CollectRule: 1
     BuildRule: 4
     ConstName: 
+  - CollectFolderPath: Assets/Res/assetbuildinfo
+    CollectRule: 1
+    BuildRule: 4
+    ConstName: 

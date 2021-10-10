@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 702369647
+CRC: 1715193534
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -92,5 +92,5 @@ AssetBundleManifest:
         Dependency_0: assets/res/actors/zombunny/materials.bundle
         Dependency_1: assets/res/actors/zombunny/zombunnyanimations.bundle
     Info_24:
-      Name: assetbundlebuildinfo.bundle
+      Name: assetbuildinfo.bundle
       Dependencies: {}

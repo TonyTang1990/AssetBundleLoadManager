@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3475122616
+CRC: 238543922
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 27c3d1e45e3ddf1899f530ad9c61e1e2
+    Hash: 483d44cc92d930bbaa45184b4c1b95f6
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 4a1128fe8fe67f30fc4d804d7a20e3af
+    Hash: 90c188f996c5efc30286fe4785dcde93
 HashAppended: 0
 ClassTypes:
 - Class: 114
@@ -14,5 +14,5 @@ ClassTypes:
 - Class: 115
   Script: {instanceID: 0}
 Assets:
-- Assets/Res/assetbundlebuildinfo/AssetBundleBuildInfo.asset
+- Assets/Res/assetbuildinfo/AssetBuildInfo.asset
 Dependencies: []

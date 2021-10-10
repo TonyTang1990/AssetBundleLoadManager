@@ -19,6 +19,15 @@ using UnityEngine;
 /// </summary>
 public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
 {
+    /// <summary>
+    /// 加载的Asset路径
+    /// </summary>
+    public string AssetPath
+    {
+        get;
+        set;
+    }
+
     public AssetDatabaseInfo()
     {
         AssetBundlePath = string.Empty;
@@ -28,6 +37,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         RefCount = 0;
         mReferenceOwnerList = new List<System.WeakReference>();
         mLoadedAssetMap = new Dictionary<string, UnityEngine.Object>();
+        AssetPath = string.Empty;
     }
 
     /// <summary>
@@ -116,8 +126,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
             }
             else
             {
-                var assetpath = $"{AssetBundlePath}/{assetname}";
-                T asset = AssetDatabase.LoadAssetAtPath<T>(assetpath);
+                T asset = AssetDatabase.LoadAssetAtPath<T>(AssetPath);
                 if (asset != null)
                 {
                     mLoadedAssetMap.Add(assetname, asset);
@@ -198,6 +207,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         RefCount = 0;
         mReferenceOwnerList.Clear();
         mLoadedAssetMap.Clear();
+        AssetPath = string.Empty;
     }
 }
 #endif

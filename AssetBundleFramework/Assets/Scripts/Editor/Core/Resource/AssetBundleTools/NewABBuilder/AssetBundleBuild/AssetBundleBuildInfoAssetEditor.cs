@@ -13,7 +13,7 @@ using UnityEngine;
 /// AssetBundleBuildInfoAssetEditor.cs
 /// AssetBundle编译信息Asset自定义编辑器
 /// </summary>
-[CustomEditor(typeof(AssetBundleBuildInfoAsset))]
+[CustomEditor(typeof(AssetBuildInfoAsset))]
 public class AssetBundleBuildInfoAssetEditor : Editor
 {
     /// <summary>

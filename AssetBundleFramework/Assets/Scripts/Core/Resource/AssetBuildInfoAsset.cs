@@ -65,7 +65,7 @@ public class AssetBundleBuildInfo
 /// AssetBundleBuildInfoAsset.cs
 /// AssetBundle打包信息Asset
 /// </summary>
-public class AssetBundleBuildInfoAsset : ScriptableObject
+public class AssetBuildInfoAsset : ScriptableObject
 {
     /// <summary>
     /// Asset打包信息列表
@@ -93,7 +93,7 @@ public class AssetBundleBuildInfoAsset : ScriptableObject
         private set;
     }
 
-    public AssetBundleBuildInfoAsset()
+    public AssetBuildInfoAsset()
     {
         AssetBuildInfoList = new List<AssetBuildInfo>();
         AssetBundleBuildInfoList = new List<AssetBundleBuildInfo>();

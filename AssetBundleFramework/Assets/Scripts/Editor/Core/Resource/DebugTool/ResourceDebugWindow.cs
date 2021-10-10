@@ -205,7 +205,7 @@ public class ResourceDebugWindow : BaseEditorWindow
         {
             var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
             GUILayout.BeginVertical();
-            var alldepinfo = assetbundleresourcemodule.AssetBundleBuildInfo.ABPathDepMap;
+            var alldepinfo = assetbundleresourcemodule.AssetBuildInfo.ABPathDepMap;
             if (!mTextFilter.Equals(string.Empty))
             {
                 if (mFilterTextChanged)
@@ -549,7 +549,7 @@ public class ResourceDebugWindow : BaseEditorWindow
         if(isAssetBundleModule())
         {
             var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-            var alldepinfomap = assetbundleresourcemodule.AssetBundleBuildInfo.ABPathDepMap;
+            var alldepinfomap = assetbundleresourcemodule.AssetBuildInfo.ABPathDepMap;
             using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Application.dataPath + "/../alldepab.txt"))
             {
                 foreach (var depinfo in alldepinfomap)

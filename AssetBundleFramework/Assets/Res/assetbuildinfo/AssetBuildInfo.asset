@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf30ac501386e034b961fa0efc257509, type: 3}
-  m_Name: AssetBundleBuildInfo
+  m_Name: AssetBuildInfo
   m_EditorClassIdentifier: 
   AssetBuildInfoList:
   - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdaichipreview
@@ -874,8 +874,8 @@ MonoBehaviour:
   - AssetPath: assets/res/actors/zombunny/zombunny
     ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
-  - AssetPath: assets/res/assetbundlebuildinfo/assetbundlebuildinfo
-    ABPath: assetbundlebuildinfo
+  - AssetPath: assets/res/assetbuildinfo/assetbuildinfo
+    ABPath: assetbuildinfo
     ABVariantPath: bundle
   AssetBundleBuildInfoList:
   - ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
@@ -943,5 +943,5 @@ MonoBehaviour:
     DepABPathList:
     - assets/res/actors/zombunny/zombunnyanimations
     - assets/res/actors/zombunny/materials
-  - ABPath: assetbundlebuildinfo
+  - ABPath: assetbuildinfo
     DepABPathList: []

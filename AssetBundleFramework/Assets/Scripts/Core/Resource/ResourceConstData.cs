@@ -25,14 +25,14 @@ public static class ResourceConstData
     public const string ShaderVariantsAssetName = "DIYShaderVariantsCollection";
 
     /// <summary>
-    /// AssetBundle打包信息Asset名(用于存储Asset打包映射AB信息(从而做到根据Asset路径就能查到AB名字))
+    /// Asset打包信息Asset名(用于存储Asset打包映射AB信息(从而做到根据Asset路径就能查到AB名字))
     /// </summary>
-    public const string AssetBundleBuildInfoAssetName = "AssetBundleBuildInfo";
+    public const string AssetBuildInfoAssetName = "AssetBuildInfo";
 
     /// <summary>
-    /// AssetBundle打包信息Asset相对存储目录
+    /// Asset打包信息Asset相对存储目录
     /// </summary>
-    public const string AssetBundleBuildInfoAssetRelativePath = "/Res/assetbundlebuildinfo";
+    public const string AssetBuildInfoAssetRelativePath = "/Res/assetbuildinfo";
 
     /// <summary>
     /// AssetBundle文件默认的后缀名

@@ -25,9 +25,18 @@ public class AssetDatabaseLoader : FactoryObj
     public delegate void LoadResourceCompleteNotifier(AssetDatabaseLoader adl);
 
     /// <summary>
-    /// 加载任务对应的资源路径
+    /// 加载任务对应的资源AB路径
     /// </summary>
     public string AssetBundlePath
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// 加载任务对应的资源路径
+    /// </summary>
+    public string AssetPath
     {
         get;
         set;
@@ -89,6 +98,7 @@ public class AssetDatabaseLoader : FactoryObj
     public AssetDatabaseLoader()
     {
         AssetBundlePath = string.Empty;
+        AssetPath = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
@@ -130,6 +140,7 @@ public class AssetDatabaseLoader : FactoryObj
     public void recycle()
     {
         AssetBundlePath = string.Empty;
+        AssetPath = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
@@ -160,13 +171,13 @@ public class AssetDatabaseLoader : FactoryObj
     /// </summary>
     private void loadAssetSync()
     {
-        if(string.IsNullOrEmpty(AssetBundlePath))
+        if(string.IsNullOrEmpty(AssetPath))
         {
-            ResourceLogger.logErr(string.Format("找不到资源名 : {0}的资源!", AssetBundlePath));
+            ResourceLogger.logErr(string.Format("找不到资源名 : {0}的资源!", AssetPath));
         }
         else
         {
-            mResourceInfo = createAssetDatabaseInfo(AssetBundlePath);
+            mResourceInfo = createAssetDatabaseInfo(AssetBundlePath, AssetPath);
             mResourceInfo.updateLastUsedTime();
         }
 
@@ -188,12 +199,14 @@ public class AssetDatabaseLoader : FactoryObj
     /// <summary>
     /// 创建AssetDatabaseInfo对象信息
     /// </summary>
+    /// <param name="assetBundlePath">AB路径</param>
     /// <param name="respath">资源路径</param>
     /// <returns></returns>
-    private AssetDatabaseInfo createAssetDatabaseInfo(string respath)
+    private AssetDatabaseInfo createAssetDatabaseInfo(string assetBundlePath, string respath)
     {
         var adi = AssetDatabaseInfoFactory.create();
-        adi.AssetBundlePath = respath;
+        adi.AssetBundlePath = assetBundlePath;
+        adi.AssetPath = respath;
         adi.onResourceUnloadedCallback = onResourceUnloaded;
         return adi;
     }
