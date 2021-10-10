@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             AssetDatabaseModule.cs
  * Author:                  TONYTANG
  * Create Date:             2019//04/07
@@ -9,16 +9,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO:
+// æ”¯æŒAssetdabaseæ¨¡å¼æ­£ç¡®çš„ä»¥æ¥åŠ è½½å’Œå¸è½½ç®¡ç†(ä»…åœ¨ç¡®ä¿æ‰€æœ‰èµ„æºéƒ½æ­£ç¡®æ ‡è®°ABåå­—æ—¶å¯ç”¨)
+
 /// <summary>
 /// AssetDatabaseModule.cs
-/// AssetDatabase×ÊÔ´¼ÓÔØÄ£¿é
+/// AssetDatabaseèµ„æºåŠ è½½æ¨¡å—
 /// </summary>
 public class AssetDatabaseModule : AbstractResourceModule
 {
-    #region ×ÊÔ´¼ÓÔØ¹ÜÀí²¿·Ö
+    #region èµ„æºåŠ è½½ç®¡ç†éƒ¨åˆ†
     /// <summary>
-    /// ×ÊÔ´ÇëÇóÈÎÎñÓ³Éämap
-    /// KeyÎª×ÊÔ´Ãû£¬ValueÎª×ÊÔ´¼ÓÔØÈÎÎñ¶ÔÏó
+    /// èµ„æºè¯·æ±‚ä»»åŠ¡æ˜ å°„map
+    /// Keyä¸ºèµ„æºåï¼ŒValueä¸ºèµ„æºåŠ è½½ä»»åŠ¡å¯¹è±¡
     /// </summary>
     public Dictionary<string, AssetDatabaseLoader> ResourceRequestTaskMap
     {
@@ -30,36 +33,36 @@ public class AssetDatabaseModule : AbstractResourceModule
     private Dictionary<string, AssetDatabaseLoader> mResourceRequestTaskMap;
 
     /// <summary>
-    /// ÒÑ¼ÓÔØ×ÊÔ´Àï²»ÔÙÓĞÓĞĞ§ÒıÓÃµÄ×ÊÔ´ĞÅÏ¢ÁĞ±í
+    /// å·²åŠ è½½èµ„æºé‡Œä¸å†æœ‰æœ‰æ•ˆå¼•ç”¨çš„èµ„æºä¿¡æ¯åˆ—è¡¨
     /// </summary>
     private List<AbstractResourceInfo> mUnsedResourceInfoList;
 
-    /// <summary> ¼ì²âÎ´Ê¹ÓÃ×ÊÔ´Ê±¼ä¼ä¸ô(ÔÚÇëÇó¶ÓÁĞÎª¿ÕÊ±²Å¼ì²âÎ´Ê¹ÓÃ×ÊÔ´) /// </summary>
+    /// <summary> æ£€æµ‹æœªä½¿ç”¨èµ„æºæ—¶é—´é—´éš”(åœ¨è¯·æ±‚é˜Ÿåˆ—ä¸ºç©ºæ—¶æ‰æ£€æµ‹æœªä½¿ç”¨èµ„æº) /// </summary>
     private float mCheckUnsedResourceTimeInterval;
 
-    /// <summary> ¼ì²âÎ´Ê¹ÓÃ×ÊÔ´µÈ´ı¼ä¸ô /// </summary>
+    /// <summary> æ£€æµ‹æœªä½¿ç”¨èµ„æºç­‰å¾…é—´éš” /// </summary>
     private WaitForSeconds mWaitForCheckUnsedResourceInterval;
 
     /// <summary>
-    /// µ¥Ö¡Ğ¶ÔØµÄ×ÊÔ´×î´óÊıÁ¿
-    /// ±ÜÃâµ¥Ö¡Ğ¶ÔØ¹ı¶àABµ¼ÖÂ¿¨¶Ù
+    /// å•å¸§å¸è½½çš„èµ„æºæœ€å¤§æ•°é‡
+    /// é¿å…å•å¸§å¸è½½è¿‡å¤šABå¯¼è‡´å¡é¡¿
     /// </summary>
     private int mMaxUnloadResourceNumberPerFrame;
 
     /// <summary>
-    /// ×ÊÔ´×î¶ÌµÄÓĞĞ§Éú´æÊ±¼ä
-    /// ÓÃÓÚ±ÜÃâ¶ÌÊ±¼äÄÚÆµ·±É¾³ıĞ¶ÔØÍ¬Ò»¸öABµÄÇé¿ö(±ÈÈçÍ¬Ò»¸ö´°¿ÚAB×ÊÔ´²»¶ÏÖØ¸´´ò¿ª¹Ø±Õ)
+    /// èµ„æºæœ€çŸ­çš„æœ‰æ•ˆç”Ÿå­˜æ—¶é—´
+    /// ç”¨äºé¿å…çŸ­æ—¶é—´å†…é¢‘ç¹åˆ é™¤å¸è½½åŒä¸€ä¸ªABçš„æƒ…å†µ(æ¯”å¦‚åŒä¸€ä¸ªçª—å£ABèµ„æºä¸æ–­é‡å¤æ‰“å¼€å…³é—­)
     /// </summary>
     private float mResourceMinimumLifeTime;
 
     /// <summary>
-    /// ×ÊÔ´»ØÊÕÖ¡ÂÊÃÅ¼÷(±ÜÃâÖ¡ÂÊ¹ıµÍµÄÊ±ºò»ØÊÕABÔì³É¹ı¿¨)
+    /// èµ„æºå›æ”¶å¸§ç‡é—¨æ§›(é¿å…å¸§ç‡è¿‡ä½çš„æ—¶å€™å›æ”¶ABé€ æˆè¿‡å¡)
     /// </summary>
     private int mResourceRecycleFPSThreshold;
     #endregion
 
     /// <summary>
-    /// ×ÊÔ´¼ÓÔØÄ£¿é³õÊ¼»¯
+    /// èµ„æºåŠ è½½æ¨¡å—åˆå§‹åŒ–
     /// </summary>
     public override void init()
     {
@@ -74,20 +77,20 @@ public class AssetDatabaseModule : AbstractResourceModule
         mResourceMinimumLifeTime = 20.0f;
         mResourceRecycleFPSThreshold = 20;
 
-        AssetDatabaseLoaderFactory.initialize(20);             // ¿¼ÂÇµ½´ó²¿·Ö¶¼ÊÇ²ÉÓÃÍ¬²½¼ÓÔØ£¬ËùÒÔAssetDatabaseLoader²¢²»ĞèÒª³õÊ¼»¯Ì«¶à
+        AssetDatabaseLoaderFactory.initialize(20);             // è€ƒè™‘åˆ°å¤§éƒ¨åˆ†éƒ½æ˜¯é‡‡ç”¨åŒæ­¥åŠ è½½ï¼Œæ‰€ä»¥AssetDatabaseLoaderå¹¶ä¸éœ€è¦åˆå§‹åŒ–å¤ªå¤š
         AssetDatabaseInfoFactory.initialize(200);
     }
 
     /// <summary>
-    /// ÕæÕıµÄÇëÇó×ÊÔ´
+    /// çœŸæ­£çš„è¯·æ±‚èµ„æº
     /// </summary>
-    /// <param name="respath">×ÊÔ´ABÂ·¾¶</param>
-    /// <param name="completehandler">¼ÓÔØÍê³ÉÉÏ²ã»Øµ÷</param>
-    /// <param name="loadtype">×ÊÔ´¼ÓÔØÀàĞÍ</param>
-    /// <param name="loadmethod">×ÊÔ´¼ÓÔØ·½Ê½</param>
+    /// <param name="respath">èµ„æºABè·¯å¾„</param>
+    /// <param name="completehandler">åŠ è½½å®Œæˆä¸Šå±‚å›è°ƒ</param>
+    /// <param name="loadtype">èµ„æºåŠ è½½ç±»å‹</param>
+    /// <param name="loadmethod">èµ„æºåŠ è½½æ–¹å¼</param>
     protected override void realRequestResource(string respath, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        // Èç¹û×ÊÔ´ÒÑ¾­¼ÓÔØÍê³É£¬Ö±½Ó·µ»Ø
+        // å¦‚æœèµ„æºå·²ç»åŠ è½½å®Œæˆï¼Œç›´æ¥è¿”å›
         if (mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].ContainsKey(respath))
         {
             completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad][respath]);
@@ -111,7 +114,7 @@ public class AssetDatabaseModule : AbstractResourceModule
         else
         {
             AssetDatabaseLoader adloader = createADLoader(respath);
-            //ÔİÊ±Ä¬ÈÏ¶¼µ±Í¬²½¼ÓÔØ£¬²»Ö§³ÖÒì²½Ä£Äâ
+            //æš‚æ—¶é»˜è®¤éƒ½å½“åŒæ­¥åŠ è½½ï¼Œä¸æ”¯æŒå¼‚æ­¥æ¨¡æ‹Ÿ
             adloader.LoadMethod = loadmethod;
             adloader.LoadType = loadtype;
             adloader.LoadResourceCompleteCallBack = completehandler;
@@ -122,7 +125,7 @@ public class AssetDatabaseModule : AbstractResourceModule
     }
 
     /// <summary>
-    /// ¸üĞÂÈë¿Ú
+    /// æ›´æ–°å…¥å£
     /// </summary>
     public override void Update()
     {
@@ -130,57 +133,62 @@ public class AssetDatabaseModule : AbstractResourceModule
     }
 
     /// <summary>
-    /// ÕæÕıÖ´ĞĞµİ¹éĞ¶ÔØÖ¸¶¨ÀàĞÍ²»ÔÙÊ¹ÓÃµÄ×ÊÔ´½Ó¿Ú
+    /// çœŸæ­£æ‰§è¡Œé€’å½’å¸è½½æŒ‡å®šç±»å‹ä¸å†ä½¿ç”¨çš„èµ„æºæ¥å£
     /// </summary>
-    /// <param name="resourceloadtype">×ÊÔ´¼ÓÔØÀàĞÍ</param>
+    /// <param name="resourceloadtype">èµ„æºåŠ è½½ç±»å‹</param>
     protected override void doUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
     {
-        // µİ¹éÅĞ¶¨Ğ¶ÔØËùÓĞ²»ÔÙ¿ÉÓÃµÄÕı³£¼ÓÔØ×ÊÔ´
-        bool iscomplete = false;
-        bool hasunsedres = false;
-        while (!iscomplete)
+        // Assetdatabaseæ¨¡å¼ä¸‹ä¸ºäº†å¼€å‘æ–¹ä¾¿æ²¡æœ‰æ­£ç¡®æ·»åŠ ä¾èµ–è®¡æ•°ï¼Œ
+        // æ‰€ä»¥AssetDatabaseä¸å…è®¸èµ„æºå›æ”¶ï¼Œé¿å…é”™è¯¯çš„èµ„æºå›æ”¶
+        if (ResourceModuleManager.Singleton.ResLoadMode != ResourceLoadMode.AssetDatabase)
         {
-            // ¼ì²é»ØÊÕ²»ÔÙÊ¹ÓÃÕı³£ÒÑ¼ÓÔØµÄAB
-            foreach (var loadedab in mAllLoadedResourceInfoMap[resourceloadtype])
+            // é€’å½’åˆ¤å®šå¸è½½æ‰€æœ‰ä¸å†å¯ç”¨çš„æ­£å¸¸åŠ è½½èµ„æº
+            bool iscomplete = false;
+            bool hasunsedres = false;
+            while (!iscomplete)
             {
-                if (loadedab.Value.IsUnsed)
+                // æ£€æŸ¥å›æ”¶ä¸å†ä½¿ç”¨æ­£å¸¸å·²åŠ è½½çš„AB
+                foreach (var loadedab in mAllLoadedResourceInfoMap[resourceloadtype])
                 {
-                    mUnsedResourceInfoList.Add(loadedab.Value);
+                    if (loadedab.Value.IsUnsed)
+                    {
+                        mUnsedResourceInfoList.Add(loadedab.Value);
+                    }
+                }
+
+                if (mUnsedResourceInfoList.Count == 0)
+                {
+                    //ä¸å†æœ‰å¯å¸è½½çš„èµ„æº
+                    iscomplete = true;
+                }
+                else
+                {
+                    hasunsedres = true;
+                    // æœ‰å¯å¸è½½çš„ç»„ä»–å§
+                    for (int i = 0; i < mUnsedResourceInfoList.Count; i++)
+                    {
+                        mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedResourceInfoList[i].AssetBundlePath);
+                        mUnsedResourceInfoList[i].dispose();
+                    }
+                    mUnsedResourceInfoList.Clear();
                 }
             }
 
-            if (mUnsedResourceInfoList.Count == 0)
+            if (iscomplete && hasunsedres)
             {
-                //²»ÔÙÓĞ¿ÉĞ¶ÔØµÄ×ÊÔ´
-                iscomplete = true;
+                //Resources.UnloadAsset()åªæ˜¯æ ‡è®°è¯¥èµ„æºèƒ½è¢«å¸è½½,å¹¶ä¸èƒ½çœŸæ­£å¸è½½èµ„æº
+                //åŒæ—¶AssetDatabaseæ¨¡å¼ä¸‹ï¼Œæ²¡æœ‰ä¾èµ–èµ„æºçš„æ¦‚å¿µï¼Œ
+                //ä¸ºäº†ç¡®ä¿ä¸å†ä½¿ç”¨çš„èµ„æºè¢«æ­£ç¡®å¸è½½(æ¨¡æ‹ŸAssetBundleæ¨¡å¼çš„åŠ è½½ç®¡ç†ç¯å¢ƒ)
+                //é€šè¿‡è°ƒç”¨Resources.UnloadUnusedAssets()æ–¹æ³•æ¥æµ‹è¯•å¸è½½èµ„æº
+                Resources.UnloadUnusedAssets();
             }
-            else
-            {
-                hasunsedres = true;
-                // ÓĞ¿ÉĞ¶ÔØµÄ×éËû°É
-                for (int i = 0; i < mUnsedResourceInfoList.Count; i++)
-                {
-                    mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedResourceInfoList[i].AssetBundlePath);
-                    mUnsedResourceInfoList[i].dispose();
-                }
-                mUnsedResourceInfoList.Clear();
-            }
-        }
-
-        if (iscomplete && hasunsedres)
-        {
-            //Resources.UnloadAsset()Ö»ÊÇ±ê¼Ç¸Ã×ÊÔ´ÄÜ±»Ğ¶ÔØ,²¢²»ÄÜÕæÕıĞ¶ÔØ×ÊÔ´
-            //Í¬Ê±AssetDatabaseÄ£Ê½ÏÂ£¬Ã»ÓĞÒÀÀµ×ÊÔ´µÄ¸ÅÄî£¬
-            //ÎªÁËÈ·±£²»ÔÙÊ¹ÓÃµÄ×ÊÔ´±»ÕıÈ·Ğ¶ÔØ(Ä£ÄâAssetBundleÄ£Ê½µÄ¼ÓÔØ¹ÜÀí»·¾³)
-            //Í¨¹ıµ÷ÓÃResources.UnloadUnusedAssets()·½·¨À´²âÊÔĞ¶ÔØ×ÊÔ´
-            Resources.UnloadUnusedAssets();
         }
     }
 
     /// <summary>
-    /// ´´½¨AssetDatabase×ÊÔ´¼ÓÔØ¶ÔÏó
+    /// åˆ›å»ºAssetDatabaseèµ„æºåŠ è½½å¯¹è±¡
     /// </summary>
-    /// <param name="resname">×ÊÔ´Ãû</param>
+    /// <param name="resname">èµ„æºå</param>
     /// <returns></returns>
     private AssetDatabaseLoader createADLoader(string resname)
     {
@@ -190,58 +198,63 @@ public class AssetDatabaseModule : AbstractResourceModule
     }
 
     /// <summary>
-    /// ¶ÓÁĞÀï²»ÔÙÓĞ×ÊÔ´ĞèÒª¼ÓÔØÊ±¼ì²é²»ÔÙÊ¹ÓÃµÄ×ÊÔ´
+    /// é˜Ÿåˆ—é‡Œä¸å†æœ‰èµ„æºéœ€è¦åŠ è½½æ—¶æ£€æŸ¥ä¸å†ä½¿ç”¨çš„èµ„æº
     /// </summary>
     protected override IEnumerator checkUnsedResource()
     {
         while (true)
         {
-            if (EnableResourceRecyclingUnloadUnsed && mCurrentFPS >= mResourceRecycleFPSThreshold && mResourceRequestTaskMap.Count == 0)
+            // Assetdatabaseæ¨¡å¼ä¸‹ä¸ºäº†å¼€å‘æ–¹ä¾¿æ²¡æœ‰æ­£ç¡®æ·»åŠ ä¾èµ–è®¡æ•°ï¼Œ
+            // æ‰€ä»¥AssetDatabaseä¸å…è®¸èµ„æºå›æ”¶ï¼Œé¿å…é”™è¯¯çš„èµ„æºå›æ”¶
+            if (ResourceModuleManager.Singleton.ResLoadMode != ResourceLoadMode.AssetDatabase)
             {
-                float time = Time.time;
-                // ¼ì²éÕı³£¼ÓÔØµÄ×ÊÔ´£¬»ØÊÕ²»ÔÙÊ¹ÓÃµÄ×ÊÔ´
-                foreach (var loadedres in mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad])
+                if (EnableResourceRecyclingUnloadUnsed && mCurrentFPS >= mResourceRecycleFPSThreshold && mResourceRequestTaskMap.Count == 0)
                 {
-                    if (loadedres.Value.IsUnsed)
+                    float time = Time.time;
+                    // æ£€æŸ¥æ­£å¸¸åŠ è½½çš„èµ„æºï¼Œå›æ”¶ä¸å†ä½¿ç”¨çš„èµ„æº
+                    foreach (var loadedres in mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad])
                     {
-                        if ((time - loadedres.Value.LastUsedTime) > mResourceMinimumLifeTime)
+                        if (loadedres.Value.IsUnsed)
                         {
-                            mUnsedResourceInfoList.Add(loadedres.Value);
+                            if ((time - loadedres.Value.LastUsedTime) > mResourceMinimumLifeTime)
+                            {
+                                mUnsedResourceInfoList.Add(loadedres.Value);
+                            }
                         }
                     }
-                }
 
-                if (mUnsedResourceInfoList.Count > 0)
-                {
-                    // ¸ù¾İ×î½üÊ¹ÓÃÊ±¼äÉıĞòÅÅÁĞ
-                    mUnsedResourceInfoList.Sort(ADILastUsedTimeSort);
-
-                    for (int i = 0; i < mUnsedResourceInfoList.Count; i++)
+                    if (mUnsedResourceInfoList.Count > 0)
                     {
-                        if (i < mMaxUnloadResourceNumberPerFrame)
+                        // æ ¹æ®æœ€è¿‘ä½¿ç”¨æ—¶é—´å‡åºæ’åˆ—
+                        mUnsedResourceInfoList.Sort(ADILastUsedTimeSort);
+
+                        for (int i = 0; i < mUnsedResourceInfoList.Count; i++)
                         {
-                            mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedResourceInfoList[i].AssetBundlePath);
-                            mUnsedResourceInfoList[i].dispose();
+                            if (i < mMaxUnloadResourceNumberPerFrame)
+                            {
+                                mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedResourceInfoList[i].AssetBundlePath);
+                                mUnsedResourceInfoList[i].dispose();
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
-                        else
-                        {
-                            break;
-                        }
+                        mUnsedResourceInfoList.Clear();
+                        //Resources.UnloadAsset()åªæ˜¯æ ‡è®°è¯¥èµ„æºèƒ½è¢«å¸è½½,å¹¶ä¸èƒ½çœŸæ­£å¸è½½èµ„æº
+                        //åŒæ—¶AssetDatabaseæ¨¡å¼ä¸‹ï¼Œæ²¡æœ‰ä¾èµ–èµ„æºçš„æ¦‚å¿µï¼Œ
+                        //ä¸ºäº†ç¡®ä¿ä¸å†ä½¿ç”¨çš„èµ„æºè¢«æ­£ç¡®å¸è½½(æ¨¡æ‹ŸAssetBundleæ¨¡å¼çš„åŠ è½½ç®¡ç†ç¯å¢ƒ)
+                        //é€šè¿‡è°ƒç”¨Resources.UnloadUnusedAssets()æ–¹æ³•æ¥æµ‹è¯•å¸è½½èµ„æº
+                        Resources.UnloadUnusedAssets();
                     }
-                    mUnsedResourceInfoList.Clear();
-                    //Resources.UnloadAsset()Ö»ÊÇ±ê¼Ç¸Ã×ÊÔ´ÄÜ±»Ğ¶ÔØ,²¢²»ÄÜÕæÕıĞ¶ÔØ×ÊÔ´
-                    //Í¬Ê±AssetDatabaseÄ£Ê½ÏÂ£¬Ã»ÓĞÒÀÀµ×ÊÔ´µÄ¸ÅÄî£¬
-                    //ÎªÁËÈ·±£²»ÔÙÊ¹ÓÃµÄ×ÊÔ´±»ÕıÈ·Ğ¶ÔØ(Ä£ÄâAssetBundleÄ£Ê½µÄ¼ÓÔØ¹ÜÀí»·¾³)
-                    //Í¨¹ıµ÷ÓÃResources.UnloadUnusedAssets()·½·¨À´²âÊÔĞ¶ÔØ×ÊÔ´
-                    Resources.UnloadUnusedAssets();
                 }
             }
             yield return mWaitForCheckUnsedResourceInterval;
         }
     }
 
-    /// <summary> ×ÊÔ´¼ÓÔØÍê³ÉÍ¨Öª(ÓÃÓÚ¸üĞÂ×ÊÔ´¼ÓÔØ¹ÜÀí) /// </summary>
-    /// <param name="adl">×ÊÔ´¼ÓÔØÈÎÎñĞÅÏ¢</param>
+    /// <summary> èµ„æºåŠ è½½å®Œæˆé€šçŸ¥(ç”¨äºæ›´æ–°èµ„æºåŠ è½½ç®¡ç†) /// </summary>
+    /// <param name="adl">èµ„æºåŠ è½½ä»»åŠ¡ä¿¡æ¯</param>
     private void onResourceLoadCompleteNotifier(AssetDatabaseLoader adl)
     {
         var abname = adl.AssetBundlePath;
@@ -249,7 +262,7 @@ public class AssetDatabaseModule : AbstractResourceModule
         {
             mResourceRequestTaskMap.Remove(abname);
             mAllLoadedResourceInfoMap[adl.LoadType].Add(abname, adl.ResourceInfo);
-            //×ÊÔ´¼ÓÔØÊı¾İÍ³¼Æ
+            //èµ„æºåŠ è½½æ•°æ®ç»Ÿè®¡
             if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
             {
                 ResourceLoadAnalyse.Singleton.addResourceLoadedTime(abname);
@@ -257,12 +270,12 @@ public class AssetDatabaseModule : AbstractResourceModule
         }
         else
         {
-            ResourceLogger.logErr(string.Format("ÊÕµ½²»ÔÚ¼ÓÔØÈÎÎñÇëÇó¶ÓÁĞÀïµÄAB:{0}¼ÓÔØÍê³É»Øµ÷!", abname));
+            ResourceLogger.logErr(string.Format("æ”¶åˆ°ä¸åœ¨åŠ è½½ä»»åŠ¡è¯·æ±‚é˜Ÿåˆ—é‡Œçš„AB:{0}åŠ è½½å®Œæˆå›è°ƒ!", abname));
         }
     }
 
     /// <summary>
-    /// AassetDatabaseĞÅÏ¢¸ù¾İ×î½üÊ¹ÓÃÊ±¼äÅÅĞò
+    /// AassetDatabaseä¿¡æ¯æ ¹æ®æœ€è¿‘ä½¿ç”¨æ—¶é—´æ’åº
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>

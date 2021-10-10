@@ -142,6 +142,10 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
     /// </summary>
     public override void dispose()
     {
+        // Assetdatabase模式下为了开发方便没有正确添加依赖计数，
+        // 所以AssetDatabase不允许资源回收，避免错误的资源回收
+        Debug.LogError("Assetdatabase模式不允许资源卸载!");
+
         unloadResource();
 
         LastUsedTime = 0.0f;
