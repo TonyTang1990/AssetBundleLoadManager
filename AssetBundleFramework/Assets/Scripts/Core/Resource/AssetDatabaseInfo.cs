@@ -19,25 +19,15 @@ using UnityEngine;
 /// </summary>
 public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
 {
-    /// <summary>
-    /// 加载的Asset路径
-    /// </summary>
-    public string AssetPath
-    {
-        get;
-        set;
-    }
-
     public AssetDatabaseInfo()
     {
-        AssetBundlePath = string.Empty;
+        ResourcePath = string.Empty;
         LastUsedTime = 0.0f;
         mIsReady = false;
         mIsAllAssetLoaded = false;
         RefCount = 0;
         mReferenceOwnerList = new List<System.WeakReference>();
         mLoadedAssetMap = new Dictionary<string, UnityEngine.Object>();
-        AssetPath = string.Empty;
     }
 
     /// <summary>
@@ -60,7 +50,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         }
         else
         {
-            ResourceLogger.logErr(string.Format("AB:{0}里加载GameObject Asset:{1}失败!", AssetBundlePath, assetname));
+            ResourceLogger.logErr(string.Format("加载GameObject Asset:{0}失败!", assetname));
             return null;
         }
     }
@@ -86,13 +76,13 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
             }
             else
             {
-                ResourceLogger.logWar(string.Format("AB : {0}里不存在Asset : {1}，获取Asset失败!", AssetBundlePath, assetname));
+                ResourceLogger.logWar(string.Format("AB : {0}里不存在Asset : {1}，获取Asset失败!", ResourcePath, assetname));
                 return null;
             }
         }
         else
         {
-            ResourceLogger.logErr(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", AssetBundlePath, assetname));
+            ResourceLogger.logErr(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", ResourcePath, assetname));
             return null;
         }
     }
@@ -126,7 +116,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
             }
             else
             {
-                T asset = AssetDatabase.LoadAssetAtPath<T>(AssetPath);
+                T asset = AssetDatabase.LoadAssetAtPath<T>(ResourcePath);
                 if (asset != null)
                 {
                     mLoadedAssetMap.Add(assetname, asset);
@@ -134,14 +124,14 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                 }
                 else
                 {
-                    ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), AssetBundlePath, assetname));
+                    ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，Asset : {2}资源！", typeof(T).GetType(), ResourcePath, assetname));
                     return null;
                 }
             }
         }
         else
         {
-            ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", AssetBundlePath, assetname));
+            ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", ResourcePath, assetname));
             return null;
         }
     }
@@ -171,7 +161,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
     /// </summary>
     private void unloadResource()
     {
-        ResourceLogger.log(string.Format("卸载资源:{0}", AssetBundlePath));
+        ResourceLogger.log(string.Format("卸载资源:{0}", ResourcePath));
         foreach(var loadedasset in mLoadedAssetMap)
         {
             var asset = loadedasset.Value;
@@ -188,7 +178,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
                 //AssetDatabase模式不支持卸载资源，
                 //因为并非真实的模拟AssetBundle资源加载行为，只是单纯的把所需资源自身加载进来
                 //Resources.UnloadAsset(loadedasset.Value);
-                ResourceLogger.log(string.Format("假卸载资源:{0}的Asset : {1}", AssetBundlePath, loadedasset.Value.name));
+                ResourceLogger.log(string.Format("假卸载资源:{0}的Asset : {1}", ResourcePath, loadedasset.Value.name));
             }
         }
         mLoadedAssetMap.Clear();
@@ -200,14 +190,13 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
     /// </summary>
     public void recycle()
     {
-        AssetBundlePath = string.Empty;
+        ResourcePath = string.Empty;
         LastUsedTime = 0.0f;
         mIsReady = false;
         mIsAllAssetLoaded = false;
         RefCount = 0;
         mReferenceOwnerList.Clear();
         mLoadedAssetMap.Clear();
-        AssetPath = string.Empty;
     }
 }
 #endif

@@ -47,24 +47,9 @@ public abstract class AbstractResourceModule {
 
     /// <summary>
     /// 所有已加载的资源的信息映射Map
-    /// Key为AB加载类型，Value为该加载类型已经加载的资源信息映射Map(Key为AB名字，Value为资源加载信息)
+    /// Key为AB加载类型，Value为该加载类型已经加载的资源信息映射Map(Key为AB名字(AB模式)或Asset名(Assetdatabase模式)，Value为资源加载信息)
     /// </summary>
     protected Dictionary<ResourceLoadType, Dictionary<string, AbstractResourceInfo>> mAllLoadedResourceInfoMap;
-
-    #region Asset打包信息
-    /// <summary>
-    /// Asset打包信息
-    /// </summary>
-    public AssetBuildInfoAsset AssetBuildInfo
-    {
-        get
-        {
-            return mAssetBuildInfo;
-        }
-    }
-    protected AssetBuildInfoAsset mAssetBuildInfo;
-
-    #endregion
 
     #region FSP计算部分
     /// <summary>
@@ -109,11 +94,6 @@ public abstract class AbstractResourceModule {
         mAllLoadedResourceInfoMap.Add(ResourceLoadType.PermanentLoad, new Dictionary<string, AbstractResourceInfo>());
         mFPSUpdateInterval = 1.0f;
     }
-
-    /// <summary>
-    /// 加载AssetBundle打包信息
-    /// </summary>
-    public abstract void loadAssetBundleBuildInfo();
 
     /// <summary>
     /// 开启资源不再使用回收检测

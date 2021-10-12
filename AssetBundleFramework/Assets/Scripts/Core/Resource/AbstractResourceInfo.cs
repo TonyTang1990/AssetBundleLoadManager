@@ -20,11 +20,15 @@ public abstract class AbstractResourceInfo {
     /// <param name="abi"></param>
     public delegate void OnResourceUnloadedHandler(AbstractResourceInfo abi);
 
-    /// <summary> 资源卸载回调(用于通知资源对应Loader切换状态) /// </summary>
+    /// <summary>
+    /// 资源卸载回调(用于通知资源对应Loader切换状态)
+    /// </summary>
     public OnResourceUnloadedHandler onResourceUnloadedCallback;
 
-    /// <summary> 加载任务对应的资源路径 /// </summary>
-    public string AssetBundlePath
+    /// <summary>
+    /// 加载任务对应的资源路径(AB模式为AB路径,AssetDatabase模式为Asset路径)
+    /// </summary>
+    public string ResourcePath
     {
         get;
         set;
@@ -156,20 +160,20 @@ public abstract class AbstractResourceInfo {
     {
         if (owner == null)
         {
-            ResourceLogger.logErr(string.Format("引用对象不能为空!无法为资源:{0}解除绑定!", AssetBundlePath));
+            ResourceLogger.logErr(string.Format("引用对象不能为空!无法为资源:{0}解除绑定!", ResourcePath));
             return false;
         }
 
         var ownerindex = mReferenceOwnerList.FindIndex((ow) => ow.Target.Equals(owner));
         if (ownerindex != -1)
         {
-            ResourceLogger.log(string.Format("资源:{0}找到指定绑定对象:{1},解除绑定!", AssetBundlePath, owner));
+            ResourceLogger.log(string.Format("资源:{0}找到指定绑定对象:{1},解除绑定!", ResourcePath, owner));
             mReferenceOwnerList.RemoveAt(ownerindex);
             return true;
         }
         else
         {
-            ResourceLogger.log(string.Format("资源:{0}找不到指定绑定对象:{1},解除绑定失败!", AssetBundlePath, owner));
+            ResourceLogger.log(string.Format("资源:{0}找不到指定绑定对象:{1},解除绑定失败!", ResourcePath, owner));
             return false;
         }
     }
@@ -183,7 +187,7 @@ public abstract class AbstractResourceInfo {
     {
         if (owner == null)
         {
-            ResourceLogger.logErr(string.Format("引用对象不能为空!无法为资源:{0}添加引用!", AssetBundlePath));
+            ResourceLogger.logErr(string.Format("引用对象不能为空!无法为资源:{0}添加引用!", ResourcePath));
             return;
         }
 
@@ -223,7 +227,7 @@ public abstract class AbstractResourceInfo {
     /// </summary>
     public void printAllOwnersNameAndRefCount()
     {
-        ResourceLogger.log(string.Format("AB Name: {0}", AssetBundlePath));
+        ResourceLogger.log(string.Format("AB Name: {0}", ResourcePath));
         ResourceLogger.log(string.Format("Ref Count: {0}", RefCount));
         if (mReferenceOwnerList.Count == 0)
         {

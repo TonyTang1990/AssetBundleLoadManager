@@ -38,10 +38,10 @@ namespace MotionFramework.Editor
 	{
 		string IAssetCollector.GetAssetBundleLabel(string assetPath, Collector collector = null)
 		{
-			// 例如："Assets/Config/test.txt" --> "Assets/Config/test"
-			return assetPath.Remove(assetPath.LastIndexOf("."));
-		}
-	}
+            // 例如："Assets/Config/test.txt"-- > "Assets/Config/test"
+            return assetPath.Remove(assetPath.LastIndexOf("."));
+        }
+    }
 
     /// <summary>
     /// 以固定名字作为标签名

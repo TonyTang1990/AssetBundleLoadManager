@@ -287,12 +287,12 @@ public class AssetBundleLoader : FactoryObj
     private void onDepABLoadComplete(AbstractResourceInfo resinfo)
     {
         var abinfo = resinfo as AssetBundleInfo;
-        ResourceLogger.log(string.Format("依赖AB:{0}加载成功!", abinfo.AssetBundlePath));
+        ResourceLogger.log(string.Format("依赖AB:{0}加载成功!", abinfo.ResourcePath));
         mDepAssetBundleInfoList.Add(abinfo);
 #if UNITY_EDITOR
         //Editor模式下的调试功能
         // 移除已经加载过的，存储来测试查看用
-        mUnloadedAssetBundleName.Remove(abinfo.AssetBundlePath);
+        mUnloadedAssetBundleName.Remove(abinfo.ResourcePath);
 #endif
         mLoadedDepABCount++;
         // 作为依赖AB时并不会触发getAsset || instantiateAsset之类的接口，

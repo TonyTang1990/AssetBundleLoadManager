@@ -192,8 +192,8 @@ namespace MotionFramework.Editor
             foreach (var bi in buildinfolist)
             {
                 var abbi = new AssetBuildInfo();
-                // 剔除后缀(默认采用无后缀形式加载，同目录同名不同类型采用泛型加载匹配)
-                abbi.AssetPath = bi.assetNames[0].Substring(0, bi.assetNames[0].Length - Path.GetExtension(bi.assetNames[0]).Length).ToLower();
+				// 不剔除后缀，确保AssetDatabase模式可以全路径(带后缀)加载
+				abbi.AssetPath = bi.assetNames[0].ToLower();//.Substring(0, bi.assetNames[0].Length - Path.GetExtension(bi.assetNames[0]).Length).ToLower();
                 abbi.ABPath = bi.assetBundleName.ToLower();
                 abbi.ABVariantPath = bi.assetBundleVariant.ToLower();
                 assetbundlebuildasset.AssetBuildInfoList.Add(abbi);

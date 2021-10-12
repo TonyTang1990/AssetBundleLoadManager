@@ -83,66 +83,6 @@ public class AssetDatabaseModule : AbstractResourceModule
     }
 
     /// <summary>
-    /// 加载Asset打包信息
-    /// </summary>
-    public override void loadAssetBundleBuildInfo()
-    {
-        // 确保之前加载的AB打包信息卸载彻底
-        if (mAssetBuildInfo != null)
-        {
-            Resources.UnloadAsset(mAssetBuildInfo);
-            mAssetBuildInfo = null;
-        }
-        var assetbuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBuildInfoAssetRelativePath}/{ResourceConstData.AssetBuildInfoAssetName}.asset";
-        mAssetBuildInfo = AssetDatabase.LoadAssetAtPath<AssetBuildInfoAsset>(assetbuildinfoassetrelativepath);
-        if(mAssetBuildInfo != null)
-        {
-            mAssetBuildInfo.init();
-            Debug.Log("Asset打包信息文件加载成功!");
-        }
-        else
-        {
-            Debug.LogError($"找不到Asset打包信息文件:{assetbuildinfoassetrelativepath}");
-        }
-    }
-
-    /// <summary>
-    /// 获取AssetBundle所依赖的AB信息
-    /// </summary>
-    /// <param name="abpath"></param>
-    /// <returns></returns>
-    private string[] getAssetBundleDpInfo(string abpath)
-    {
-        if (mAssetBuildInfo.ABPathDepMap.ContainsKey(abpath))
-        {
-            return mAssetBuildInfo.ABPathDepMap[abpath];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /// <summary>
-    /// 获取指定Asset路径的AB名
-    /// </summary>
-    /// <param name="assetpath"></param>
-    /// <returns></returns>
-    private string getAssetPathAssetBundleName(string assetpath)
-    {
-        var abpath = mAssetBuildInfo.getAssetABPath(assetpath);
-        if (!string.IsNullOrEmpty(abpath))
-        {
-            return abpath;
-        }
-        else
-        {
-            Debug.LogError($"找不到Asset路径:{assetpath}的AB路径信息!");
-            return null;
-        }
-    }
-
-    /// <summary>
     /// 真正的请求资源
     /// </summary>
     /// <param name="respath">资源AB路径</param>
@@ -151,43 +91,30 @@ public class AssetDatabaseModule : AbstractResourceModule
     /// <param name="loadmethod">资源加载方式</param>
     protected override void realRequestResource(string respath, LoadResourceCompleteHandler completehandler, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        // Asset打包信息存储的都是小写路径
-        var resPathToLower = respath.ToLower();
-        var abpath = string.Empty;
-        // 因为依赖AB加载也是走统一入口，所以要区分是AB路径还是Asset路径
-        if (!mAssetBuildInfo.isABPath(resPathToLower))
-        {
-            // AB依赖信息文件和AB打包
-            abpath = getAssetPathAssetBundleName(resPathToLower);
-        }
-        else
-        {
-            abpath = resPathToLower;
-        }
         // 如果资源已经加载完成，直接返回
-        if (mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].ContainsKey(abpath))
+        if (mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].ContainsKey(respath))
         {
-            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad][abpath]);
+            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad][respath]);
             if (loadtype > ResourceLoadType.NormalLoad)
             {
-                updateLoadedResourceInfoLoadType(abpath, ResourceLoadType.NormalLoad, loadtype);
+                updateLoadedResourceInfoLoadType(respath, ResourceLoadType.NormalLoad, loadtype);
             }
         }
-        else if (mAllLoadedResourceInfoMap[ResourceLoadType.Preload].ContainsKey(abpath))
+        else if (mAllLoadedResourceInfoMap[ResourceLoadType.Preload].ContainsKey(respath))
         {
-            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.Preload][abpath]);
+            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.Preload][respath]);
             if (loadtype > ResourceLoadType.Preload)
             {
-                updateLoadedResourceInfoLoadType(abpath, ResourceLoadType.Preload, loadtype);
+                updateLoadedResourceInfoLoadType(respath, ResourceLoadType.Preload, loadtype);
             }
         }
-        else if (mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad].ContainsKey(abpath))
+        else if (mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad].ContainsKey(respath))
         {
-            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad][abpath]);
+            completehandler(mAllLoadedResourceInfoMap[ResourceLoadType.PermanentLoad][respath]);
         }
         else
         {
-            AssetDatabaseLoader adloader = createADLoader(abpath, respath);
+            AssetDatabaseLoader adloader = createADLoader(respath);
             //暂时默认都当同步加载，不支持异步模拟
             adloader.LoadMethod = loadmethod;
             adloader.LoadType = loadtype;
@@ -241,7 +168,7 @@ public class AssetDatabaseModule : AbstractResourceModule
                     // 有可卸载的组他吧
                     for (int i = 0; i < mUnsedResourceInfoList.Count; i++)
                     {
-                        mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedResourceInfoList[i].AssetBundlePath);
+                        mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedResourceInfoList[i].ResourcePath);
                         mUnsedResourceInfoList[i].dispose();
                     }
                     mUnsedResourceInfoList.Clear();
@@ -262,13 +189,11 @@ public class AssetDatabaseModule : AbstractResourceModule
     /// <summary>
     /// 创建AssetDatabase资源加载对象
     /// </summary>
-    /// <param name="assetBundlePath">AB路径</param>
     /// <param name="resPath">资源路径</param>
     /// <returns></returns>
-    private AssetDatabaseLoader createADLoader(string assetBundlePath, string resPath)
+    private AssetDatabaseLoader createADLoader(string resPath)
     {
         var adl = AssetDatabaseLoaderFactory.create();
-        adl.AssetBundlePath = assetBundlePath;
         adl.AssetPath = resPath;
         return adl;
     }
@@ -308,7 +233,7 @@ public class AssetDatabaseModule : AbstractResourceModule
                         {
                             if (i < mMaxUnloadResourceNumberPerFrame)
                             {
-                                mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedResourceInfoList[i].AssetBundlePath);
+                                mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedResourceInfoList[i].ResourcePath);
                                 mUnsedResourceInfoList[i].dispose();
                             }
                             else

@@ -80,9 +80,21 @@ public class AssetBundleModule : AbstractResourceModule
 
     #region AB依赖信息部分
     /// <summary>
+    /// Asset打包信息
+    /// </summary>
+    public AssetBuildInfoAsset AssetBuildInfo
+    {
+        get
+        {
+            return mAssetBuildInfo;
+        }
+    }
+    protected AssetBuildInfoAsset mAssetBuildInfo;
+
+    /// <summary>
     /// 加载Asset打包信息
     /// </summary>
-    public override void loadAssetBundleBuildInfo()
+    private void loadAssetBuildInfo()
     {
         // 确保之前加载的AB打包信息卸载彻底
         if(mAssetBuildInfo != null)
@@ -190,6 +202,8 @@ public class AssetBundleModule : AbstractResourceModule
             AssetBundleAsyncQueueList.Add(abaq);
             abaq.startABAsyncLoad();
         }
+        // 加载Asset打包信息
+        loadAssetBuildInfo();
     }
 
     /// <summary>
@@ -310,7 +324,7 @@ public class AssetBundleModule : AbstractResourceModule
     public static AssetBundleInfo createAssetBundleInfo(string abname, AssetBundle ab)
     {
         var abi = AssetBundleInfoFactory.create();
-        abi.AssetBundlePath = abname;
+        abi.ResourcePath = abname;
         abi.Bundle = ab;
         abi.onResourceUnloadedCallback = onABUnloaded;
         return abi;
@@ -326,7 +340,7 @@ public class AssetBundleModule : AbstractResourceModule
         //AB卸载数据统计
         if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
         {
-            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(abi.AssetBundlePath);
+            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(abi.ResourcePath);
         }
         // AB卸载时ABAssetBundleInfo回收时回收重用
         AssetBundleInfoFactory.recycle(abi);
@@ -363,7 +377,7 @@ public class AssetBundleModule : AbstractResourceModule
                     {
                         if (i < mMaxUnloadABNumberPerFrame)
                         {
-                            mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedABInfoList[i].AssetBundlePath);
+                            mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedABInfoList[i].ResourcePath);
                             mUnsedABInfoList[i].dispose();
                         }
                         else
@@ -439,7 +453,7 @@ public class AssetBundleModule : AbstractResourceModule
                 // 有可卸载的AB
                 for (int i = 0; i < mUnsedABInfoList.Count; i++)
                 {
-                    mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedABInfoList[i].AssetBundlePath);
+                    mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedABInfoList[i].ResourcePath);
                     mUnsedABInfoList[i].dispose();
                 }
                 mUnsedABInfoList.Clear();
@@ -476,7 +490,7 @@ public class AssetBundleModule : AbstractResourceModule
 
         if (arinfo != null)
         {
-            mAllLoadedResourceInfoMap[resourceloadtype].Remove(arinfo.AssetBundlePath);
+            mAllLoadedResourceInfoMap[resourceloadtype].Remove(arinfo.ResourcePath);
             arinfo.dispose();
             ResourceLogger.log(string.Format("AB资源 : {0}已强制卸载！", abname));
         }

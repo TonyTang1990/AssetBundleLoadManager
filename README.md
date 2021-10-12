@@ -2,7 +2,7 @@
 
 ## 资源加载管理模块
 
-基于索引计数的AssetBundle加载管理框架。(参考: tangzx/ABSystem思路)
+基于索引计数+组件绑定的AssetBundle加载管理框架。(参考: tangzx/ABSystem思路)
 
 ### 功能支持
 

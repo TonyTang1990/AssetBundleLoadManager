@@ -25,15 +25,6 @@ public class AssetDatabaseLoader : FactoryObj
     public delegate void LoadResourceCompleteNotifier(AssetDatabaseLoader adl);
 
     /// <summary>
-    /// 加载任务对应的资源AB路径
-    /// </summary>
-    public string AssetBundlePath
-    {
-        get;
-        set;
-    }
-
-    /// <summary>
     /// 加载任务对应的资源路径
     /// </summary>
     public string AssetPath
@@ -97,7 +88,6 @@ public class AssetDatabaseLoader : FactoryObj
 
     public AssetDatabaseLoader()
     {
-        AssetBundlePath = string.Empty;
         AssetPath = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
@@ -117,29 +107,28 @@ public class AssetDatabaseLoader : FactoryObj
         }
         else if (LoadState == ResourceLoadState.Waiting)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}处于等待加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
+            ResourceLogger.logErr(string.Format("Asset : {0}处于等待加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetPath));
         }
         else if (LoadState == ResourceLoadState.Loading)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}处于加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
+            ResourceLogger.logErr(string.Format("Asset : {0}处于加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetPath));
         }
         else if (LoadState == ResourceLoadState.SelfComplete)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
+            ResourceLogger.logErr(string.Format("Asset : {0}已经处于自身加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetPath));
         }
         else if (LoadState == ResourceLoadState.AllComplete)
         {
-            ResourceLogger.logErr(string.Format("AB : {0}已经处于自身以及依赖AB加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
+            ResourceLogger.logErr(string.Format("Asset : {0}已经处于自身以及依赖AB加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetPath));
         }
         else if (LoadState == ResourceLoadState.Error)
         {
-            ResourceLogger.logErr(string.Format("AB:{0}处于Error状态，无法加载!", AssetBundlePath));
+            ResourceLogger.logErr(string.Format("Asset:{0}处于Error状态，无法加载!", AssetPath));
         }
     }
 
     public void recycle()
     {
-        AssetBundlePath = string.Empty;
         AssetPath = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
@@ -152,7 +141,7 @@ public class AssetDatabaseLoader : FactoryObj
     /// </summary>
     private void loadAsset()
     {
-        ResourceLogger.log(string.Format("加载资源:{0}", AssetBundlePath));
+        ResourceLogger.log(string.Format("加载资源:{0}", AssetPath));
         //暂时默认都当同步处理
         if (LoadMethod == ResourceLoadMethod.Sync)
         {
@@ -177,7 +166,7 @@ public class AssetDatabaseLoader : FactoryObj
         }
         else
         {
-            mResourceInfo = createAssetDatabaseInfo(AssetBundlePath, AssetPath);
+            mResourceInfo = createAssetDatabaseInfo(AssetPath);
             mResourceInfo.updateLastUsedTime();
         }
 
@@ -202,11 +191,10 @@ public class AssetDatabaseLoader : FactoryObj
     /// <param name="assetBundlePath">AB路径</param>
     /// <param name="respath">资源路径</param>
     /// <returns></returns>
-    private AssetDatabaseInfo createAssetDatabaseInfo(string assetBundlePath, string respath)
+    private AssetDatabaseInfo createAssetDatabaseInfo(string respath)
     {
         var adi = AssetDatabaseInfoFactory.create();
-        adi.AssetBundlePath = assetBundlePath;
-        adi.AssetPath = respath;
+        adi.ResourcePath = respath;
         adi.onResourceUnloadedCallback = onResourceUnloaded;
         return adi;
     }
@@ -221,7 +209,7 @@ public class AssetDatabaseLoader : FactoryObj
         //资源卸载数据统计
         if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
         {
-            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(adi.AssetBundlePath);
+            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(adi.ResourcePath);
         }
         // 资源卸载时资源AssetDatabaseInfo回收时回收重用
         AssetDatabaseInfoFactory.recycle(adi);

@@ -28,7 +28,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
     public AssetBundleInfo()
     {
         Bundle = null;
-        AssetBundlePath = string.Empty;
+        ResourcePath = string.Empty;
         LastUsedTime = 0.0f;
         mIsReady = false;
         mIsAllAssetLoaded = false;
@@ -73,7 +73,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
         }
         else
         {
-            ResourceLogger.logErr(string.Format("AB:{0}里加载GameObject Asset:{1}失败!", AssetBundlePath, assetname));
+            ResourceLogger.logErr(string.Format("AB:{0}里加载GameObject Asset:{1}失败!", ResourcePath, assetname));
             return null;
         }
     }
@@ -99,13 +99,13 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
             }
             else
             {
-                ResourceLogger.logWar(string.Format("AB : {0}里不存在Asset : {1}，获取Asset失败!", AssetBundlePath, assetname));
+                ResourceLogger.logWar(string.Format("AB : {0}里不存在Asset : {1}，获取Asset失败!", ResourcePath, assetname));
                 return null;
             }
         }
         else
         {
-            ResourceLogger.logErr(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", AssetBundlePath, assetname));
+            ResourceLogger.logErr(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", ResourcePath, assetname));
             return null;
         }
     }
@@ -170,7 +170,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
     public string getAssetBundleInfoDes()
     {
         var abides = string.Empty;
-        abides += string.Format("AB Name: {0}\n", AssetBundlePath);
+        abides += string.Format("AB Name: {0}\n", ResourcePath);
         abides += string.Format("Ref Count: {0}\n", RefCount);
         if (mReferenceOwnerList.Count == 0)
         {
@@ -215,7 +215,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
                     }
                     else
                     {
-                        ResourceLogger.logErr(string.Format("资源名 : {0}里有同名资源！Asset资源 : {1}添加失败!", AssetBundlePath, assetname));
+                        ResourceLogger.logErr(string.Format("资源名 : {0}里有同名资源！Asset资源 : {1}添加失败!", ResourcePath, assetname));
                     }
                 }
                 mIsAllAssetLoaded = true;
@@ -243,7 +243,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
             {
                 if (Bundle == null)
                 {
-                    ResourceLogger.logErr(string.Format("AB : {0}资源丢失，不存在！", AssetBundlePath));
+                    ResourceLogger.logErr(string.Format("AB : {0}资源丢失，不存在！", ResourcePath));
                     return null;
                 }
                 else
@@ -303,7 +303,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
                         }
                         else
                         {
-                            ResourceLogger.logErr(string.Format("AB:{0}里找不到Asset:{1}资源!", AssetBundlePath, assetname));
+                            ResourceLogger.logErr(string.Format("AB:{0}里找不到Asset:{1}资源!", ResourcePath, assetname));
                             return null;
                         }
                     }
@@ -312,7 +312,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
         }
         else
         {
-            ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", AssetBundlePath, assetname));
+            ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", ResourcePath, assetname));
             return null;
         }
     }
@@ -367,7 +367,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
     /// </summary>
     private void unloadAssetBundle()
     {
-        ResourceLogger.log(string.Format("卸载AB:{0}", AssetBundlePath));
+        ResourceLogger.log(string.Format("卸载AB:{0}", ResourcePath));
         if (Bundle != null)
         {
             // 索引计数为零时调用释放AB和Asset
@@ -383,7 +383,7 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
     public void recycle()
     {
         Bundle = null;
-        AssetBundlePath = string.Empty;
+        ResourcePath = string.Empty;
         LastUsedTime = 0.0f;
         mIsReady = false;
         mIsAllAssetLoaded = false;
