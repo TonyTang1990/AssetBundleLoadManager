@@ -19,6 +19,11 @@ using UnityEngine;
 /// </summary>
 public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
 {
+    /// <summary>
+    /// 当前Asset依赖Asset的信息组
+    /// </summary>
+    private HashSet<AssetDatabaseInfo> mDepAssetInfoSets;
+
     public AssetDatabaseInfo()
     {
         ResourcePath = string.Empty;
@@ -28,6 +33,21 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         RefCount = 0;
         mReferenceOwnerList = new List<System.WeakReference>();
         mLoadedAssetMap = new Dictionary<string, UnityEngine.Object>();
+        mDepAssetInfoSets = new HashSet<AssetDatabaseInfo>();
+    }
+
+    /// <summary>
+    /// 添加依赖的Asset信息
+    /// </summary>
+    /// <param name="depAssetDatabaseInfo"></param>
+    public void addDependency(AssetDatabaseInfo depAssetDatabaseInfo)
+    {
+        if(depAssetDatabaseInfo != null && mDepAssetInfoSets.Add(depAssetDatabaseInfo))
+        {
+            // 增加依赖Asset的引用计数
+            // 在当前Asset引用计数归零时会一并返回
+            depAssetDatabaseInfo.retain();
+        }
     }
 
     /// <summary>
@@ -141,13 +161,18 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
     /// </summary>
     public override void dispose()
     {
-        // Assetdatabase模式下为了开发方便没有正确添加依赖计数，
-        // 所以AssetDatabase不允许资源回收，避免错误的资源回收
-        Debug.LogError("Assetdatabase模式不允许资源卸载!");
-
         unloadResource();
 
         LastUsedTime = 0.0f;
+
+        var enu = mDepAssetInfoSets.GetEnumerator();
+        while(enu.MoveNext())
+        {
+            var dep = enu.Current;
+            // 减少依赖Asset的引用计数
+            dep.release();
+        }
+        mDepAssetInfoSets.Clear();
 
         if (onResourceUnloadedCallback != null)
         {
@@ -197,6 +222,7 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         RefCount = 0;
         mReferenceOwnerList.Clear();
         mLoadedAssetMap.Clear();
+        mDepAssetInfoSets.Clear();
     }
 }
 #endif

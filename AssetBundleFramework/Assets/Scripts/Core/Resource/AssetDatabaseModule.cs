@@ -10,9 +10,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-// TODO:
-// 支持Assetdabase模式正确的以来加载和卸载管理(仅在确保所有资源都正确标记AB名字时可用)
-
 /// <summary>
 /// AssetDatabaseModule.cs
 /// AssetDatabase资源加载模块
@@ -139,50 +136,45 @@ public class AssetDatabaseModule : AbstractResourceModule
     /// <param name="resourceloadtype">资源加载类型</param>
     protected override void doUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
     {
-        // Assetdatabase模式下为了开发方便没有正确添加依赖计数，
-        // 所以AssetDatabase不允许资源回收，避免错误的资源回收
-        if (ResourceModuleManager.Singleton.ResLoadMode != ResourceLoadMode.AssetDatabase)
+        // 递归判定卸载所有不再可用的正常加载资源
+        bool iscomplete = false;
+        bool hasunsedres = false;
+        while (!iscomplete)
         {
-            // 递归判定卸载所有不再可用的正常加载资源
-            bool iscomplete = false;
-            bool hasunsedres = false;
-            while (!iscomplete)
+            // 检查回收不再使用正常已加载的AB
+            foreach (var loadedab in mAllLoadedResourceInfoMap[resourceloadtype])
             {
-                // 检查回收不再使用正常已加载的AB
-                foreach (var loadedab in mAllLoadedResourceInfoMap[resourceloadtype])
+                if (loadedab.Value.IsUnsed)
                 {
-                    if (loadedab.Value.IsUnsed)
-                    {
-                        mUnsedResourceInfoList.Add(loadedab.Value);
-                    }
-                }
-
-                if (mUnsedResourceInfoList.Count == 0)
-                {
-                    //不再有可卸载的资源
-                    iscomplete = true;
-                }
-                else
-                {
-                    hasunsedres = true;
-                    // 有可卸载的组他吧
-                    for (int i = 0; i < mUnsedResourceInfoList.Count; i++)
-                    {
-                        mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedResourceInfoList[i].ResourcePath);
-                        mUnsedResourceInfoList[i].dispose();
-                    }
-                    mUnsedResourceInfoList.Clear();
+                    mUnsedResourceInfoList.Add(loadedab.Value);
                 }
             }
 
-            if (iscomplete && hasunsedres)
+            if (mUnsedResourceInfoList.Count == 0)
             {
-                //Resources.UnloadAsset()只是标记该资源能被卸载,并不能真正卸载资源
-                //同时AssetDatabase模式下，没有依赖资源的概念，
-                //为了确保不再使用的资源被正确卸载(模拟AssetBundle模式的加载管理环境)
-                //通过调用Resources.UnloadUnusedAssets()方法来测试卸载资源
-                Resources.UnloadUnusedAssets();
+                //不再有可卸载的资源
+                iscomplete = true;
             }
+            else
+            {
+                hasunsedres = true;
+                // 有可卸载的组他吧
+                for (int i = 0; i < mUnsedResourceInfoList.Count; i++)
+                {
+                    mAllLoadedResourceInfoMap[resourceloadtype].Remove(mUnsedResourceInfoList[i].ResourcePath);
+                    mUnsedResourceInfoList[i].dispose();
+                }
+                mUnsedResourceInfoList.Clear();
+            }
+        }
+
+        if (iscomplete && hasunsedres)
+        {
+            //Resources.UnloadAsset()只是标记该资源能被卸载,并不能真正卸载资源
+            //同时AssetDatabase模式下，没有依赖资源的概念，
+            //为了确保不再使用的资源被正确卸载(模拟AssetBundle模式的加载管理环境)
+            //通过调用Resources.UnloadUnusedAssets()方法来测试卸载资源
+            Resources.UnloadUnusedAssets();
         }
     }
 
@@ -205,49 +197,44 @@ public class AssetDatabaseModule : AbstractResourceModule
     {
         while (true)
         {
-            // Assetdatabase模式下为了开发方便没有正确添加依赖计数，
-            // 所以AssetDatabase不允许资源回收，避免错误的资源回收
-            if (ResourceModuleManager.Singleton.ResLoadMode != ResourceLoadMode.AssetDatabase)
+            if (EnableResourceRecyclingUnloadUnsed && mCurrentFPS >= mResourceRecycleFPSThreshold && mResourceRequestTaskMap.Count == 0)
             {
-                if (EnableResourceRecyclingUnloadUnsed && mCurrentFPS >= mResourceRecycleFPSThreshold && mResourceRequestTaskMap.Count == 0)
+                float time = Time.time;
+                // 检查正常加载的资源，回收不再使用的资源
+                foreach (var loadedres in mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad])
                 {
-                    float time = Time.time;
-                    // 检查正常加载的资源，回收不再使用的资源
-                    foreach (var loadedres in mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad])
+                    if (loadedres.Value.IsUnsed)
                     {
-                        if (loadedres.Value.IsUnsed)
+                        if ((time - loadedres.Value.LastUsedTime) > mResourceMinimumLifeTime)
                         {
-                            if ((time - loadedres.Value.LastUsedTime) > mResourceMinimumLifeTime)
-                            {
-                                mUnsedResourceInfoList.Add(loadedres.Value);
-                            }
+                            mUnsedResourceInfoList.Add(loadedres.Value);
                         }
                     }
+                }
 
-                    if (mUnsedResourceInfoList.Count > 0)
+                if (mUnsedResourceInfoList.Count > 0)
+                {
+                    // 根据最近使用时间升序排列
+                    mUnsedResourceInfoList.Sort(ADILastUsedTimeSort);
+
+                    for (int i = 0; i < mUnsedResourceInfoList.Count; i++)
                     {
-                        // 根据最近使用时间升序排列
-                        mUnsedResourceInfoList.Sort(ADILastUsedTimeSort);
-
-                        for (int i = 0; i < mUnsedResourceInfoList.Count; i++)
+                        if (i < mMaxUnloadResourceNumberPerFrame)
                         {
-                            if (i < mMaxUnloadResourceNumberPerFrame)
-                            {
-                                mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedResourceInfoList[i].ResourcePath);
-                                mUnsedResourceInfoList[i].dispose();
-                            }
-                            else
-                            {
-                                break;
-                            }
+                            mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].Remove(mUnsedResourceInfoList[i].ResourcePath);
+                            mUnsedResourceInfoList[i].dispose();
                         }
-                        mUnsedResourceInfoList.Clear();
-                        //Resources.UnloadAsset()只是标记该资源能被卸载,并不能真正卸载资源
-                        //同时AssetDatabase模式下，没有依赖资源的概念，
-                        //为了确保不再使用的资源被正确卸载(模拟AssetBundle模式的加载管理环境)
-                        //通过调用Resources.UnloadUnusedAssets()方法来测试卸载资源
-                        Resources.UnloadUnusedAssets();
+                        else
+                        {
+                            break;
+                        }
                     }
+                    mUnsedResourceInfoList.Clear();
+                    //Resources.UnloadAsset()只是标记该资源能被卸载,并不能真正卸载资源
+                    //同时AssetDatabase模式下，没有依赖资源的概念，
+                    //为了确保不再使用的资源被正确卸载(模拟AssetBundle模式的加载管理环境)
+                    //通过调用Resources.UnloadUnusedAssets()方法来测试卸载资源
+                    Resources.UnloadUnusedAssets();
                 }
             }
             yield return mWaitForCheckUnsedResourceInterval;
@@ -262,7 +249,7 @@ public class AssetDatabaseModule : AbstractResourceModule
         if (mResourceRequestTaskMap.ContainsKey(assetPath))
         {
             mResourceRequestTaskMap.Remove(assetPath);
-            mAllLoadedResourceInfoMap[adl.LoadType].Add(assetPath, adl.ResourceInfo);
+            mAllLoadedResourceInfoMap[adl.LoadType].Add(assetPath, adl.AssetInfo);
             //资源加载数据统计
             if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
             {

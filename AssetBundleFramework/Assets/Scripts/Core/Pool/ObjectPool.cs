@@ -73,8 +73,8 @@ public class ObjectPool
     public void push<T>(T obj) where T : IRecycle
     {
         obj.onDispose();
-        var hashcode = typeof(T).GetHashCode();
-        if(!ObjectPoolMap.ContainsKey(hashcode))
+        var hashcode = obj.GetType().GetHashCode();
+        if (!ObjectPoolMap.ContainsKey(hashcode))
         {
             ObjectPoolMap.Add(hashcode, new Stack<IRecycle>());
         }
