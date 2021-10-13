@@ -71,11 +71,12 @@ public class AssetBundleLoader : FactoryObj
     /// <summary>
     /// 所有AB资源加载完成逻辑层回调
     /// </summary>
-    public AbstractResourceModule.LoadResourceCompleteHandler LoadABCompleteCallBack
-    {
-        get;
-        set;
-    }
+    protected AbstractResourceModule.LoadResourceCompleteHandler mLoadABCompleteCallBack;
+
+    /// <summary>
+    /// 所有AB资源加载完成逻辑回调Map<请求UID,逻辑回调>
+    /// </summary>
+    protected Dictionary<int, AbstractResourceModule.LoadResourceCompleteHandler> mLoadABCompleteCallBackMap;
 
     /// <summary>
     /// 自身AB加载完成资源管理通知回调
@@ -85,7 +86,7 @@ public class AssetBundleLoader : FactoryObj
         get;
         set;
     }
-    
+
     /// <summary>
     /// 资源加载方式
     /// </summary>
@@ -110,7 +111,7 @@ public class AssetBundleLoader : FactoryObj
         get;
         set;
     }
-    
+
     /// <summary> 依赖的AB数量 /// </summary>
     public int DepABCount
     {
@@ -144,6 +145,61 @@ public class AssetBundleLoader : FactoryObj
     }
     private List<AssetBundleInfo> mDepAssetBundleInfoList;
 
+    /// <summary>
+    /// 是否加载完成
+    /// </summary>
+    public bool IsDone
+    {
+        get
+        {
+            return LoadState == ResourceLoadState.AllComplete || LoadState == ResourceLoadState.Error || LoadState == ResourceLoadState.Cancel;
+        }
+    }
+
+    /// <summary>
+    /// 是否在等待
+    /// </summary>
+    public bool IsWaiting
+    {
+        get
+        {
+            return LoadState == ResourceLoadState.Waiting;
+        }
+    }
+
+    /// <summary>
+    /// 是否在加载中
+    /// </summary>
+    public bool IsLoading
+    {
+        get
+        {
+            return LoadState == ResourceLoadState.Loading;
+        }
+    }
+
+    /// <summary>
+    /// 是否加载失败
+    /// </summary>
+    public bool IsError
+    {
+        get
+        {
+            return LoadState == ResourceLoadState.Error;
+        }
+    }
+
+    /// <summary>
+    /// 是否取消加载
+    /// </summary>
+    public bool IsCancel
+    {
+        get
+        {
+            return LoadState == ResourceLoadState.Cancel;
+        }
+    }
+
 #if UNITY_EDITOR
     /// <summary>
     /// 未加载的资源列表(测试用)
@@ -162,7 +218,8 @@ public class AssetBundleLoader : FactoryObj
     {
         AssetBundlePath = string.Empty;
         DepABPaths = null;
-        LoadABCompleteCallBack = null;
+        mLoadABCompleteCallBackMap = new Dictionary<int, AbstractResourceModule.LoadResourceCompleteHandler>();
+        mLoadABCompleteCallBack = null;
         LoadSelfABCompleteNotifier = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
@@ -174,7 +231,8 @@ public class AssetBundleLoader : FactoryObj
     {
         AssetBundlePath = abpath;
         DepABPaths = depnames;
-        LoadABCompleteCallBack = null;
+        mLoadABCompleteCallBackMap = new Dictionary<int, AbstractResourceModule.LoadResourceCompleteHandler>();
+        mLoadABCompleteCallBack = null;
         LoadSelfABCompleteNotifier = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
@@ -192,11 +250,11 @@ public class AssetBundleLoader : FactoryObj
             LoadState = ResourceLoadState.Waiting;
             loadSelfAssetBundle();
         }
-        else if(LoadState == ResourceLoadState.Waiting)
+        else if(IsWaiting)
         {
             ResourceLogger.logErr(string.Format("AB : {0}处于等待加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
         }
-        else if(LoadState == ResourceLoadState.Loading)
+        else if(IsLoading)
         {
             ResourceLogger.logErr(string.Format("AB : {0}处于加载中状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
         }
@@ -208,9 +266,105 @@ public class AssetBundleLoader : FactoryObj
         {
             ResourceLogger.logErr(string.Format("AB : {0}已经处于自身以及依赖AB加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
         }
-        else if (LoadState == ResourceLoadState.Error)
+        else if (IsCancel)
+        {
+            ResourceLogger.logErr(string.Format("AB:{0}处于Cancel状态，无法加载!", AssetBundlePath));
+        }
+        else if (IsError)
         {
             ResourceLogger.logErr(string.Format("AB:{0}处于Error状态，无法加载!", AssetBundlePath));
+        }
+    }
+
+    /// <summary>
+    /// 立刻加载
+    /// </summary>
+    public void loadImmediate()
+    {
+        // 处理异步加载等待改成同步加载的情况,同步加载的情况下已经加载完成了
+        if(IsWaiting || IsLoading)
+        {
+            LoadMethod = ResourceLoadMethod.Sync;
+            // 重置AB加载状态，走同步模式
+            LoadState = ResourceLoadState.None;
+            startLoad();
+        }
+    }
+
+    /// <summary>
+    /// 添加AB加载完成逻辑回调
+    /// </summary>
+    /// <param name="requestUID"></param>
+    /// <param name="loadABCompleteCallBack"></param>
+    /// <returns></returns>
+    public bool addLoadABCompleteCallBack(int requestUID, AbstractResourceModule.LoadResourceCompleteHandler loadABCompleteCallBack)
+    {
+        if (!mLoadABCompleteCallBackMap.ContainsKey(requestUID))
+        {
+            ResourceLogger.log($"绑定AssetBundle:{AssetBundlePath}加载请求UID:{requestUID}成功!");
+            mLoadABCompleteCallBackMap.Add(requestUID, loadABCompleteCallBack);
+            if(loadABCompleteCallBack != null)
+            {
+                mLoadABCompleteCallBack += loadABCompleteCallBack;
+            }
+            LoaderManager.Singleton.addAssetBundleRequestUID(requestUID, AssetBundlePath);
+            return true;
+        }
+        else
+        {
+            Debug.LogError($"重复绑定相同请求UID:{requestUID}回调,绑定AssetBundle:{AssetBundlePath}请求回调失败!");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 取消指定请求UID请求
+    /// </summary>
+    /// <param name="requestUID"></param>
+    /// <returns></returns>
+    public bool cancelRequest(int requestUID)
+    {
+        AbstractResourceModule.LoadResourceCompleteHandler loadABCompleteCallBack;
+        if(mLoadABCompleteCallBackMap.TryGetValue(requestUID, out loadABCompleteCallBack))
+        {
+            ResourceLogger.log($"AssetBundle:{AssetBundlePath}取消请求UID:{requestUID}成功!");
+            removeRequest(requestUID);
+            if(loadABCompleteCallBack != null)
+            {
+                mLoadABCompleteCallBack -= loadABCompleteCallBack;
+            }
+            // 所有请求都取消表示没人再请求此AB了
+            if(mLoadABCompleteCallBackMap.Count == 0)
+            {
+                cancel();
+            }
+            return true;
+        }
+        else
+        {
+            Debug.LogError($"找不到请求UID:{requestUID}请求,取消AssetBundle:{AssetBundlePath}请求失败!");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 清除指定UID请求
+    /// </summary>
+    /// <param name="requestUID"></param>
+    /// <returns></returns>
+    private bool removeRequest(int requestUID)
+    {
+        AbstractResourceModule.LoadResourceCompleteHandler loadABCompleteCallBack;
+        if(mLoadABCompleteCallBackMap.TryGetValue(requestUID, out loadABCompleteCallBack))
+        {
+            mLoadABCompleteCallBackMap.Remove(requestUID);
+            LoaderManager.Singleton.removeAssetBundleRequestUID(requestUID);
+            return true;
+        }
+        else
+        {
+            Debug.LogError($"找不到请求UID:{requestUID}回调,移除AssetBundle:{AssetBundlePath}请求失败!");
+            return false;
         }
     }
 
@@ -339,6 +493,36 @@ public class AssetBundleLoader : FactoryObj
     }
 
     /// <summary>
+    /// 响应立刻加载
+    /// </summary>
+    protected void onLoadImmediate()
+    {
+        ResourceLogger.log($"AssetBundle:{AssetBundlePath}改为立刻加载!");
+        // TODO: 处理异步还在在队列中等待加载的情况
+    }
+
+    /// <summary>
+    /// 加载打断
+    /// </summary>
+    protected void cancel()
+    {
+        if(IsDone)
+        {
+            Debug.LogError($"AssetBundle:{AssetBundlePath}已加载完成不允许取消!");
+            return;
+        }
+        LoadState = ResourceLoadState.Cancel;
+        onCancel();
+    }
+
+    protected void onCancel()
+    {
+        ResourceLogger.log($"AssetBundle:{AssetBundlePath}加载请求取消!");
+        // TODO: 处理还在加载或者在队列中的情况
+        complete();
+    }
+
+    /// <summary>
     /// 加载失败
     /// </summary>
     private void failed()
@@ -367,8 +551,8 @@ public class AssetBundleLoader : FactoryObj
         mABInfo.mIsReady = true;
 
         // 通知上层ab加载完成，可以开始加载具体的asset
-        LoadABCompleteCallBack(mABInfo);
-        LoadABCompleteCallBack = null;
+        mLoadABCompleteCallBack(mABInfo);
+        mLoadABCompleteCallBack = null;
 
         // 自身AB以及依赖AB加载完成后，AssetBundleLoader的任务就完成了，回收重用
         AssetBundleLoaderFactory.recycle(this);
@@ -381,7 +565,8 @@ public class AssetBundleLoader : FactoryObj
     {
         AssetBundlePath = string.Empty;
         mDepABPaths = null;
-        LoadABCompleteCallBack = null;
+        mLoadABCompleteCallBackMap.Clear();
+        mLoadABCompleteCallBack = null;
         LoadSelfABCompleteNotifier = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
