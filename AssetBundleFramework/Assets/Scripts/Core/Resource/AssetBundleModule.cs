@@ -4,6 +4,7 @@
  * Create Date:             2019//04/07
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -209,7 +210,7 @@ public class AssetBundleModule : AbstractResourceModule
     /// <summary>
     /// 真正的请求资源
     /// </summary>
-    /// <param name="respath">资源AB路径</param>
+    /// <param name="respath">资源路径(带后缀)</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
@@ -227,6 +228,11 @@ public class AssetBundleModule : AbstractResourceModule
         else
         {
             abpath = respath;
+        }
+        if(string.IsNullOrEmpty(abpath))
+        {
+            Debug.LogError($"找不到资源:{respath}的AB名信息, 加载失败!");
+            return;
         }
         // 如果资源已经加载完成，直接返回
         if (mAllLoadedResourceInfoMap[ResourceLoadType.NormalLoad].ContainsKey(abpath))
@@ -315,37 +321,6 @@ public class AssetBundleModule : AbstractResourceModule
         return loader;
     }    
     
-    /// <summary>
-    /// 创建AssetBundleInfo对象信息
-    /// </summary>
-    /// <param name="abname"></param>
-    /// <param name="ab"></param>
-    /// <returns></returns>
-    public static AssetBundleInfo createAssetBundleInfo(string abname, AssetBundle ab)
-    {
-        var abi = AssetBundleInfoFactory.create();
-        abi.ResourcePath = abname;
-        abi.Bundle = ab;
-        abi.onResourceUnloadedCallback = onABUnloaded;
-        return abi;
-    }
-
-    /// <summary>
-    /// 对应AB卸载回调
-    /// </summary>
-    /// <param name="ari"></param>
-    private static void onABUnloaded(AbstractResourceInfo ari)
-    {
-        var abi = ari as AssetBundleInfo;
-        //AB卸载数据统计
-        if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
-        {
-            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(abi.ResourcePath);
-        }
-        // AB卸载时ABAssetBundleInfo回收时回收重用
-        AssetBundleInfoFactory.recycle(abi);
-    }
-
     /// <summary>
     /// 队列里不再有AB需要加载时检查不再使用的AB
     /// </summary>
@@ -459,6 +434,37 @@ public class AssetBundleModule : AbstractResourceModule
                 mUnsedABInfoList.Clear();
             }
         }
+    }
+
+    /// <summary>
+    /// 创建AssetBundleInfo对象信息
+    /// </summary>
+    /// <param name="abname"></param>
+    /// <param name="ab"></param>
+    /// <returns></returns>
+    public static AssetBundleInfo createAssetBundleInfo(string abname, AssetBundle ab)
+    {
+        var abi = AssetBundleInfoFactory.create();
+        abi.ResourcePath = abname;
+        abi.Bundle = ab;
+        abi.onResourceUnloadedCallback = onABUnloaded;
+        return abi;
+    }
+
+    /// <summary>
+    /// 对应AB卸载回调
+    /// </summary>
+    /// <param name="ari"></param>
+    private static void onABUnloaded(AbstractResourceInfo ari)
+    {
+        var abi = ari as AssetBundleInfo;
+        //AB卸载数据统计
+        if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
+        {
+            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(abi.ResourcePath);
+        }
+        // AB卸载时ABAssetBundleInfo回收时回收重用
+        AssetBundleInfoFactory.recycle(abi);
     }
 
     #region 资源调试辅助功能

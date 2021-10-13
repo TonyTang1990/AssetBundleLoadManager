@@ -47,10 +47,14 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
+    <UnityProjectGeneratorVersion>4.8.2.0</UnityProjectGeneratorVersion>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2018.4.16f1</UnityVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>G:\Software\UnityAllVersions\2018.4.16f1\Editor\Data\Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -70,6 +74,7 @@
     <Compile Include="Assets\Scripts\Core\Pool\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceInfo.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceModule.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\AssetBuildInfoAsset.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleAsyncQueue.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleInfo.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleInfoFactory.cs" />
@@ -82,6 +87,8 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseLoader.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseLoaderFactory.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseModule.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\ResourceConstData.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\ResourceHelper.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceLoadAnalyse.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceLogger.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleEnum.cs" />
@@ -126,6 +133,7 @@
     <Compile Include="Assets\Scripts\GameLogic\Resource\SharedMaterialManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\SharedTextureManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\WindowManager.cs" />
+    <Compile Include="Assets\Scripts\Utilities\PathUtilities.cs" />
     <Compile Include="Assets\Scripts\Utilities\Utilities.cs" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Standard Unlit.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorNormalRendertex.shader" />
@@ -236,7 +244,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Standard.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-VertexLit.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\BlitTexArraySliceToDepth_MSAA.shader" />
-    <None Include="Assets\Res\actors\zombunny\Shaders\Rim Lit Bumped Specular.shader" />
+    <None Include="Assets\Res\shaders\Rim Lit Bumped Specular.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\GIDebug\VertexColors.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityInstancing.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\GenNormalmap.shader" />
@@ -295,6 +303,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-StencilWrite.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-ParallaxSpec.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Transparent.shader" />
+    <None Include="Assets\StreamingAssets\Android\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardCore.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardCoreForwardSimple.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityGlobalIllumination.cginc" />

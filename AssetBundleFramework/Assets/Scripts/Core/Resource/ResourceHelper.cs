@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             ResourceHelper.cs
  * Author:                  TONYTANG
  * Create Date:             2021/10/12
@@ -6,15 +6,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 /// <summary>
 /// ResourceHelper.cs
-/// ×ÊÔ´¸¨Öú¹¤¾ß
+/// èµ„æºè¾…åŠ©ç±»
 /// </summary>
 public static class ResourceHelper
 {
     /// <summary>
-    /// ÓĞĞ§µÄAsset×ÊÔ´ºó×ºMap<ºó×ºÃû,ÊÇ·ñÓĞĞ§>
+    /// æœ‰æ•ˆAssetåç¼€Map<åç¼€å,æ˜¯å¦æœ‰æ•ˆ>
     /// </summary>
     private static Dictionary<string, bool> mValideAssetPostFixMap = new Dictionary<string, bool>()
     {
@@ -33,10 +34,10 @@ public static class ResourceHelper
         { ".spriteatlas", true },
         { ".playable", true },
         { ".asset", true },
-    }
+    };
 
     /// <summary>
-    /// Ö¸¶¨AssetÂ·¾¶ÊÇ·ñÓĞĞ§ºó×ºÃû
+    /// æŒ‡å®šAssetè·¯å¾„æ˜¯å¦æœ‰æ•ˆåç¼€
     /// </summary>
     /// <param name="assetPath"></param>
     /// <returns></returns>

@@ -5,6 +5,7 @@
  */
 
 #if UNITY_EDITOR
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -82,7 +83,7 @@ public class AssetDatabaseModule : AbstractResourceModule
     /// <summary>
     /// 真正的请求资源
     /// </summary>
-    /// <param name="respath">资源AB路径</param>
+    /// <param name="respath">资源路径(带后缀)</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
@@ -271,6 +272,36 @@ public class AssetDatabaseModule : AbstractResourceModule
     private int ADILastUsedTimeSort(AbstractResourceInfo a, AbstractResourceInfo b)
     {
         return a.LastUsedTime.CompareTo(b.LastUsedTime);
+    }
+
+    /// <summary>
+    /// 创建AssetDatabaseInfo对象信息
+    /// </summary>
+    /// <param name="assetBundlePath">AB路径</param>
+    /// <param name="respath">资源路径</param>
+    /// <returns></returns>
+    public static AssetDatabaseInfo createAssetDatabaseInfo(string respath)
+    {
+        var adi = AssetDatabaseInfoFactory.create();
+        adi.ResourcePath = respath;
+        adi.onResourceUnloadedCallback = onResourceUnloaded;
+        return adi;
+    }
+
+    /// <summary>
+    /// 对应资源卸载回调
+    /// </summary>
+    /// <param name="ari"></param>
+    private static void onResourceUnloaded(AbstractResourceInfo ari)
+    {
+        var adi = ari as AssetDatabaseInfo;
+        //资源卸载数据统计
+        if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
+        {
+            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(adi.ResourcePath);
+        }
+        // 资源卸载时资源AssetDatabaseInfo回收时回收重用
+        AssetDatabaseInfoFactory.recycle(adi);
     }
 }
 #endif

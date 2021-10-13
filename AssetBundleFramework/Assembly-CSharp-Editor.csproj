@@ -47,10 +47,14 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
+    <UnityProjectGeneratorVersion>4.8.2.0</UnityProjectGeneratorVersion>
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2018.4.16f1</UnityVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>G:\Software\UnityAllVersions\2018.4.16f1\Editor\Data\Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -63,32 +67,25 @@
     <Compile Include="Assets\Scripts\Editor\BaseEditorWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildPreprocess.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildWindow.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ABBuilder.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ABHelper.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AnimationClipPackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AnimationControllerPackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AudiosPackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\EditorAssetPackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\FBXPackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\MaterialPackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\NavMeshPackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\PackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\PrefabPackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResDpManager.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ScenePackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ShaderPackageAsset.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\TexturePackageAsset.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\AssetBundleOperationWindow.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollectRule.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollectSetting.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundletWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleBuild\AssetBundleBuildConstData.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleBuild\AssetBundleBuilder.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleBuild\AssetBundleBuilderHelper.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleBuild\AssetBundleBuildInfoAssetEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleBuild\AssetInfo.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleBuild\EAssetBundleBuildRule.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleBuild\EAssetBundleCollectRules.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollector\AssetBundleCollectSetting.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollector\AssetBundleCollectSettingData.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollector\DefaultCollector.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollector\IAssetCollector.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetBundleNameSetting.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOperationWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeTool.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetSelectionsOperationWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\FBXAnimationExtract.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PackagAssetInfoBrowserWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PrefabUtilitiesExtension.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\DebugTool\ResourceDebugWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\EditorResourceUtilities.cs" />
@@ -99,6 +96,8 @@
     <Compile Include="Assets\Scripts\Editor\Core\UI\TButtonEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TImageEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TRawImageEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\EditorUtilities.cs" />
+    <Compile Include="Assets\Scripts\Editor\Helper\AssetRelativePathTool.cs" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

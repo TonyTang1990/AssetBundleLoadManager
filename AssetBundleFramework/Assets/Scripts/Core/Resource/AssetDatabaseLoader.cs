@@ -29,9 +29,24 @@ public class AssetDatabaseLoader : FactoryObj
     /// </summary>
     public string AssetPath
     {
-        get;
-        set;
+        get
+        {
+            return mAssetPath;
+        }
+        set
+        {
+            mAssetPath = value;
+            if (!string.IsNullOrEmpty(mAssetPath))
+            {
+                initDependentAssetInfo();
+            }
+            else
+            {
+                ResourceLogger.logErr("不允许加载空资源路径Asset!!");
+            }
+        }
     }
+    private string mAssetPath;
 
     /// <summary>
     /// 资源加载完成逻辑层回调
@@ -111,12 +126,13 @@ public class AssetDatabaseLoader : FactoryObj
 
     public AssetDatabaseLoader()
     {
-        AssetPath = string.Empty;
+        mAssetPath = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
         mAssetInfo = null;
         mDepAssetInfoList = new List<AssetDatabaseInfo>();
+        mAllValideDepAssetPathList = new List<string>();
         mLoadedDepAssetCount = 0;
     }
 
@@ -154,7 +170,7 @@ public class AssetDatabaseLoader : FactoryObj
 
     public void recycle()
     {
-        AssetPath = string.Empty;
+        mAssetPath = string.Empty;
         LoadResourceCompleteCallBack = null;
         LoadMethod = ResourceLoadMethod.Sync;
         LoadState = ResourceLoadState.None;
@@ -165,12 +181,30 @@ public class AssetDatabaseLoader : FactoryObj
     }
 
     /// <summary>
+    /// 初始化依赖Asset信息
+    /// </summary>
+    private void initDependentAssetInfo()
+    {
+        mAllValideDepAssetPathList.Clear();
+        // AssetDatabase模式下的依赖按Asset依赖来计算
+        // 通过AssetDatabase.GetDependencies()方法获得
+        var allDependentAssets = AssetDatabase.GetDependencies(AssetPath, true);
+        foreach (var dependentAssetPath in allDependentAssets)
+        {
+            if (ResourceHelper.IsAssetPathHasValideAssetPostfix(dependentAssetPath) && !string.Equals(AssetPath, dependentAssetPath))
+            {
+                mAllValideDepAssetPathList.Add(dependentAssetPath);
+            }
+        }
+    }
+
+    /// <summary>
     /// 加载资源
     /// </summary>
     private void loadAsset()
     {
         ResourceLogger.log(string.Format("加载资源:{0}", AssetPath));
-        //暂时默认都当同步处理
+        //编辑器模式不支持异步加载，统一当做同步处理
         if (LoadMethod == ResourceLoadMethod.Sync)
         {
             LoadState = ResourceLoadState.Loading;
@@ -188,54 +222,41 @@ public class AssetDatabaseLoader : FactoryObj
     /// </summary>
     private void loadAssetSync()
     {
-        if(string.IsNullOrEmpty(AssetPath))
-        {
-            ResourceLogger.logErr(string.Format("找不到资源名 : {0}的资源!", AssetPath));
-        }
-        else
-        {
-            mAssetInfo = createAssetDatabaseInfo(AssetPath);
-            mAssetInfo.updateLastUsedTime();
-        }
+        onSelfAssetLoadComplete();
+    }
 
-        ///AssetDatabase模式下没有依赖资源的概念，
-        ///所以一口气回调资源加载任务完成和上层逻辑回调
+    /// <summary>
+    /// 自身Asset加载完成
+    /// </summary>
+    private void onSelfAssetLoadComplete()
+    {
+        ResourceLogger.log(string.Format("Asset:{0}自身加载完成!", AssetPath));
+        mAssetInfo = AssetDatabaseModule.createAssetDatabaseInfo(AssetPath);
+        mAssetInfo.updateLastUsedTime();
+        var asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(AssetPath);
         LoadState = ResourceLoadState.SelfComplete;
+        // 通知上层自身Asset加载完成，移除加载任务
         LoadSelfResourceCompleteNotifier(this);
         LoadSelfResourceCompleteNotifier = null;
+        if (asset == null)
+        {
+            Debug.LogError(string.Format("Asset : {0}文件不存在！", AssetPath));
+            failed();
+            return;
+        }
 
         loadDepAssets();
-
-        LoadState = ResourceLoadState.AllComplete;
-        mAssetInfo.mIsReady = true;
-        LoadResourceCompleteCallBack(mAssetInfo);
-        LoadResourceCompleteCallBack = null;
-
-        // 资源加载完成后，AssetDatabaseLoader的任务就完成了，回收重用
-        AssetDatabaseLoaderFactory.recycle(this);
     }
-    
+
     /// <summary>
     /// 加载依赖Asset
     /// </summary>
     private void loadDepAssets()
     {
-        // AssetDatabase模式下的依赖按Asset依赖来计算
-        // 通过AssetDatabase.GetDependencies()方法获得
-        var allDependentAssets = AssetDatabase.GetDependencies(AssetPath, true);
-        mAllValideDepAssetPathList = new List<string>();
-        foreach(var dependentAssetPath in allDependentAssets)
-        {
-            if(ResourceHelper.IsAssetPathHasValideAssetPostFix(dependentAssetPath) && !string.Equals(AssetPath, dependentAssetPath))
-            {
-                mAllValideDepAssetPathList.Add(dependentAssetPath);
-            }
-        }
-
         // 如果没有依赖Asset信息，直接当做Asset加载完成返回
         if (mAllValideDepAssetPathList.Count == 0)
         {
-            allAssetLoadedComplete();
+            onAllAssetLoadedComplete();
         }
         else
         {
@@ -255,7 +276,7 @@ public class AssetDatabaseLoader : FactoryObj
     private void onDependentAssetLoadComplete(AbstractResourceInfo resInfo)
     {
         var assetInfo = resInfo as AssetDatabaseInfo;
-        ResourceLogger.log($"依赖Asset:{assetInfo.ResourcePath}加载成功!");
+        ResourceLogger.log($"Asset:{AssetPath}的依赖Asset:{assetInfo.ResourcePath}加载成功!");
         mDepAssetInfoList.Add(assetInfo);
         // 每完成一个依赖Asset加载，添加依赖Asset索引信息
         mAssetInfo.addDependency(assetInfo);
@@ -267,22 +288,48 @@ public class AssetDatabaseLoader : FactoryObj
         assetInfo.updateLastUsedTime();
         if(mLoadedDepAssetCount == mAllValideDepAssetPathList.Count)
         {
-            allAssetLoadedComplete();
+            onAllAssetLoadedComplete();
         }
     }
 
     /// <summary>
-    /// 所有Asset加载完成
+    /// 所有Asset加载完成(自身和依赖Asset)
     /// </summary>
-    private void allAssetLoadedComplete()
+    private void onAllAssetLoadedComplete()
     {
         ResourceLogger.log($"Asset:{AssetPath}所有Asset加载完成!");
 
         // 依赖Asset的索引计数添加在每一个依赖Asset加载完成时，
         // 所有完成再添加计数如果存在加载打断取消就没法正确恢复依赖Asset计数了
 
-        LoadState = ResourceLoadState.AllComplete;
+        complete();
+    }
 
+    /// <summary>
+    /// 加载失败
+    /// </summary>
+    private void failed()
+    {
+        ResourceLogger.logErr($"加载Asset:{AssetPath}失败!");
+        LoadState = ResourceLoadState.Error;
+        onComplete();
+    }
+
+    /// <summary>
+    /// 完成加载
+    /// </summary>
+    private void complete()
+    {
+        ResourceLogger.log($"加载Asset:{AssetPath}完成!");
+        LoadState = ResourceLoadState.AllComplete;
+        onComplete();
+    }
+
+    /// <summary>
+    /// 响应加载完成
+    /// </summary>
+    private void onComplete()
+    {
         // 所有Asset加载完成才算Asset Ready可以使用
         mAssetInfo.mIsReady = true;
 
@@ -292,36 +339,6 @@ public class AssetDatabaseLoader : FactoryObj
 
         // 自身Asset以及依赖Asset加载完成后，AssetDatabaseLoader的任务就完成了，回收重用
         AssetDatabaseLoaderFactory.recycle(this);
-    }
-
-    /// <summary>
-    /// 创建AssetDatabaseInfo对象信息
-    /// </summary>
-    /// <param name="assetBundlePath">AB路径</param>
-    /// <param name="respath">资源路径</param>
-    /// <returns></returns>
-    private AssetDatabaseInfo createAssetDatabaseInfo(string respath)
-    {
-        var adi = AssetDatabaseInfoFactory.create();
-        adi.ResourcePath = respath;
-        adi.onResourceUnloadedCallback = onResourceUnloaded;
-        return adi;
-    }
-
-    /// <summary>
-    /// 对应资源卸载回调
-    /// </summary>
-    /// <param name="ari"></param>
-    private static void onResourceUnloaded(AbstractResourceInfo ari)
-    {
-        var adi = ari as AssetDatabaseInfo;
-        //资源卸载数据统计
-        if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
-        {
-            ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(adi.ResourcePath);
-        }
-        // 资源卸载时资源AssetDatabaseInfo回收时回收重用
-        AssetDatabaseInfoFactory.recycle(adi);
     }
 }
 #endif

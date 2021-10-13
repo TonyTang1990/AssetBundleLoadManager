@@ -4,6 +4,7 @@
  * Create Date:             2019//04/07
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -130,7 +131,7 @@ public abstract class AbstractResourceModule {
     /// 请求资源
     /// 上层资源加载统一入口
     /// </summary>
-    /// <param name="respath">资源AB路径</param>
+    /// <param name="respath">资源路径(带后缀)</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
@@ -148,7 +149,7 @@ public abstract class AbstractResourceModule {
     /// <summary>
     /// 真正的请求资源(由不同的资源模块去实现)
     /// </summary>
-    /// <param name="respath">资源AB路径</param>
+    /// <param name="respath">资源路径(带后缀)</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>

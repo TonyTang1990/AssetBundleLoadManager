@@ -128,7 +128,7 @@ public class ResourceModuleManager : SingletonTemplate<ResourceModuleManager>
     /// 请求资源
     /// 资源加载统一入口
     /// </summary>
-    /// <param name="respath">资源AB路径</param>
+    /// <param name="respath">资源路径(带后缀)</param>
     /// <param name="completehandler">加载完成上层回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>

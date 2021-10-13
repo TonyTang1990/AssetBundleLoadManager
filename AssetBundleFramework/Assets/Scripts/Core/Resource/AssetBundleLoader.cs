@@ -215,28 +215,6 @@ public class AssetBundleLoader : FactoryObj
     }
 
     /// <summary>
-    /// 加载依赖AB
-    /// </summary>
-    private void loadDepAssetBundle()
-    {
-        // 如果没有依赖AB信息，直接当做AB加载完成返回
-        // 否则直接当做AB加载完成处理
-        if (DepABCount == 0)
-        {
-            allABLoadedComplete();
-        }
-        else
-        {
-            foreach (var dpabpath in DepABPaths)
-            {
-                // 依赖AB统一采用ResourceLoadType.NormalLoad方式，不采用被依赖资源AB的ResourceLoadType
-                // 只要被依赖AB不被卸载就不会导致依赖AB被卸载
-                ResourceModuleManager.Singleton.requstResource(dpabpath, onDepABLoadComplete, ResourceLoadType.NormalLoad, LoadMethod);
-            }
-        }
-    }
-
-    /// <summary>
     /// 加载自身AB
     /// </summary>
     private void loadSelfAssetBundle()
@@ -270,16 +248,56 @@ public class AssetBundleLoader : FactoryObj
             Debug.Log(string.Format("开始同步加载AB:{0}", AssetBundlePath));
             ab = AssetBundle.LoadFromFile(abpath);
         }
-        else
-        {
-            Debug.LogError(string.Format("AB : {0}文件不存在！", AssetBundlePath));
-        }
 #else
         ab = AssetBundle.LoadFromFile(abpath);
 #endif
         onSelfABLoadComplete(ab);
     }
-    
+
+    /// <summary>
+    /// AB资源加载完成
+    /// </summary>
+    public void onSelfABLoadComplete(AssetBundle ab = null)
+    {
+        ResourceLogger.log(string.Format("AB:{0}自身加载完成!", AssetBundlePath));
+        mABInfo = AssetBundleModule.createAssetBundleInfo(AssetBundlePath, ab);
+        mABInfo.updateLastUsedTime();
+        LoadState = ResourceLoadState.SelfComplete;
+        // 通知上层自身AB加载完成，移除加载任务
+        LoadSelfABCompleteNotifier(this);
+        LoadSelfABCompleteNotifier = null;
+        if (ab == null)
+        {
+            Debug.LogError(string.Format("AB : {0}文件不存在！", AssetBundlePath));
+            failed();
+            return;
+        }
+
+        loadDepAssetBundle();
+    }
+
+    /// <summary>
+    /// 加载依赖AB
+    /// </summary>
+    private void loadDepAssetBundle()
+    {
+        // 如果没有依赖AB信息，直接当做AB加载完成返回
+        // 否则直接当做AB加载完成处理
+        if (DepABCount == 0)
+        {
+            onAllABLoadedComplete();
+        }
+        else
+        {
+            foreach (var dpabpath in DepABPaths)
+            {
+                // 依赖AB统一采用ResourceLoadType.NormalLoad方式，不采用被依赖资源AB的ResourceLoadType
+                // 只要被依赖AB不被卸载就不会导致依赖AB被卸载
+                ResourceModuleManager.Singleton.requstResource(dpabpath, onDepABLoadComplete, ResourceLoadType.NormalLoad, LoadMethod);
+            }
+        }
+    }
+
     /// <summary>
     /// 依赖AB加载完成回调
     /// </summary>
@@ -287,8 +305,11 @@ public class AssetBundleLoader : FactoryObj
     private void onDepABLoadComplete(AbstractResourceInfo resinfo)
     {
         var abinfo = resinfo as AssetBundleInfo;
-        ResourceLogger.log(string.Format("依赖AB:{0}加载成功!", abinfo.ResourcePath));
+        ResourceLogger.log($"AB:{AssetBundlePath}的依赖AB:{abinfo.ResourcePath}加载成功!");
         mDepAssetBundleInfoList.Add(abinfo);
+        // 每完成一个依赖AB加载，添加依赖AB索引信息
+        mABInfo.addDependency(abinfo);
+
 #if UNITY_EDITOR
         //Editor模式下的调试功能
         // 移除已经加载过的，存储来测试查看用
@@ -300,44 +321,48 @@ public class AssetBundleLoader : FactoryObj
         abinfo.updateLastUsedTime();
         if (mLoadedDepABCount == mDepABCount)
         {
-            allABLoadedComplete();
+            onAllABLoadedComplete();
         }
-    }
-
-    /// <summary>
-    /// AB资源加载完成
-    /// </summary>
-    public void onSelfABLoadComplete(AssetBundle ab = null)
-    {
-        ResourceLogger.log(string.Format("AB:{0}自身加载完成!", AssetBundlePath));
-
-        mABInfo = AssetBundleModule.createAssetBundleInfo(AssetBundlePath, ab);
-        mABInfo.updateLastUsedTime();
-        
-        LoadState = ResourceLoadState.SelfComplete;
-
-        // 通知上层自身AB加载完成，移除加载任务
-        LoadSelfABCompleteNotifier(this);
-        LoadSelfABCompleteNotifier = null;
-
-        loadDepAssetBundle();
     }
 
     /// <summary>
     /// 所有AB加载完成(自身和依赖AB)
     /// </summary>
-    private void allABLoadedComplete()
+    private void onAllABLoadedComplete()
     {
         ResourceLogger.log(string.Format("AB:{0}所有AB加载完成!", AssetBundlePath));
 
-        // 所有AB加载完添加依赖AB索引信息并通知上层可以使用了
-        foreach (var dploader in mDepAssetBundleInfoList)
-        {
-            mABInfo.addDependency(dploader);
-        }
+        // 依赖AB的索引计数添加在每一个依赖AB加载完成时，
+        // 所有完成再添加计数如果存在加载打断取消就没法正确恢复依赖AB计数了
 
+        complete();
+    }
+
+    /// <summary>
+    /// 加载失败
+    /// </summary>
+    private void failed()
+    {
+        ResourceLogger.logErr($"加载AB:{AssetBundlePath}失败!");
+        LoadState = ResourceLoadState.Error;
+        onComplete();
+    }
+
+    /// <summary>
+    /// 完成加载
+    /// </summary>
+    private void complete()
+    {
+        ResourceLogger.log($"加载AB:{AssetBundlePath}完成!");
         LoadState = ResourceLoadState.AllComplete;
+        onComplete();
+    }
 
+    /// <summary>
+    /// 响应加载完成
+    /// </summary>
+    private void onComplete()
+    {
         // 所有AB加载完成才算AB Ready可以使用
         mABInfo.mIsReady = true;
 
