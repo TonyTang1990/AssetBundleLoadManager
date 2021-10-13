@@ -68,6 +68,5 @@ public enum ResourceLoadState
     Loading = 3,          // 加载中状态
     SelfComplete = 4,     // 自身加载完成状态
     AllComplete = 5,      // 自身以及依赖AB加载完成状态
-    Cancel = 6,           // 取消状态
-    Error = 7             // 出错状态
+    Error = 6             // 出错状态
 }

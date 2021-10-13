@@ -20,7 +20,7 @@ public class AssetBundleAsyncQueue {
     /// <summary>
     /// 异步AB加载队列(全局唯一)
     /// </summary>
-    public static Queue<AssetBundleLoader> ABAsyncQueue = new Queue<AssetBundleLoader>();
+    public static List<AssetBundleLoader> ABAsyncQueue = new List<AssetBundleLoader>();
 
     /// <summary>
     /// 是否开启了AB加载任务携程
@@ -69,11 +69,29 @@ public class AssetBundleAsyncQueue {
     {
         if(abl.LoadMethod == ResourceLoadMethod.Async)
         {
-            ABAsyncQueue.Enqueue(abl);
+            ABAsyncQueue.Add(abl);
         }
         else
         {
             ResourceLogger.logErr(string.Format("严重错误，同步加载资源 : {0} 不应该添加到异步加载队列里！", abl.AssetBundlePath));
+        }
+    }
+
+    /// <summary>
+    /// 移除指定异步排队加载的AssetBundle加载器
+    /// </summary>
+    /// <param name="abl"></param>
+    public static bool removeAssetBundleLoader(AssetBundleLoader abl)
+    {
+        if(ABAsyncQueue.Remove(abl))
+        {
+            ResourceLogger.log($"从异步加载中移除AssetBundle:{abl.AssetBundlePath}加载器成功!");
+            return true;
+        }
+        else
+        {
+            Debug.LogError($"异步加载队列里找不到AssetBundle:{abl.AssetBundlePath}加载器,移除加载器失败!");
+            return false;
         }
     }
 
@@ -87,7 +105,8 @@ public class AssetBundleAsyncQueue {
         {
             if (ABAsyncQueue.Count > 0)
             {
-                CurrentLoadingAssetBundleLoader = ABAsyncQueue.Dequeue();
+                CurrentLoadingAssetBundleLoader = ABAsyncQueue[0];
+                ABAsyncQueue.RemoveAt(0);
                 //检查是否已经同步加载完成
                 //如果异步加载AB时，同步请求来了，打断异步后续逻辑
                 //LoadState == ResourceLoadState.None表明同步加载该资源已经完成，无需再异步返回

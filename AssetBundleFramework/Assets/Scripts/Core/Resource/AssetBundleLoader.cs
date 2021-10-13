@@ -152,7 +152,7 @@ public class AssetBundleLoader : FactoryObj
     {
         get
         {
-            return LoadState == ResourceLoadState.AllComplete || LoadState == ResourceLoadState.Error || LoadState == ResourceLoadState.Cancel;
+            return LoadState == ResourceLoadState.AllComplete || LoadState == ResourceLoadState.Error;
         }
     }
 
@@ -186,17 +186,6 @@ public class AssetBundleLoader : FactoryObj
         get
         {
             return LoadState == ResourceLoadState.Error;
-        }
-    }
-
-    /// <summary>
-    /// 是否取消加载
-    /// </summary>
-    public bool IsCancel
-    {
-        get
-        {
-            return LoadState == ResourceLoadState.Cancel;
         }
     }
 
@@ -266,10 +255,6 @@ public class AssetBundleLoader : FactoryObj
         {
             ResourceLogger.logErr(string.Format("AB : {0}已经处于自身以及依赖AB加载完成状态，不应该再被调用startLoad，请检查资源加载是否异常！", AssetBundlePath));
         }
-        else if (IsCancel)
-        {
-            ResourceLogger.logErr(string.Format("AB:{0}处于Cancel状态，无法加载!", AssetBundlePath));
-        }
         else if (IsError)
         {
             ResourceLogger.logErr(string.Format("AB:{0}处于Error状态，无法加载!", AssetBundlePath));
@@ -281,14 +266,12 @@ public class AssetBundleLoader : FactoryObj
     /// </summary>
     public void loadImmediate()
     {
-        // 处理异步加载等待改成同步加载的情况,同步加载的情况下已经加载完成了
-        if(IsWaiting || IsLoading)
+        if(IsDone)
         {
-            LoadMethod = ResourceLoadMethod.Sync;
-            // 重置AB加载状态，走同步模式
-            LoadState = ResourceLoadState.None;
-            startLoad();
+            Debug.LogError($"AssetBundle:{AssetBundlePath}已经加载完成,触发立刻加载失败!");
+            return;
         }
+        onLoadImmediate();
     }
 
     /// <summary>
@@ -297,74 +280,12 @@ public class AssetBundleLoader : FactoryObj
     /// <param name="requestUID"></param>
     /// <param name="loadABCompleteCallBack"></param>
     /// <returns></returns>
-    public bool addLoadABCompleteCallBack(int requestUID, AbstractResourceModule.LoadResourceCompleteHandler loadABCompleteCallBack)
+    public void addLoadABCompleteCallBack(AbstractResourceModule.LoadResourceCompleteHandler loadABCompleteCallBack)
     {
-        if (!mLoadABCompleteCallBackMap.ContainsKey(requestUID))
+        ResourceLogger.log($"添加AssetBundle:{AssetBundlePath}加载完成回调!");
+        if(loadABCompleteCallBack != null)
         {
-            ResourceLogger.log($"绑定AssetBundle:{AssetBundlePath}加载请求UID:{requestUID}成功!");
-            mLoadABCompleteCallBackMap.Add(requestUID, loadABCompleteCallBack);
-            if(loadABCompleteCallBack != null)
-            {
-                mLoadABCompleteCallBack += loadABCompleteCallBack;
-            }
-            LoaderManager.Singleton.addAssetBundleRequestUID(requestUID, AssetBundlePath);
-            return true;
-        }
-        else
-        {
-            Debug.LogError($"重复绑定相同请求UID:{requestUID}回调,绑定AssetBundle:{AssetBundlePath}请求回调失败!");
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// 取消指定请求UID请求
-    /// </summary>
-    /// <param name="requestUID"></param>
-    /// <returns></returns>
-    public bool cancelRequest(int requestUID)
-    {
-        AbstractResourceModule.LoadResourceCompleteHandler loadABCompleteCallBack;
-        if(mLoadABCompleteCallBackMap.TryGetValue(requestUID, out loadABCompleteCallBack))
-        {
-            ResourceLogger.log($"AssetBundle:{AssetBundlePath}取消请求UID:{requestUID}成功!");
-            removeRequest(requestUID);
-            if(loadABCompleteCallBack != null)
-            {
-                mLoadABCompleteCallBack -= loadABCompleteCallBack;
-            }
-            // 所有请求都取消表示没人再请求此AB了
-            if(mLoadABCompleteCallBackMap.Count == 0)
-            {
-                cancel();
-            }
-            return true;
-        }
-        else
-        {
-            Debug.LogError($"找不到请求UID:{requestUID}请求,取消AssetBundle:{AssetBundlePath}请求失败!");
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// 清除指定UID请求
-    /// </summary>
-    /// <param name="requestUID"></param>
-    /// <returns></returns>
-    private bool removeRequest(int requestUID)
-    {
-        AbstractResourceModule.LoadResourceCompleteHandler loadABCompleteCallBack;
-        if(mLoadABCompleteCallBackMap.TryGetValue(requestUID, out loadABCompleteCallBack))
-        {
-            mLoadABCompleteCallBackMap.Remove(requestUID);
-            LoaderManager.Singleton.removeAssetBundleRequestUID(requestUID);
-            return true;
-        }
-        else
-        {
-            Debug.LogError($"找不到请求UID:{requestUID}回调,移除AssetBundle:{AssetBundlePath}请求失败!");
-            return false;
+            mLoadABCompleteCallBack += loadABCompleteCallBack;
         }
     }
 
@@ -498,28 +419,17 @@ public class AssetBundleLoader : FactoryObj
     protected void onLoadImmediate()
     {
         ResourceLogger.log($"AssetBundle:{AssetBundlePath}改为立刻加载!");
-        // TODO: 处理异步还在在队列中等待加载的情况
-    }
-
-    /// <summary>
-    /// 加载打断
-    /// </summary>
-    protected void cancel()
-    {
-        if(IsDone)
+        // 处理异步加载等待改成同步加载的情况,同步加载的情况下已经加载完成了
+        // 异步还在排队加载的情况需要从异步队列里移除加载
+        if (IsWaiting)
         {
-            Debug.LogError($"AssetBundle:{AssetBundlePath}已加载完成不允许取消!");
-            return;
+            AssetBundleAsyncQueue.removeAssetBundleLoader(this);
         }
-        LoadState = ResourceLoadState.Cancel;
-        onCancel();
-    }
-
-    protected void onCancel()
-    {
-        ResourceLogger.log($"AssetBundle:{AssetBundlePath}加载请求取消!");
-        // TODO: 处理还在加载或者在队列中的情况
-        complete();
+        // 修改成同步加载
+        LoadMethod = ResourceLoadMethod.Sync;
+        // 重置AB加载状态，走同步模式
+        LoadState = ResourceLoadState.None;
+        startLoad();
     }
 
     /// <summary>

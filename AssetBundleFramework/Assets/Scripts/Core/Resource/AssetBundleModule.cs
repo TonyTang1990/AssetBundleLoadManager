@@ -267,8 +267,7 @@ public class AssetBundleModule : AbstractResourceModule
                 // 比如先异步请求resname，在异步完成前来了一个同步请求resname
                 // 修改加载方式并添加回调，调用同步加载方式，异步加载会在同步加载完成时一起回调
                 abloader.LoadType = loadtype;
-                abloader.mLoadABCompleteCallBack += completehandler;
-                abloader.LoadSelfABCompleteNotifier = onABLoadCompleteNotifier;
+                abloader.addLoadABCompleteCallBack(completehandler);
                 if (loadmethod == ResourceLoadMethod.Sync)
                 {
                     ResourceLogger.log(string.Format("请求同步加载一个异步加载状态:{0}的资源 : {1}", abloader.LoadState.ToString(), abloader.AssetBundlePath));
@@ -280,7 +279,7 @@ public class AssetBundleModule : AbstractResourceModule
                 abloader = createABLoader(abpath);
                 abloader.LoadMethod = loadmethod;
                 abloader.LoadType = loadtype;
-                abloader.mLoadABCompleteCallBack = completehandler;
+                abloader.addLoadABCompleteCallBack(completehandler);
                 abloader.LoadSelfABCompleteNotifier = onABLoadCompleteNotifier;
                 mABRequestTaskMap.Add(abpath, abloader);
                 abloader.startLoad();

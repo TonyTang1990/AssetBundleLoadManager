@@ -69,6 +69,14 @@
     <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateConfig.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\TWebRequest.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\AssetBundleInfo.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\AssetBundleLoader.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\AssetDatabaseLoader.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\AssetInfo.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\AssetLoader.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\Loadable.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\LoaderManager.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\ResourceModuleEnum.cs" />
     <Compile Include="Assets\Scripts\Core\Pool\GameObjectPool.cs" />
     <Compile Include="Assets\Scripts\Core\Pool\ObjectFactory.cs" />
     <Compile Include="Assets\Scripts\Core\Pool\ObjectPool.cs" />
@@ -133,6 +141,7 @@
     <Compile Include="Assets\Scripts\GameLogic\Resource\SharedMaterialManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\SharedTextureManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\WindowManager.cs" />
+    <Compile Include="Assets\Scripts\NewGameLauncher.cs" />
     <Compile Include="Assets\Scripts\Utilities\PathUtilities.cs" />
     <Compile Include="Assets\Scripts\Utilities\Utilities.cs" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Standard Unlit.shader" />
