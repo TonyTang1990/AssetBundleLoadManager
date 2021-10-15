@@ -67,43 +67,21 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     }
 
     /// <summary>
-    /// 设置Image指定图集图片
+    /// 设置Image指定图片(单图或者SpriteAtlas里的图)
     /// </summary>
     /// <param name="img">Image组件</param>
-    /// <param name="atlaspath">图集路径</param>
-    /// <param name="spritename">Sprite名</param>
+    /// <param name="spritePath">Sprite路径</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <param name="loadmethod">资源加载方式</param>
     /// <returns></returns>
-    public void setImageAtlasSprite(Image img, string atlaspath, string spritename, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    public void setImageSingleSprite(Image img, string spritePath, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-        ResourceModuleManager.Singleton.requstResource(atlaspath,
+        DIYLog.Assert(img == null, "setImageSingleSprite不允许传空Image!");
+        ResourceModuleManager.Singleton.requstResource(spritePath,
         (abi) =>
         {
-            spritename = spritename;
-            var sprite = abi.getAsset<Sprite>(img, spritename);
-            img.sprite = sprite;
-        },
-        loadtype,
-        loadmethod);
-    }
-
-    /// <summary>
-    /// 设置Image指定图片(单图的时候)
-    /// </summary>
-    /// <param name="img">Image组件</param>
-    /// <param name="spritepath">Sprite路径</param>
-    /// <param name="loadtype">资源加载类型</param>
-    /// <param name="loadmethod">资源加载方式</param>
-    /// <returns></returns>
-    public void setImageSingleSprite(Image img, string spritepath, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
-    {
-        DIYLog.Assert(img == null, "setImageSingleSprite!");
-        ResourceModuleManager.Singleton.requstResource(spritepath,
-        (abi) =>
-        {
-            var spritename = Path.GetFileNameWithoutExtension(spritepath);
-            var sprite = abi.getAsset<Sprite>(img, spritename);
+            var spriteName = Path.GetFileNameWithoutExtension(spritePath);
+            var sprite = abi.getAsset<Sprite>(img, spriteName);
             img.sprite = sprite;
         },
         loadtype,
@@ -127,7 +105,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
         {
             DIYLog.Log("加载SpriteAtlas AB完成!");
             // 清除老的资源引用
-            if (timg.ABI != null && !string.IsNullOrEmpty(timg.AtlasPath))
+            if (timg.ABI != null && !string.IsNullOrEmpty(timg.SpritePath))
             {
                 timg.ABI.releaseOwner(timg);
             }
@@ -140,14 +118,12 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 timg.sprite = spriteatlas.GetSprite(spritename);
                 DIYLog.Log("SpriteAtlas.GetSprite()之后!");
                 timg.ABI = abi;
-                timg.AtlasPath = atlaspath;
-                timg.SpriteName = spritename;
+                timg.SpritePath = spritename;
             }
             else
             {
                 timg.ABI = null;
-                timg.AtlasPath = string.Empty;
-                timg.SpriteName = string.Empty;
+                timg.SpritePath = string.Empty;
             }
         },
         loadtype,
@@ -169,7 +145,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
         (abi) =>
         {
             // 清除老的资源引用
-            if (timg.ABI != null && !string.IsNullOrEmpty(timg.AtlasPath))
+            if (timg.ABI != null && !string.IsNullOrEmpty(timg.SpritePath))
             {
                 timg.ABI.releaseOwner(timg);
             }
@@ -179,14 +155,12 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 var sprite = abi.getAsset<Sprite>(timg, spritename);
                 timg.sprite = sprite;
                 timg.ABI = abi;
-                timg.AtlasPath = spritepath;
-                timg.SpriteName = spritename;
+                timg.SpritePath = spritename;
             }
             else
             {
                 timg.ABI = null;
-                timg.AtlasPath = string.Empty;
-                timg.SpriteName = string.Empty;
+                timg.SpritePath = string.Empty;
             }
         },
         loadtype,

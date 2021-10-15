@@ -30,25 +30,19 @@ namespace TUI
         }
 
         /// <summary>
-        /// 当前图片图集路径
-        /// </summary>
-        [HideInInspector]
-        public string AtlasPath;
-
-        /// <summary>
         /// 当前图片名
         /// </summary>
         [HideInInspector]
-        public string SpriteName;
+        public string SpritePath;
 
         /// <summary>
         /// 打印当前TImage图集使用信息
         /// </summary>
         public void printTImageInfo()
         {
-            DIYLog.Log($"AtlasName = {AtlasPath} SpriteName = {SpriteName}");
+            DIYLog.Log($"SpritePath = {SpritePath}");
             var refcount = ABI != null ? ABI.RefCount.ToString() : "无";
-            DIYLog.Log($"AtlasName引用计数 = {refcount}");
+            DIYLog.Log($"SpritePath引用计数 = {refcount}");
         }
     }
 }

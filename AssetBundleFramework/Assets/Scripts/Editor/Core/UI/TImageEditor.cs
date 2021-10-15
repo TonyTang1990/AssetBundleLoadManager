@@ -42,14 +42,9 @@ namespace TUI
         AnimBool m_ShowType;
 
         /// <summary>
-        /// 图集名字属性
-        /// </summary>
-        SerializedProperty m_AltasName;
-
-        /// <summary>
         /// 图片名字属性
         /// </summary>
-        SerializedProperty m_SpriteName;
+        SerializedProperty m_SpritePath;
 
         protected override void OnEnable()
         {
@@ -69,8 +64,7 @@ namespace TUI
             m_PreserveAspect = serializedObject.FindProperty("m_PreserveAspect");
             m_UseSpriteMesh = serializedObject.FindProperty("m_UseSpriteMesh");
 
-            m_AltasName = serializedObject.FindProperty("AtlasName");
-            m_SpriteName = serializedObject.FindProperty("SpriteName");
+            m_SpritePath = serializedObject.FindProperty("SpriteName");
 
             m_ShowType = new AnimBool(m_Sprite.objectReferenceValue != null);
             m_ShowType.valueChanged.AddListener(Repaint);
@@ -158,17 +152,15 @@ namespace TUI
                         m_Type.enumValueIndex = (int)Image.Type.Simple;
                     }
                     //为了资源管理，设置相关图集信息
-                    //默认图集名小写为图集AB名字(打包规则)
-                    m_AltasName.stringValue = newSprite.texture.name;
-                    m_SpriteName.stringValue = newSprite.name;
+                    var spritePath = AssetDatabaseInfo.GetAssetPath(newSprite);
+                    m_SpritePath.stringValue = spritePath;
                 }
                 else
                 {
                     //为了资源管理，设置相关图集信息
-                    m_AltasName.stringValue = string.Empty;
-                    m_SpriteName.stringValue = string.Empty;
+                    m_SpritePath.stringValue = string.Empty;
                 }
-                Debug.Log($"更新TImage:{name}的图集名:{m_AltasName}和图片名:{m_SpriteName}");
+                Debug.Log($"更新TImage:{name}的图片路径:{m_SpritePath.stringValue}");
                 //源代码基础上注释的一行，找不到方法DisableSpriteOptimizations
                 //(serializedObject.targetObject as Image).DisableSpriteOptimizations();
             }
