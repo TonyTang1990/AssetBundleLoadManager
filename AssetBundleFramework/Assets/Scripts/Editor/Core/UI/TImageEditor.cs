@@ -64,7 +64,7 @@ namespace TUI
             m_PreserveAspect = serializedObject.FindProperty("m_PreserveAspect");
             m_UseSpriteMesh = serializedObject.FindProperty("m_UseSpriteMesh");
 
-            m_SpritePath = serializedObject.FindProperty("SpriteName");
+            m_SpritePath = serializedObject.FindProperty("SpritePath");
 
             m_ShowType = new AnimBool(m_Sprite.objectReferenceValue != null);
             m_ShowType.valueChanged.AddListener(Repaint);
@@ -152,7 +152,7 @@ namespace TUI
                         m_Type.enumValueIndex = (int)Image.Type.Simple;
                     }
                     //为了资源管理，设置相关图集信息
-                    var spritePath = AssetDatabaseInfo.GetAssetPath(newSprite);
+                    var spritePath = AssetDatabase.GetAssetPath(newSprite);
                     m_SpritePath.stringValue = spritePath;
                 }
                 else
