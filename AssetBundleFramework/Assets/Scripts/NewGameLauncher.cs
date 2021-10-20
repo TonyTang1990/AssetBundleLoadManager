@@ -269,7 +269,7 @@ public class NewGameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
+        AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
     }
 
 
@@ -283,7 +283,7 @@ public class NewGameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
+        AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
     }
     
     /// <summary>

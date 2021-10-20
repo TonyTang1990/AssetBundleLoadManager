@@ -89,49 +89,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     }
 
     /// <summary>
-    /// 设置Image指定图片(从Sprite Atlas里)
-    /// </summary>
-    /// <param name="timg">Image组件</param>
-    /// <param name="atlaspath">图集路径</param>
-    /// <param name="spritename">Sprite名</param>
-    /// <param name="loadtype">资源加载类型</param>
-    /// <param name="loadmethod">资源加载方式</param>
-    /// <returns></returns>
-    public void setImageSpriteAtlas(TImage timg, string atlaspath, string spritename, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
-    {
-        DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
-        ResourceModuleManager.Singleton.requstResource(atlaspath,
-        (abi) =>
-        {
-            DIYLog.Log("加载SpriteAtlas AB完成!");
-            // 清除老的资源引用
-            if (timg.ABI != null && !string.IsNullOrEmpty(timg.SpritePath))
-            {
-                timg.ABI.releaseOwner(timg);
-            }
-            if (abi != null)
-            {
-                var atlasname = Path.GetFileNameWithoutExtension(atlaspath);
-                DIYLog.Log("加载SpriteAtlas之前!");
-                var spriteatlas = abi.getAsset<SpriteAtlas>(timg, atlasname);
-                DIYLog.Log("加载SpriteAtlas之后!");
-                timg.sprite = spriteatlas.GetSprite(spritename);
-                DIYLog.Log("SpriteAtlas.GetSprite()之后!");
-                timg.ABI = abi;
-                timg.SpritePath = spritename;
-            }
-            else
-            {
-                timg.ABI = null;
-                timg.SpritePath = string.Empty;
-            }
-        },
-        loadtype,
-        loadmethod);
-    }
-
-    /// <summary>
-    /// 设置TImage指定图片(单图的时候)
+    /// 设置TImage指定图片(单图或者SpriteAtlas里的图)
     /// </summary>
     /// <param name="timg">TImage组件</param>
     /// <param name="spritepath">Sprite路径</param>
@@ -155,7 +113,87 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 var sprite = abi.getAsset<Sprite>(timg, spritename);
                 timg.sprite = sprite;
                 timg.ABI = abi;
-                timg.SpritePath = spritename;
+                timg.SpritePath = spritepath;
+            }
+            else
+            {
+                timg.ABI = null;
+                timg.SpritePath = string.Empty;
+            }
+        },
+        loadtype,
+        loadmethod);
+    }
+
+    /// <summary>
+    /// 设置TImage指定图片(通过先加载SpriteAtlas再加载Sprite的方式)
+    /// </summary>
+    /// <param name="timg">Image组件</param>
+    /// <param name="atlaspath">图集路径</param>
+    /// <param name="spritename">Sprite名</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="loadmethod">资源加载方式</param>
+    /// <returns></returns>
+    public void setTImageSpriteAtlas(TImage timg, string atlaspath, string spritename, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    {
+        DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
+        ResourceModuleManager.Singleton.requstResource(atlaspath,
+        (abi) =>
+        {
+            DIYLog.Log($"加载SpriteAtlas:{atlaspath} AB完成!");
+            // 清除老的资源引用
+            if (timg.ABI != null && !string.IsNullOrEmpty(timg.SpritePath))
+            {
+                timg.ABI.releaseOwner(timg);
+            }
+            if (abi != null)
+            {
+                var atlasname = Path.GetFileNameWithoutExtension(atlaspath);
+                DIYLog.Log("加载SpriteAtlas之前!");
+                var spriteatlas = abi.getAsset<SpriteAtlas>(timg, atlasname);
+                DIYLog.Log("加载SpriteAtlas之后!");
+                timg.sprite = spriteatlas.GetSprite(spritename);
+                DIYLog.Log("SpriteAtlas.GetSprite()之后!");
+                timg.ABI = abi;
+                timg.SpritePath = Path.Combine(atlaspath, spritename);
+            }
+            else
+            {
+                timg.ABI = null;
+                timg.SpritePath = string.Empty;
+            }
+        },
+        loadtype,
+        loadmethod);
+    }
+
+    /// <summary>
+    /// 设置TImage指定图片(通过Multiple Sprite加载Sprite的方式)
+    /// </summary>
+    /// <param name="timg">Image组件</param>
+    /// <param name="atlaspath">图集路径</param>
+    /// <param name="spritename">Sprite名</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="loadmethod">资源加载方式</param>
+    /// <returns></returns>
+    public void setTImageSubSprite(TImage timg, string atlaspath, string spritename, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
+    {
+        DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
+        ResourceModuleManager.Singleton.requstResource(atlaspath,
+        (abi) =>
+        {
+            DIYLog.Log($"加载Atlas:{atlaspath} AB完成!");
+            // 清除老的资源引用
+            if (timg.ABI != null && !string.IsNullOrEmpty(timg.SpritePath))
+            {
+                timg.ABI.releaseOwner(timg);
+            }
+            if (abi != null)
+            {
+                var mainAssetName = Path.GetFileNameWithoutExtension(atlaspath);
+                timg.sprite = abi.getSubAsset<Sprite>(timg, mainAssetName, spritename);
+                timg.ABI = abi;
+                timg.SpritePath = Path.Combine(atlaspath, spritename);
             }
             else
             {

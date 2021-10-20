@@ -97,86 +97,89 @@ MonoBehaviour:
   - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdnaganopreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdnagasakipreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdpreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdnarapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdspainmadridpreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdnewfukuokapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnarapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdnewhokkaidopreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnagasakipreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdnewosakapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdshizuokapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdniigatapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnewfukuokapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdokayamapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdyamanashipreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdokinawapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtokushimapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdooitapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdshimanepreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdosakapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdsagapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdpreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdokinawapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdsagapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdooitapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdsaitamapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdshigapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdshigapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdwakayamapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdshimanepreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdspacecommandpreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdshizuokapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdosakapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdspacecommandpreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdsaitamapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdspainmadridpreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnewhokkaidopreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdtochigipreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtokyopreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdtokushimapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/playerpreview2.spriteatlas
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdtokyopreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdokayamapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdtottoripreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtochigipreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdtoyamapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtottoripreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdwakayamapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdyamaguchipreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdyamagatapreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnewosakapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdyamaguchipreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtoyamapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdyamanashipreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdniigatapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
+    ABVariantPath: bundle
+  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdyamagatapreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: bundle
   - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/ambient.png
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
@@ -879,6 +882,8 @@ MonoBehaviour:
     ABVariantPath: bundle
   AssetBundleBuildInfoList:
   - ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+    DepABPathList: []
+  - ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     DepABPathList: []
   - ABPath: assets/res/atlas/shareatlas/tutorialatlas
     DepABPathList: []

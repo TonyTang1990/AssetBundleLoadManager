@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 824366054
+CRC: 1783272172
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -93,4 +93,7 @@ AssetBundleManifest:
         Dependency_1: assets/res/actors/zombunny/zombunnyanimations.bundle
     Info_24:
       Name: assetbuildinfo.bundle
+      Dependencies: {}
+    Info_25:
+      Name: assets/res/atlas/shareatlas/spriteatlas/playerpreview2.bundle
       Dependencies: {}

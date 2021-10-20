@@ -237,7 +237,7 @@ public class GameLauncher : MonoBehaviour {
     }
 
     /// <summary>
-    /// 加载Image Sprite
+    /// 加载Image Sprite(单图或者SpriteAtlas里的图)
     /// </summary>
     public void onLoadImageSprite()
     {
@@ -251,7 +251,7 @@ public class GameLauncher : MonoBehaviour {
     }
 
     /// <summary>
-    /// 加载TImage Sprite
+    /// 加载TImage Sprite(单图或者SpriteAtlas里的图)
     /// </summary>
     public void onLoadTImageSprite()
     {
@@ -264,7 +264,7 @@ public class GameLauncher : MonoBehaviour {
     }
 
     /// <summary>
-    /// 加载TImage Sprite Atlas
+    /// 加载TImage Sprite(通过先加载SpriteAtlas再加载Sprite的方式)
     /// </summary>
     public void onLoadTImageSpriteAtlas()
     {
@@ -273,12 +273,12 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
+        AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
     }
 
 
     /// <summary>
-    /// 加载背景TImage Sprite Atlas
+    /// 加载背景TImage Sprite(通过加载Multiple Sprite子Sprite的方式)
     /// </summary>
     public void onLoadTImageBGSpriteAtlas()
     {
@@ -287,7 +287,7 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
-        AtlasManager.Singleton.setImageSpriteAtlas(TImgBG, param1, param2);
+        AtlasManager.Singleton.setTImageSubSprite(TImgBG, param1, param2);
     }
     
     /// <summary>

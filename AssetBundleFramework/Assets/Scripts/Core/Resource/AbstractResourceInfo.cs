@@ -107,6 +107,17 @@ public abstract class AbstractResourceInfo {
     public abstract T loadAsset<T>(string assetname) where T : UnityEngine.Object;
 
     /// <summary>
+    /// 加载指定Sub Asset(可用上层访问Asset)
+    /// Note:
+    /// 因为没有绑定对象，仅用于临时访问Asset数据
+    /// 访问过后无人引用的话会被回收
+    /// </summary>
+    /// <param name="mainAssetName"></param>
+    /// <param name="assetName"></param>
+    /// <returns></returns>
+    public abstract T loadSubAsset<T>(string mainAssetName, string assetName) where T : UnityEngine.Object;
+
+    /// <summary>
     /// 实例化指定Asset(上层获取并绑定Asset实例化GameObject对象接口)
     /// </summary>
     /// <param name="assetname"></param>
@@ -121,6 +132,16 @@ public abstract class AbstractResourceInfo {
     /// <param name="assetname"></param>
     /// <returns></returns>
     public abstract T getAsset<T>(UnityEngine.Object owner, string assetname) where T : UnityEngine.Object;
+
+    /// <summary>
+    /// 获取并绑定指定Sib Asste资源(上层获取并绑定特定类型Sub Asset的接口)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="owner"></param>
+    /// <param name="mainAssetName"></param>
+    /// <param name="assetname"></param>
+    /// <returns></returns>
+    public abstract T getSubAsset<T>(UnityEngine.Object owner, string mainAssetName, string assetname) where T : UnityEngine.Object;
 
     /// <summary>
     /// 添加引用，引用计数+1

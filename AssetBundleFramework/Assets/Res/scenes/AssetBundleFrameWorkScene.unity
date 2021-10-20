@@ -301,8 +301,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  AtlasName: 
-  SpriteName: 
+  SpritePath: 
 --- !u!222 &128198477
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -574,8 +573,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  AtlasName: 
-  SpriteName: 
+  SpritePath: 
 --- !u!222 &203959511
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3999,8 +3997,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  AtlasName: 
-  SpriteName: 
+  SpritePath: 
 --- !u!1 &1050984030
 GameObject:
   m_ObjectHideFlags: 0

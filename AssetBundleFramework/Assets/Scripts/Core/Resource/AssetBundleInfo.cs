@@ -110,24 +110,40 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
         }
     }
 
-    /*
-    /// <summary>
-    /// 添加引用，引用计数+1
-    /// </summary>
-    public override void retain()
-    {
-        RefCount++;
-    }
 
     /// <summary>
-    /// 释放引用，引用计数-1
+    /// 获取并绑定指定Sub Asste资源(上层获取并绑定特定类型Sub Asset的接口)
     /// </summary>
-    public override void release()
+    /// <typeparam name="T"></typeparam>
+    /// <param name="owner"></param>
+    /// <param name="assemainAssetNametname"></param>
+    /// <param name="assetname"></param>
+    /// <returns></returns>
+    public override T getSubAsset<T>(UnityEngine.Object owner, string mainAssetName, string assetname)
     {
-        RefCount = Mathf.Max(0, RefCount - 1);
+        if (owner != null)
+        {
+            var asset = loadSubAsset<T>(mainAssetName, assetname);
+            if (asset != null)
+            {
+                // 绑定owner对象，用于判定是否还有有效对象引用AB资源
+                retainOwner(owner);
+                updateLastUsedTime();
+                return asset;
+            }
+            else
+            {
+                ResourceLogger.logWar(string.Format("AB : {0}里不存在Asset : {1}，获取Asset失败!", ResourcePath, assetname));
+                return null;
+            }
+        }
+        else
+        {
+            ResourceLogger.logErr(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", ResourcePath, assetname));
+            return null;
+        }
     }
-    */
-    
+
     /// <summary>
     /// 释放AB
     /// </summary>
@@ -248,64 +264,16 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
                 }
                 else
                 {
-                    // 图集需要全部加载才能加载到指定Sprite
-                    if (typeof(T) == typeof(Sprite))
+                    var asset = Bundle.LoadAsset<T>(assetname);
+                    if (asset != null)
                     {
-                        if (!mIsAllAssetLoaded)
-                        {
-                            var allassets = Bundle.LoadAllAssets();
-                            // foreach (var asset in allassets)
-                            var count = allassets.Length;
-                            for (int i = count - 1; i >= 0; i--)
-                            {
-                                //Note:
-                                //只存储图集的Sprite Asset，不存储Texture2D
-                                //现发现Sprite Asset有和Texture2D同名的情况存在
-                                //TODO：解决Sprite Asset和Texture2D同名问题，满足可加载使用图集的Texture2D Asset
-                                //暂时未存储Texture2D，要访问图集Texture2D可以通过Sprite.texture的形式访问
-                                var asset = allassets[i];
-                                if (mLoadedAssetMap.ContainsKey(asset.name) && asset is Texture2D)
-                                {
-                                    //ResourceLogger.logErr(string.Format("{0} : AB里存在同名Asset : {1}", AssetBundleName, asset.name));
-                                    continue;
-                                }
-                                //这里把所有Asset都缓存,原来的写法只缓存sprite
-                                //if (asset is Sprite)
-                                //{
-                                    mLoadedAssetMap.Add(asset.name, asset);
-                                //}
-                                /*
-                                else if (asset is Texture2D) //修改为同时存储 Sprite 和存储Texture2D对应的Sprite
-                                {
-                                    mLoadedAssetMap.Add(asset.name.ToLower(), (asset as Texture2D).toSprite());
-                                }
-                                */
-                            }
-                            mIsAllAssetLoaded = true;
-                        }
-
-                        if (mLoadedAssetMap.ContainsKey(assetname))
-                        {
-                            return mLoadedAssetMap[assetname] as T;
-                        }
-                        else
-                        {
-                            return null;
-                        }
+                        mLoadedAssetMap.Add(assetname, asset);
+                        return asset;
                     }
                     else
                     {
-                        var asset = Bundle.LoadAsset<T>(assetname);
-                        if (asset != null)
-                        {
-                            mLoadedAssetMap.Add(assetname, asset);
-                            return asset;
-                        }
-                        else
-                        {
-                            ResourceLogger.logErr(string.Format("AB:{0}里找不到Asset:{1}资源!", ResourcePath, assetname));
-                            return null;
-                        }
+                        ResourceLogger.logErr(string.Format("AB:{0}里找不到Asset:{1}资源!", ResourcePath, assetname));
+                        return null;
                     }
                 }
             }
@@ -317,50 +285,72 @@ public class AssetBundleInfo : AbstractResourceInfo, FactoryObj
         }
     }
 
-    /*
     /// <summary>
-    /// 为AB添加指定owner的引用
-    /// 所有owner都销毁则ab引用计数归零可回收
+    /// 加载指定Sub Asset(可用上层访问Asset)
+    /// Note:
+    /// 因为没有绑定对象，仅用于临时访问Asset数据
+    /// 访问过后无人引用的话会被回收
     /// </summary>
-    /// <param name="owner"></param>
-    private void retainOwner(UnityEngine.Object owner)
-    {
-        if (owner == null)
-        {
-            ResourceLogger.logErr(string.Format("引用对象不能为空!无法为资源:{0}添加引用!", AssetBundleName));
-            return;
-        }
-
-        foreach (var referenceowner in mReferenceOwnerList)
-        {
-            if (owner.Equals(referenceowner))
-            {
-                return;
-            }
-        }
-
-        System.WeakReference wr = new System.WeakReference(owner);
-        mReferenceOwnerList.Add(wr);
-    }
-    
-    /// <summary>
-    /// 获取AB有效的引用对象计数
-    /// </summary>
+    /// <param name="mainAssetName"></param>
+    /// <param name="assetName"></param>
     /// <returns></returns>
-    private int updateOwnerReference()
+    public override T loadSubAsset<T>(string mainAssetName, string assetName)
     {
-        for (int i = 0; i < mReferenceOwnerList.Count; i++)
+        if (mIsReady)
         {
-            UnityEngine.Object o = (UnityEngine.Object)mReferenceOwnerList[i].Target;
-            if (!o)
+            if (mLoadedAssetMap.ContainsKey(assetName))
             {
-                mReferenceOwnerList.RemoveAt(i);
-                i--;
+                return mLoadedAssetMap[assetName] as T;
+            }
+            else
+            {
+                if (Bundle == null)
+                {
+                    ResourceLogger.logErr(string.Format("AB : {0}资源丢失，不存在！", ResourcePath));
+                    return null;
+                }
+                else
+                {
+                    var allSubAssets = Bundle.LoadAssetWithSubAssets<T>(mainAssetName);
+                    if(allSubAssets.Length == 0)
+                    {
+                        ResourceLogger.logErr(string.Format("AB:{0}里找不到Asset:{1}资源!", ResourcePath, assetName));
+                        return null;
+                    }
+                    T targetAsset = null;
+                    for(int i = 0, length = allSubAssets.Length; i < length; i++)
+                    {
+                        if(allSubAssets[i].name.Equals(assetName) && allSubAssets[i] is T)
+                        {
+                            if (targetAsset != null)
+                            {
+                                ResourceLogger.logErr($"资源名: {ResourcePath}里有多个同类型:{typeof(T).GetType().Name}同名的SubAsset : {assetName}资源！");
+                            }
+                            targetAsset = allSubAssets[i];
+                        }
+                        if(!mLoadedAssetMap.ContainsKey(allSubAssets[i].name))
+                        {
+                            mLoadedAssetMap.Add(allSubAssets[i].name, allSubAssets[i]);
+                        }
+                    }
+                    if(targetAsset != null)
+                    {
+                        return targetAsset;
+                    }
+                    else
+                    {
+                        ResourceLogger.logErr(string.Format("AB:{0}里找不到SubAsset:{1}资源!", ResourcePath, assetName));
+                        return null;
+                    }
+                }
             }
         }
-        return mReferenceOwnerList.Count;
+        else
+        {
+            ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", ResourcePath, assetName));
+            return null;
+        }
     }
-    */
 
     /// <summary>
     /// 卸载AB(AssetBundle.Unload(true)的形式)

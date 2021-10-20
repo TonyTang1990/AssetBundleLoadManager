@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: playerpreview2
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: e3c8575c651d84d4caf90ece1f76dc85, type: 3}
+    totalSpriteSurfaceArea: 1080000
+    bindAsDefault: 0
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c1803b40c84600d49b69fe72296b7d6c, type: 3}
+  - {fileID: 21300000, guid: e1e03890298d1b5458fd3daba598135e, type: 3}
+  - {fileID: 21300000, guid: 9789323163a5cf8448667d735310cc0d, type: 3}
+  - {fileID: 21300000, guid: 787c2731caa9b6445b7119f089eadbee, type: 3}
+  - {fileID: 21300000, guid: c2729151f1b3e1f41b42d83b87ea50d0, type: 3}
+  - {fileID: 21300000, guid: c6af21914d342094c8761beaa19f7f15, type: 3}
+  - {fileID: 21300000, guid: 667b3591ef246064e9928af6a56c27c9, type: 3}
+  - {fileID: 21300000, guid: 47843462155fc4947ba1619d7188f2b5, type: 3}
+  - {fileID: 21300000, guid: 4564a39272438bd449a319d3aca78020, type: 3}
+  - {fileID: 21300000, guid: 96dc20c2f1f9a47429ea0e79f6301cff, type: 3}
+  - {fileID: 21300000, guid: 6c0f04c29ef8a2f4393326f93e96ed49, type: 3}
+  - {fileID: 21300000, guid: eca7f1d26bea0014fb9295297b6c0054, type: 3}
+  - {fileID: 21300000, guid: 7d537c335c267cf4fb35cc7de17ae45d, type: 3}
+  - {fileID: 21300000, guid: 06988b84001a8cb4a8a0b9aaaa236b61, type: 3}
+  - {fileID: 21300000, guid: 7032c694d965a454184c56e51893fd8e, type: 3}
+  - {fileID: 21300000, guid: be42fba44d35ba945890fa6af795e8c7, type: 3}
+  - {fileID: 21300000, guid: 3d58c0b40d60df34a8edae36f54c202a, type: 3}
+  - {fileID: 21300000, guid: 2669bb6582a801e47abfe35f86ab95ab, type: 3}
+  - {fileID: 21300000, guid: 5acdb2f5c0135614fb312d7ca281f1f4, type: 3}
+  - {fileID: 21300000, guid: f74c5247e930ec947a1dff086bd9b0a3, type: 3}
+  - {fileID: 21300000, guid: 56808308024e50d47ab83f842c8e2171, type: 3}
+  - {fileID: 21300000, guid: 4d90eaf81d4c9bb498f3f1d71522ae88, type: 3}
+  - {fileID: 21300000, guid: 7a2e8ebb3c83cca4e88c59bd24a10db1, type: 3}
+  - {fileID: 21300000, guid: 9ae2880e1366c4b428e2266fee4f6526, type: 3}
+  - {fileID: 21300000, guid: 2942d17ef033bb74090ab77a05a55318, type: 3}
+  - {fileID: 21300000, guid: ab3b759e590a2a74b92305fe97c7667c, type: 3}
+  - {fileID: 21300000, guid: af72f6ee7fa0b424ebebf3e3957d605b, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - SDPreview
+  - SDSpainMadridPreview
+  - SDNaraPreview
+  - SDNagasakiPreview
+  - SDShizuokaPreview
+  - SDNewFukuokaPreview
+  - SDYamanashiPreview
+  - SDTokushimaPreview
+  - SDShimanePreview
+  - SDSagaPreview
+  - SDOkinawaPreview
+  - SDOoitaPreview
+  - SDShigaPreview
+  - SDWakayamaPreview
+  - SDSpaceCommandPreview
+  - SDOsakaPreview
+  - SDSaitamaPreview
+  - SDNewHokkaidoPreview
+  - SDTokyoPreview
+  - SDOkayamaPreview
+  - SDTochigiPreview
+  - SDTottoriPreview
+  - SDYamaguchiPreview
+  - SDNewOsakaPreview
+  - SDToyamaPreview
+  - SDNiigataPreview
+  - SDYamagataPreview
+  m_Tag: playerpreview2
+  m_IsVariant: 0

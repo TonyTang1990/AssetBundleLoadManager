@@ -107,6 +107,40 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         }
     }
 
+
+    /// <summary>
+    /// 获取并绑定指定Sub Asste资源(上层获取并绑定特定类型Asset的接口)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="owner"></param>
+    /// <param name="mainAssetName"></param>
+    /// <param name="assetname"></param>
+    /// <returns></returns>
+    public override T getSubAsset<T>(UnityEngine.Object owner, string mainAssetName, string assetname)
+    {
+        if (owner != null)
+        {
+            var asset = loadSubAsset<T>(mainAssetName, assetname);
+            if (asset != null)
+            {
+                // 绑定owner对象，用于判定是否还有有效对象引用AB资源
+                retainOwner(owner);
+                updateLastUsedTime();
+                return asset;
+            }
+            else
+            {
+                ResourceLogger.logWar(string.Format("AB : {0}里不存在SubAsset : {1}，获取Asset失败!", ResourcePath, assetname));
+                return null;
+            }
+        }
+        else
+        {
+            ResourceLogger.logErr(string.Format("不能绑定Asset到空对象上!加载AB:{0} Asset:{1}失败!", ResourcePath, assetname));
+            return null;
+        }
+    }
+
     /// <summary>
     /// 加载所有Asset(比如Shader预加载)
     /// Note:
@@ -126,6 +160,12 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         }
     }
 
+    /// <summary>
+    /// 加载指定类型指定名字的Asset
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="assetname"></param>
+    /// <returns></returns>
     public override T loadAsset<T>(string assetname)
     {
         if (mIsReady)
@@ -152,6 +192,59 @@ public class AssetDatabaseInfo : AbstractResourceInfo, FactoryObj
         else
         {
             ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", ResourcePath, assetname));
+            return null;
+        }
+    }
+
+
+    /// <summary>
+    /// 加载指定类型指定名字的SubAsset
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="mainAssetName"></param>
+    /// <param name="assetName"></param>
+    /// <returns></returns>
+    public override T loadSubAsset<T>(string mainAssetName, string assetName)
+    {
+        if (mIsReady)
+        {
+            if (mLoadedAssetMap.ContainsKey(assetName))
+            {
+                return mLoadedAssetMap[assetName] as T;
+            }
+            else
+            {
+                T targetAsset = null;
+                var allAssets = AssetDatabase.LoadAllAssetsAtPath(ResourcePath);
+                for(int i = 0, length = allAssets.Length; i < length; i++)
+                {
+                    if(allAssets[i].name == assetName && allAssets[i] is T)
+                    {
+                        if(targetAsset != null)
+                        {
+                            ResourceLogger.logErr($"资源名: {ResourcePath}里有多个同类型:{typeof(T).GetType().Name}同名的SubAsset : {assetName}资源！");
+                        }
+                        targetAsset = allAssets[i] as T;
+                    }
+                    if(!mLoadedAssetMap.ContainsKey(allAssets[i].name))
+                    {
+                        mLoadedAssetMap.Add(allAssets[i].name, allAssets[i]);
+                    }
+                }
+                if (targetAsset != null)
+                {
+                    return targetAsset;
+                }
+                else
+                {
+                    ResourceLogger.logErr(string.Format("找不到符合类型 : {0}，资源名: {1}，SubAsset : {2}资源！", typeof(T).GetType().Name, ResourcePath, assetName));
+                    return null;
+                }
+            }
+        }
+        else
+        {
+            ResourceLogger.logErr(string.Format("异常状态，AB资源:{0}未就绪就请求Asset资源:{1}", ResourcePath, assetName));
             return null;
         }
     }

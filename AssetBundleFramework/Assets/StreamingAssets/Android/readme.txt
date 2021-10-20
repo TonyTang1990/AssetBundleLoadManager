@@ -1,6 +1,6 @@
 ﻿构建平台：Android
 构建版本：1
-构建时间：2021/10/11 22:29:19
+构建时间：2021/10/20 8:40:45
 
 --配置信息--
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : LoadByFolderPath
@@ -32,6 +32,7 @@ assets/res/actors/zombunny/materials.bundle
 assets/res/actors/zombunny/textures.bundle
 assets/res/actors/zombunny/zombunnyanimations.bundle
 assets/res/atlas/shareatlas/spriteatlas/playerpreview.bundle
+assets/res/atlas/shareatlas/spriteatlas/playerpreview2.bundle
 assets/res/atlas/shareatlas/tutorialatlas.bundle
 assets/res/audios/music/backgroundmusic.bundle
 assets/res/audios/sfx/sfx1/coins.bundle

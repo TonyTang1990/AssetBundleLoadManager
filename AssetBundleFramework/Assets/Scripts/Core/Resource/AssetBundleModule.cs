@@ -105,7 +105,7 @@ public class AssetBundleModule : AbstractResourceModule
         }
         // AssetBundle打包信息比较特殊，在未加载完成前拿不到AB名字映射
         // 所以这里单独特殊加载,不走正常流程
-        var abpath = AssetBundlePath.GetABLoadFullPath(ResourceConstData.AssetBuildInfoAssetName);
+        var abpath = AssetBundlePath.GetABLoadFullPath(ResourceConstData.AssetBuildInfoAssetName.ToLower());
         AssetBundle ab = null;
         ab = AssetBundle.LoadFromFile(abpath);
         if(ab != null)
