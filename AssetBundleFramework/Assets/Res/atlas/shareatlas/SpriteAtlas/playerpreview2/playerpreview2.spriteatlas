@@ -7,6 +7,7 @@ SpriteAtlas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: playerpreview2
+  serializedVersion: 2
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -31,7 +32,6 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: e3c8575c651d84d4caf90ece1f76dc85, type: 3}
-    totalSpriteSurfaceArea: 1080000
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -92,3 +92,4 @@ SpriteAtlas:
   - SDYamagataPreview
   m_Tag: playerpreview2
   m_IsVariant: 0
+  m_IsPlaceholder: 0

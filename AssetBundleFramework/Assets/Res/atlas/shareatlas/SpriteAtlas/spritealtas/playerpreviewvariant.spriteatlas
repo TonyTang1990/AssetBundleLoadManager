@@ -7,6 +7,7 @@ SpriteAtlas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: playerpreviewvariant
+  serializedVersion: 2
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -30,7 +31,6 @@ SpriteAtlas:
       enableTightPacking: 1
     variantMultiplier: 0.5
     packables: []
-    totalSpriteSurfaceArea: 0
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 4343727234628468602, guid: 9b0ae1b13bb488543a99b4cb21a31913,
     type: 2}
@@ -94,3 +94,4 @@ SpriteAtlas:
   - SDNaganoPreview
   m_Tag: playerpreview
   m_IsVariant: 1
+  m_IsPlaceholder: 0

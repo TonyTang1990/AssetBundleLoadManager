@@ -83,7 +83,7 @@ public class NewGameLauncher : MonoBehaviour {
     /// <summary>
     /// 资源管理单例对象(快速访问)
     /// </summary>
-    private ResourceModuleManager mRMM;
+    private TResource.ResourceModuleManager mRMM;
 
     /// <summary>
     /// 背景音乐音效组件
@@ -175,7 +175,7 @@ public class NewGameLauncher : MonoBehaviour {
     /// </summary>
     private void initilization()
     {
-        mRMM = ResourceModuleManager.Singleton;
+        mRMM = TResource.ResourceModuleManager.Singleton;
 
         // 资源模块初始化
         mRMM.init();
@@ -189,8 +189,7 @@ public class NewGameLauncher : MonoBehaviour {
 
         //},
         //ResourceLoadType.PermanentLoad);
-        mRMM.startResourceRecyclingTask();
-
+        
         //初始化版本信息
         VersionConfigModuleManager.Singleton.initVerisonConfigData();
 
@@ -609,27 +608,6 @@ public class NewGameLauncher : MonoBehaviour {
         onDestroyWindowInstance();
 
         GameSceneManager.Singleton.loadSceneSync(param1);
-    }
-
-    /// <summary>
-    /// 打印AB依赖信息
-    /// </summary>
-    public void onPrintABDepInfo()
-    {
-        DIYLog.Log("onPrintABDepInfo()");
-        if(mRMM.CurrentResourceModule is AssetBundleModule)
-        {
-            (mRMM.CurrentResourceModule as AssetBundleModule).printAllResourceDpInfo();
-        }
-    }
-
-    /// <summary>
-    /// 打印已加载资源信息
-    /// </summary>
-    public void onPrintLoadedResourceInfo()
-    {
-        DIYLog.Log("onPrintLoadedResourceInfo()");
-        mRMM.CurrentResourceModule.printAllLoadedResourceOwnersAndRefCount();
     }
 
     /// <summary>

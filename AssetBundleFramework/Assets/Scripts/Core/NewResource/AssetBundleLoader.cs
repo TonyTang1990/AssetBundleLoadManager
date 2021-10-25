@@ -27,93 +27,38 @@ namespace TResource
         }
 
         /// <summary>
-        /// AssetBundle
+        /// AssetBundle信息
         /// </summary>
-        private AssetBundle mBundle;
+        private AssetBundleInfo mAssetBundleInfo;
 
         /// <summary>
         /// 所有AB资源加载完成逻辑层回调
         /// </summary>
-        protected Action<AssetBundle> mLoadABCompleteCallBack;
+        protected Action<AssetBundleInfo> mLoadABCompleteCallBack;
 
         /// <summary>
         /// 所有AB资源加载完成逻辑回调Map<请求UID,逻辑回调>
         /// </summary>
-        protected Dictionary<int, Action<AssetBundle>> mLoadABCompleteCallBackMap;
+        protected Dictionary<int, Action<AssetBundleInfo>> mLoadABCompleteCallBackMap;
 
         /// <summary>
-        /// 资源加载方式
+        /// 获取指定Asset
         /// </summary>
-        public ResourceLoadMethod LoadMethod
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public AssetBundle getAsset()
         {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// 资源加载类型
-        /// </summary>
-        public ResourceLoadType LoadType
-        {
-            get;
-            set;
-        }
-
-        /// <summary> AB资源自身加载任务状态 /// </summary>
-        public ResourceLoadState LoadState
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// 是否加载完成
-        /// </summary>
-        public bool IsDone
-        {
-            get
+            if(!IsDone)
             {
-                return LoadState == ResourceLoadState.Complete || LoadState == ResourceLoadState.Error || LoadState == ResourceLoadState.Cancel;
+                loadImmediately();
             }
-        }
-
-        /// <summary>
-        /// 是否在等待
-        /// </summary>
-        public bool IsWaiting
-        {
-            get
-            {
-                return LoadState == ResourceLoadState.Waiting;
-            }
-        }
-
-        /// <summary>
-        /// 是否在加载中
-        /// </summary>
-        public bool IsLoading
-        {
-            get
-            {
-                return LoadState == ResourceLoadState.Loading;
-            }
-        }
-
-        /// <summary>
-        /// 是否加载失败
-        /// </summary>
-        public bool IsError
-        {
-            get
-            {
-                return LoadState == ResourceLoadState.Error;
-            }
+            return mAssetBundleInfo.getResource<AssetBundle>();
         }
 
         /// <summary>
         /// 加载打断
         /// </summary>
-        protected void cancel()
+        protected override void cancel()
         {
             if (IsDone)
             {
@@ -124,7 +69,7 @@ namespace TResource
             onCancel();
         }
 
-        protected void onCancel()
+        protected override void onCancel()
         {
             ResourceLogger.log($"AssetBundle:{AssetBundlePath}加载请求取消!");
             // TODO: 处理还在加载或者在队列中的情况
@@ -135,7 +80,7 @@ namespace TResource
         /// <summary>
         /// 完成加载
         /// </summary>
-        private void complete()
+        protected override void complete()
         {
             ResourceLogger.log($"加载AB:{AssetBundlePath}完成!");
             LoadState = ResourceLoadState.Complete;
@@ -145,10 +90,10 @@ namespace TResource
         /// <summary>
         /// 响应加载完成
         /// </summary>
-        private void onComplete()
+        protected override void onComplete()
         {
             // 通知上层ab加载完成
-            mLoadABCompleteCallBack(mBundle);
+            mLoadABCompleteCallBack(mAssetBundleInfo);
             mLoadABCompleteCallBack = null;
 
             // AB加载完成后，AssetBundleLoader的任务就完成了，回收重用
@@ -162,7 +107,7 @@ namespace TResource
         /// <param name="requestUID"></param>
         /// <param name="loadABCompleteCallBack"></param>
         /// <returns></returns>
-        public bool addLoadABCompleteCallBack(int requestUID, Action<AssetBundle> loadABCompleteCallBack)
+        public bool addLoadABCompleteCallBack(int requestUID, Action<AssetBundleInfo> loadABCompleteCallBack)
         {
             if (!mLoadABCompleteCallBackMap.ContainsKey(requestUID))
             {
@@ -187,9 +132,10 @@ namespace TResource
         /// </summary>
         /// <param name="requestUID"></param>
         /// <returns></returns>
-        public bool cancelRequest(int requestUID)
+        public override bool cancelRequest(int requestUID)
         {
-            Action<AssetBundle> loadABCompleteCallBack;
+            base.cancelRequest(requestUID);
+            Action<AssetBundleInfo> loadABCompleteCallBack;
             if (mLoadABCompleteCallBackMap.TryGetValue(requestUID, out loadABCompleteCallBack))
             {
                 ResourceLogger.log($"AssetBundle:{AssetBundlePath}取消请求UID:{requestUID}成功!");
@@ -219,7 +165,7 @@ namespace TResource
         /// <returns></returns>
         private bool removeRequest(int requestUID)
         {
-            Action<AssetBundle> loadABCompleteCallBack;
+            Action<AssetBundleInfo> loadABCompleteCallBack;
             if (mLoadABCompleteCallBackMap.TryGetValue(requestUID, out loadABCompleteCallBack))
             {
                 mLoadABCompleteCallBackMap.Remove(requestUID);
