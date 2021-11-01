@@ -12,9 +12,9 @@ namespace TResource
 {
     /// <summary>
     /// AssetDatabaseLoader.cs
-    /// AssetDatabase加载器
+    /// AssetDatabase模式下的Asset加载器
     /// </summary>
-    public class AssetDatabaseLoader
+    public class AssetDatabaseLoader : AssetLoader
     {
 
     }

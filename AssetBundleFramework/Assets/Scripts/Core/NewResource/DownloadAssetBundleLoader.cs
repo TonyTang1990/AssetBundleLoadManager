@@ -1,10 +1,9 @@
 ﻿/*
- * Description:             AssetBundleLoader.cs
+ * Description:             DownloadAssetBundleLoader.cs
  * Author:                  TONYTANG
- * Create Date:             2021//10/13
+ * Create Date:             2021//10/30
  */
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +11,13 @@ using UnityEngine;
 namespace TResource
 {
     /// <summary>
-    /// AssetBundleLoader.cs
-    /// AssetBundle加载器
+    /// DownloadAssetBundleLoader.cs
+    /// 动态热更的AssetBundle下载器
     /// </summary>
-    public class AssetBundleLoader : BundleLoader
+    public class DownloadAssetBundleLoader : BundleLoader
     {
+        // TODO: 支持边玩边下的设计
+
         /// <summary>
         /// 获取指定AssetBundle
         /// </summary>
@@ -26,11 +27,10 @@ namespace TResource
         {
             if (!IsDone)
             {
-                loadImmediately();
+                Debug.LogError($"动态资源:{ResourcePath}不支持立即获取AssetBundle!");
+                return null;
             }
-            var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
-            AssetBundleInfo.retainSelf();
-            return assetBundle;
+            return AssetBundleInfo.getResource<AssetBundle>();
         }
 
         /// <summary>
@@ -43,7 +43,8 @@ namespace TResource
         {
             if (!IsDone)
             {
-                loadImmediately();
+                Debug.LogError($"动态资源:{ResourcePath}不支持立即获取AssetBundle并绑定对象!");
+                return null;
             }
             var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
             AssetBundleInfo.retainOwner(owner);

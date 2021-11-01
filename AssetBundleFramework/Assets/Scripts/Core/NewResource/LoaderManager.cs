@@ -15,20 +15,46 @@ namespace TResource
     /// </summary>
     public class LoaderManager : SingletonTemplate<LoaderManager>
     {
+        /// Note:
+        /// 同步加载是单帧完成
+        /// 异步加载会限制单帧加载Asset和AB数量
+        /// 限制单帧过卡时不进一步触发异步加载，避免单帧过卡
+
+        /// <summary>
+        /// 单帧资源加载的数量限制(含Asset和AssetBundle)
+        /// </summary>
+        private const int RESOURCE_LOAD_NUMBER_PER_FRAME = 5;
+
+        /// <summary>
+        /// 单帧资源加载时长限制
+        /// </summary>
+        private const float RESOURCE_LOAD_TIME_LIMIT_PER_FRAME = 50f;
+
+        /// <summary>
+        /// 是否有加载任务(含Asset和AssetBundle)
+        /// </summary>
+        public bool HasLoadingTask
+        {
+            get
+            {
+                return mAllWaitLoadLoaderList.Count > 0;
+            }
+        }
+
         /// <summary>
         /// 下一个有效资源请求UID
         /// </summary>
         private int mNextRequestUID;
 
         /// <summary>
-        /// 所有正在加载的Asset加载器
+        /// 所有资源加载器(含Asset和AssetBundle)
         /// </summary>
-        private Dictionary<string, AssetLoader> mAllAssetLoaderMap;
+        private Dictionary<string, Loadable> mAllLoaderMap;
 
         /// <summary>
-        /// 所有正在加载的AssetBundle加载器
+        /// 所有正在等待加载的加载器列表
         /// </summary>
-        private Dictionary<string, AssetBundleLoader> mAllAssetBundleLoaderMap;
+        private List<Loadable> mAllWaitLoadLoaderList;
 
         /// <summary>
         /// Asset资源请求UID Map<资源请求UID,Asset路径>
@@ -40,13 +66,66 @@ namespace TResource
         /// </summary>
         private Dictionary<int, string> mAssetBundleRequestUIDMap;
 
+        /// <summary>
+        /// 单帧资源加载个数
+        /// </summary>
+        private int mResourceLoadCountPerFrame;
+
+        /// <summary>
+        /// 单帧资源加载开始时间
+        /// </summary>
+        private float mResourceLoadStartTime;
+
+        /// <summary>
+        /// 单帧资源加载经历时长
+        /// </summary>
+        private float mResourceLoadTimePassed;
+
+        /// <summary>
+        /// 资源加载是否忙
+        /// </summary>
+        private bool IsResourceLoadBusy
+        {
+            get
+            {
+                return mResourceLoadTimePassed >= RESOURCE_LOAD_TIME_LIMIT_PER_FRAME;
+            }
+        }
+
         public LoaderManager()
         {
             mNextRequestUID = 1;
-            mAllAssetLoaderMap = new Dictionary<string, AssetLoader>();
-            mAllAssetBundleLoaderMap = new Dictionary<string, AssetBundleLoader>();
+            mAllLoaderMap = new Dictionary<string, Loadable>();
+            mAllWaitLoadLoaderList = new List<Loadable>();
             mAssetRequestUIDMap = new Dictionary<int, string>();
             mAssetBundleRequestUIDMap = new Dictionary<int, string>();
+            mResourceLoadCountPerFrame = 0;
+            mResourceLoadStartTime = 0f;
+            mResourceLoadTimePassed = 0f;
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        public void update()
+        {
+           if (HasLoadingTask)
+           {
+                mResourceLoadCountPerFrame = 0;
+                mResourceLoadStartTime = Time.time;
+                mResourceLoadTimePassed = 0;
+                for (int i = 0; i < mAllWaitLoadLoaderList.Count; i++)
+                {
+                    mAllWaitLoadLoaderList[i].doLoad();
+                    i--;
+                    mResourceLoadCountPerFrame++;
+                    mResourceLoadTimePassed = Time.time - mResourceLoadStartTime;
+                    if (mResourceLoadCountPerFrame >= RESOURCE_LOAD_NUMBER_PER_FRAME || IsResourceLoadBusy)
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -59,24 +138,106 @@ namespace TResource
         }
 
         /// <summary>
-        /// 创建指定Asset路径的Asset加载器
+        /// 创建AssetDatabase模式指定Asset路径的Asset加载器
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="assetPath"></param>
+        /// <param name="assetPath">Asset路径</param>
+        /// <param name="ownerAssetBundlePath">AssetBundle路径</param>
         /// <returns></returns>
-        public AssetLoader createAssetLoader<T>(string assetPath) where T : UnityEngine.Object
+        public AssetDatabaseLoader createAssetDatabaseLoader<T>(string assetPath, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object
         {
-            return null;
+            AssetDatabaseLoader assetDatabaseLoader = ObjectPool.Singleton.pop<AssetDatabaseLoader>();
+            AssetInfo assetInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getOrCreateAssetInfo<T>(assetPath);
+            assetDatabaseLoader.init(assetPath, typeof(T), assetInfo, loadType, loadMethod);
+            return assetDatabaseLoader;
+        }
+
+        /// <summary>
+        /// 创建AssetBundle模式指定Asset路径的Asset加载器
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="assetPath">Asset路径</param>
+        /// <param name="ownerAssetBundlePath">所属AB路径</param>
+        /// <param name="loadType">加载类型</param>
+        /// <param name="loadMethod">加载方式</param>
+        /// <returns></returns>
+        public AssetLoader createBundleAssetLoader<T>(string assetPath, string ownerAssetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object
+        {
+            BundleAssetLoader assetLoader = ObjectPool.Singleton.pop<BundleAssetLoader>();
+            AssetInfo assetInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getOrCreateAssetInfo<T>(assetPath);
+            assetLoader.init(assetPath, typeof(T), assetInfo, loadType, loadMethod);
+            return assetLoader;
         }
 
         /// <summary>
         /// 创建指定AssetBundle路径的AssetBundle加载器
         /// </summary>
-        /// <param name="assetBundlePath"></param>
+        /// <param name="assetBundlePath">AB路径</param>
+        /// <param name="depABPaths">依赖AB路径组</param>
+        /// <param name="loadType">加载类型</param>
         /// <returns></returns>
-        public AssetBundleLoader createAssetBundleLoader(string assetBundlePath)
+        public BundleLoader createAssetBundleLoader<T>(string assetBundlePath, string[] depABPaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : BundleLoader
         {
-            return null;
+            BundleLoader bundleLoader = ObjectPool.Singleton.pop<T>();
+            AssetBundleInfo assetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getOrCreateAssetBundleInfo(assetBundlePath, loadType);
+            bundleLoader.init(assetBundlePath, assetBundleInfo, depABPaths, loadType, loadMethod);
+            return bundleLoader;
+        }
+
+        /// <summary>
+        /// 添加Bundle加载器任务
+        /// </summary>
+        /// <param name="loader"></param>
+        /// <returns></returns>
+        public bool addLoadTask(Loadable loader)
+        {
+            if (mAllLoaderMap.ContainsKey(loader.ResourcePath))
+            {
+                Debug.LogError($"已经存在资源:{loader.ResourcePath}的加载器,添加资源加载器任务失败,不应该进入这里!");
+                return false;
+            }
+            mAllLoaderMap.Add(loader.ResourcePath, loader);
+            ResourceLogger.log($"添加资源:{loader.ResourcePath}加载器任务!");
+            mAllWaitLoadLoaderList.Add(loader);
+            return true;
+        }
+
+        /// <summary>
+        /// 移除Bundle加载器任务
+        /// </summary>
+        /// <param name="loader"></param>
+        /// <returns></returns>
+        public bool removeLoadTask(Loadable loader)
+        {
+            var result = mAllWaitLoadLoaderList.Remove(loader);
+            if (!result)
+            {
+                Debug.LogError($"找不到资源:{loader.ResourcePath}的加载器任务,移除失败,请检查代码流程!");
+            }
+            else
+            {
+                ResourceLogger.log($"移除资源:{loader.ResourcePath}的加载器任务成功!");
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 删除指定资源加载器信息
+        /// </summary>
+        /// <param name="assetLoader"></param>
+        /// <returns></returns>
+        public bool deleteAssetLoader(AssetLoader assetLoader)
+        {
+            var result = mAllLoaderMap.Remove(assetLoader.ResourcePath);
+            if (!result)
+            {
+                Debug.LogError($"找不到资源:{assetLoader.ResourcePath}的加载器信息,删除资源加载器信息失败,请检查代码流程!");
+            }
+            else
+            {
+                ResourceLogger.log($"删除资源:{assetLoader.ResourcePath}的加载器信息成功!");
+            }
+            return result;
         }
 
         /// <summary>
@@ -86,10 +247,10 @@ namespace TResource
         /// <returns></returns>
         public AssetLoader getAssetLoader(string assetPath)
         {
-            AssetLoader assetLoader;
-            if (mAllAssetLoaderMap.TryGetValue(assetPath, out assetLoader))
+            Loadable assetLoader;
+            if (mAllLoaderMap.TryGetValue(assetPath, out assetLoader))
             {
-                return assetLoader;
+                return assetLoader as AssetLoader;
             }
             return null;
         }
@@ -99,16 +260,15 @@ namespace TResource
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        public AssetBundleLoader getAssetBundleLoader(string assetBundlePath)
+        public BundleLoader getAssetBundleLoader(string assetBundlePath)
         {
-            AssetBundleLoader abLoader;
-            if (mAllAssetBundleLoaderMap.TryGetValue(assetBundlePath, out abLoader))
+            Loadable bundleLoader;
+            if (mAllLoaderMap.TryGetValue(assetBundlePath, out bundleLoader))
             {
-                return abLoader;
+                return bundleLoader as BundleLoader;
             }
             return null;
         }
-
 
         /// <summary>
         /// 获取指定请求UID的Asset路径

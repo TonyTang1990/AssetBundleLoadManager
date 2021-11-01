@@ -64,12 +64,12 @@ namespace TResource
     /// </summary>
     public enum ResourceLoadState
     {
-        None = 1,             // 未加载状态
-        Waiting = 2,          // 等待加载状态
-        Loading = 3,          // 加载中状态
-        Complete = 4,         // 加载完成状态
-        Cancel = 5,           // 取消状态
-        Error = 6             // 出错状态
+        None = 0,             // 空状态
+        Waiting = 1,          // 等待加载状态
+        Loading = 2,          // 加载中状态
+        Complete = 3,         // 加载完成状态
+        Cancel = 4,           // 取消状态
+        Error = 5             // 出错状态
     }
 
 }

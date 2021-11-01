@@ -67,6 +67,9 @@
     <Compile Include="Assets\Scripts\Core\NewResource\AssetDatabaseModule.cs" />
     <Compile Include="Assets\Scripts\Core\NewResource\AssetInfo.cs" />
     <Compile Include="Assets\Scripts\Core\NewResource\AssetLoader.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\BundleAssetLoader.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\BundleLoader.cs" />
+    <Compile Include="Assets\Scripts\Core\NewResource\DownloadAssetBundleLoader.cs" />
     <Compile Include="Assets\Scripts\Core\NewResource\Loadable.cs" />
     <Compile Include="Assets\Scripts\Core\NewResource\LoaderManager.cs" />
     <Compile Include="Assets\Scripts\Core\NewResource\ResourceModuleEnum.cs" />

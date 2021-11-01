@@ -4,6 +4,7 @@
  * Create Date:             2021//10/24
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -70,17 +71,28 @@ namespace TResource
             CurrentResourceModule.init();
         }
 
+        ///// <summary>
+        ///// 同步请求Asset资源
+        ///// 同步Asset资源加载统一入口
+        ///// </summary>
+        ///// <param name="assetPath">资源路径(带后缀)</param>
+        ///// <param name="loadType">资源加载类型</param>
+        //public T requstAssetSync<T>(string assetPath, out AssetLoader assetLoader, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
+        //{
+        //    CurrentResourceModule.requstAsset<T>(assetPath, out assetLoader, null, loadType, ResourceLoadMethod.Sync);
+        //    return assetLoader.getAsset<T>();
+        //}
+
         /// <summary>
-        /// 同步请求Asset资源
+        /// 同步请求Asset资源(为未来支持动态资源加载做准备)
         /// 同步Asset资源加载统一入口
         /// </summary>
         /// <param name="assetPath">资源路径(带后缀)</param>
+        /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>
-        public T requstAssetSync<T>(string assetPath, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : Object
+        public int requstAssetSync<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
         {
-            AssetLoader assetLoader;
-            CurrentResourceModule.requstAsset<T>(assetPath, out assetLoader, null, loadType, ResourceLoadMethod.Sync);
-            return assetLoader.getAsset<T>();
+            return CurrentResourceModule.requstAsset<T>(assetPath, out assetLoader, completeHandler, loadType, ResourceLoadMethod.Sync);
         }
 
         /// <summary>
@@ -91,23 +103,31 @@ namespace TResource
         /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
-        public int requstAssetAsync<T>(string assetPath, AbstractResourceModule.LoadResourceCompleteHandler completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : Object
+        public int requstAssetAsync<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
         {
-            AssetLoader assetLoader;
             return CurrentResourceModule.requstAsset<T>(assetPath, out assetLoader, completeHandler, loadType, ResourceLoadMethod.Async);
         }
 
+        ///// <summary>
+        ///// 同步请求AssetBundle资源
+        ///// 同步AssetBundle资源加载统一入口
+        ///// </summary>
+        ///// <param name="assetBundlePath">AB资源路径</param>
+        ///// <param name="loadType">资源加载类型</param>
+        //public int requstAssetBundleSync(string assetBundlePath, out BundleLoader assetBundleLoader, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        //{
+        //    return CurrentResourceModule.requstAssetBundle(assetBundlePath, out assetBundleLoader, null, loadType, ResourceLoadMethod.Sync);
+        //}
+
         /// <summary>
-        /// 同步请求AssetBundle资源
+        /// 同步请求AssetBundle资源(回调式--为未来支持动态资源加载做准备)
         /// 同步AssetBundle资源加载统一入口
         /// </summary>
         /// <param name="assetBundlePath">AB资源路径</param>
         /// <param name="loadType">资源加载类型</param>
-        public AssetBundle requstAssetBundleSync(string assetBundlePath, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        public int requstAssetBundleSync(string assetBundlePath, out BundleLoader assetBundleLoader, Action<BundleLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
-            AssetBundleLoader assetBundleLoader;
-            CurrentResourceModule.requstAssetBundle(assetBundlePath, out assetBundleLoader, null, loadType, ResourceLoadMethod.Sync);
-            return assetBundleLoader.getAsset();
+            return CurrentResourceModule.requstAssetBundle(assetBundlePath, out assetBundleLoader, completeHandler, loadType, ResourceLoadMethod.Sync);
         }
 
         /// <summary>
@@ -115,18 +135,18 @@ namespace TResource
         /// 异步AssetBundle资源加载统一入口
         /// </summary>
         /// <param name="assetBundlePath">资源路径</param>
+        /// <param name="assetBundleLoader">AssetBundle资源加载请求</param>
         /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
-        public int requstAssetBundleAsync(string assetBundlePath, AbstractResourceModule.LoadResourceCompleteHandler completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        public int requstAssetBundleAsync(string assetBundlePath, out BundleLoader assetBundleLoader, Action<BundleLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
-            AssetBundleLoader assetBundleLoader;
             return CurrentResourceModule.requstAssetBundle(assetBundlePath, out assetBundleLoader, completeHandler, loadType, ResourceLoadMethod.Async);
         }
 
         public void Update()
         {
-            CurrentResourceModule.Update();
+            CurrentResourceModule.update();
         }
 
         /// <summary>

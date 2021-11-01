@@ -4,6 +4,7 @@
  * Create Date:             2021//10/24
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,7 +62,7 @@ namespace TResource
         /// </summary>
         public virtual bool IsUnsed
         {
-            get { return mIsReady && RefCount <= 0; }
+            get { return mIsReady && RefCount <= 0 && updateOwnerReference() == 0; }
         }
 
         /// <summary>
@@ -83,9 +84,32 @@ namespace TResource
         }
 
         /// <summary>
+        /// 引用对象列表
+        /// 用于判定引用AB的对象是否依然有效(还在使用未销毁)
+        /// </summary>
+        public List<System.WeakReference> ReferenceOwnerList
+        {
+            get
+            {
+                return mReferenceOwnerList;
+            }
+        }
+        protected List<System.WeakReference> mReferenceOwnerList;
+
+        /// <summary>
         /// 资源
         /// </summary>
-        protected Object mResource;
+        protected UnityEngine.Object mResource;
+
+        public AbstractResourceInfo()
+        {
+            onResourceUnloadedCallback = null;
+            ResourcePath = null;
+            LastUsedTime = 0f;
+            mIsReady = false;
+            RefCount = 0;
+            mReferenceOwnerList = new List<WeakReference>();
+        }
 
         public virtual void onCreate()
         {
@@ -95,6 +119,7 @@ namespace TResource
             mIsReady = false;
             RefCount = 0;
             mResource = null;
+            mReferenceOwnerList.Clear();
         }
 
         public virtual void onDispose()
@@ -105,21 +130,32 @@ namespace TResource
             mIsReady = false;
             RefCount = 0;
             mResource = null;
+            mReferenceOwnerList.Clear();
+        }
+
+        /// <summary>
+        /// 设置资源
+        /// </summary>
+        /// <returns></returns>
+        public void setResource(UnityEngine.Object asset)
+        {
+            mResource = asset;
         }
 
         /// <summary>
         /// 获取资源
         /// </summary>
         /// <returns></returns>
-        public T getResource<T>() where T : Object
+        public T getResource<T>() where T : UnityEngine.Object
         {
+            updateLastUsedTime();
             return mResource as T;
         }
 
         /// <summary>
-        /// 添加引用，引用计数+1
+        /// 添加自身自己
         /// </summary>
-        public virtual void retain()
+        public void retainSelf()
         {
             RefCount++;
         }
@@ -127,9 +163,25 @@ namespace TResource
         /// <summary>
         /// 释放引用，引用计数-1
         /// </summary>
-        public virtual void release()
+        public void releaseSelf()
         {
             RefCount = Mathf.Max(0, RefCount - 1);
+        }
+
+        /// <summary>
+        /// 添加引用，引用计数+1
+        /// </summary>
+        public virtual void retain()
+        {
+            retainSelf();
+        }
+
+        /// <summary>
+        /// 释放引用，引用计数-1
+        /// </summary>
+        public virtual void release()
+        {
+            releaseSelf();
         }
 
         /// <summary>
@@ -138,6 +190,77 @@ namespace TResource
         public void updateLastUsedTime()
         {
             LastUsedTime = Time.time;
+        }
+
+        /// <summary>
+        /// 为Asset添加指定owner的引用
+        /// 所有owner都销毁且所属ab引用计数归零可回收
+        /// </summary>
+        /// <param name="owner"></param>
+        public void retainOwner(UnityEngine.Object owner)
+        {
+            if (owner == null)
+            {
+                ResourceLogger.logErr(string.Format("引用对象不能为空!无法为资源:{0}添加引用!", ResourcePath));
+                return;
+            }
+
+            // Asset对象绑定的情况下无需添加所属AB的计数信息
+            foreach (var referenceowner in mReferenceOwnerList)
+            {
+                if (owner.Equals(referenceowner))
+                {
+                    return;
+                }
+            }
+
+            System.WeakReference wr = new System.WeakReference(owner);
+            mReferenceOwnerList.Add(wr);
+        }
+
+        /// <summary>
+        /// 移除指定拥有者绑定(用于解决上层绑定对象一直存在导致资源无法释放的问题)
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public bool releaseOwner(UnityEngine.Object owner)
+        {
+            if (owner == null)
+            {
+                ResourceLogger.logErr(string.Format("引用对象不能为空!无法为资源:{0}解除绑定!", ResourcePath));
+                return false;
+            }
+
+            var ownerindex = mReferenceOwnerList.FindIndex((ow) => ow.Target.Equals(owner));
+            if (ownerindex != -1)
+            {
+                ResourceLogger.log(string.Format("资源:{0}找到指定绑定对象:{1},解除绑定!", ResourcePath, owner));
+                mReferenceOwnerList.RemoveAt(ownerindex);
+                return true;
+            }
+            else
+            {
+                ResourceLogger.log(string.Format("资源:{0}找不到指定绑定对象:{1},解除绑定失败!", ResourcePath, owner));
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 更新Asset有效的绑定对象计数
+        /// </summary>
+        /// <returns></returns>
+        protected int updateOwnerReference()
+        {
+            for (int i = 0; i < mReferenceOwnerList.Count; i++)
+            {
+                UnityEngine.Object o = (UnityEngine.Object)mReferenceOwnerList[i].Target;
+                if (!o)
+                {
+                    mReferenceOwnerList.RemoveAt(i);
+                    i--;
+                }
+            }
+            return mReferenceOwnerList.Count;
         }
 
         /// <summary>
