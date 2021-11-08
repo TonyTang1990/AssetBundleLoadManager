@@ -4,6 +4,7 @@
  * Create Date:             2021/10/13
  */
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -224,20 +225,52 @@ namespace TResource
         /// <summary>
         /// 删除指定资源加载器信息
         /// </summary>
-        /// <param name="assetLoader"></param>
+        /// <param name="resourcePath"></param>
         /// <returns></returns>
-        public bool deleteAssetLoader(AssetLoader assetLoader)
+        public bool deleteLoaderByPath(string resourcePath)
         {
-            var result = mAllLoaderMap.Remove(assetLoader.ResourcePath);
+            var loader = getLoader(resourcePath);
+            return deleteLoader(loader);
+        }
+
+        /// <summary>
+        /// 删除指定资源加载器信息
+        /// </summary>
+        /// <param name="loader"></param>
+        /// <returns></returns>
+        public bool deleteLoader(Loadable loader)
+        {
+            // 未加载完成的加载器不应该被移除
+            if(!loader.IsDone)
+            {
+                Debug.LogError($"资源:{loader.ResourcePath}加载器未加载完成,不允许删除!");
+                return false;
+            }
+            var result = mAllLoaderMap.Remove(loader.ResourcePath);
             if (!result)
             {
-                Debug.LogError($"找不到资源:{assetLoader.ResourcePath}的加载器信息,删除资源加载器信息失败,请检查代码流程!");
+                Debug.LogError($"找不到资源:{loader.ResourcePath}的加载器信息,删除资源加载器信息失败,请检查代码流程!");
             }
             else
             {
-                ResourceLogger.log($"删除资源:{assetLoader.ResourcePath}的加载器信息成功!");
+                ResourceLogger.log($"删除资源:{loader.ResourcePath}的加载器信息成功!");
             }
             return result;
+        }
+
+        /// <summary>
+        /// 获取指定Loader
+        /// </summary>
+        /// <param name="resourcePath"></param>
+        /// <returns></returns>
+        public Loadable getLoader(string resourcePath)
+        {
+            Loadable loader;
+            if (mAllLoaderMap.TryGetValue(resourcePath, out loader))
+            {
+                return loader;
+            }
+            return loader;
         }
 
         /// <summary>
