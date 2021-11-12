@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollector\DefaultCollector.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleCollector\IAssetCollector.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\AssetBundleWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\NewABBuilder\NewResourceDebugWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetBundleNameSetting.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOperationWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeHelper.cs" />

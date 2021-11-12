@@ -113,11 +113,19 @@ namespace TResource
         #endregion
 
         /// <summary>
+        /// 已加载AB里不再有有效引用的AB信息列表
+        /// </summary>
+        protected List<AssetBundleInfo> mUnsedAssetBundleInfoList;
+
+        /// <summary>
         /// 资源加载模块初始化
         /// </summary>
         public override void init()
         {
             base.init();
+
+            mUnsedAssetBundleInfoList = new List<AssetBundleInfo>();
+
             ResLoadMode = ResourceLoadMode.AssetBundle;
             // 加载Asset打包信息
             loadAssetBuildInfo();
@@ -167,5 +175,112 @@ namespace TResource
             bundleLoader.load();
             return requestUID;
         }
+
+        /// <summary>
+        /// 执行不再使用资源监察
+        /// </summary>
+        protected override void doCheckUnusedResource()
+        {
+            base.doCheckUnusedResource();
+            checkUnsedAssetBundleResources();
+            doUnloadUnsedAssetBundleWithLimit(true);
+        }
+
+        /// <summary>
+        /// 执行卸载所有不再使用的资源
+        /// </summary>
+        protected override void doUnloadAllUnusedResources()
+        {
+            base.doUnloadAllUnusedResources();
+            checkUnsedAssetBundleResources();
+            doUnloadUnsedAssetBundleWithLimit(false);
+        }
+
+        /// <summary>
+        /// 检查未使用AssetBundle
+        /// </summary>
+        protected void checkUnsedAssetBundleResources()
+        {
+            mUnsedAssetBundleInfoList.Clear();
+            var time = Time.time;
+            // 检查正常加载的资源AssetBundle，回收不再使用的AssetBundle
+            foreach (var loadedAssetBundleInfo in mAllLoadedNormalAssetBundleInfoMap)
+            {
+                if (loadedAssetBundleInfo.Value.IsUnsed)
+                {
+                    if ((time - loadedAssetBundleInfo.Value.LastUsedTime) > mABMinimumLifeTime)
+                    {
+                        mUnsedAssetBundleInfoList.Add(loadedAssetBundleInfo.Value);
+                    }
+                }
+            }
+
+            if (mUnsedAssetBundleInfoList.Count > 0)
+            {
+                // 根据最近使用时间升序排列
+                mUnsedAssetBundleInfoList.Sort(ABILastUsedTimeSort);
+            }
+        }
+
+        /// <summary>
+        /// 资源信息根据最近使用时间排序
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private int ABILastUsedTimeSort(AbstractResourceInfo a, AbstractResourceInfo b)
+        {
+            return a.LastUsedTime.CompareTo(b.LastUsedTime);
+        }
+
+        /// <summary>
+        /// 卸载未使用的AssetBundle
+        /// </summary>
+        /// <param name="withLimitNumber">是否限制卸载数量</param>
+        protected void doUnloadUnsedAssetBundleWithLimit(bool withLimitNumber = false)
+        {
+            for (int i = 0; i < mUnsedAssetBundleInfoList.Count; i++)
+            {
+                if (withLimitNumber == false || (withLimitNumber && i < mMaxUnloadABNumberPerFrame))
+                {
+                    if(deleteAssetBundleInfo(mUnsedAssetBundleInfoList[i].ResourcePath))
+                    {
+                        mUnsedAssetBundleInfoList[i].dispose();
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            mUnsedAssetBundleInfoList.Clear();
+        }
+
+        #region 资源调试辅助功能
+        /// <summary>
+        /// 强制卸载指定AB(只支持NormalLoad的AB资源强制卸载)
+        /// </summary>
+        /// <param name="assetBundelPath"></param>
+        public void forceUnloadSpecificAssetBundle(string assetBundelPath)
+        {
+            AssetBundleInfo assetBundleInfo = getAssetBundleInfo(assetBundelPath);
+            if(assetBundleInfo != null)
+            {
+                if (mAllLoadedNormalAssetBundleInfoMap.TryGetValue(assetBundelPath, out assetBundleInfo))
+                {
+                    deleteAssetBundleInfo(assetBundelPath);
+                    assetBundleInfo.dispose();
+                }
+                else
+                {
+                    ResourceLogger.logErr(string.Format("AssetBundle资源 : {0}属于非NormalLoad资源，不允许强制卸载!", assetBundelPath));
+                }
+            }
+            else
+            {
+                ResourceLogger.logErr(string.Format("AssetBundle资源 : {0}未被加载，无法强制卸载!", assetBundelPath));
+            }
+        }
+        #endregion
     }
 }

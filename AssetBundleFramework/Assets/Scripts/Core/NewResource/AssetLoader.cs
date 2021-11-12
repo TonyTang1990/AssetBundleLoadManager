@@ -90,7 +90,7 @@ namespace TResource
             LoadMethod = loadMethod;
             // 创建加载器时就添加相关Asset计数，确保资源加载管理正确
             // 后续加载取消时会返还对应计数
-            mAssetInfo.retainSelf();
+            mAssetInfo.retain();
         }
 
         /// <summary>
@@ -142,11 +142,11 @@ namespace TResource
         {
             base.onComplete();
             // 修改资源准备状态(表示资源准备完成，可以获取或者判定卸载)
-            mAssetInfo.mIsReady = true;
+            mAssetInfo.IsReady = true;
 
             // 上层多个加载逻辑回调，在完成后根据调用getAsset或bindAsset情况去添加计数和绑定
             // 针对当前Asset的加载的基础计数已经在加载之前就完成计数的添加了，这里只需返回主Asset和主AB的提前计数即可
-            mAssetInfo.releaseSelf();
+            mAssetInfo.release();
 
             mAssetAsyncRequest = null;
             mLoadAssetCompleteCallBackMap.Clear();

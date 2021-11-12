@@ -29,7 +29,7 @@ namespace TResource
                 loadImmediately();
             }
             var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
-            AssetBundleInfo.retainSelf();
+            AssetBundleInfo.retain();
             return assetBundle;
         }
 

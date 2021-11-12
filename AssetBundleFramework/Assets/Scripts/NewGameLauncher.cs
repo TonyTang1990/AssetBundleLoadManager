@@ -126,7 +126,7 @@ public class NewGameLauncher : MonoBehaviour {
     private void Update()
     {
         Timer.Singleton.Update();
-        ResourceModuleManager.Singleton.Update();
+        TResource.ResourceModuleManager.Singleton.Update();
     }
 
     private void OnDestroy()

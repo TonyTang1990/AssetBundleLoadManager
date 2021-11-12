@@ -89,12 +89,12 @@ namespace TResource
         public override void retain()
         {
             base.retain();
-            if(OwnerAsestBundlePath != null)
-            {
-                // 常规Asset引用计数添加需要添加所属AB的使用计数
-                var assetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getAssetBundleInfo(OwnerAsestBundlePath);
-                assetBundleInfo.retain();
-            }
+            //if(OwnerAsestBundlePath != null)
+            //{
+            //    // 常规Asset引用计数添加需要添加所属AB的使用计数
+            //    var assetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getAssetBundleInfo(OwnerAsestBundlePath);
+            //    assetBundleInfo.retain();
+            //}
         }
 
         /// <summary>
@@ -103,17 +103,23 @@ namespace TResource
         public override void release()
         {
             base.release();
-            if (OwnerAsestBundlePath != null)
-            {
-                // 常规Asset引用计数减少需要减少所属AB的使用计数
-                var assetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getAssetBundleInfo(OwnerAsestBundlePath);
-                assetBundleInfo.release();
-            }
+            //if (OwnerAsestBundlePath != null)
+            //{
+            //    // 常规Asset引用计数减少需要减少所属AB的使用计数
+            //    var assetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getAssetBundleInfo(OwnerAsestBundlePath);
+            //    assetBundleInfo.release();
+            //}
         }
 
         public override void dispose()
         {
-
+            if (LoadType != ResourceLoadType.NormalLoad)
+            {
+                Debug.Assert(LoadType == ResourceLoadType.NormalLoad, $"不允许卸载非NormalLoad的AssetPath:{ResourcePath}");
+            }
+            // AssetLoader和AssetInfo是一一对应，
+            // 在AssetInfo回收时,AssetLoader也应该得到回收
+            LoaderManager.Singleton.deleteLoaderByPath(ResourcePath);
         }
     }
 }

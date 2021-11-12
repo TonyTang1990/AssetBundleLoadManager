@@ -92,7 +92,7 @@ public class ResourceDebugWindow : BaseEditorWindow
     private List<AbstractResourceInfo> mValideReferenceABInfoList = new List<AbstractResourceInfo>();
 
     [MenuItem("Tools/Debug/资源调试工具", false, 103)]
-    public static void openConvenientUIWindow()
+    public static void openResourceDebugWindow()
     {
         ResourceDebugWindow window = EditorWindow.GetWindow<ResourceDebugWindow>(false, "资源调试工具");
         window.Show();

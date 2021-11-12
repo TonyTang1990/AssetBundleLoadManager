@@ -55,7 +55,11 @@ namespace TResource
         }
 
         /// <summary> AB资源自身加载任务状态 /// </summary>
-        protected ResourceLoadState mLoadState;
+        public ResourceLoadState LoadState
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// 是否加载完成
@@ -64,7 +68,7 @@ namespace TResource
         {
             get
             {
-                return mLoadState == ResourceLoadState.Complete || mLoadState == ResourceLoadState.Error;
+                return LoadState == ResourceLoadState.Complete || LoadState == ResourceLoadState.Error;
             }
         }
 
@@ -75,7 +79,7 @@ namespace TResource
         {
             get
             {
-                return mLoadState == ResourceLoadState.Waiting;
+                return LoadState == ResourceLoadState.Waiting;
             }
         }
 
@@ -86,7 +90,7 @@ namespace TResource
         {
             get
             {
-                return mLoadState == ResourceLoadState.None;
+                return LoadState == ResourceLoadState.None;
             }
         }
 
@@ -97,7 +101,7 @@ namespace TResource
         {
             get
             {
-                return mLoadState == ResourceLoadState.Loading;
+                return LoadState == ResourceLoadState.Loading;
             }
         }
 
@@ -108,7 +112,7 @@ namespace TResource
         {
             get
             {
-                return mLoadState == ResourceLoadState.Error;
+                return LoadState == ResourceLoadState.Error;
             }
         }
 
@@ -119,27 +123,27 @@ namespace TResource
         {
             get
             {
-                return mLoadState == ResourceLoadState.Cancel;
+                return LoadState == ResourceLoadState.Cancel;
             }
         }
 
         public Loadable()
         {
             ResourcePath = null;
-            mLoadState = ResourceLoadState.None;
+            LoadState = ResourceLoadState.None;
         }
 
         public virtual void onCreate()
         {
             ResourcePath = null;
-            mLoadState = ResourceLoadState.None;
+            LoadState = ResourceLoadState.None;
 
         }
 
         public virtual void onDispose()
         {
             ResourcePath = null;
-            mLoadState = ResourceLoadState.None;
+            LoadState = ResourceLoadState.None;
         }
 
         /// <summary>
@@ -152,7 +156,7 @@ namespace TResource
                 Debug.LogError($"ResourcePath:{ResourcePath}未处于空状态,不应该触发加载!");
                 return;
             }
-            mLoadState = ResourceLoadState.Waiting;
+            LoadState = ResourceLoadState.Waiting;
             LoaderManager.Singleton.addLoadTask(this);
             // 同步加载就立刻触发，异步加载等待排队
             if (LoadMethod == ResourceLoadMethod.Sync)
@@ -190,7 +194,7 @@ namespace TResource
                 Debug.LogError($"ResourcePath:{ResourcePath}已加载完成不应该触发加载!");
                 return;
             }
-            mLoadState = ResourceLoadState.Loading;
+            LoadState = ResourceLoadState.Loading;
             LoaderManager.Singleton.removeLoadTask(this);
             onLoad();
         }
@@ -223,7 +227,7 @@ namespace TResource
                 Debug.LogError($"ResourcePath:{ResourcePath}未处于加载中,不应该触发加载失败!");
                 return;
             }
-            mLoadState = ResourceLoadState.Error;
+            LoadState = ResourceLoadState.Error;
             onFailed();
             // 加载失败要通知完成，确保上层逻辑走完
             onComplete();
@@ -250,7 +254,7 @@ namespace TResource
                 Debug.LogError($"ResourcePath:{ResourcePath}已加载完成不允许取消!");
                 return;
             }
-            mLoadState = ResourceLoadState.Cancel;
+            LoadState = ResourceLoadState.Cancel;
             onCancel();
         }
 
@@ -268,7 +272,7 @@ namespace TResource
         protected virtual void complete()
         {
             ResourceLogger.log($"加载资源:{ResourcePath}完成!");
-            mLoadState = ResourceLoadState.Complete;
+            LoadState = ResourceLoadState.Complete;
             onComplete();
         }
 

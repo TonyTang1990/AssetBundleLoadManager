@@ -23,7 +23,7 @@ namespace TResource
         public ResourceLoadMode LoadMode
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace TResource
         /// </summary>
         public void unloadAllUnsedNormalLoadedResources()
         {
-            CurrentResourceModule.unloadAllUnsedResources();
+            CurrentResourceModule.unloadAllUnusedResources();
         }
     }
 }

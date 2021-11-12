@@ -62,13 +62,13 @@ namespace TResource
         /// </summary>
         public virtual bool IsUnsed
         {
-            get { return mIsReady && RefCount <= 0 && updateOwnerReference() == 0; }
+            get { return IsReady && RefCount <= 0 && updateOwnerReference() == 0 && LoadType == ResourceLoadType.NormalLoad; }
         }
 
         /// <summary>
         /// 资源是否已经加载完成
         /// </summary>
-        public bool mIsReady
+        public bool IsReady
         {
             get;
             set;
@@ -106,7 +106,7 @@ namespace TResource
             onResourceUnloadedCallback = null;
             ResourcePath = null;
             LastUsedTime = 0f;
-            mIsReady = false;
+            IsReady = false;
             RefCount = 0;
             mReferenceOwnerList = new List<WeakReference>();
         }
@@ -116,7 +116,7 @@ namespace TResource
             onResourceUnloadedCallback = null;
             ResourcePath = null;
             LastUsedTime = 0f;
-            mIsReady = false;
+            IsReady = false;
             RefCount = 0;
             mResource = null;
             mReferenceOwnerList.Clear();
@@ -127,7 +127,7 @@ namespace TResource
             onResourceUnloadedCallback = null;
             ResourcePath = null;
             LastUsedTime = 0f;
-            mIsReady = false;
+            IsReady = false;
             RefCount = 0;
             mResource = null;
             mReferenceOwnerList.Clear();
@@ -153,9 +153,9 @@ namespace TResource
         }
 
         /// <summary>
-        /// 添加自身自己
+        /// 添加引用，引用计数+1
         /// </summary>
-        public void retainSelf()
+        public virtual void retain()
         {
             RefCount++;
         }
@@ -163,25 +163,9 @@ namespace TResource
         /// <summary>
         /// 释放引用，引用计数-1
         /// </summary>
-        public void releaseSelf()
-        {
-            RefCount = Mathf.Max(0, RefCount - 1);
-        }
-
-        /// <summary>
-        /// 添加引用，引用计数+1
-        /// </summary>
-        public virtual void retain()
-        {
-            retainSelf();
-        }
-
-        /// <summary>
-        /// 释放引用，引用计数-1
-        /// </summary>
         public virtual void release()
         {
-            releaseSelf();
+            RefCount = Mathf.Max(0, RefCount - 1);
         }
 
         /// <summary>

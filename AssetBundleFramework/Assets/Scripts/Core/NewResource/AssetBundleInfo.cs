@@ -24,7 +24,11 @@ namespace TResource
         /// <summary>
         /// 所有已加载的Asset信息
         /// </summary>
-        private Dictionary<string, AssetInfo> mAllLoadedAssetInfoMap;
+        public Dictionary<string, AssetInfo> AllLoadedAssetInfoMap
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// 是否不再有人使用
@@ -33,7 +37,7 @@ namespace TResource
         {
             get 
             {
-                return mIsReady && RefCount <= 0 && updateOwnerReference() == 0 && IsAllAssetsUnsed;
+                return IsReady && RefCount <= 0 && updateOwnerReference() == 0 && IsAllAssetsUnsed;
             }
         }
 
@@ -44,7 +48,7 @@ namespace TResource
         {
             get
             {
-                foreach(var assetInfo in mAllLoadedAssetInfoMap)
+                foreach(var assetInfo in AllLoadedAssetInfoMap)
                 {
                     if(!assetInfo.Value.IsUnsed)
                     {
@@ -57,19 +61,19 @@ namespace TResource
 
         public AssetBundleInfo()
         {
-            mAllLoadedAssetInfoMap = new Dictionary<string, AssetInfo>();
+            AllLoadedAssetInfoMap = new Dictionary<string, AssetInfo>();
         }
 
         public override void onCreate()
         {
             base.onCreate();
-            mAllLoadedAssetInfoMap.Clear();
+            AllLoadedAssetInfoMap.Clear();
         }
 
         public override void onDispose()
         {
             base.onDispose();
-            mAllLoadedAssetInfoMap.Clear();
+            AllLoadedAssetInfoMap.Clear();
         }
 
         public void init(string assetBundlePath, string[] depAssetBundlePaths)
@@ -87,9 +91,9 @@ namespace TResource
         {
             if(assetInfo.OwnerAsestBundlePath == ResourcePath)
             {
-                if(!mAllLoadedAssetInfoMap.ContainsKey(assetInfo.ResourcePath))
+                if(!AllLoadedAssetInfoMap.ContainsKey(assetInfo.ResourcePath))
                 {
-                    mAllLoadedAssetInfoMap.Add(assetInfo.ResourcePath, assetInfo);
+                    AllLoadedAssetInfoMap.Add(assetInfo.ResourcePath, assetInfo);
                     return true;
                 }
                 else
@@ -107,7 +111,29 @@ namespace TResource
 
         public override void dispose()
         {
-
+            if(LoadType != ResourceLoadType.NormalLoad)
+            {
+                Debug.LogWarning($"不允许卸载非NormalLoad的AssetBundlePath:{ResourcePath}");
+            }
+            // AB模式释放指定AB时，需要减少依赖AB信息的索引计数
+            for (int i = 0, length = mDepAssetBundlePaths.Length; i < length; i++)
+            {
+                var depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getAssetBundleInfo(mDepAssetBundlePaths[i]);
+                depAssetBundleInfo.release();
+            }
+            // AssetBundleLoader和AssetBundleInfo是一一对应，
+            // 在AssetBundleInfo回收时,AssetBundleLoader也应该得到回收
+            // 同时回收所有应加载的AssetInfo信息
+            LoaderManager.Singleton.deleteLoaderByPath(ResourcePath);
+            foreach(var assetInfo in AllLoadedAssetInfoMap)
+            {
+                ResourceModuleManager.Singleton.CurrentResourceModule.deleteAssetInfo(assetInfo.Key);
+            }
+            //AB卸载数据统计
+            if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
+            {
+                ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(ResourcePath);
+            }
         }
     }
 }

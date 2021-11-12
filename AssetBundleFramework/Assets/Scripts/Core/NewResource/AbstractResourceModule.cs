@@ -92,11 +92,6 @@ namespace TResource
         /// </summary>
         protected Dictionary<string, AssetBundleInfo> mAllLoadedPermanentAssetBundleInfoMap;
 
-        /// <summary>
-        /// 已加载AB里不再有有效引用的AB信息列表
-        /// </summary>
-        protected List<AssetBundleInfo> mUnsedAssetBundleInfoList;
-
         /// <summary> 检测未使用AB时间间隔(在请求队列为空时才检测未使用AB) /// </summary>
         protected float mCheckUnsedABTimeInterval;
 
@@ -175,8 +170,6 @@ namespace TResource
             mAllLoadedPermanentAssetInfoMap = new Dictionary<string, AssetInfo>();
             mAllLoadedNormalAssetBundleInfoMap = new Dictionary<string, AssetBundleInfo>();
             mAllLoadedPermanentAssetBundleInfoMap = new Dictionary<string, AssetBundleInfo>();
-
-            mUnsedAssetBundleInfoList = new List<AssetBundleInfo>();
 
             // TODO: 根据设备设定相关参数，改成读表控制
             mCheckUnsedABTimeInterval = 10.0f;
@@ -272,6 +265,26 @@ namespace TResource
         }
 
         /// <summary>
+        /// 删除指定Asset路径的Asset信息
+        /// Note:
+        /// 只支持删除NormalLoad方式的Asset信息
+        /// </summary>
+        /// <param name="assetPath"></param>
+        /// <returns></returns>
+        public bool deleteAssetInfo(string assetPath)
+        {
+            if(mAllLoadedNormalAssetInfoMap.Remove(assetPath))
+            {
+                return true;
+            }
+            else
+            {
+                Debug.LogError($"不存在NormalLoad的AssetPath信息,删除AssetPath:{assetPath}信息失败!");
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 获取或创建指定AssetBundle路径的AssetBundle信息
         /// </summary>
         /// <param name="assetBundlePath">AB路径</param>
@@ -351,6 +364,68 @@ namespace TResource
             {
                 Debug.LogError($"重复添加AssetBundle:{assetBundleInfo.ResourcePath}的信息,添加失败，请检查代码!");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 删除指定AssetBundle路径的AssetBundle信息
+        /// Note:
+        /// 只支持删除NormalLoad方式的AB信息
+        /// </summary>
+        /// <param name="assetBundlePath"></param>
+        /// <returns></returns>
+        public bool deleteAssetBundleInfo(string assetBundlePath)
+        {
+            if(mAllLoadedNormalAssetBundleInfoMap.Remove(assetBundlePath))
+            {
+                return true;
+            }
+            else
+            {
+                Debug.LogError($"不存在NormalLoad的AssetBundlePath信息,删除AssetBundlePath:{assetBundlePath}信息失败!");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 获取指定加载方式的Asset已加载信息映射Map
+        /// </summary>
+        /// <param name="loadtype"></param>
+        /// <returns></returns>
+        public Dictionary<string, AssetInfo> getSpecificLoadTypeAssetInfoMap(ResourceLoadType loadtype)
+        {
+            if(loadtype == ResourceLoadType.NormalLoad)
+            {
+                return mAllLoadedNormalAssetInfoMap;
+            }
+            else if(loadtype == ResourceLoadType.PermanentLoad)
+            {
+                return mAllLoadedPermanentAssetInfoMap;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 获取指定加载方式的AssetBundle已加载信息映射Map
+        /// </summary>
+        /// <param name="loadtype"></param>
+        /// <returns></returns>
+        public Dictionary<string, AssetBundleInfo> getSpecificLoadTypeAssetBundleInfoMap(ResourceLoadType loadtype)
+        {
+            if (loadtype == ResourceLoadType.NormalLoad)
+            {
+                return mAllLoadedNormalAssetBundleInfoMap;
+            }
+            else if (loadtype == ResourceLoadType.PermanentLoad)
+            {
+                return mAllLoadedPermanentAssetBundleInfoMap;
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -517,7 +592,7 @@ namespace TResource
                 mTotalDeltaTime = 0f;
                 mFrameCount = 0;
             }
-            checkUnsedResource();
+            checkUnusedResource();
         }
 
         /// <summary>
@@ -525,16 +600,23 @@ namespace TResource
         /// Note:
         /// 同步接口，回收数量会比较大，只建议切场景时场景卸载后调用一次
         /// </summary>
-        public void unloadAllUnsedResources()
+        public void unloadAllUnusedResources()
         {
-            checkUnsedAssetBundleResources();
-            doUnloadUnsedAssetBundleWithLimit(false);
+            doUnloadAllUnusedResources();
+        }
+
+        /// <summary>
+        /// 执行卸载所有不再使用的资源
+        /// </summary>
+        protected virtual void doUnloadAllUnusedResources()
+        {
+
         }
 
         /// <summary>
         /// 队列里不再有资源需要加载时检查不再使用的资源
         /// </summary>
-        protected void checkUnsedResource()
+        protected void checkUnusedResource()
         {
             if (!EnableResourceRecyclingUnloadUnsed)
             {
@@ -550,67 +632,16 @@ namespace TResource
                 // 所以只对AssetBundle进行卸载检测判定
                 // 而AssetBundle的卸载判定里包含了相关Asset使用计数信息为0和无有效绑定对象
                 mUnloadUnsedABTotalDeltaTime = 0f;
-                checkUnsedAssetBundleResources();
-                doUnloadUnsedAssetBundleWithLimit(true);
+                doCheckUnusedResource();
             }
         }
 
         /// <summary>
-        /// 检查未使用AssetBundle
+        /// 执行不再使用资源监察
         /// </summary>
-        protected void checkUnsedAssetBundleResources()
+        protected virtual void doCheckUnusedResource()
         {
-            mUnsedAssetBundleInfoList.Clear();
-            var time = Time.time;
-            // 检查正常加载的资源AssetBundle，回收不再使用的AssetBundle
-            foreach (var loadedAssetBundleInfo in mAllLoadedNormalAssetBundleInfoMap)
-            {
-                if (loadedAssetBundleInfo.Value.IsUnsed)
-                {
-                    if ((time - loadedAssetBundleInfo.Value.LastUsedTime) > mABMinimumLifeTime)
-                    {
-                        mUnsedAssetBundleInfoList.Add(loadedAssetBundleInfo.Value);
-                    }
-                }
-            }
 
-            if (mUnsedAssetBundleInfoList.Count > 0)
-            {
-                // 根据最近使用时间升序排列
-                mUnsedAssetBundleInfoList.Sort(ABILastUsedTimeSort);
-            }
-        }
-
-        /// <summary>
-        /// 卸载未使用的AssetBundle
-        /// </summary>
-        /// <param name="withLimitNumber">是否限制卸载数量</param>
-        protected void doUnloadUnsedAssetBundleWithLimit(bool withLimitNumber = false)
-        {
-            for (int i = 0; i < mUnsedAssetBundleInfoList.Count; i++)
-            {
-                if (withLimitNumber == false || (withLimitNumber && i < mMaxUnloadABNumberPerFrame))
-                {
-                    mAllLoadedNormalAssetBundleInfoMap.Remove(mUnsedAssetBundleInfoList[i].ResourcePath);
-                    mUnsedAssetBundleInfoList[i].dispose();
-                }
-                else
-                {
-                    break;
-                }
-            }
-            mUnsedAssetBundleInfoList.Clear();
-        }
-
-        /// <summary>
-        /// 资源信息根据最近使用时间排序
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        private int ABILastUsedTimeSort(AbstractResourceInfo a, AbstractResourceInfo b)
-        {
-            return a.LastUsedTime.CompareTo(b.LastUsedTime);
         }
 
         #region 调试开发工具

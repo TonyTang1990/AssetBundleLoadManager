@@ -38,7 +38,11 @@ namespace TResource
         /// <summary>
         /// 当前AB依赖的AB对应的AB信息列表(用于构建当前AssetBundleInfo)
         /// </summary>
-        protected List<AssetBundleInfo> mDepAssetBundleInfoList;
+        public List<AssetBundleInfo> DepAssetBundleInfoList
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// 是否所有的AB都加载完成
@@ -47,7 +51,7 @@ namespace TResource
         {
             get
             {
-                return mAllRequiredAssetBundleNumber == mLoadCompleteAssetBundleNumber;
+                return mAllRequiredAssetBundleNumber == LoadCompleteAssetBundleNumber;
             }
         }
 
@@ -59,7 +63,11 @@ namespace TResource
         /// <summary>
         /// 加载完成的AB数量
         /// </summary>
-        protected int mLoadCompleteAssetBundleNumber;
+        public int LoadCompleteAssetBundleNumber
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// 所有AB资源加载完成逻辑层回调
@@ -78,7 +86,7 @@ namespace TResource
 
         public BundleLoader() : base()
         {
-            mDepAssetBundleInfoList = new List<AssetBundleInfo>();
+            DepAssetBundleInfoList = new List<AssetBundleInfo>();
             mLoadABCompleteCallBackMap = new Dictionary<int, Action<BundleLoader>>();
         }
 
@@ -87,7 +95,7 @@ namespace TResource
             base.onCreate();
             DepABPaths = null;
             AssetBundleInfo = null;
-            mDepAssetBundleInfoList.Clear();
+            DepAssetBundleInfoList.Clear();
             mLoadABCompleteCallBack = null;
             mLoadABCompleteCallBackMap.Clear();
         }
@@ -97,7 +105,7 @@ namespace TResource
             base.onDispose();
             DepABPaths = null;
             AssetBundleInfo = null;
-            mDepAssetBundleInfoList.Clear();
+            DepAssetBundleInfoList.Clear();
             mLoadABCompleteCallBack = null;
             mLoadABCompleteCallBackMap.Clear();
         }
@@ -119,14 +127,14 @@ namespace TResource
             mAllRequiredAssetBundleNumber = DepABPaths != null ? DepABPaths.Length + 1 : 1;
             // 创建加载器时就添加相关AssetBundle计数，确保资源加载管理正确
             // 后续加载取消时会返还对应计数
-            AssetBundleInfo.retainSelf();
+            AssetBundleInfo.retain();
             // 依赖的AB的计数一开始也要添加，在加载完成后无需返还(作为依赖计数统计一次即可)
             AssetBundleInfo depAssetBundleInfo;
             for (int i = 0, length = DepABPaths.Length; i < length; i++)
             {
                 depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getOrCreateAssetBundleInfo(DepABPaths[i], ResourceLoadType.NormalLoad);
-                mDepAssetBundleInfoList.Add(depAssetBundleInfo);
-                depAssetBundleInfo.retainSelf();
+                DepAssetBundleInfoList.Add(depAssetBundleInfo);
+                depAssetBundleInfo.retain();
             }
         }
 
@@ -242,7 +250,12 @@ namespace TResource
         {
             ResourceLogger.log($"AssetBundle:{ResourcePath}的AssetBundle:{assetBundleLader.ResourcePath}加载完成!");
             assetBundleLader.AssetBundleInfo.updateLastUsedTime();
-            mLoadCompleteAssetBundleNumber++;
+            LoadCompleteAssetBundleNumber++;
+            //AB加载数据统计
+            if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
+            {
+                ResourceLoadAnalyse.Singleton.addResourceLoadedTime(ResourcePath);
+            }
             if (IsAllABLoaded)
             {
                 onAllAssetBundleLoadComplete();
@@ -280,10 +293,10 @@ namespace TResource
         {
             base.onComplete();
             // 标识资源已经准备完成可以使用和卸载
-            AssetBundleInfo.mIsReady = true;
+            AssetBundleInfo.IsReady = true;
 
             // 返还提前添加的AssetBundle计数，确保计数正确
-            AssetBundleInfo.releaseSelf();
+            AssetBundleInfo.release();
 
             mAssetBundleAsyncRequest = null;
             mLoadABCompleteCallBackMap.Clear();

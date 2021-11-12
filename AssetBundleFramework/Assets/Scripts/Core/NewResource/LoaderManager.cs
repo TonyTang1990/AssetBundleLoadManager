@@ -253,6 +253,22 @@ namespace TResource
             }
             else
             {
+                if(loader is BundleAssetLoader)
+                {
+                    ObjectPool.Singleton.push<BundleAssetLoader>(loader as BundleAssetLoader);
+                }
+                else if(loader is AssetDatabaseLoader)
+                {
+                    ObjectPool.Singleton.push<AssetDatabaseLoader>(loader as AssetDatabaseLoader);
+                }
+                else if (loader is AssetBundleLoader)
+                {
+                    ObjectPool.Singleton.push<AssetBundleLoader>(loader as AssetBundleLoader);
+                }
+                else
+                {
+                    Debug.LogError($"不支持的加载类类型:{loader.GetType().ToString()},进池失败!");
+                }
                 ResourceLogger.log($"删除资源:{loader.ResourcePath}的加载器信息成功!");
             }
             return result;
@@ -451,5 +467,38 @@ namespace TResource
             return assetBundleLoader != null ? assetBundleLoader.cancelRequest(requestUID) : false;
         }
 
+        #region 调试用
+        /// <summary>
+        /// 获取所有等待加载的AssetBundle加载器
+        /// </summary>
+        /// <returns></returns>
+        public void getAllWaitLoadedBundleLoader(ref List<BundleLoader> waitLoadedAssetBundleLoader)
+        {
+            waitLoadedAssetBundleLoader.Clear();
+            foreach (var waitLoadedLoader in mAllWaitLoadLoaderList)
+            {
+                if(waitLoadedLoader is BundleLoader)
+                {
+                    waitLoadedAssetBundleLoader.Add(waitLoadedLoader as BundleLoader);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取所有等待加载的Asset加载器
+        /// </summary>
+        /// <returns></returns>
+        public void getAllWaitLoadedAssetLoader(ref List<AssetLoader> waitLoadedAssetLoader)
+        {
+            waitLoadedAssetLoader.Clear();
+            foreach (var waitLoadedLoader in mAllWaitLoadLoaderList)
+            {
+                if (waitLoadedLoader is AssetLoader)
+                {
+                    waitLoadedAssetLoader.Add(waitLoadedLoader as AssetLoader);
+                }
+            }
+        }
+        #endregion
     }
 }
