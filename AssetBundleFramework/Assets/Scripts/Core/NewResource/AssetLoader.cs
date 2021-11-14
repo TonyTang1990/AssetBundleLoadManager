@@ -94,7 +94,7 @@ namespace TResource
         }
 
         /// <summary>
-        /// 获取指定Asset
+        /// 获取指定Asset(会加索引计数)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
@@ -106,6 +106,21 @@ namespace TResource
             }
             var asset = mAssetInfo.getResource<T>();
             mAssetInfo.retain();
+            return asset;
+        }
+
+        /// <summary>
+        /// 获取指定Asset(不会加索引计数)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T obtainAsset<T>() where T : UnityEngine.Object
+        {
+            if (!IsDone)
+            {
+                loadImmediately();
+            }
+            var asset = mAssetInfo.getResource<T>();
             return asset;
         }
 
@@ -124,6 +139,24 @@ namespace TResource
             }
             T asset = mAssetInfo.getResource<T>();
             mAssetInfo.retainOwner(owner);
+            return asset;
+        }
+
+        /// <summary>
+        /// 为Asset添加指定owner的引用并返回该Asset
+        /// 所有owner都销毁且所属ab引用计数归零可回收
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public T releaseAsset<T>(UnityEngine.Object owner) where T : UnityEngine.Object
+        {
+            if (!IsDone)
+            {
+                loadImmediately();
+            }
+            T asset = mAssetInfo.getResource<T>();
+            mAssetInfo.releaseOwner(owner);
             return asset;
         }
 

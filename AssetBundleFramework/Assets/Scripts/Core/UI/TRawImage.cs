@@ -20,6 +20,7 @@ namespace TUI
     /// </summary>
     public class TRawImage : RawImage
     {
+#if !NEW_RESOURCE
         /// <summary>
         /// 资源引用信息
         /// </summary>
@@ -28,6 +29,16 @@ namespace TUI
             get;
             set;
         }
+#else
+        /// <summary>
+        /// Asset加载器
+        /// </summary>
+        public TResource.AssetLoader Loader
+        {
+            get;
+            set;
+        }
+#endif
 
         /// <summary>
         /// 当前图片名
@@ -41,8 +52,12 @@ namespace TUI
         public void printTRawImageInfo()
         {
             DIYLog.Log($"TextureName = {TextureName}");
+#if !NEW_RESOURCE
             var refcount = ABI != null ? ABI.RefCount.ToString() : "无";
             DIYLog.Log($"TextureName引用计数 = {refcount}");
+#else
+
+#endif
         }
     }
 }

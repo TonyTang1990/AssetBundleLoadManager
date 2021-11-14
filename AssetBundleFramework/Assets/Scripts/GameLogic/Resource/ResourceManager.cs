@@ -20,6 +20,7 @@ using UnityEngine;
 /// </summary>
 public class ResourceManager : SingletonTemplate<ResourceManager>
 {
+#if !NEW_RESOURCE
     /// <summary>
     /// 加载所有Shader
     /// </summary>
@@ -113,4 +114,136 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
         loadtype,
         loadmethod);
     }
+#else
+    /// <summary>
+    /// 加载所有Shader
+    /// </summary>
+    /// <param name="respath">资源路径</param>
+    /// <param name="callback">资源会动啊</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="loadmethod">资源加载方式</param>
+    public void loadAllShader(string respath, Action callback, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    {
+        TResource.BundleLoader bundleLoader;
+        TResource.ResourceModuleManager.Singleton.requstAssetBundleSync(
+        respath,
+        out bundleLoader,
+        (loader) =>
+        {
+            var bundle = loader.getAssetBundle();
+            var allAssetNames = bundle.GetAllAssetNames();
+            TResource.AssetLoader assetLoader;
+            for (int i = 0, length = allAssetNames.Length; i < length; i++)
+            {
+                if(!allAssetNames[i].EndsWith(".shadervariants"))
+                {
+                    TResource.ResourceModuleManager.Singleton.requstAssetSync<Shader>(
+                    allAssetNames[i],
+                    out assetLoader,
+                    (loader2) =>
+                    {
+                        // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
+                        loader2.getAsset<Shader>();
+                    },
+                    loadtype);
+                }
+                else
+                {
+                    TResource.ResourceModuleManager.Singleton.requstAssetSync<ShaderVariantCollection>(
+                    allAssetNames[i],
+                    out assetLoader,
+                    (loader3) =>
+                    {
+                        var shaderVariants = loader3.getAsset<ShaderVariantCollection>();
+                        // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+                        shaderVariants?.WarmUp();
+                    },
+                    loadtype);
+                }
+            }
+            callback?.Invoke();
+        },
+        loadtype);
+    }
+
+    /// <summary>
+    /// 获取一个实例资源对象
+    /// </summary>
+    /// <param name="respath">资源路径</param>
+    /// <param name="callback">资源回调</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="loadmethod">资源加载方式</param>
+    /// <returns></returns>
+    public void getPrefabInstance(string respath, Action<GameObject> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad, TResource.ResourceLoadMethod loadmethod = TResource.ResourceLoadMethod.Sync)
+    {
+        TResource.AssetLoader assetLoader;
+        TResource.ResourceModuleManager.Singleton.requstAssetSync<GameObject>(
+        respath,
+        out assetLoader,
+        (loader) =>
+        {
+            var prefab = loader.getAsset<GameObject>();
+            var prefabinstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
+            //不修改实例化后的名字，避免上层逻辑名字对不上
+            //goinstance.name = goasset.name;
+            // 绑定owner对象，用于判定是否还有有效对象引用AB资源
+            loader.bindAsset<GameObject>(prefabinstance);
+#if UNITY_EDITOR
+            ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
+#endif
+            callback?.Invoke(prefabinstance);
+        },
+        loadtype);
+    }
+
+    /// <summary>
+    /// 获取一个材质
+    /// </summary>
+    /// <param name="owner">资源绑定对象</param>
+    /// <param name="respath">资源路径</param>
+    /// <param name="callback">资源回调</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="loadmethod">资源加载方式</param>
+    /// <returns></returns>
+    public void getMaterial(UnityEngine.Object owner, string respath, Action<Material> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad, TResource.ResourceLoadMethod loadmethod = TResource.ResourceLoadMethod.Sync)
+    {
+        TResource.AssetLoader assetLoader;
+        TResource.ResourceModuleManager.Singleton.requstAssetSync<Material>(
+        respath,
+        out assetLoader,
+        (loader) =>
+        {
+            var material = loader.getAsset<Material>();
+            loader.bindAsset<Material>(material);
+#if UNITY_EDITOR
+            ResourceUtility.FindMaterialShaderBack(material);
+#endif
+            callback?.Invoke(material);
+        },
+        loadtype);
+    }
+
+    /// <summary>
+    /// 获取指定音效
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <param name="respath"></param>
+    /// <param name="callback"></param>
+    /// <param name="loadtype"></param>
+    /// <param name="loadmethod"></param>
+    public void getAudioClip(UnityEngine.Object owner, string respath, Action<AudioClip> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad, TResource.ResourceLoadMethod loadmethod = TResource.ResourceLoadMethod.Sync)
+    {
+        TResource.AssetLoader assetLoader;
+        TResource.ResourceModuleManager.Singleton.requstAssetSync<AudioClip>(
+        respath,
+        out assetLoader,
+        (loader) =>
+        {
+            var audioClip = loader.getAsset<AudioClip>();
+            loader.bindAsset<AudioClip>(audioClip);
+            callback?.Invoke(audioClip);
+        },
+        loadtype);
+    }
+#endif
 }

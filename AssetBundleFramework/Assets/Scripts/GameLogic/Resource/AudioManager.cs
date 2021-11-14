@@ -112,6 +112,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
     public void playSFXSound(string respath)
     {
         var sfxgo = mAudioGoPool.Pop(mSFXGoTemplate);
+#if !NEW_RESOURCE
         ResourceModuleManager.Singleton.requstResource(respath,
         (abi) =>
         {
@@ -133,6 +134,9 @@ public class AudioManager : SingletonTemplate<AudioManager>
                 ObjectPool.Singleton.push<SFXAudioInfo>(sfxaudioinfo);
             }, ac.length);
         });
+#else
+
+#endif
     }
 
     /// <summary>
@@ -149,6 +153,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
         }
 
         var assetname = Path.GetFileName(respath);
+#if !NEW_RESOURCE
         ResourceModuleManager.Singleton.requstResource(respath,
         (ari) =>
         {
@@ -158,5 +163,8 @@ public class AudioManager : SingletonTemplate<AudioManager>
             mBGMAudioSource.loop = loop;
             mBGMAudioSource.Play();
         });
+#else
+
+#endif
     }
 }

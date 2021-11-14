@@ -25,6 +25,7 @@ public class ModelManager : SingletonTemplate<ModelManager>
     /// <param name="loadmethod"></param>
     public void getModelInstance(string respath, Action<GameObject> callback, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
+#if !NEW_RESOURCE
         ResourceModuleManager.Singleton.requstResource(
         respath,
         (abi) =>
@@ -36,5 +37,8 @@ public class ModelManager : SingletonTemplate<ModelManager>
 #endif
             callback(modelinstance);
         });
+#else
+
+#endif
     }
 }

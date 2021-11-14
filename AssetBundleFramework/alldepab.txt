@@ -1,57 +1,69 @@
-ambient
+assets/res/atlas/shareatlas/spriteatlas/playerpreview
 
-basictexture
+assets/res/atlas/shareatlas/spriteatlas/playerpreview2
 
-diffuse
+assets/res/atlas/shareatlas/tutorialatlas
 
-light_off
+assets/res/audios/music/backgroundmusic
 
-light_on
+assets/res/audios/sfx/sfx1/coins
 
-loadingscreen
+assets/res/audios/sfx/sfx1/correct
 
-mainwindow
-	loadingscreen
+assets/res/audios/sfx/sfx1/explosion
 
-mouseandkeyboardstudy
-
-multipletexture
-
-opengl_draw_call_result_picture
-
-opengl_instanced_draw_call
-
-pre_zombunny
-	shaderlist
-	zombunnyanimations
-
-sfx1
-
-sfxtemplate
+assets/res/windows/mainwindow
+	assets/res/atlas/shareatlas/tutorialatlas
+	assets/res/atlas/shareatlas/spriteatlas/playerpreview
 
 shaderlist
 
-sharematerial
+assets/res/prefabs/imagebuildin
+	assets/res/buildinresources/buildinmaterials
 
-testscene2
-	sharematerial
-	testscene2prefab
-	testscene2prefab2
+assets/res/buildinresources/buildinmaterials
+	shaderlist
 
-testscene2prefab
-	sharematerial
+assets/res/prefabs/pre_svccube
 
-testscene2prefab2
-	sharematerial
+assets/res/prefabs/rawimagebuildin
+	assets/res/buildinresources/buildintextures
+	assets/res/buildinresources/buildinmaterials
 
-testscene3
-	sharematerial
-	testscene3prefab
+assets/res/buildinresources/buildintextures
 
-testscene3prefab
-	sharematerial
+assets/res/prefabs/sfxtemplate
 
-tutorialcellspritesheet
+assets/res/prefabs/testmd5comparison
+	assets/res/buildinresources/buildinmaterials
 
-zombunnyanimations
+assets/res/prefabs/testmd5comparisonresourceupdate
+	assets/res/buildinresources/buildinmaterials
+
+assets/res/sharematerials/sharematerial
+	shaderlist
+
+assets/res/actors/cube
+	assets/res/sharematerials/sharematerial
+
+assets/res/actors/sphere
+	assets/res/sharematerials/sharematerial
+
+assets/res/actors/zombunny/materials
+	shaderlist
+	assets/res/actors/zombunny/textures
+	assets/res/shaders/rim lit bumped specular
+
+assets/res/actors/zombunny/textures
+
+assets/res/shaders/rim lit bumped specular
+	shaderlist
+
+assets/res/actors/zombunny/zombunnyanimations
+
+assets/res/actors/zombunny
+	assets/res/actors/zombunny/zombunnyanimations
+	assets/res/actors/zombunny/materials
+
+assetbuildinfo
 

@@ -53,6 +53,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         // 减掉场景计数后，切换场景前强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
         ResourceModuleManager.Singleton.unloadAllUnsedNormalLoadedResources();
 
+#if !NEW_RESOURCE
         ResourceModuleManager.Singleton.requstResource(
         scenepath,
         (abi) =>
@@ -60,7 +61,9 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
             mCurrentSceneARI = abi;
             mCurrentSceneARI.retain();
         });
+#else
 
+#endif
         var scenename = Path.GetFileNameWithoutExtension(scenepath);
         SceneManager.LoadScene(scenename);
     }
@@ -83,6 +86,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
             mCurrentSceneARI = null;
         }
 
+#if !NEW_RESOURCE
         ResourceModuleManager.Singleton.requstResource(
         scenename,
         (abi) =>
@@ -93,6 +97,9 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Async);
+#else
+
+#endif
     }
 
     /// <summary>
