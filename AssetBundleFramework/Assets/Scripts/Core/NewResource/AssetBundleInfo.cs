@@ -76,10 +76,11 @@ namespace TResource
             AllLoadedAssetInfoMap.Clear();
         }
 
-        public void init(string assetBundlePath, string[] depAssetBundlePaths)
+        public void init(string assetBundlePath, string[] depAssetBundlePaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
             ResourcePath = assetBundlePath;
             mDepAssetBundlePaths = depAssetBundlePaths;
+            LoadType = loadType;
         }
 
         /// <summary>
@@ -129,11 +130,13 @@ namespace TResource
             {
                 ResourceModuleManager.Singleton.CurrentResourceModule.deleteAssetInfo(assetInfo.Key);
             }
+#if UNITY_EDITOR
             //AB卸载数据统计
             if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
             {
                 ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(ResourcePath);
             }
+#endif
         }
     }
 }

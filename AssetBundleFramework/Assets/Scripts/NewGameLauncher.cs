@@ -211,18 +211,16 @@ namespace TResource
         public void onLoadWindowPrefab()
         {
             DIYLog.Log("onLoadWindowPrefab()");
-            ResourceManager.Singleton.getPrefabInstance("Assets/Res/windows/MainWindow.prefab", (arg) =>
-            {
-                mMainWindow = arg;
-                mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-            });
-            //mRMM.requstResource(
-            //"mainwindow",
-            //(abi) =>
-            //{
-            //    mMainWindow = abi.instantiateAsset("MainWindow");
-            //    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-            //});
+#if NEW_RESOURCE
+            ResourceManager.Singleton.getPrefabInstance(
+                "Assets/Res/windows/MainWindow.prefab",
+                (prefabInstance, requestUid) =>
+                {
+                    mMainWindow = prefabInstance;
+                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+                }
+            );
+#endif
         }
 
         /// <summary>
@@ -231,7 +229,9 @@ namespace TResource
         public void onDestroyWindowInstance()
         {
             DIYLog.Log("onDestroyWindowInstance()");
+#if NEW_RESOURCE
             GameObject.Destroy(mMainWindow);
+#endif
         }
 
         /// <summary>
@@ -244,8 +244,10 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
+#if NEW_RESOURCE
             var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
             AtlasManager.Singleton.setImageSingleSprite(image, param1);
+#endif
         }
 
         /// <summary>
@@ -258,7 +260,9 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
+#if NEW_RESOURCE
             AtlasManager.Singleton.setTImageSingleSprite(TImgBG, param1);
+#endif
         }
 
         /// <summary>
@@ -271,7 +275,9 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
+#if NEW_RESOURCE
             AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
+#endif
         }
 
 
@@ -285,7 +291,9 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
+#if NEW_RESOURCE
             AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
+#endif
         }
 
         /// <summary>
@@ -296,9 +304,11 @@ namespace TResource
             DIYLog.Log("onLoadTRawImageSprite()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
+#if NEW_RESOURCE
             TRawImgBG.printTRawImageInfo();
             AtlasManager.Singleton.setRawImage(TRawImgBG, param1);
             TRawImgBG.printTRawImageInfo();
+#endif
         }
 
         /// <summary>
@@ -307,30 +317,13 @@ namespace TResource
         public void onPlayBGM()
         {
             DIYLog.Log("onPlayBGM()");
-            AudioManager.Singleton.playBGM("Assets/Res/audios/music/backgroundmusic.mp3");
-
-            //if (mBGMAudioSource != null)
-            //{
-            //    //背景音效是挂载GameLaucher上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
-            //    if (mCurrentBGMARI != null)
-            //    {
-            //        mCurrentBGMARI.releaseOwner(mBGMAudioSource);
-            //    }
-
-            //    mRMM.requstResource("backgroundmusic",
-            //    (ari) =>
-            //    {
-            //        mCurrentBGMARI = ari;
-            //        var clip = ari.getAsset<AudioClip>(mBGMAudioSource, "backgroundmusic");
-            //        mBGMAudioSource.clip = clip;
-            //        mBGMAudioSource.loop = true;
-            //        mBGMAudioSource.Play();
-            //    });
-            //}
-            //else
-            //{
-            //    DIYLog.LogError("背景音乐组件为空，无法播放!");
-            //}
+#if NEW_RESOURCE
+            TResource.AssetLoader assetLoader;
+            AudioManager.Singleton.playBGM(
+                "Assets/Res/audios/music/backgroundmusic.mp3",
+                out assetLoader
+            );
+#endif
         }
 
         /// <summary>
@@ -339,26 +332,13 @@ namespace TResource
         public void onPlaySound()
         {
             DIYLog.Log("onPlaySound()");
-            AudioManager.Singleton.playSFXSound("Assets/Res/audios/sfx/sfx1/explosion.wav");
-            //mRMM.requstResource(
-            //"sfxtemplate",
-            //(abi) =>
-            //{
-            //    mSFXInstance = abi.instantiateAsset("SFXTemplate");
-            //});
-
-            //mRMM.requstResource(
-            //"sfx1",
-            //(abi) =>
-            //{
-            //    var ac = abi.getAsset<AudioClip>(mSFXInstance, "explosion");
-            //    var audiosource = mSFXInstance.GetComponent<AudioSource>();
-            //    audiosource.clip = ac;
-            //    audiosource.Play();
-            //});
-
-            //// 延迟10秒后删除音效实体对象，测试AB加载管理回收
-            //CoroutineManager.Singleton.delayedCall(10.0f, () => { GameObject.Destroy(mSFXInstance); });
+#if NEW_RESOURCE
+            TResource.AssetLoader assetLoader;
+            AudioManager.Singleton.playSFXSound(
+                "Assets/Res/audios/sfx/sfx1/explosion.wav",
+                out assetLoader
+            );
+#endif
         }
 
 
@@ -368,19 +348,24 @@ namespace TResource
         public void onLoadMaterial()
         {
             DIYLog.Log("onLoadMaterial()");
+#if NEW_RESOURCE
             var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
             var image = btnloadmat.GetComponent<Image>();
-            ResourceManager.Singleton.getMaterial(image, "Assets/Res/sharematerials/sharematerial.mat", (arg) =>
-            {
-                Material mat = arg;
-                image.material = mat;
-                //延时测试材质回收
-                CoroutineManager.Singleton.delayedCall(10.0f, () =>
+            ResourceManager.Singleton.getMaterial(
+                image, 
+                "Assets/Res/sharematerials/sharematerial.mat",
+                (material, requestUid) =>
                 {
-                    Destroy(mat);
-                });
-            });
-
+                    Material mat = material;
+                    image.material = mat;
+                    //延时测试材质回收
+                    CoroutineManager.Singleton.delayedCall(10.0f, () =>
+                    {
+                        Destroy(mat);
+                    });
+                }
+            );
+#endif
         }
 
         /// <summary>
@@ -389,16 +374,15 @@ namespace TResource
         public void onLoadActorPrefab()
         {
             DIYLog.Log("onLoadActorPrefab()");
-            ModelManager.Singleton.getModelInstance("Assets/Res/actors/zombunny/pre_Zombunny.prefab", (instance) =>
-            {
-                mActorInstance = instance;
-            });
-            //mRMM.requstResource(
-            //"pre_zombunny",
-            //(abi) =>
-            //{
-            //    mActorInstance = abi.instantiateAsset("pre_Zombunny");
-            //});
+#if NEW_RESOURCE
+            ModelManager.Singleton.getModelInstance(
+                "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
+                (instance, requestUid) =>
+                {
+                    mActorInstance = instance;
+                }
+            );
+#endif
         }
 
         /// <summary>
@@ -407,7 +391,9 @@ namespace TResource
         public void onDestroyActorInstance()
         {
             DIYLog.Log("onDestroyActorInstance()");
+#if NEW_RESOURCE
             GameObject.Destroy(mActorInstance);
+#endif
         }
 
 
@@ -419,14 +405,9 @@ namespace TResource
             DIYLog.Log("onPreloadAtlas()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
+#if NEW_RESOURCE
             AtlasManager.Singleton.loadAtlas(param1, null, ResourceLoadType.PermanentLoad);
-            //mRMM.requstResource(
-            //param1,
-            //(abi) =>
-            //{
-            //    abi.loadAllAsset<Sprite>();
-            //},
-            //ResourceLoadType.Preload);
+#endif
         }
 
 
@@ -436,19 +417,14 @@ namespace TResource
         public void onLoadPermanentShaderList()
         {
             DIYLog.Log("onLoadPermanentShaderList()");
+#if NEW_RESOURCE
             ResourceManager.Singleton.loadAllShader("shaderlist", () =>
             {
 
 
             },
             ResourceLoadType.PermanentLoad);
-            //mRMM.requstResource(
-            //"shaderlist",
-            //(abi) =>
-            //{
-            //    abi.loadAllAsset<Shader>();
-            //},
-            //ResourceLoadType.PermanentLoad);          // Shader常驻
+#endif
         }
 
         /// <summary>
@@ -457,16 +433,21 @@ namespace TResource
         public void onPreloadShaderVariants()
         {
             DIYLog.Log("onPreloadShaderVariants()");
+#if NEW_RESOURCE
             // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
-            ResourceModuleManager.Singleton.requstResource(
-           "shaderlist",
-           (abi) =>
-           {
-               var svc = abi.loadAsset<ShaderVariantCollection>("DIYShaderVariantsCollection.shadervariants");
-               // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
-               svc.WarmUp();
-           },
-           ResourceLoadType.PermanentLoad);
+            TResource.AssetLoader assetLoader;
+            TResource.ResourceModuleManager.Singleton.requstAssetSync<ShaderVariantCollection>(
+                "Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants",
+                out assetLoader,
+                (loader, requestUid) =>
+                {
+                    var svc = loader.getAsset<ShaderVariantCollection>();
+                    // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+                    svc.WarmUp();
+                },
+                ResourceLoadType.PermanentLoad
+            );
+#endif
         }
 
 
@@ -476,6 +457,7 @@ namespace TResource
         public void onAsynABLoad()
         {
             DIYLog.Log("onTestAsynAndSyncABLoad()");
+#if NEW_RESOURCE
             if (mMainWindow == null)
             {
                 onLoadWindowPrefab();
@@ -484,11 +466,9 @@ namespace TResource
             var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            AtlasManager.Singleton.setImageSingleSprite(
-                image,
-                param1,
-                ResourceLoadType.NormalLoad,
-                ResourceLoadMethod.Async);
+            AssetLoader assetLoader;
+            AtlasManager.Singleton.setImageSingleSpriteAsync(image, param1, out assetLoader);
+#endif
         }
 
         /// <summary>
@@ -497,87 +477,96 @@ namespace TResource
         public void onTestAsynAndSyncABLoad()
         {
             DIYLog.Log("onTestAsynAndSyncABLoad()");
+#if NEW_RESOURCE
             if (mMainWindow == null)
             {
                 onLoadWindowPrefab();
             }
 
+            TResource.AssetLoader assetLoader;
             // 测试大批量异步加载资源后立刻同步加载其中一个该源
-            ResourceManager.Singleton.getPrefabInstance(
-            "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
-            (instance) =>
-            {
-                mActorInstance = instance;
-                Debug.Log($"异步加载pre_zombunny完成!");
-            },
-            ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Async);
-
-            var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-            AtlasManager.Singleton.setImageSingleSprite(
-                image,
-                "Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.png",
-                ResourceLoadType.NormalLoad,
-                ResourceLoadMethod.Async);
-            AtlasManager.Singleton.setImageSingleSprite(
-                image,
-                "Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture.png",
-                ResourceLoadType.NormalLoad,
-                ResourceLoadMethod.Async);
-            AtlasManager.Singleton.setImageSingleSprite(
-                image,
-                "Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse.png",
-                ResourceLoadType.NormalLoad,
-                ResourceLoadMethod.Async);
-
-            var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
-            ResourceManager.Singleton.getMaterial(
-                btnloadmat.gameObject,
-                "Assets/Res/sharematerials/sharematerial.mat",
-                (mat) =>
-                {
-                    btnloadmat.GetComponent<Image>().material = mat;
-                },
-                ResourceLoadType.NormalLoad,
-                ResourceLoadMethod.Async);
-
-            ResourceManager.Singleton.getPrefabInstance(
-                "Assets/Res/prefabs/SFXTemplate.prefab",
+            ResourceManager.Singleton.getPrefabInstanceAsync(
+                "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
+                out assetLoader,
                 (instance) =>
                 {
-                    mSFXInstance = instance;
+                    mActorInstance = instance;
+                    Debug.Log($"异步加载pre_zombunny完成!");
                 },
-                ResourceLoadType.NormalLoad,
-                ResourceLoadMethod.Sync);
+                ResourceLoadType.NormalLoad
+            );
 
-            ResourceManager.Singleton.getAudioClip(
+            var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
+            TResource.AssetLoader assetLoader2;
+            AtlasManager.Singleton.setImageSingleSpriteAsync(
+                image,
+                "Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.png",
+                out assetLoader2
+            );
+            TResource.AssetLoader assetLoader3;
+            AtlasManager.Singleton.setImageSingleSpriteAsync(
+                image,
+                "Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture.png",
+                out assetLoader3
+            );
+            TResource.AssetLoader assetLoader4;
+            AtlasManager.Singleton.setImageSingleSpriteAsync(
+                image,
+                "Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse.png",
+                out assetLoader4
+            );
+
+            var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
+            TResource.AssetLoader assetLoader5;
+            ResourceManager.Singleton.getMaterialAsync(
+                btnloadmat.gameObject,
+                "Assets/Res/sharematerials/sharematerial.mat",
+                out assetLoader5,
+                (mat, requestUid) =>
+                {
+                    btnloadmat.GetComponent<Image>().material = mat;
+                }
+            );
+
+            TResource.AssetLoader assetLoader6;
+            ResourceManager.Singleton.getPrefabInstance(
+                "Assets/Res/prefabs/SFXTemplate.prefab",
+                (instance, requestUid) =>
+                {
+                    mSFXInstance = instance;
+                }
+            );
+            TResource.AssetLoader assetLoader7;
+            ResourceManager.Singleton.getAudioClipAsync(
                 mSFXInstance,
                 "Assets/Res/audios/sfx/sfx1/explosion.wav",
-                (audioclip) =>
+                out assetLoader7,
+                (audioclip, requestUid) =>
                 {
                     var audiosource = mSFXInstance.GetComponent<AudioSource>();
                     audiosource.clip = audioclip;
                     audiosource.Play();
-                },
-                ResourceLoadType.NormalLoad,
-                ResourceLoadMethod.Async);
+                }
+            );
 
             CoroutineManager.Singleton.startCoroutine(DoAsyncLoadResource());
+#endif
         }
 
         private IEnumerator DoAsyncLoadResource()
         {
             yield return new WaitForEndOfFrame();
+#if NEW_RESOURCE
             //测试异步加载后同步加载同一资源
             ResourceManager.Singleton.getPrefabInstance(
-            "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
-            (instance) =>
-            {
-                mActorInstance2 = instance;
-            },
-            ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Sync);
+                "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
+                (instance, requestUid) =>
+                {
+                    mActorInstance2 = instance;
+                }
+            );
             DIYLog.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
+#endif
         }
 
         /// <summary>
@@ -586,6 +575,7 @@ namespace TResource
         public void onDestroyAsynAndSyncLoad()
         {
             DIYLog.Log("onDestroyAsynAndSyncLoad()");
+#if NEW_RESOURCE
             GameObject.Destroy(mMainWindow);
             mMainWindow = null;
             GameObject.Destroy(mActorInstance);
@@ -594,6 +584,7 @@ namespace TResource
             mActorInstance2 = null;
             GameObject.Destroy(mSFXInstance);
             mSFXInstance = null;
+#endif
         }
 
         /// <summary>
@@ -607,10 +598,12 @@ namespace TResource
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
 
+#if NEW_RESOURCE
             //切换场景前关闭所有打开窗口，测试切场景资源卸载功能
             onDestroyWindowInstance();
 
             GameSceneManager.Singleton.loadSceneSync(param1);
+#endif
         }
 
         /// <summary>
@@ -931,7 +924,7 @@ namespace TResource
                 var param1 = InputParam1.text;
                 DIYLog.Log("Param1 = " + param1);
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-                assetbundleresourcemodule.forceUnloadSpecificResource(param1);
+                assetbundleresourcemodule.forceUnloadSpecificAssetBundle(param1);
 
             }
             else

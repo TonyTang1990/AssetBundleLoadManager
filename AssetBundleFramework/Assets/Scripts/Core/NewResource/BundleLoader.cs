@@ -72,12 +72,12 @@ namespace TResource
         /// <summary>
         /// 所有AB资源加载完成逻辑层回调
         /// </summary>
-        protected Action<BundleLoader> mLoadABCompleteCallBack;
+        //protected Action<BundleLoader> mLoadABCompleteCallBack;
 
         /// <summary>
         /// 所有AB资源加载完成逻辑回调Map<请求UID,逻辑回调>
         /// </summary>
-        protected Dictionary<int, Action<BundleLoader>> mLoadABCompleteCallBackMap;
+        protected Dictionary<int, Action<BundleLoader, int>> mLoadABCompleteCallBackMap;
 
         /// <summary>
         /// AssetBundle异步请求
@@ -87,7 +87,7 @@ namespace TResource
         public BundleLoader() : base()
         {
             DepAssetBundleInfoList = new List<AssetBundleInfo>();
-            mLoadABCompleteCallBackMap = new Dictionary<int, Action<BundleLoader>>();
+            mLoadABCompleteCallBackMap = new Dictionary<int, Action<BundleLoader, int>>();
         }
 
         public override void onCreate()
@@ -96,7 +96,7 @@ namespace TResource
             DepABPaths = null;
             AssetBundleInfo = null;
             DepAssetBundleInfoList.Clear();
-            mLoadABCompleteCallBack = null;
+            //mLoadABCompleteCallBack = null;
             mLoadABCompleteCallBackMap.Clear();
         }
 
@@ -106,7 +106,7 @@ namespace TResource
             DepABPaths = null;
             AssetBundleInfo = null;
             DepAssetBundleInfoList.Clear();
-            mLoadABCompleteCallBack = null;
+            //mLoadABCompleteCallBack = null;
             mLoadABCompleteCallBackMap.Clear();
         }
 
@@ -139,11 +139,18 @@ namespace TResource
         }
 
         /// <summary>
-        /// 获取指定AssetBundle
+        /// 获取指定AssetBundle(加计数)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public abstract AssetBundle getAssetBundle();
+
+        /// <summary>
+        /// 获取指定AssetBundle(不加计数)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public abstract AssetBundle obtainAssetBundle();
 
         /// <summary>
         /// 为AssetBundle添加指定owner的引用并返回该Asset
@@ -152,6 +159,24 @@ namespace TResource
         /// <param name="owner"></param>
         /// <returns></returns>
         public abstract AssetBundle bindAssetBundle(UnityEngine.Object owner);
+        
+        /// <summary>
+        /// 获取索引计数
+        /// </summary>
+        /// <returns></returns>
+        public int getReferenceCount()
+        {
+            return AssetBundleInfo != null ? AssetBundleInfo.RefCount : 0;
+        }
+
+        /// <summary>
+        /// 获取索引计数
+        /// </summary>
+        /// <returns></returns>
+        public int getOwnerNumber()
+        {
+            return AssetBundleInfo != null ? AssetBundleInfo.ReferenceOwnerList.Count : 0;
+        }
 
         /// <summary>
         /// 响应资源加载
@@ -246,16 +271,19 @@ namespace TResource
         /// 响应AB加载完成
         /// </summary>
         /// <param name="assetBundleLader"></param>
-        protected void onAssetBundleLoadComplete(BundleLoader assetBundleLader)
+        /// <param name="requestUid">请求Uid</param>
+        protected void onAssetBundleLoadComplete(BundleLoader assetBundleLader, int requestUid = 0)
         {
             ResourceLogger.log($"AssetBundle:{ResourcePath}的AssetBundle:{assetBundleLader.ResourcePath}加载完成!");
             assetBundleLader.AssetBundleInfo.updateLastUsedTime();
             LoadCompleteAssetBundleNumber++;
+#if UNITY_EDITOR
             //AB加载数据统计
             if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
             {
                 ResourceLoadAnalyse.Singleton.addResourceLoadedTime(ResourcePath);
             }
+#endif
             if (IsAllABLoaded)
             {
                 onAllAssetBundleLoadComplete();
@@ -299,15 +327,17 @@ namespace TResource
             AssetBundleInfo.release();
 
             mAssetBundleAsyncRequest = null;
+
+            // 通知上层ab加载完成
+            foreach(var loadABCompleteCallBack in mLoadABCompleteCallBackMap)
+            {
+                loadABCompleteCallBack.Value?.Invoke(this, loadABCompleteCallBack.Key);
+            }
             mLoadABCompleteCallBackMap.Clear();
 
             // 通知上层ab加载完成
-            mLoadABCompleteCallBack?.Invoke(this);
-            mLoadABCompleteCallBack = null;
-
-            // Loader在只允许在卸载后回收，上层用户都是面向Loader级别去访问AB和Asset
-            // AB加载完成后，AssetBundleLoader的任务就完成了，回收重用
-            //ObjectPool.Singleton.push<AssetBundleLoader>(this);
+            //mLoadABCompleteCallBack?.Invoke(this);
+            //mLoadABCompleteCallBack = null;
         }
 
         /// <summary>
@@ -316,16 +346,16 @@ namespace TResource
         /// <param name="requestUID"></param>
         /// <param name="loadABCompleteCallBack"></param>
         /// <returns></returns>
-        public bool addLoadABCompleteCallBack(int requestUID, Action<BundleLoader> loadABCompleteCallBack)
+        public bool addLoadABCompleteCallBack(int requestUID, Action<BundleLoader, int> loadABCompleteCallBack)
         {
             if (!mLoadABCompleteCallBackMap.ContainsKey(requestUID))
             {
                 ResourceLogger.log($"绑定AssetBundle:{ResourcePath}加载请求UID:{requestUID}成功!");
                 mLoadABCompleteCallBackMap.Add(requestUID, loadABCompleteCallBack);
-                if (loadABCompleteCallBack != null)
-                {
-                    mLoadABCompleteCallBack += loadABCompleteCallBack;
-                }
+                //if (loadABCompleteCallBack != null)
+                //{
+                //    mLoadABCompleteCallBack += loadABCompleteCallBack;
+                //}
                 LoaderManager.Singleton.addAssetBundleRequestUID(requestUID, ResourcePath);
                 return true;
             }
@@ -344,15 +374,15 @@ namespace TResource
         public override bool cancelRequest(int requestUID)
         {
             base.cancelRequest(requestUID);
-            Action<BundleLoader> loadABCompleteCallBack;
+            Action<BundleLoader, int> loadABCompleteCallBack;
             if (mLoadABCompleteCallBackMap.TryGetValue(requestUID, out loadABCompleteCallBack))
             {
                 ResourceLogger.log($"AssetBundle:{ResourcePath}取消请求UID:{requestUID}成功!");
                 removeRequest(requestUID);
-                if (loadABCompleteCallBack != null)
-                {
-                    mLoadABCompleteCallBack -= loadABCompleteCallBack;
-                }
+                //if (loadABCompleteCallBack != null)
+                //{
+                //    mLoadABCompleteCallBack -= loadABCompleteCallBack;
+                //}
                 // 所有请求都取消表示没人再请求此AB了
                 if (mLoadABCompleteCallBackMap.Count == 0)
                 {
@@ -374,7 +404,7 @@ namespace TResource
         /// <returns></returns>
         private bool removeRequest(int requestUID)
         {
-            Action<BundleLoader> loadABCompleteCallBack;
+            Action<BundleLoader, int> loadABCompleteCallBack;
             if (mLoadABCompleteCallBackMap.TryGetValue(requestUID, out loadABCompleteCallBack))
             {
                 mLoadABCompleteCallBackMap.Remove(requestUID);

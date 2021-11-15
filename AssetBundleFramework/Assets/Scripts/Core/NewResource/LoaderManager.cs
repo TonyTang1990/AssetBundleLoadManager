@@ -165,7 +165,7 @@ namespace TResource
         public AssetLoader createBundleAssetLoader<T>(string assetPath, string ownerAssetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object
         {
             BundleAssetLoader assetLoader = ObjectPool.Singleton.pop<BundleAssetLoader>();
-            AssetInfo assetInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getOrCreateAssetInfo<T>(assetPath);
+            AssetInfo assetInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getOrCreateAssetInfo<T>(assetPath, ownerAssetBundlePath, loadType);
             assetLoader.init(assetPath, typeof(T), assetInfo, loadType, loadMethod);
             return assetLoader;
         }

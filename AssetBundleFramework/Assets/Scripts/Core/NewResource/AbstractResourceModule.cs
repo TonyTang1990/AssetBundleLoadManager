@@ -331,7 +331,7 @@ namespace TResource
         protected AssetBundleInfo createAssetBundleInfo(string assetBundlePath, string[] depAssetBundlePaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
             AssetBundleInfo assetBundleInfo = ObjectPool.Singleton.pop<AssetBundleInfo>();
-            assetBundleInfo.init(assetBundlePath, depAssetBundlePaths);
+            assetBundleInfo.init(assetBundlePath, depAssetBundlePaths, loadType);
             return assetBundleInfo;
         }
 
@@ -490,14 +490,16 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public int requstAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object
+        public int requstAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object
         {
+            // 统一小写
+            assetPath = assetPath.ToLower();
             assetLoader = LoaderManager.Singleton.getAssetLoader(assetPath);
             if (assetLoader != null)
             {
                 if(assetLoader.IsDone)
                 {
-                    completeHandler.Invoke(assetLoader);
+                    completeHandler.Invoke(assetLoader, 0);
                     return 0;
                 }
                 else
@@ -527,7 +529,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected abstract int realRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object;
+        protected abstract int realRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object;
 
         /// <summary>
         /// 请求AssetBundle
@@ -539,14 +541,16 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public int requstAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        public int requstAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
+            // 统一小写
+            abPath = abPath.ToLower();
             abLoader = LoaderManager.Singleton.getAssetBundleLoader(abPath);
             if (abLoader != null)
             {
                 if (abLoader.IsDone)
                 {
-                    completeHandler.Invoke(abLoader);
+                    completeHandler.Invoke(abLoader, 0);
                     return 0;
                 }
                 else
@@ -576,7 +580,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected abstract int realRequestAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
+        protected abstract int realRequestAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
 
         /// <summary>
         /// 更新入口

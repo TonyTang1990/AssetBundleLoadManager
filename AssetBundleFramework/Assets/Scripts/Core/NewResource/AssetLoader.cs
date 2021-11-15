@@ -33,12 +33,12 @@ namespace TResource
         /// <summary>
         /// Asset资源加载完成逻辑层回调
         /// </summary>
-        protected Action<AssetLoader> mLoadAssetCompleteCallBack;
+        //protected Action<AssetLoader> mLoadAssetCompleteCallBack;
 
         /// <summary>
         /// Asset资源加载完成逻辑回调Map<请求UID,逻辑回调>
         /// </summary>
-        protected Dictionary<int, Action<AssetLoader>> mLoadAssetCompleteCallBackMap;
+        protected Dictionary<int, Action<AssetLoader, int>> mLoadAssetCompleteCallBackMap;
 
         /// <summary>
         /// Asset异步请求
@@ -49,7 +49,7 @@ namespace TResource
         {
             AssetType = null;
             mAssetInfo = null;
-            mLoadAssetCompleteCallBackMap = new Dictionary<int, Action<AssetLoader>>();
+            mLoadAssetCompleteCallBackMap = new Dictionary<int, Action<AssetLoader, int>>();
             mAssetAsyncRequest = null;
         }
 
@@ -58,7 +58,7 @@ namespace TResource
             base.onCreate();
             AssetType = null;
             mAssetInfo = null;
-            mLoadAssetCompleteCallBack = null;
+            //mLoadAssetCompleteCallBack = null;
             mLoadAssetCompleteCallBackMap.Clear();
             mAssetAsyncRequest = null;
         }
@@ -68,7 +68,7 @@ namespace TResource
             base.onDispose();
             AssetType = null;
             mAssetInfo = null;
-            mLoadAssetCompleteCallBack = null;
+            //mLoadAssetCompleteCallBack = null;
             mLoadAssetCompleteCallBackMap.Clear();
             mAssetAsyncRequest = null;
         }
@@ -161,6 +161,24 @@ namespace TResource
         }
 
         /// <summary>
+        /// 获取索引计数
+        /// </summary>
+        /// <returns></returns>
+        public int getReferenceCount()
+        {
+            return mAssetInfo != null ? mAssetInfo.RefCount : 0;
+        }
+
+        /// <summary>
+        /// 获取索引计数
+        /// </summary>
+        /// <returns></returns>
+        public int getOwnerNumber()
+        {
+            return mAssetInfo != null ? mAssetInfo.ReferenceOwnerList.Count : 0;
+        }
+
+        /// <summary>
         /// 响应资源加载取消(处理资源加载取消的情况)
         /// </summary>
         protected override void onCancel()
@@ -182,15 +200,16 @@ namespace TResource
             mAssetInfo.release();
 
             mAssetAsyncRequest = null;
+            // 通知上层Asset加载完成
+            foreach (var assetCompleteCallBack in mLoadAssetCompleteCallBackMap)
+            {
+                assetCompleteCallBack.Value?.Invoke(this, assetCompleteCallBack.Key);
+            }
             mLoadAssetCompleteCallBackMap.Clear();
 
             // 通知上层Asset加载完成
-            mLoadAssetCompleteCallBack?.Invoke(this);
-            mLoadAssetCompleteCallBack = null;
-
-            // Loader在只允许在卸载后回收，上层用户都是面向Loader级别去访问AB和Asset
-            // AB加载完成后，AssetBundleLoader的任务就完成了，回收重用
-            //ObjectPool.Singleton.push<AssetBundleLoader>(this);
+            //mLoadAssetCompleteCallBack?.Invoke(this);
+            //mLoadAssetCompleteCallBack = null;
         }
 
         /// <summary>
@@ -199,16 +218,16 @@ namespace TResource
         /// <param name="requestUID"></param>
         /// <param name="loadAssetCompleteCallBack"></param>
         /// <returns></returns>
-        public bool addLoadAssetCompleteCallBack(int requestUID, Action<AssetLoader> loadAssetCompleteCallBack)
+        public bool addLoadAssetCompleteCallBack(int requestUID, Action<AssetLoader, int> loadAssetCompleteCallBack)
         {
             if (!mLoadAssetCompleteCallBackMap.ContainsKey(requestUID))
             {
                 ResourceLogger.log($"绑定Asset:{ResourcePath}加载请求UID:{requestUID}成功!");
                 mLoadAssetCompleteCallBackMap.Add(requestUID, loadAssetCompleteCallBack);
-                if (loadAssetCompleteCallBack != null)
-                {
-                    mLoadAssetCompleteCallBack += loadAssetCompleteCallBack;
-                }
+                //if (loadAssetCompleteCallBack != null)
+                //{
+                //    mLoadAssetCompleteCallBack += loadAssetCompleteCallBack;
+                //}
                 LoaderManager.Singleton.addAssetRequestUID(requestUID, ResourcePath);
                 return true;
             }
@@ -227,15 +246,15 @@ namespace TResource
         public override bool cancelRequest(int requestUID)
         {
             base.cancelRequest(requestUID);
-            Action<AssetLoader> loadAssetCompleteCallBack;
+            Action<AssetLoader, int> loadAssetCompleteCallBack;
             if (mLoadAssetCompleteCallBackMap.TryGetValue(requestUID, out loadAssetCompleteCallBack))
             {
                 ResourceLogger.log($"Asset:{ResourcePath}取消请求UID:{requestUID}成功!");
                 removeRequest(requestUID);
-                if (loadAssetCompleteCallBack != null)
-                {
-                    mLoadAssetCompleteCallBack -= loadAssetCompleteCallBack;
-                }
+                //if (loadAssetCompleteCallBack != null)
+                //{
+                //    mLoadAssetCompleteCallBack -= loadAssetCompleteCallBack;
+                //}
                 // 所有请求都取消表示没人再请求此Asset了
                 if (mLoadAssetCompleteCallBackMap.Count == 0)
                 {
@@ -257,7 +276,7 @@ namespace TResource
         /// <returns></returns>
         private bool removeRequest(int requestUID)
         {
-            Action<AssetLoader> loadAssetCompleteCallBack;
+            Action<AssetLoader, int> loadAssetCompleteCallBack;
             if (mLoadAssetCompleteCallBackMap.TryGetValue(requestUID, out loadAssetCompleteCallBack))
             {
                 mLoadAssetCompleteCallBackMap.Remove(requestUID);

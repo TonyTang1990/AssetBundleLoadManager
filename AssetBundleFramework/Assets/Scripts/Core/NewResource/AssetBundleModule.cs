@@ -143,7 +143,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected override int realRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        protected override int realRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             var requestUID = LoaderManager.Singleton.GetNextRequestUID();
             var ownerAssetBundlePath = GetAssetPathBundleNameDelegate(assetPath);
@@ -151,8 +151,8 @@ namespace TResource
             var bundleAssetLoader = LoaderManager.Singleton. createBundleAssetLoader<T>(assetPath, ownerAssetBundlePath, loadType, loadMethod) as BundleAssetLoader;
             bundleAssetLoader.initBundleInfo(ownerAssetBundlePath, depABPaths);
             bundleAssetLoader.addLoadAssetCompleteCallBack(requestUID, completeHandler);
+            assetLoader = bundleAssetLoader as AssetLoader;
             bundleAssetLoader.load();
-            assetLoader = bundleAssetLoader;
             return requestUID;
         }
 
@@ -165,7 +165,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected override int realRequestAssetBundle(string abPath, out BundleLoader bundleLoader, Action<BundleLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        protected override int realRequestAssetBundle(string abPath, out BundleLoader bundleLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             // TODO: 支持动态AB资源下载
             var requestUID = LoaderManager.Singleton.GetNextRequestUID();

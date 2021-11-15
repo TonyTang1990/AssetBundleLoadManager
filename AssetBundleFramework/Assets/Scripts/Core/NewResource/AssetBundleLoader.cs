@@ -18,7 +18,7 @@ namespace TResource
     public class AssetBundleLoader : BundleLoader
     {
         /// <summary>
-        /// 获取指定AssetBundle
+        /// 获取指定AssetBundle(加计数)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
@@ -30,6 +30,21 @@ namespace TResource
             }
             var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
             AssetBundleInfo.retain();
+            return assetBundle;
+        }
+
+        /// <summary>
+        /// 获取指定AssetBundle(不加计数)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public override AssetBundle obtainAssetBundle()
+        {
+            if (!IsDone)
+            {
+                loadImmediately();
+            }
+            var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
             return assetBundle;
         }
 

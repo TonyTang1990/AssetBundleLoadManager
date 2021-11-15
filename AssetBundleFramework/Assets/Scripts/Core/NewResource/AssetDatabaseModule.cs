@@ -26,7 +26,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected override int realRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        protected override int realRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             assetLoader = null;
             return 0;
@@ -41,7 +41,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected override int realRequestAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        protected override int realRequestAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             abLoader = null;
             return 0;

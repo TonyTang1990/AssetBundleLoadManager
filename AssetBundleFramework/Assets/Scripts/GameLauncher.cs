@@ -213,6 +213,7 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadWindowPrefab()
     {
         DIYLog.Log("onLoadWindowPrefab()");
+#if !NEW_RESOURCE
         ResourceManager.Singleton.getPrefabInstance("Assets/Res/windows/MainWindow.prefab", (arg) =>
         {
             mMainWindow = arg;
@@ -225,6 +226,7 @@ public class GameLauncher : MonoBehaviour {
         //    mMainWindow = abi.instantiateAsset("MainWindow");
         //    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
         //});
+#endif
     }
 
     /// <summary>
@@ -233,7 +235,9 @@ public class GameLauncher : MonoBehaviour {
     public void onDestroyWindowInstance()
     {
         DIYLog.Log("onDestroyWindowInstance()");
+#if !NEW_RESOURCE
         GameObject.Destroy(mMainWindow);
+#endif
     }
 
     /// <summary>
@@ -246,8 +250,10 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
+#if !NEW_RESOURCE
         var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
         AtlasManager.Singleton.setImageSingleSprite(image, param1);
+#endif
     }
 
     /// <summary>
@@ -260,7 +266,9 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
+#if !NEW_RESOURCE
         AtlasManager.Singleton.setTImageSingleSprite(TImgBG, param1);
+#endif
     }
 
     /// <summary>
@@ -273,7 +281,9 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
+#if !NEW_RESOURCE
         AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
+#endif
     }
 
 
@@ -287,7 +297,9 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("Param1 = " + param1);
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
+#if !NEW_RESOURCE
         AtlasManager.Singleton.setTImageSubSprite(TImgBG, param1, param2);
+#endif
     }
     
     /// <summary>
@@ -298,9 +310,11 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("onLoadTRawImageSprite()");
         var param1 = InputParam1.text;
         DIYLog.Log("Param1 = " + param1);
+#if !NEW_RESOURCE
         TRawImgBG.printTRawImageInfo();
         AtlasManager.Singleton.setRawImage(TRawImgBG, param1);
         TRawImgBG.printTRawImageInfo();
+#endif
     }
 
     /// <summary>
@@ -309,7 +323,9 @@ public class GameLauncher : MonoBehaviour {
     public void onPlayBGM()
     {
         DIYLog.Log("onPlayBGM()");
+#if !NEW_RESOURCE
         AudioManager.Singleton.playBGM("Assets/Res/audios/music/backgroundmusic.mp3");
+#endif
 
         //if (mBGMAudioSource != null)
         //{
@@ -341,7 +357,9 @@ public class GameLauncher : MonoBehaviour {
     public void onPlaySound()
     {
         DIYLog.Log("onPlaySound()");
+#if !NEW_RESOURCE
         AudioManager.Singleton.playSFXSound("Assets/Res/audios/sfx/sfx1/explosion.wav");
+#endif
         //mRMM.requstResource(
         //"sfxtemplate",
         //(abi) =>
@@ -370,6 +388,7 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadMaterial()
     {
         DIYLog.Log("onLoadMaterial()");
+#if !NEW_RESOURCE
         var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
         var image = btnloadmat.GetComponent<Image>();
         ResourceManager.Singleton.getMaterial(image, "Assets/Res/sharematerials/sharematerial.mat", (arg)=>
@@ -382,7 +401,7 @@ public class GameLauncher : MonoBehaviour {
                 Destroy(mat);
             });
         });
-
+#endif
     }
 
     /// <summary>
@@ -391,10 +410,12 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadActorPrefab()
     {
         DIYLog.Log("onLoadActorPrefab()");
+#if !NEW_RESOURCE
         ModelManager.Singleton.getModelInstance("Assets/Res/actors/zombunny/pre_Zombunny.prefab", (instance) =>
         {
             mActorInstance = instance;
         });
+#endif
         //mRMM.requstResource(
         //"pre_zombunny",
         //(abi) =>
@@ -421,7 +442,9 @@ public class GameLauncher : MonoBehaviour {
         DIYLog.Log("onPreloadAtlas()");
         var param1 = InputParam1.text;
         DIYLog.Log("Param1 = " + param1);
+#if !NEW_RESOURCE
         AtlasManager.Singleton.loadAtlas(param1, null, ResourceLoadType.Preload);
+#endif
         //mRMM.requstResource(
         //param1,
         //(abi) =>
@@ -438,12 +461,14 @@ public class GameLauncher : MonoBehaviour {
     public void onLoadPermanentShaderList()
     {
         DIYLog.Log("onLoadPermanentShaderList()");
+#if !NEW_RESOURCE
         ResourceManager.Singleton.loadAllShader("shaderlist", ()=>
         {
 
 
         },
         ResourceLoadType.PermanentLoad);
+#endif
         //mRMM.requstResource(
         //"shaderlist",
         //(abi) =>
@@ -459,6 +484,7 @@ public class GameLauncher : MonoBehaviour {
     public void onPreloadShaderVariants()
     {
         DIYLog.Log("onPreloadShaderVariants()");
+#if !NEW_RESOURCE
         // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
         ResourceModuleManager.Singleton.requstResource(
        "shaderlist",
@@ -469,6 +495,7 @@ public class GameLauncher : MonoBehaviour {
            svc.WarmUp();
        },
        ResourceLoadType.PermanentLoad);
+#endif
     }
 
 
@@ -478,6 +505,7 @@ public class GameLauncher : MonoBehaviour {
     public void onAsynABLoad()
     {
         DIYLog.Log("onTestAsynAndSyncABLoad()");
+#if !NEW_RESOURCE
         if (mMainWindow == null)
         {
             onLoadWindowPrefab();
@@ -491,6 +519,7 @@ public class GameLauncher : MonoBehaviour {
             param1, 
             ResourceLoadType.NormalLoad,
             ResourceLoadMethod.Async);
+#endif
     }
 
     /// <summary>
@@ -499,6 +528,7 @@ public class GameLauncher : MonoBehaviour {
     public void onTestAsynAndSyncABLoad()
     {
         DIYLog.Log("onTestAsynAndSyncABLoad()");
+#if !NEW_RESOURCE
         if(mMainWindow == null)
         {
             onLoadWindowPrefab();
@@ -565,11 +595,13 @@ public class GameLauncher : MonoBehaviour {
             ResourceLoadMethod.Async);
 
         CoroutineManager.Singleton.startCoroutine(DoAsyncLoadResource());
+#endif
     }
 
     private IEnumerator DoAsyncLoadResource()
     {
         yield return new WaitForEndOfFrame();
+#if !NEW_RESOURCE
         //测试异步加载后同步加载同一资源
         ResourceManager.Singleton.getPrefabInstance(
         "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
@@ -579,6 +611,7 @@ public class GameLauncher : MonoBehaviour {
         },
         ResourceLoadType.NormalLoad,
         ResourceLoadMethod.Sync);
+#endif
         DIYLog.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
     }
 
@@ -588,6 +621,7 @@ public class GameLauncher : MonoBehaviour {
     public void onDestroyAsynAndSyncLoad()
     {
         DIYLog.Log("onDestroyAsynAndSyncLoad()");
+#if !NEW_RESOURCE
         GameObject.Destroy(mMainWindow);
         mMainWindow = null;
         GameObject.Destroy(mActorInstance);
@@ -596,6 +630,7 @@ public class GameLauncher : MonoBehaviour {
         mActorInstance2 = null;
         GameObject.Destroy(mSFXInstance);
         mSFXInstance = null;
+#endif
     }
 
     /// <summary>
@@ -609,10 +644,12 @@ public class GameLauncher : MonoBehaviour {
         var param2 = InputParam2.text;
         DIYLog.Log("Param2 = " + param2);
 
+#if !NEW_RESOURCE
         //切换场景前关闭所有打开窗口，测试切场景资源卸载功能
         onDestroyWindowInstance();
 
         GameSceneManager.Singleton.loadSceneSync(param1);
+#endif
     }
 
     /// <summary>
@@ -621,10 +658,12 @@ public class GameLauncher : MonoBehaviour {
     public void onPrintABDepInfo()
     {
         DIYLog.Log("onPrintABDepInfo()");
+#if !NEW_RESOURCE
         if(mRMM.CurrentResourceModule is AssetBundleModule)
         {
             (mRMM.CurrentResourceModule as AssetBundleModule).printAllResourceDpInfo();
         }
+#endif
     }
 
     /// <summary>
@@ -633,7 +672,9 @@ public class GameLauncher : MonoBehaviour {
     public void onPrintLoadedResourceInfo()
     {
         DIYLog.Log("onPrintLoadedResourceInfo()");
+#if !NEW_RESOURCE
         mRMM.CurrentResourceModule.printAllLoadedResourceOwnersAndRefCount();
+#endif
     }
 
     /// <summary>

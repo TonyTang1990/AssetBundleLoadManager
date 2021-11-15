@@ -151,7 +151,7 @@ namespace TResource
         /// </summary>
         public virtual void load()
         {
-            if (IsNoneState)
+            if (!IsNoneState)
             {
                 Debug.LogError($"ResourcePath:{ResourcePath}未处于空状态,不应该触发加载!");
                 return;

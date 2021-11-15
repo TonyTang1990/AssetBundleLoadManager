@@ -90,7 +90,7 @@ namespace TResource
         /// <param name="assetPath">资源路径(带后缀)</param>
         /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>
-        public int requstAssetSync<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
+        public int requstAssetSync<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
         {
             return CurrentResourceModule.requstAsset<T>(assetPath, out assetLoader, completeHandler, loadType, ResourceLoadMethod.Sync);
         }
@@ -103,7 +103,7 @@ namespace TResource
         /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
-        public int requstAssetAsync<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
+        public int requstAssetAsync<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
         {
             return CurrentResourceModule.requstAsset<T>(assetPath, out assetLoader, completeHandler, loadType, ResourceLoadMethod.Async);
         }
@@ -125,7 +125,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetBundlePath">AB资源路径</param>
         /// <param name="loadType">资源加载类型</param>
-        public int requstAssetBundleSync(string assetBundlePath, out BundleLoader assetBundleLoader, Action<BundleLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        public int requstAssetBundleSync(string assetBundlePath, out BundleLoader assetBundleLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
             return CurrentResourceModule.requstAssetBundle(assetBundlePath, out assetBundleLoader, completeHandler, loadType, ResourceLoadMethod.Sync);
         }
@@ -139,7 +139,7 @@ namespace TResource
         /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
-        public int requstAssetBundleAsync(string assetBundlePath, out BundleLoader assetBundleLoader, Action<BundleLoader> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        public int requstAssetBundleAsync(string assetBundlePath, out BundleLoader assetBundleLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
             return CurrentResourceModule.requstAssetBundle(assetBundlePath, out assetBundleLoader, completeHandler, loadType, ResourceLoadMethod.Async);
         }

@@ -109,89 +109,96 @@ public class ResourceDebugWindow : BaseEditorWindow
         }
         else
         {
-            EditorGUILayout.BeginHorizontal();
-            mLoggerSwitch = GUILayout.Toggle(mLoggerSwitch, "Unity Log总开关", GUILayout.Width(150.0f));
-            if (mLoggerSwitch != Debug.unityLogger.logEnabled)
+            if (ResourceModuleManager.Singleton.CurrentResourceModule != null)
             {
-                Debug.unityLogger.logEnabled = mLoggerSwitch;
-            }
-            ResourceLogger.LogSwitch = GUILayout.Toggle(ResourceLogger.LogSwitch, "是否开启资源Log", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
-            GUILayout.Label("资源回收开关:" + ResourceModuleManager.Singleton.CurrentResourceModule.EnableResourceRecyclingUnloadUnsed, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
-            var preresourceloadmodeindex = ResourceLoadModeIndex;
-            var newresourceloadmodeindex = EditorGUILayout.Popup(preresourceloadmodeindex, ResourceLoadModeChoices, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
-            if(preresourceloadmodeindex != newresourceloadmodeindex)
-            {
-                ResourceLoadModeIndex = newresourceloadmodeindex;
-            }
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("筛选文本(默认不填表示显示所有):", GUILayout.MaxWidth(200.0f), GUILayout.MaxHeight(30.0f));
-            var oldtextfilter = mTextFilter;
-            mTextFilter = EditorGUILayout.TextField(mTextFilter, GUILayout.MaxWidth(100.0f), GUILayout.MaxHeight(30.0f));
-            if (!oldtextfilter.Equals(mTextFilter))
-            {
-                mFilterTextChanged = true;
+                EditorGUILayout.BeginHorizontal();
+                mLoggerSwitch = GUILayout.Toggle(mLoggerSwitch, "Unity Log总开关", GUILayout.Width(150.0f));
+                if (mLoggerSwitch != Debug.unityLogger.logEnabled)
+                {
+                    Debug.unityLogger.logEnabled = mLoggerSwitch;
+                }
+                ResourceLogger.LogSwitch = GUILayout.Toggle(ResourceLogger.LogSwitch, "是否开启资源Log", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
+                GUILayout.Label("资源回收开关:" + ResourceModuleManager.Singleton.CurrentResourceModule.EnableResourceRecyclingUnloadUnsed, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
+                var preresourceloadmodeindex = ResourceLoadModeIndex;
+                var newresourceloadmodeindex = EditorGUILayout.Popup(preresourceloadmodeindex, ResourceLoadModeChoices, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
+                if (preresourceloadmodeindex != newresourceloadmodeindex)
+                {
+                    ResourceLoadModeIndex = newresourceloadmodeindex;
+                }
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("筛选文本(默认不填表示显示所有):", GUILayout.MaxWidth(200.0f), GUILayout.MaxHeight(30.0f));
+                var oldtextfilter = mTextFilter;
+                mTextFilter = EditorGUILayout.TextField(mTextFilter, GUILayout.MaxWidth(100.0f), GUILayout.MaxHeight(30.0f));
+                if (!oldtextfilter.Equals(mTextFilter))
+                {
+                    mFilterTextChanged = true;
+                }
+                else
+                {
+                    mFilterTextChanged = false;
+                }
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("查看AB依赖信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+                {
+                    mCurrentABDebugToolType = ABDebugToolType.AB_Display_All_Dep;
+                    mFilterTextChanged = true;
+                }
+                if (GUILayout.Button("查看资源使用索引信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+                {
+                    mCurrentABDebugToolType = ABDebugToolType.AB_Display_AB_ReferenceInfo;
+                    mFilterTextChanged = true;
+                }
+                if (GUILayout.Button("查看AB异步加载信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+                {
+                    mCurrentABDebugToolType = ABDebugToolType.AB_Display_Async_QueueInfo;
+                    mFilterTextChanged = true;
+                }
+                if (GUILayout.Button("生成一份txt的AB依赖信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+                {
+                    writeABDepInfoIntoTxt();
+                }
+                if (GUILayout.Button("强制卸载指定AB", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+                {
+                    forceUnloadSpecificAB(mTextFilter);
+                }
+                if (GUILayout.Button("开启资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+                {
+                    ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = true;
+                    ResourceLoadAnalyse.Singleton.startResourceLoadAnalyse();
+                }
+                if (GUILayout.Button("结束资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
+                {
+                    ResourceLoadAnalyse.Singleton.endResourceLoadAnalyse();
+                    ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = false;
+                }
+                EditorGUILayout.EndHorizontal();
+                GUILayout.BeginVertical(GUILayout.MaxWidth(position.width), GUILayout.MaxHeight(position.height));
+                mUiScrollPos = GUILayout.BeginScrollView(mUiScrollPos);
+                mDetailFoldOut = EditorGUILayout.Foldout(mDetailFoldOut, "详细数据展示区域:");
+                if (mDetailFoldOut)
+                {
+                    if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_All_Dep)
+                    {
+                        displayABAllDepInfoUI();
+                    }
+                    else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_AB_ReferenceInfo)
+                    {
+                        displayABReferenceInfoUI();
+                    }
+                    else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_Async_QueueInfo)
+                    {
+                        displayABAysncQueueInfoUI();
+                    }
+                }
+                GUILayout.EndScrollView();
+                EditorGUILayout.EndVertical();
             }
             else
             {
-                mFilterTextChanged = false;
+                GUILayout.Label("还未开启老版资源加载!");
             }
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("查看AB依赖信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-            {
-                mCurrentABDebugToolType = ABDebugToolType.AB_Display_All_Dep;
-                mFilterTextChanged = true;
-            }
-            if (GUILayout.Button("查看资源使用索引信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-            {
-                mCurrentABDebugToolType = ABDebugToolType.AB_Display_AB_ReferenceInfo;
-                mFilterTextChanged = true;
-            }
-            if (GUILayout.Button("查看AB异步加载信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-            {
-                mCurrentABDebugToolType = ABDebugToolType.AB_Display_Async_QueueInfo;
-                mFilterTextChanged = true;
-            }
-            if (GUILayout.Button("生成一份txt的AB依赖信息", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-            {
-                writeABDepInfoIntoTxt();
-            }
-            if (GUILayout.Button("强制卸载指定AB", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-            {
-                forceUnloadSpecificAB(mTextFilter);
-            }
-            if (GUILayout.Button("开启资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-            {
-                ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = true;
-                ResourceLoadAnalyse.Singleton.startResourceLoadAnalyse();
-            }
-            if (GUILayout.Button("结束资源加载统计", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f)))
-            {
-                ResourceLoadAnalyse.Singleton.endResourceLoadAnalyse();
-                ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch = false;
-            }
-            EditorGUILayout.EndHorizontal();
-            GUILayout.BeginVertical(GUILayout.MaxWidth(position.width), GUILayout.MaxHeight(position.height));
-            mUiScrollPos = GUILayout.BeginScrollView(mUiScrollPos);
-            mDetailFoldOut = EditorGUILayout.Foldout(mDetailFoldOut, "详细数据展示区域:");
-            if (mDetailFoldOut)
-            {
-                if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_All_Dep)
-                {
-                    displayABAllDepInfoUI();
-                }
-                else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_AB_ReferenceInfo)
-                {
-                    displayABReferenceInfoUI();
-                }
-                else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_Async_QueueInfo)
-                {
-                    displayABAysncQueueInfoUI();
-                }
-            }
-            GUILayout.EndScrollView();
-            EditorGUILayout.EndVertical();
         }
         EditorGUILayout.EndVertical();
     }

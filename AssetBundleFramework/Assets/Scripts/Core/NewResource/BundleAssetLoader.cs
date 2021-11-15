@@ -45,25 +45,9 @@ namespace TResource
         protected List<AssetBundleInfo> mDepAssetBundleInfoList;
 
         /// <summary>
-        /// 是否所有的AB都加载完成
+        /// 所在AB是否加载完成
         /// </summary>
-        protected bool IsAllABLoaded
-        {
-            get
-            {
-                return mAllRequiredAssetBundleNumber == mLoadCompleteAssetBundleNumber;
-            }
-        }
-
-        /// <summary>
-        /// 所有需要的AB总数量
-        /// </summary>
-        protected int mAllRequiredAssetBundleNumber;
-
-        /// <summary>
-        /// 加载完成的AB数量
-        /// </summary>
-        protected int mLoadCompleteAssetBundleNumber;
+        protected bool mIsABLoaded;
 
         /// <summary>
         /// 主Bundle请求UID
@@ -81,7 +65,7 @@ namespace TResource
             DepABPaths = null;
             mABInfo = null;
             mDepAssetBundleInfoList = new List<AssetBundleInfo>();
-            mLoadCompleteAssetBundleNumber = 0;
+            mIsABLoaded = false;
             mMainBundleLoader = null;
         }
 
@@ -92,7 +76,7 @@ namespace TResource
             DepABPaths = null;
             mABInfo = null;
             mDepAssetBundleInfoList.Clear();
-            mLoadCompleteAssetBundleNumber = 0;
+            mIsABLoaded = false;
             mMainBundleLoader = null;
         }
 
@@ -103,7 +87,7 @@ namespace TResource
             DepABPaths = null;
             mABInfo = null;
             mDepAssetBundleInfoList.Clear();
-            mLoadCompleteAssetBundleNumber = 0;
+            mIsABLoaded = false;
             mMainBundleLoader = null;
         }
 
@@ -116,7 +100,7 @@ namespace TResource
         {
             MainAssetBundlePath = ownerAssetBundlePath;
             DepABPaths = depAssetBundlePaths;
-            mAllRequiredAssetBundleNumber = DepABPaths != null ? DepABPaths.Length + 1 : 1;
+            mIsABLoaded = false;
             // 创建加载器时就添加相关AssetBundle计数，确保资源加载管理正确
             // 后续加载取消时会返还对应计数，AB的计数会在AB加载完成后返还(因为AB的计数会在AB加载器创建时添加计数)
             // 仅主AB采取和Asset加载方式一致的方式，依赖AB采用NormalLoad方式
@@ -161,21 +145,18 @@ namespace TResource
         /// 响应AB加载完成
         /// </summary>
         /// <param name="assetBundleLader"></param>
-        protected void onAssetBundleLoadComplete(BundleLoader assetBundleLader)
+        protected void onAssetBundleLoadComplete(BundleLoader assetBundleLader, int requestUid)
         {
-            mLoadCompleteAssetBundleNumber++;
-            if(IsAllABLoaded)
-            {
-                onAllAssetBundleLoadComplete();
-            }
+            mIsABLoaded = true;
+            onAssetBundleLoadComplete();
         }
 
         /// <summary>
-        /// 响应所有AB加载完成
+        /// 响应所属AB加载完成
         /// </summary>
-        protected void onAllAssetBundleLoadComplete()
+        protected void onAssetBundleLoadComplete()
         {
-            ResourceLogger.log($"Asset:{ResourcePath}的所有依赖AB数量:{mAllRequiredAssetBundleNumber}全部加载完成!");
+            ResourceLogger.log($"Asset:{ResourcePath}的所在AB:{MainAssetBundlePath}加载完成!");
             if(LoadMethod == ResourceLoadMethod.Sync)
             {
                 var asset = mMainBundleLoader.getAssetBundle().LoadAsset(mAssetInfo.AssetName, mAssetInfo.AssetType);

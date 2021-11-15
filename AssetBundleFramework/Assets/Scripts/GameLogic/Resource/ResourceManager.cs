@@ -120,15 +120,14 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// </summary>
     /// <param name="respath">资源路径</param>
     /// <param name="callback">资源会动啊</param>
-    /// <param name="loadtype">资源加载类型</param>
-    /// <param name="loadmethod">资源加载方式</param>
-    public void loadAllShader(string respath, Action callback, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    /// <param name="loadtype">加载方式</param>
+    public int loadAllShader(string respath, Action callback, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.PermanentLoad)
     {
         TResource.BundleLoader bundleLoader;
-        TResource.ResourceModuleManager.Singleton.requstAssetBundleSync(
+        return TResource.ResourceModuleManager.Singleton.requstAssetBundleSync(
         respath,
         out bundleLoader,
-        (loader) =>
+        (loader, requestUid) =>
         {
             var bundle = loader.getAssetBundle();
             var allAssetNames = bundle.GetAllAssetNames();
@@ -140,7 +139,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                     TResource.ResourceModuleManager.Singleton.requstAssetSync<Shader>(
                     allAssetNames[i],
                     out assetLoader,
-                    (loader2) =>
+                    (loader2, requestUid2) =>
                     {
                         // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
                         loader2.getAsset<Shader>();
@@ -152,7 +151,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                     TResource.ResourceModuleManager.Singleton.requstAssetSync<ShaderVariantCollection>(
                     allAssetNames[i],
                     out assetLoader,
-                    (loader3) =>
+                    (loader3, requestUid3) =>
                     {
                         var shaderVariants = loader3.getAsset<ShaderVariantCollection>();
                         // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
@@ -172,28 +171,57 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="respath">资源路径</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
-    /// <param name="loadmethod">资源加载方式</param>
     /// <returns></returns>
-    public void getPrefabInstance(string respath, Action<GameObject> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad, TResource.ResourceLoadMethod loadmethod = TResource.ResourceLoadMethod.Sync)
+    public int getPrefabInstance(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
-        TResource.ResourceModuleManager.Singleton.requstAssetSync<GameObject>(
-        respath,
-        out assetLoader,
-        (loader) =>
-        {
-            var prefab = loader.getAsset<GameObject>();
-            var prefabinstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
-            //不修改实例化后的名字，避免上层逻辑名字对不上
-            //goinstance.name = goasset.name;
-            // 绑定owner对象，用于判定是否还有有效对象引用AB资源
-            loader.bindAsset<GameObject>(prefabinstance);
-#if UNITY_EDITOR
-            ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
-#endif
-            callback?.Invoke(prefabinstance);
-        },
-        loadtype);
+        return TResource.ResourceModuleManager.Singleton.requstAssetSync<GameObject>(
+            respath,
+            out assetLoader,
+            (loader, requestUid) =>
+            {
+                var prefab = loader.obtainAsset<GameObject>();
+                var prefabinstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
+                //不修改实例化后的名字，避免上层逻辑名字对不上
+                //goinstance.name = goasset.name;
+                // 绑定owner对象，用于判定是否还有有效对象引用AB资源
+                loader.bindAsset<GameObject>(prefabinstance);
+    #if UNITY_EDITOR
+                ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
+    #endif
+                callback?.Invoke(prefabinstance, requestUid);
+            },
+            loadtype
+        );
+    }
+
+    /// <summary>
+    /// 异步获取一个实例资源对象
+    /// </summary>
+    /// <param name="respath">资源路径</param>
+    /// <param name="callback">资源回调</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <returns></returns>
+    public int getPrefabInstanceAsync(string respath, out TResource.AssetLoader assetLoader, Action<GameObject> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    {
+        return TResource.ResourceModuleManager.Singleton.requstAssetAsync<GameObject>(
+            respath,
+            out assetLoader,
+            (loader, requestUid) =>
+            {
+                var prefab = loader.obtainAsset<GameObject>();
+                var prefabinstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
+                //不修改实例化后的名字，避免上层逻辑名字对不上
+                //goinstance.name = goasset.name;
+                // 绑定owner对象，用于判定是否还有有效对象引用AB资源
+                loader.bindAsset<GameObject>(prefabinstance);
+    #if UNITY_EDITOR
+                ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
+    #endif
+                callback?.Invoke(prefabinstance);
+            },
+            loadtype
+        );
     }
 
     /// <summary>
@@ -203,24 +231,49 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="respath">资源路径</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
-    /// <param name="loadmethod">资源加载方式</param>
     /// <returns></returns>
-    public void getMaterial(UnityEngine.Object owner, string respath, Action<Material> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad, TResource.ResourceLoadMethod loadmethod = TResource.ResourceLoadMethod.Sync)
+    public int getMaterial(UnityEngine.Object owner, string respath, Action<Material, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
-        TResource.ResourceModuleManager.Singleton.requstAssetSync<Material>(
-        respath,
-        out assetLoader,
-        (loader) =>
-        {
-            var material = loader.getAsset<Material>();
-            loader.bindAsset<Material>(material);
+        return TResource.ResourceModuleManager.Singleton.requstAssetSync<Material>(
+            respath,
+            out assetLoader,
+            (loader, requestUid) =>
+            {
+                var material = loader.bindAsset<Material>(owner);
+    #if UNITY_EDITOR
+                ResourceUtility.FindMaterialShaderBack(material);
+    #endif
+                callback?.Invoke(material, requestUid);
+            },
+            loadtype
+        );
+    }
+
+    /// <summary>
+    /// 异步获取一个材质
+    /// </summary>
+    /// <param name="owner">资源绑定对象</param>
+    /// <param name="respath">资源路径</param>
+    /// <param name="assetLoader">Asset加载器</param>
+    /// <param name="callback">资源回调</param>
+    /// <param name="loadtype">资源加载类型</param>
+    /// <returns></returns>
+    public int getMaterialAsync(UnityEngine.Object owner, string respath, out TResource.AssetLoader assetLoader, Action<Material, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    {
+        return TResource.ResourceModuleManager.Singleton.requstAssetAsync<Material>(
+            respath,
+            out assetLoader,
+            (loader, requestUid) =>
+            {
+                var material = loader.bindAsset<Material>(owner);
 #if UNITY_EDITOR
-            ResourceUtility.FindMaterialShaderBack(material);
+                ResourceUtility.FindMaterialShaderBack(material);
 #endif
-            callback?.Invoke(material);
-        },
-        loadtype);
+                callback?.Invoke(material, requestUid);
+            },
+            loadtype
+        );
     }
 
     /// <summary>
@@ -230,20 +283,41 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="respath"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
-    /// <param name="loadmethod"></param>
-    public void getAudioClip(UnityEngine.Object owner, string respath, Action<AudioClip> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad, TResource.ResourceLoadMethod loadmethod = TResource.ResourceLoadMethod.Sync)
+    public int getAudioClip(UnityEngine.Object owner, string respath, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
-        TResource.ResourceModuleManager.Singleton.requstAssetSync<AudioClip>(
-        respath,
-        out assetLoader,
-        (loader) =>
-        {
-            var audioClip = loader.getAsset<AudioClip>();
-            loader.bindAsset<AudioClip>(audioClip);
-            callback?.Invoke(audioClip);
-        },
-        loadtype);
+        return TResource.ResourceModuleManager.Singleton.requstAssetSync<AudioClip>(
+            respath,
+            out assetLoader,
+            (loader, requestUid) =>
+            {
+                var audioClip = loader.bindAsset<AudioClip>(owner);
+                callback?.Invoke(audioClip, requestUid);
+            },
+            loadtype
+        );
+    }
+
+    /// <summary>
+    /// 异步获取指定音效
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <param name="respath"></param>
+    /// <param name="assetLoader"></param>
+    /// <param name="callback"></param>
+    /// <param name="loadtype"></param>
+    public int getAudioClipAsync(UnityEngine.Object owner, string respath, out TResource.AssetLoader assetLoader, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    {
+        return TResource.ResourceModuleManager.Singleton.requstAssetSync<AudioClip>(
+            respath,
+            out assetLoader,
+            (loader, requestUid) =>
+            {
+                var audioClip = loader.bindAsset<AudioClip>(owner);
+                callback?.Invoke(audioClip, requestUid);
+            },
+            loadtype
+        );
     }
 #endif
 }

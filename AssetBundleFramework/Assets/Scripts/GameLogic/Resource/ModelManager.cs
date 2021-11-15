@@ -16,6 +16,7 @@ using UnityEngine;
 /// </summary>
 public class ModelManager : SingletonTemplate<ModelManager>
 {
+#if !NEW_RESOURCE
     /// <summary>
     /// 获取模型实例对象
     /// </summary>
@@ -25,7 +26,6 @@ public class ModelManager : SingletonTemplate<ModelManager>
     /// <param name="loadmethod"></param>
     public void getModelInstance(string respath, Action<GameObject> callback, ResourceLoadType loadtype = ResourceLoadType.NormalLoad, ResourceLoadMethod loadmethod = ResourceLoadMethod.Sync)
     {
-#if !NEW_RESOURCE
         ResourceModuleManager.Singleton.requstResource(
         respath,
         (abi) =>
@@ -37,8 +37,55 @@ public class ModelManager : SingletonTemplate<ModelManager>
 #endif
             callback(modelinstance);
         });
-#else
-
-#endif
     }
+#else
+    /// <summary>
+    /// 获取模型实例对象
+    /// </summary>
+    /// <param name="respath"></param>
+    /// <param name="callback"></param>
+    /// <param name="loadtype"></param>
+    public int getModelInstance(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    {
+        TResource.AssetLoader assetLoader;
+        return TResource.ResourceModuleManager.Singleton.requstAssetSync<GameObject>(
+        respath,
+        out assetLoader,
+        (loader, requestUid) =>
+        {
+            var modelPrefab = loader.obtainAsset<GameObject>();
+            var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
+#if UNITY_EDITOR
+            ResourceUtility.FindMeshRenderShaderBack(modelinstance);
+#endif
+            callback?.Invoke(modelinstance, requestUid);
+        },
+        loadtype);
+    }
+
+    /// <summary>
+    /// 异步获取模型实例对象
+    /// </summary>
+    /// <param name="respath"></param>
+    /// <param name="callback"></param>
+    /// <param name="loadtype"></param>
+    public int getModelInstanceAsync(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    {
+        TResource.AssetLoader assetLoader;
+        return TResource.ResourceModuleManager.Singleton.requstAssetAsync<GameObject>(
+        respath,
+        out assetLoader,
+        (loader, requestUid) =>
+        {
+            var modelPrefab = loader.obtainAsset<GameObject>();
+            var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
+            loader.bindAsset<GameObject>(modelinstance);
+#if UNITY_EDITOR
+            ResourceUtility.FindMeshRenderShaderBack(modelinstance);
+#endif
+            callback?.Invoke(modelinstance, requestUid);
+        },
+        loadtype);
+    }
+#endif
 }

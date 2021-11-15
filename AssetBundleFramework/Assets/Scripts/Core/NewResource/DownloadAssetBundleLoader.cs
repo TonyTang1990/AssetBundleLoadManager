@@ -19,7 +19,7 @@ namespace TResource
         // TODO: 支持边玩边下的设计
 
         /// <summary>
-        /// 获取指定AssetBundle
+        /// 获取指定AssetBundle(加计数)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
@@ -31,6 +31,22 @@ namespace TResource
                 return null;
             }
             return AssetBundleInfo.getResource<AssetBundle>();
+        }
+
+        /// <summary>
+        /// 获取指定AssetBundle(不加计数)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public override AssetBundle obtainAssetBundle()
+        {
+            if (!IsDone)
+            {
+                Debug.LogError($"动态资源:{ResourcePath}不支持立即获取AssetBundle!");
+                return null;
+            }
+            var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
+            return assetBundle;
         }
 
         /// <summary>
