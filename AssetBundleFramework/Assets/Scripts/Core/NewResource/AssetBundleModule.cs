@@ -150,7 +150,7 @@ namespace TResource
             var depABPaths = GetAssetBundleDpInfoDelegate(ownerAssetBundlePath);
             var bundleAssetLoader = LoaderManager.Singleton. createBundleAssetLoader<T>(assetPath, ownerAssetBundlePath, loadType, loadMethod) as BundleAssetLoader;
             bundleAssetLoader.initBundleInfo(ownerAssetBundlePath, depABPaths);
-            bundleAssetLoader.addLoadAssetCompleteCallBack(requestUID, completeHandler);
+            bundleAssetLoader.addRequest(requestUID, completeHandler);
             assetLoader = bundleAssetLoader as AssetLoader;
             bundleAssetLoader.load();
             return requestUID;
@@ -171,7 +171,7 @@ namespace TResource
             var requestUID = LoaderManager.Singleton.GetNextRequestUID();
             var depABPaths = GetAssetBundleDpInfoDelegate(abPath);
             bundleLoader = LoaderManager.Singleton.createAssetBundleLoader<AssetBundleLoader>(abPath, depABPaths, loadType, loadMethod);
-            bundleLoader.addLoadABCompleteCallBack(requestUID, completeHandler);
+            bundleLoader.addRequest(requestUID, completeHandler);
             bundleLoader.load();
             return requestUID;
         }
@@ -208,7 +208,7 @@ namespace TResource
             {
                 if (loadedAssetBundleInfo.Value.IsUnsed)
                 {
-                    if ((time - loadedAssetBundleInfo.Value.LastUsedTime) > mABMinimumLifeTime)
+                    if ((time - loadedAssetBundleInfo.Value.LastUsedTime) > ABMinimumLifeTime)
                     {
                         mUnsedAssetBundleInfoList.Add(loadedAssetBundleInfo.Value);
                     }
@@ -241,12 +241,9 @@ namespace TResource
         {
             for (int i = 0; i < mUnsedAssetBundleInfoList.Count; i++)
             {
-                if (withLimitNumber == false || (withLimitNumber && i < mMaxUnloadABNumberPerFrame))
+                if (withLimitNumber == false || (withLimitNumber && i < MaxUnloadABNumberPerFrame))
                 {
-                    if(deleteAssetBundleInfo(mUnsedAssetBundleInfoList[i].ResourcePath))
-                    {
-                        mUnsedAssetBundleInfoList[i].dispose();
-                    }
+                    deleteAssetBundleInfo(mUnsedAssetBundleInfoList[i].ResourcePath);
                 }
                 else
                 {

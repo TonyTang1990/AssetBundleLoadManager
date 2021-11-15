@@ -17,6 +17,53 @@ namespace TResource
     public abstract class AssetLoader : Loadable
     {
         /// <summary>
+        /// Asset请求信息
+        /// </summary>
+        protected class AssetRequestInfo : IRecycle
+        {
+            /// <summary>
+            /// 请求Uid
+            /// </summary>
+            public int RequestUid
+            {
+                get;
+                protected set;
+            }
+
+            /// <summary>
+            /// 请求回调
+            /// </summary>
+            public Action<AssetLoader, int> RequestCallBack
+            {
+                get;
+                protected set;
+            }
+
+            /// <summary>
+            /// 初始化
+            /// </summary>
+            /// <param name="requestUid"></param>
+            /// <param name="requestCallBack"></param>
+            public void init(int requestUid, Action<AssetLoader, int> requestCallBack)
+            {
+                RequestUid = requestUid;
+                RequestCallBack = requestCallBack;
+            }
+
+            public void onCreate()
+            {
+                RequestUid = 0;
+                RequestCallBack = null;
+            }
+
+            public void onDispose()
+            {
+                RequestUid = 0;
+                RequestCallBack = null;
+            }
+        }
+
+        /// <summary>
         /// Asset类型
         /// </summary>
         public Type AssetType
@@ -31,14 +78,14 @@ namespace TResource
         protected AssetInfo mAssetInfo;
 
         /// <summary>
-        /// Asset资源加载完成逻辑层回调
+        /// Asset请求信息列表(为了确保逻辑层面的回调顺序一致性采用List)
         /// </summary>
-        //protected Action<AssetLoader> mLoadAssetCompleteCallBack;
+        protected List<AssetRequestInfo> mRequestInfoList;
 
         /// <summary>
-        /// Asset资源加载完成逻辑回调Map<请求UID,逻辑回调>
+        /// Asset资源请求UID和请求信息Map<请求UID,请求信息>
         /// </summary>
-        protected Dictionary<int, Action<AssetLoader, int>> mLoadAssetCompleteCallBackMap;
+        protected Dictionary<int, AssetRequestInfo> mRequestUidAndInfoMap;
 
         /// <summary>
         /// Asset异步请求
@@ -49,7 +96,8 @@ namespace TResource
         {
             AssetType = null;
             mAssetInfo = null;
-            mLoadAssetCompleteCallBackMap = new Dictionary<int, Action<AssetLoader, int>>();
+            mRequestInfoList = new List<AssetRequestInfo>();
+            mRequestUidAndInfoMap = new Dictionary<int, AssetRequestInfo>();
             mAssetAsyncRequest = null;
         }
 
@@ -58,8 +106,8 @@ namespace TResource
             base.onCreate();
             AssetType = null;
             mAssetInfo = null;
-            //mLoadAssetCompleteCallBack = null;
-            mLoadAssetCompleteCallBackMap.Clear();
+            mRequestInfoList.Clear();
+            mRequestUidAndInfoMap.Clear();
             mAssetAsyncRequest = null;
         }
 
@@ -68,8 +116,8 @@ namespace TResource
             base.onDispose();
             AssetType = null;
             mAssetInfo = null;
-            //mLoadAssetCompleteCallBack = null;
-            mLoadAssetCompleteCallBackMap.Clear();
+            mRequestInfoList.Clear();
+            mRequestUidAndInfoMap.Clear();
             mAssetAsyncRequest = null;
         }
 
@@ -179,6 +227,15 @@ namespace TResource
         }
 
         /// <summary>
+        /// 响应资源加载
+        /// </summary>
+        protected override void onLoad()
+        {
+            base.onLoad();
+            ResourceLogger.log($"开始加载Asset:{ResourcePath}!");
+        }
+
+        /// <summary>
         /// 响应资源加载取消(处理资源加载取消的情况)
         /// </summary>
         protected override void onCancel()
@@ -195,39 +252,37 @@ namespace TResource
             // 修改资源准备状态(表示资源准备完成，可以获取或者判定卸载)
             mAssetInfo.IsReady = true;
 
+            mAssetAsyncRequest = null;
+            // 通知上层Asset加载完成
+            for(int i = 0; i < mRequestInfoList.Count; i++)
+            {
+                mRequestInfoList[i].RequestCallBack?.Invoke(this, mRequestInfoList[i].RequestUid);
+                removeRequest(mRequestInfoList[i].RequestUid);
+                i--;
+            }
+            mRequestInfoList.Clear();
+            mRequestUidAndInfoMap.Clear();
+
             // 上层多个加载逻辑回调，在完成后根据调用getAsset或bindAsset情况去添加计数和绑定
             // 针对当前Asset的加载的基础计数已经在加载之前就完成计数的添加了，这里只需返回主Asset和主AB的提前计数即可
             mAssetInfo.release();
-
-            mAssetAsyncRequest = null;
-            // 通知上层Asset加载完成
-            foreach (var assetCompleteCallBack in mLoadAssetCompleteCallBackMap)
-            {
-                assetCompleteCallBack.Value?.Invoke(this, assetCompleteCallBack.Key);
-            }
-            mLoadAssetCompleteCallBackMap.Clear();
-
-            // 通知上层Asset加载完成
-            //mLoadAssetCompleteCallBack?.Invoke(this);
-            //mLoadAssetCompleteCallBack = null;
         }
 
         /// <summary>
-        /// 添加Asset加载完成逻辑回调
+        /// 添加Asset加载请求完成逻辑回调
         /// </summary>
         /// <param name="requestUID"></param>
         /// <param name="loadAssetCompleteCallBack"></param>
         /// <returns></returns>
-        public bool addLoadAssetCompleteCallBack(int requestUID, Action<AssetLoader, int> loadAssetCompleteCallBack)
+        public bool addRequest(int requestUID, Action<AssetLoader, int> loadAssetCompleteCallBack)
         {
-            if (!mLoadAssetCompleteCallBackMap.ContainsKey(requestUID))
+            if (!mRequestUidAndInfoMap.ContainsKey(requestUID))
             {
                 ResourceLogger.log($"绑定Asset:{ResourcePath}加载请求UID:{requestUID}成功!");
-                mLoadAssetCompleteCallBackMap.Add(requestUID, loadAssetCompleteCallBack);
-                //if (loadAssetCompleteCallBack != null)
-                //{
-                //    mLoadAssetCompleteCallBack += loadAssetCompleteCallBack;
-                //}
+                var assetRequestInfo = ObjectPool.Singleton.pop<AssetRequestInfo>();
+                assetRequestInfo.init(requestUID, loadAssetCompleteCallBack);
+                mRequestInfoList.Add(assetRequestInfo);
+                mRequestUidAndInfoMap.Add(requestUID, assetRequestInfo);
                 LoaderManager.Singleton.addAssetRequestUID(requestUID, ResourcePath);
                 return true;
             }
@@ -246,17 +301,11 @@ namespace TResource
         public override bool cancelRequest(int requestUID)
         {
             base.cancelRequest(requestUID);
-            Action<AssetLoader, int> loadAssetCompleteCallBack;
-            if (mLoadAssetCompleteCallBackMap.TryGetValue(requestUID, out loadAssetCompleteCallBack))
+            if(removeRequest(requestUID))
             {
                 ResourceLogger.log($"Asset:{ResourcePath}取消请求UID:{requestUID}成功!");
-                removeRequest(requestUID);
-                //if (loadAssetCompleteCallBack != null)
-                //{
-                //    mLoadAssetCompleteCallBack -= loadAssetCompleteCallBack;
-                //}
                 // 所有请求都取消表示没人再请求此Asset了
-                if (mLoadAssetCompleteCallBackMap.Count == 0)
+                if (mRequestUidAndInfoMap.Count == 0)
                 {
                     cancel();
                 }
@@ -264,7 +313,6 @@ namespace TResource
             }
             else
             {
-                Debug.LogError($"找不到请求UID:{requestUID}请求,取消Asset:{ResourcePath}请求失败!");
                 return false;
             }
         }
@@ -276,11 +324,14 @@ namespace TResource
         /// <returns></returns>
         private bool removeRequest(int requestUID)
         {
-            Action<AssetLoader, int> loadAssetCompleteCallBack;
-            if (mLoadAssetCompleteCallBackMap.TryGetValue(requestUID, out loadAssetCompleteCallBack))
+            AssetRequestInfo assetRequestInfo;
+            if (mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
             {
-                mLoadAssetCompleteCallBackMap.Remove(requestUID);
+                ResourceLogger.log($"Asset:{ResourcePath}移除请求UID:{requestUID}成功!");
+                mRequestInfoList.Remove(assetRequestInfo);
+                mRequestUidAndInfoMap.Remove(requestUID);
                 LoaderManager.Singleton.removeAssetRequestUID(requestUID);
+                ObjectPool.Singleton.push<AssetRequestInfo>(assetRequestInfo);
                 return true;
             }
             else

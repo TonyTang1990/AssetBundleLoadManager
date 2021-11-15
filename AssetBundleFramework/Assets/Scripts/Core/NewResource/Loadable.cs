@@ -130,19 +130,24 @@ namespace TResource
         public Loadable()
         {
             ResourcePath = null;
+            LoadMethod = ResourceLoadMethod.Sync;
+            LoadType = ResourceLoadType.NormalLoad;
             LoadState = ResourceLoadState.None;
         }
 
         public virtual void onCreate()
         {
             ResourcePath = null;
+            LoadMethod = ResourceLoadMethod.Sync;
+            LoadType = ResourceLoadType.NormalLoad;
             LoadState = ResourceLoadState.None;
-
         }
 
         public virtual void onDispose()
         {
             ResourcePath = null;
+            LoadMethod = ResourceLoadMethod.Sync;
+            LoadType = ResourceLoadType.NormalLoad;
             LoadState = ResourceLoadState.None;
         }
 

@@ -73,6 +73,7 @@ namespace TResource
         public override void onDispose()
         {
             base.onDispose();
+            mDepAssetBundlePaths = null;
             AllLoadedAssetInfoMap.Clear();
         }
 
@@ -114,7 +115,7 @@ namespace TResource
         {
             if(LoadType != ResourceLoadType.NormalLoad)
             {
-                Debug.LogWarning($"不允许卸载非NormalLoad的AssetBundlePath:{ResourcePath}");
+                Debug.LogWarning($"不应该触发非NormalLoad的AssetBundlePath:{ResourcePath}卸载");
             }
             // AB模式释放指定AB时，需要减少依赖AB信息的索引计数
             for (int i = 0, length = mDepAssetBundlePaths.Length; i < length; i++)
@@ -122,14 +123,18 @@ namespace TResource
                 var depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getAssetBundleInfo(mDepAssetBundlePaths[i]);
                 depAssetBundleInfo.release();
             }
+            mDepAssetBundlePaths = null;
             // AssetBundleLoader和AssetBundleInfo是一一对应，
             // 在AssetBundleInfo回收时,AssetBundleLoader也应该得到回收
             // 同时回收所有应加载的AssetInfo信息
-            LoaderManager.Singleton.deleteLoaderByPath(ResourcePath);
-            foreach(var assetInfo in AllLoadedAssetInfoMap)
+            foreach (var assetInfo in AllLoadedAssetInfoMap)
             {
                 ResourceModuleManager.Singleton.CurrentResourceModule.deleteAssetInfo(assetInfo.Key);
             }
+            AllLoadedAssetInfoMap.Clear();
+            LoaderManager.Singleton.deleteLoaderByPath(ResourcePath);
+            var assetBundle = getResource<AssetBundle>();
+            assetBundle.Unload(true);
 #if UNITY_EDITOR
             //AB卸载数据统计
             if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
@@ -137,6 +142,7 @@ namespace TResource
                 ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(ResourcePath);
             }
 #endif
+            base.dispose();
         }
     }
 }

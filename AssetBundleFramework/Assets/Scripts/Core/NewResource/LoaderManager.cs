@@ -32,6 +32,11 @@ namespace TResource
         private const float RESOURCE_LOAD_TIME_LIMIT_PER_FRAME = 50f;
 
         /// <summary>
+        /// 请求UID循环值(避免请求UID后期过大问题)
+        /// </summary>
+        private const int REQUEST_UID_LOOP_VALUE = 10000;
+
+        /// <summary>
         /// 是否有加载任务(含Asset和AssetBundle)
         /// </summary>
         public bool HasLoadingTask
@@ -135,7 +140,15 @@ namespace TResource
         /// <returns></returns>
         public int GetNextRequestUID()
         {
-            return mNextRequestUID++;
+            if(mNextRequestUID <= REQUEST_UID_LOOP_VALUE)
+            {
+                return mNextRequestUID++;
+            }
+            else
+            {
+                mNextRequestUID = mNextRequestUID % REQUEST_UID_LOOP_VALUE;
+                return mNextRequestUID++;
+            }
         }
 
         /// <summary>
@@ -253,23 +266,25 @@ namespace TResource
             }
             else
             {
-                if(loader is BundleAssetLoader)
+                if (loader is BundleAssetLoader)
                 {
+                    ResourceLogger.log($"删除Asset资源:{loader.ResourcePath}的加载器信息成功!");
                     ObjectPool.Singleton.push<BundleAssetLoader>(loader as BundleAssetLoader);
                 }
                 else if(loader is AssetDatabaseLoader)
                 {
+                    ResourceLogger.log($"删除AssetDatabase资源:{loader.ResourcePath}的加载器信息成功!");
                     ObjectPool.Singleton.push<AssetDatabaseLoader>(loader as AssetDatabaseLoader);
                 }
                 else if (loader is AssetBundleLoader)
                 {
+                    ResourceLogger.log($"删除AssetBundle资源:{loader.ResourcePath}的加载器信息成功!");
                     ObjectPool.Singleton.push<AssetBundleLoader>(loader as AssetBundleLoader);
                 }
                 else
                 {
                     Debug.LogError($"不支持的加载类类型:{loader.GetType().ToString()},进池失败!");
                 }
-                ResourceLogger.log($"删除资源:{loader.ResourcePath}的加载器信息成功!");
             }
             return result;
         }

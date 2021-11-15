@@ -38,8 +38,7 @@ using UnityEngine;
 //   在Asset加载完成后会返回Asset和所属AssetBundle以及依赖AB的计数，最后把计数和绑定交由上层决定
 // - 加载AssetBundle时会添加AssetBundle自身以及依赖AB的计数,
 //   在AssetBundle加载完成后返还AssetBundle计数(不返还依赖AssetBundle计数，确保依赖计数只加一次)，最后把计数和绑定交由上层决定
-// - 相同AssetBundle里的不同Asset加载会给所属AssetBundle的依赖AssetBundle只添加一次计数
-// - 
+// - 相同AssetBundle里的不同Asset加载只会触发一次所属AssetBundle的依赖AssetBundle索引计数添加
 
 namespace TResource
 {
@@ -93,24 +92,40 @@ namespace TResource
         protected Dictionary<string, AssetBundleInfo> mAllLoadedPermanentAssetBundleInfoMap;
 
         /// <summary> 检测未使用AB时间间隔(在请求队列为空时才检测未使用AB) /// </summary>
-        protected float mCheckUnsedABTimeInterval;
+        public float CheckUnsedABTimeInterval
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// 单帧卸载的AB最大数量
         /// 避免单帧卸载过多AB导致卡顿
         /// </summary>
-        protected int mMaxUnloadABNumberPerFrame;
+        public int MaxUnloadABNumberPerFrame
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// AB最短的有效生存时间
         /// 用于避免短时间内频繁删除卸载同一个AB的情况(比如同一个窗口AB资源不断重复打开关闭)
         /// </summary>
-        protected float mABMinimumLifeTime;
+        public float ABMinimumLifeTime
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// 资源回收帧率门槛(避免帧率过低的时候回收资源造成过卡)
         /// </summary>
-        protected int mResourceRecycleFPSThreshold;
+        public int ResourceRecycleFPSThreshold
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// AB资源卸载经历的时间
@@ -172,10 +187,10 @@ namespace TResource
             mAllLoadedPermanentAssetBundleInfoMap = new Dictionary<string, AssetBundleInfo>();
 
             // TODO: 根据设备设定相关参数，改成读表控制
-            mCheckUnsedABTimeInterval = 10.0f;
-            mMaxUnloadABNumberPerFrame = 5;
-            mABMinimumLifeTime = 40.0f;
-            mResourceRecycleFPSThreshold = 20;
+            CheckUnsedABTimeInterval = 10.0f;
+            MaxUnloadABNumberPerFrame = 5;
+            ABMinimumLifeTime = 40.0f;
+            ResourceRecycleFPSThreshold = 20;
 
             mFPSUpdateInterval = 1.0f;
         }
@@ -273,8 +288,12 @@ namespace TResource
         /// <returns></returns>
         public bool deleteAssetInfo(string assetPath)
         {
-            if(mAllLoadedNormalAssetInfoMap.Remove(assetPath))
+            AssetInfo assetInfo;
+            if(mAllLoadedNormalAssetInfoMap.TryGetValue(assetPath, out assetInfo))
             {
+                mAllLoadedNormalAssetInfoMap.Remove(assetPath);
+                assetInfo.dispose();
+                ObjectPool.Singleton.push<AssetInfo>(assetInfo);
                 return true;
             }
             else
@@ -376,8 +395,12 @@ namespace TResource
         /// <returns></returns>
         public bool deleteAssetBundleInfo(string assetBundlePath)
         {
-            if(mAllLoadedNormalAssetBundleInfoMap.Remove(assetBundlePath))
+            AssetBundleInfo assetBundleInfo;
+            if(mAllLoadedNormalAssetBundleInfoMap.TryGetValue(assetBundlePath, out assetBundleInfo))
             {
+                mAllLoadedNormalAssetBundleInfoMap.Remove(assetBundlePath);
+                assetBundleInfo.dispose();
+                ObjectPool.Singleton.push<AssetBundleInfo>(assetBundleInfo);
                 return true;
             }
             else
@@ -505,7 +528,7 @@ namespace TResource
                 else
                 {
                     var requestUID = LoaderManager.Singleton.GetNextRequestUID();
-                    assetLoader.addLoadAssetCompleteCallBack(requestUID, completeHandler);
+                    assetLoader.addRequest(requestUID, completeHandler);
                     // 异步转同步加载的情况
                     if (loadMethod == ResourceLoadMethod.Sync)
                     {
@@ -556,7 +579,7 @@ namespace TResource
                 else
                 {
                     var requestUID = LoaderManager.Singleton.GetNextRequestUID();
-                    abLoader.addLoadABCompleteCallBack(requestUID, completeHandler);
+                    abLoader.addRequest(requestUID, completeHandler);
                     // 异步转同步加载的情况
                     if (loadMethod == ResourceLoadMethod.Sync)
                     {
@@ -628,9 +651,9 @@ namespace TResource
             }
 
             mUnloadUnsedABTotalDeltaTime += Time.deltaTime;
-            if(mCurrentFPS >= mResourceRecycleFPSThreshold 
-                && mUnloadUnsedABTotalDeltaTime > mCheckUnsedABTimeInterval 
-                && LoaderManager.Singleton.HasLoadingTask)
+            if(mCurrentFPS >= ResourceRecycleFPSThreshold 
+                && mUnloadUnsedABTotalDeltaTime > CheckUnsedABTimeInterval 
+                && !LoaderManager.Singleton.HasLoadingTask)
             {
                 // 因为Asset依赖加载是无法准确得知的，所以无法做到Asset级别准确卸载
                 // 所以只对AssetBundle进行卸载检测判定

@@ -77,6 +77,7 @@ namespace TResource
             mABInfo = null;
             mDepAssetBundleInfoList.Clear();
             mIsABLoaded = false;
+            mMainBundleLoaderUID = 0;
             mMainBundleLoader = null;
         }
 
@@ -88,6 +89,7 @@ namespace TResource
             mABInfo = null;
             mDepAssetBundleInfoList.Clear();
             mIsABLoaded = false;
+            mMainBundleLoaderUID = 0;
             mMainBundleLoader = null;
         }
 
@@ -159,12 +161,12 @@ namespace TResource
             ResourceLogger.log($"Asset:{ResourcePath}的所在AB:{MainAssetBundlePath}加载完成!");
             if(LoadMethod == ResourceLoadMethod.Sync)
             {
-                var asset = mMainBundleLoader.getAssetBundle().LoadAsset(mAssetInfo.AssetName, mAssetInfo.AssetType);
+                var asset = mMainBundleLoader.obtainAssetBundle().LoadAsset(mAssetInfo.AssetName, mAssetInfo.AssetType);
                 onAssetLoadComplete(asset);
             }
             else if(LoadMethod == ResourceLoadMethod.Async)
             {
-                mAssetAsyncRequest = mMainBundleLoader.getAssetBundle().LoadAssetAsync(mAssetInfo.AssetName, mAssetInfo.AssetType);
+                mAssetAsyncRequest = mMainBundleLoader.obtainAssetBundle().LoadAssetAsync(mAssetInfo.AssetName, mAssetInfo.AssetType);
                 mAssetAsyncRequest.completed += onAssetAsyncLoadComplete;
             }
         }
@@ -210,6 +212,7 @@ namespace TResource
         /// </summary>
         protected override void onComplete()
         {
+            base.onComplete();
             // 上层多个加载逻辑回调，在完成后根据调用getAsset或bindAsset情况去添加计数和绑定
             // 返还提前添加的Asset以及AssetBundle计数信息，确保正确的资源管理
             // 依赖AB的真正计数添加由BundleLoader去负责(确保单个AB的依赖AB计数只添加一次)
@@ -218,7 +221,6 @@ namespace TResource
             {
                 mDepAssetBundleInfoList[i].release();
             }
-            base.onComplete();
         }
     }
 }

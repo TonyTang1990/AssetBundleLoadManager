@@ -24,11 +24,6 @@ namespace TResource
         public delegate void OnResourceUnloadedHandler(AbstractResourceInfo abi);
 
         /// <summary>
-        /// 资源卸载回调(用于通知资源对应Loader切换状态)
-        /// </summary>
-        public OnResourceUnloadedHandler onResourceUnloadedCallback;
-
-        /// <summary>
         /// 资源加载类型
         /// Note:
         /// 已加载的资源的加载类型不允许更改
@@ -103,7 +98,6 @@ namespace TResource
 
         public AbstractResourceInfo()
         {
-            onResourceUnloadedCallback = null;
             ResourcePath = null;
             LastUsedTime = 0f;
             IsReady = false;
@@ -113,7 +107,6 @@ namespace TResource
 
         public virtual void onCreate()
         {
-            onResourceUnloadedCallback = null;
             ResourcePath = null;
             LastUsedTime = 0f;
             IsReady = false;
@@ -124,7 +117,6 @@ namespace TResource
 
         public virtual void onDispose()
         {
-            onResourceUnloadedCallback = null;
             ResourcePath = null;
             LastUsedTime = 0f;
             IsReady = false;
@@ -250,7 +242,14 @@ namespace TResource
         /// <summary>
         /// 释放资源
         /// </summary>
-        public abstract void dispose();
-
+        public virtual void dispose()
+        {
+            ResourcePath = null;
+            LastUsedTime = 0f;
+            IsReady = false;
+            RefCount = 0;
+            mResource = null;
+            mReferenceOwnerList.Clear();
+        }
     }
 }
