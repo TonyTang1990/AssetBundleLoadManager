@@ -129,8 +129,27 @@ namespace TResource
             // 只有主AB采用Asset的加载方式，依赖AB一律采取Normal加载方式
             if(LoadMethod == ResourceLoadMethod.Sync)
             {
-                // BundlerLoader会负责加载自身AB和依赖AB，这里只需触发主AB加载即可
-                mMainBundleLoaderUID = ResourceModuleManager.Singleton.requstAssetBundleSync(MainAssetBundlePath, out mMainBundleLoader, onAssetBundleLoadComplete, LoadType);
+                if(mMainBundleLoader == null && !mIsABLoaded)
+                {
+                    // BundlerLoader会负责加载自身AB和依赖AB，这里只需触发主AB加载即可
+                    mMainBundleLoaderUID = ResourceModuleManager.Singleton.requstAssetBundleSync(MainAssetBundlePath, out mMainBundleLoader, onAssetBundleLoadComplete, LoadType);
+                }
+                else if(mMainBundleLoader != null && !mIsABLoaded)
+                {
+                    // 已经在加载但没有完成的下(比如之前异步加载),立刻转成同步加载
+                    // Note:
+                    // 如果依赖AB里有动态下载的AB资源则不会立马完整所有加载需要等待
+                    ResourceLogger.log($"BundleAsset:{ResourcePath}打断异步加载,触发同步加载!");
+                    mMainBundleLoader.loadImmediately();
+                }
+                else if(mIsABLoaded && mAssetAsyncRequest != null)
+                {
+                    // AB加载完成但是Asset还在异步加载的情况
+                    // 取消Asset的异步加载回调，避免多次加载完成返回并触发再次加载Asset
+                    ResourceLogger.log($"BundleAsset:{ResourcePath}所有AssetBundle加载完成,取消Asset异步加载完成回调注册!");
+                    mAssetAsyncRequest.completed -= onAssetAsyncLoadComplete;
+                    doLoadAsset();
+                }
             }
             else if(LoadMethod == ResourceLoadMethod.Async)
             {
@@ -159,12 +178,20 @@ namespace TResource
         protected void onAssetBundleLoadComplete()
         {
             ResourceLogger.log($"Asset:{ResourcePath}的所在AB:{MainAssetBundlePath}加载完成!");
-            if(LoadMethod == ResourceLoadMethod.Sync)
+            doLoadAsset();
+        }
+
+        /// <summary>
+        /// 触发加载Asset
+        /// </summary>
+        protected void doLoadAsset()
+        {
+            if (LoadMethod == ResourceLoadMethod.Sync)
             {
                 var asset = mMainBundleLoader.obtainAssetBundle().LoadAsset(mAssetInfo.AssetName, mAssetInfo.AssetType);
                 onAssetLoadComplete(asset);
             }
-            else if(LoadMethod == ResourceLoadMethod.Async)
+            else if (LoadMethod == ResourceLoadMethod.Async)
             {
                 mAssetAsyncRequest = mMainBundleLoader.obtainAssetBundle().LoadAssetAsync(mAssetInfo.AssetName, mAssetInfo.AssetType);
                 mAssetAsyncRequest.completed += onAssetAsyncLoadComplete;

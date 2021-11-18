@@ -556,7 +556,7 @@ namespace TResource
             EditorGUILayout.LabelField(string.Format("加载方式 : {0}", bundleLoader.LoadMethod), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("加载类型 : {0}", bundleLoader.LoadType), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("依赖资源数量 : {0}", bundleLoader.DepABPaths.Length), GUILayout.Width(150.0f));
-            EditorGUILayout.LabelField(string.Format("已加载依赖资源数量 : {0}", bundleLoader.LoadCompleteAssetBundleNumber - 1), GUILayout.Width(150.0f));
+            EditorGUILayout.LabelField(string.Format("已加载依赖资源数量 : {0}", bundleLoader.LoadCompletedAssetBundleNumer - 1), GUILayout.Width(150.0f));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.LabelField("依赖资源加载信息列表 :", GUILayout.Width(200.0f));
             EditorGUILayout.BeginHorizontal();
