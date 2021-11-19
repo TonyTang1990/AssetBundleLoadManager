@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1614646726
+CRC: 548037765
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: dad29fff16ce874e99b01cc293b06e5a
+    Hash: 3f9aca0b9602f84bed2f96359065999c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: fe397485c3cec1106b49e9ff95e8f8a2
+    Hash: cc27a7c2b7aeda57fe404097db2213c0
 HashAppended: 0
 ClassTypes:
 - Class: 21
@@ -15,11 +15,12 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/actors/zombunny/Materials/ZombunnyMaterial.mat
 - Assets/Res/actors/zombunny/Materials/EyesMaterial.mat
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist.bundle
 - G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/textures.bundle
 - G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/shaders/rim
   lit bumped specular.bundle
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist.bundle

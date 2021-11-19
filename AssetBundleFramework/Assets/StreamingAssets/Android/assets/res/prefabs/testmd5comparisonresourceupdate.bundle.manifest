@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 355245251
+CRC: 975389580
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: adc51a0365bc7232569cd3df2cc41bbf
+    Hash: 91a94a0a48cb525d3a1932587cde5040
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 43917c7e82ed3ae0a408b3ea37ec80f7
+    Hash: 7652f69dff3dcd0741269161f69220a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,6 +23,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/prefabs/TestMd5ComparisonResourceUpdate.prefab
 Dependencies:

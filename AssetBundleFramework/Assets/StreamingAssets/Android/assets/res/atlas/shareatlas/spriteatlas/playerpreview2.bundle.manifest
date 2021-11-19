@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1606751986
+CRC: 1929338538
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1e185568f82540740e02e3ff9935f6da
+    Hash: 299e4adea8de9f2c53045093fa43c7bc
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 8f81471f4cfc7bf93c7fa752ebb4eb40
+    Hash: 8f482d1115e1803eb3af0f87c71223fd
 HashAppended: 0
 ClassTypes:
 - Class: 28
@@ -15,6 +15,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 687078895
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDPreview.png
 - Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpainMadridPreview.png

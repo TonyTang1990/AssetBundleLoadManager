@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1068814411
+CRC: 3954112815
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0cc6b7ac02965ba193b434468a147f2e
+    Hash: f4578e9299588536f0676830177c3c6a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 76e1b81dec4b4112540440d3ac0fd2f8
+    Hash: 08a76e7c3e53f5f749a0c81983eae0e0
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -20,11 +20,11 @@ ClassTypes:
 - Class: 82
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
-  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
 - Class: 114
-  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: c3e1079d34893fa428745291fa16aa7a, type: 3}
 - Class: 115
@@ -37,6 +37,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 224
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/windows/MainWindow.prefab
 Dependencies:

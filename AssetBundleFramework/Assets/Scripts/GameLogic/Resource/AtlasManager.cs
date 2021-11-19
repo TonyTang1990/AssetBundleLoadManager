@@ -599,8 +599,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 {
                     trawimg.Loader.releaseAsset<Texture>(trawimg);
                 }
-                var texture = loader.getAsset<Texture>();
-                loader.bindAsset<Texture>(texture);
+                var texture = loader.bindAsset<Texture>(trawimg);
                 trawimg.texture = texture;
                 trawimg.Loader = loader;
                 trawimg.TextureName = texturepath;

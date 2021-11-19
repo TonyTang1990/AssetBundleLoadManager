@@ -1,16 +1,17 @@
 ManifestFileVersion: 0
-CRC: 40216120
+CRC: 3766565072
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9bcb84bbb293382b0ee2444986924277
+    Hash: c555a6852a1e3252f9f13aab4db097f7
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f19fbf085e00d23fbc8d6cf7b345590b
+    Hash: 0a6f9ca6de27cedd10f0532db8ca5f17
 HashAppended: 0
 ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/buildinresources/buildintextures/InputFieldBackground.png
 Dependencies: []

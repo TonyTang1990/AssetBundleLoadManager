@@ -1,22 +1,21 @@
 ManifestFileVersion: 0
-CRC: 2974454771
+CRC: 761992810
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9fe35a83899b4ed3fbf7935b19068779
+    Hash: 7417b101a7018d9c78b4e3ce3cfe3ff1
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a95f9003ca3b90273a92a408dd66da19
+    Hash: 470cca400d407431202629e6187d5a07
 HashAppended: 0
 ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 72
   Script: {instanceID: 0}
-- Class: 109
-  Script: {instanceID: 0}
 - Class: 200
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Standard
   Unlit.shader
@@ -165,7 +164,6 @@ Assets:
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/UV1sAsPositions.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-BumpSpec.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/DiffuseBase.shader
-- Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-Skinning-Util.cginc
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Particle-Multiply.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-PrePassLighting.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Diffuse.shader
@@ -208,8 +206,8 @@ Assets:
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/ShowLightMask.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/BlitTexArraySliceToDepth.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SpeedTree.shader
-- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Anim Alpha
-  Blend.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Anim
+  Alpha Blend.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SpeedTreeBillboard.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Details/WavingGrass.shader
 Dependencies: []

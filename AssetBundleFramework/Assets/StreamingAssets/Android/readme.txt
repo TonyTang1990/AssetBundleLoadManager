@@ -1,6 +1,6 @@
 ﻿构建平台：Android
 构建版本：1
-构建时间：2021/10/20 8:40:45
+构建时间：2021/11/20 1:07:49
 
 --配置信息--
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : LoadByFolderPath
@@ -19,7 +19,7 @@ Directory : Assets/Res/assetbuildinfo || CollectRule : Ignore || BuildRule : Ign
 
 --构建参数--
 CompressOption：ChunkBasedCompressionLZ4
-ForceRebuild：True
+ForceRebuild：False
 DisableWriteTypeTree：False
 IgnoreTypeTreeChanges：False
 
@@ -35,6 +35,7 @@ assets/res/atlas/shareatlas/spriteatlas/playerpreview.bundle
 assets/res/atlas/shareatlas/spriteatlas/playerpreview2.bundle
 assets/res/atlas/shareatlas/tutorialatlas.bundle
 assets/res/audios/music/backgroundmusic.bundle
+assets/res/audios/music/df_bg_music.bundle
 assets/res/audios/sfx/sfx1/coins.bundle
 assets/res/audios/sfx/sfx1/correct.bundle
 assets/res/audios/sfx/sfx1/explosion.bundle
@@ -47,6 +48,8 @@ assets/res/prefabs/sfxtemplate.bundle
 assets/res/prefabs/testmd5comparison.bundle
 assets/res/prefabs/testmd5comparisonresourceupdate.bundle
 assets/res/shaders/rim lit bumped specular.bundle
+assets/res/sharematerials/sharebluematerial.bundle
 assets/res/sharematerials/sharematerial.bundle
+assets/res/sharematerials/shareredmaterial.bundle
 assets/res/windows/mainwindow.bundle
 shaderlist.bundle

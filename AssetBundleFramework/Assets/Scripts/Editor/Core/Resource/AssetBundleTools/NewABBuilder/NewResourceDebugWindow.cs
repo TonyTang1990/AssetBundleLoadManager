@@ -551,7 +551,7 @@ namespace TResource
             EditorGUILayout.BeginVertical();
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(string.Format("资源名 : {0}", bundleLoader.ResourcePath), GUILayout.Width(500.0f));
+            EditorGUILayout.LabelField(string.Format("AssetBundle路径 : {0}", bundleLoader.ResourcePath), GUILayout.Width(600.0f));
             EditorGUILayout.LabelField(string.Format("加载状态 : {0}", bundleLoader.LoadState), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("加载方式 : {0}", bundleLoader.LoadMethod), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("加载类型 : {0}", bundleLoader.LoadType), GUILayout.Width(150.0f));
@@ -573,15 +573,15 @@ namespace TResource
         /// 显示一个AssetLoader的加载器信息
         /// </summary>
         /// <param name="abi"></param>
-        private void displayOneAssetLoaderInfoUI(AssetLoader bundleLoader)
+        private void displayOneAssetLoaderInfoUI(AssetLoader assetLoader)
         {
             EditorGUILayout.BeginVertical();
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(string.Format("资源名 : {0}", bundleLoader.ResourcePath), GUILayout.Width(500.0f));
-            EditorGUILayout.LabelField(string.Format("加载状态 : {0}", bundleLoader.LoadState), GUILayout.Width(150.0f));
-            EditorGUILayout.LabelField(string.Format("加载方式 : {0}", bundleLoader.LoadMethod), GUILayout.Width(150.0f));
-            EditorGUILayout.LabelField(string.Format("加载类型 : {0}", bundleLoader.LoadType), GUILayout.Width(150.0f));
+            EditorGUILayout.LabelField(string.Format("Asset路径 : {0}", assetLoader.ResourcePath), GUILayout.Width(500.0f));
+            EditorGUILayout.LabelField(string.Format("加载状态 : {0}", assetLoader.LoadState), GUILayout.Width(150.0f));
+            EditorGUILayout.LabelField(string.Format("加载方式 : {0}", assetLoader.LoadMethod), GUILayout.Width(150.0f));
+            EditorGUILayout.LabelField(string.Format("加载类型 : {0}", assetLoader.LoadType), GUILayout.Width(150.0f));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
         }

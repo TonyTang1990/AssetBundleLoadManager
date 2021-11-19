@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 469602997
+CRC: 650272704
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 2c03c2f69d361f48cf0ba4d0c4eed60b
+    Hash: 20d140ab693780adbb8250602084b9cd
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 43917c7e82ed3ae0a408b3ea37ec80f7
+    Hash: 7652f69dff3dcd0741269161f69220a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,6 +23,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/prefabs/TestMd5Comparison.prefab
 Dependencies:

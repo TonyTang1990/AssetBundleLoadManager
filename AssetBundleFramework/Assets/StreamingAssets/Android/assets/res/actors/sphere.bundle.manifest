@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 106561177
+CRC: 336804324
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 656784713031e900e88330da5d172cf1
+    Hash: 8d18fad870a055a9d7f19bf90c590561
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 60fef5ad0a4038542d2122e46dcc34a2
+    Hash: a8d3d02d32e7a2b7037277cfb99be447
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,6 +23,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 135
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/actors/sphere/pre_Sphere.prefab
 Dependencies:

@@ -151,22 +151,23 @@ namespace TResource
         /// </summary>
         public int CurrentFPS
         {
-            get
-            {
-                return mCurrentFPS;
-            }
+            get;
+            protected set;
         }
-        protected int mCurrentFPS;
+
+        /// <summary>
+        /// 当前帧数
+        /// </summary>
+        public static int Frame
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// 经历的时间
         /// </summary>
         private float mTotalDeltaTime;
-
-        /// <summary>
-        /// 经历的帧数
-        /// </summary>
-        private int mFrameCount;
 
         /// <summary>
         /// FPS更新间隔频率
@@ -610,14 +611,14 @@ namespace TResource
         /// </summary>
         public virtual void update()
         {
+            Frame++;
             LoaderManager.Singleton.update();
             mTotalDeltaTime += Time.deltaTime;
-            mFrameCount++;
             if (mTotalDeltaTime >= mFPSUpdateInterval)
             {
-                mCurrentFPS = (int)(mFrameCount / mTotalDeltaTime);
+                CurrentFPS = (int)(Frame / mTotalDeltaTime);
                 mTotalDeltaTime = 0f;
-                mFrameCount = 0;
+                Frame = 0;
             }
             checkUnusedResource();
         }
@@ -651,7 +652,7 @@ namespace TResource
             }
 
             mUnloadUnsedABTotalDeltaTime += Time.deltaTime;
-            if(mCurrentFPS >= ResourceRecycleFPSThreshold 
+            if(CurrentFPS >= ResourceRecycleFPSThreshold 
                 && mUnloadUnsedABTotalDeltaTime > CheckUnsedABTimeInterval 
                 && !LoaderManager.Singleton.HasLoadingTask)
             {

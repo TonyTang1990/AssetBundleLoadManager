@@ -73,6 +73,7 @@ namespace TResource
             }
             else
             {
+                Debug.LogError($"找不到AssetBundle:{abpath}的AssetBundle依赖信息,请检查是否传递了正确的AssetBundle路径!");
                 return null;
             }
         }

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 371037505
+CRC: 3181515311
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c5158d6f32f3fdf1125a56346160ee21
+    Hash: b05ef33a2d67b30ca6fe5600ca0ab28a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 8f81471f4cfc7bf93c7fa752ebb4eb40
+    Hash: 8f482d1115e1803eb3af0f87c71223fd
 HashAppended: 0
 ClassTypes:
 - Class: 28
@@ -15,6 +15,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 687078895
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukuiPreview.png
 - Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDGunmaPreview.png

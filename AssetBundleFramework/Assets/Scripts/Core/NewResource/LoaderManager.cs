@@ -207,11 +207,11 @@ namespace TResource
         {
             if (mAllLoaderMap.ContainsKey(loader.ResourcePath))
             {
-                Debug.LogError($"已经存在资源:{loader.ResourcePath}的加载器,添加资源加载器任务失败,不应该进入这里!");
+                Debug.LogError($"Frame:{AbstractResourceModule.Frame}已经存在资源:{loader.ResourcePath}的加载器,添加资源加载器任务失败,不应该进入这里!");
                 return false;
             }
             mAllLoaderMap.Add(loader.ResourcePath, loader);
-            ResourceLogger.log($"添加资源:{loader.ResourcePath}加载器任务!");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}添加资源:{loader.ResourcePath}加载器任务!");
             mAllWaitLoadLoaderList.Add(loader);
             return true;
         }
@@ -226,11 +226,11 @@ namespace TResource
             var result = mAllWaitLoadLoaderList.Remove(loader);
             if (!result)
             {
-                Debug.LogError($"找不到资源:{loader.ResourcePath}的加载器任务,移除失败,请检查代码流程!");
+                Debug.LogError($"Frame:{AbstractResourceModule.Frame}找不到资源:{loader.ResourcePath}的加载器任务,移除失败,请检查代码流程!");
             }
             else
             {
-                ResourceLogger.log($"移除资源:{loader.ResourcePath}的加载器任务成功!");
+                ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}移除资源:{loader.ResourcePath}的加载器任务成功!");
             }
             return result;
         }
@@ -268,22 +268,22 @@ namespace TResource
             {
                 if (loader is BundleAssetLoader)
                 {
-                    ResourceLogger.log($"删除Asset资源:{loader.ResourcePath}的加载器信息成功!");
+                    ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}删除Asset资源:{loader.ResourcePath}的加载器信息成功!");
                     ObjectPool.Singleton.push<BundleAssetLoader>(loader as BundleAssetLoader);
                 }
                 else if(loader is AssetDatabaseLoader)
                 {
-                    ResourceLogger.log($"删除AssetDatabase资源:{loader.ResourcePath}的加载器信息成功!");
+                    ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}删除AssetDatabase资源:{loader.ResourcePath}的加载器信息成功!");
                     ObjectPool.Singleton.push<AssetDatabaseLoader>(loader as AssetDatabaseLoader);
                 }
                 else if (loader is AssetBundleLoader)
                 {
-                    ResourceLogger.log($"删除AssetBundle资源:{loader.ResourcePath}的加载器信息成功!");
+                    ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}删除AssetBundle资源:{loader.ResourcePath}的加载器信息成功!");
                     ObjectPool.Singleton.push<AssetBundleLoader>(loader as AssetBundleLoader);
                 }
                 else
                 {
-                    Debug.LogError($"不支持的加载类类型:{loader.GetType().ToString()},进池失败!");
+                    Debug.LogError($"Frame:{AbstractResourceModule.Frame}不支持的加载类类型:{loader.GetType().ToString()},进池失败!");
                 }
             }
             return result;

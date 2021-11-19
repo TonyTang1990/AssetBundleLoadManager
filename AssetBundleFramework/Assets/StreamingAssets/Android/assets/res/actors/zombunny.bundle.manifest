@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1130851946
+CRC: 2228540782
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e966900622ff10b1ec21d6543b5294d9
+    Hash: cf522196dd1833a58cf9a56ee1cf7e82
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f98fb72295b3909d74ffedc0d76189f3
+    Hash: f3eaf3b7e1f0d48363ae1756918d22a8
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,6 +23,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 137
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/actors/zombunny/pre_Zombunny.prefab
 - Assets/Res/actors/zombunny/Zombunny.fbx

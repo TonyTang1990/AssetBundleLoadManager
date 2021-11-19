@@ -202,7 +202,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int getPrefabInstanceAsync(string respath, out TResource.AssetLoader assetLoader, Action<GameObject> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int getPrefabInstanceAsync(string respath, out TResource.AssetLoader assetLoader, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         return TResource.ResourceModuleManager.Singleton.requstAssetAsync<GameObject>(
             respath,
@@ -218,7 +218,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     #if UNITY_EDITOR
                 ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
     #endif
-                callback?.Invoke(prefabinstance);
+                callback?.Invoke(prefabinstance, requestUid);
             },
             loadtype
         );

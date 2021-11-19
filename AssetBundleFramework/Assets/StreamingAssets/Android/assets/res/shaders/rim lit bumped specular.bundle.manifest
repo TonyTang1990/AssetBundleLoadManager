@@ -1,16 +1,17 @@
 ManifestFileVersion: 0
-CRC: 3394790914
+CRC: 787988243
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7f2454579de6402e0ff3cfa01b0c4fd3
+    Hash: 46ccf2cef57c87a2825f11f041a08503
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 7e9ee104d6bb707fb2602b751e6f78b1
+    Hash: 55d48f4ad9c3b13330b9eb5ee5686477
 HashAppended: 0
 ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Res/shaders/Rim Lit Bumped Specular.shader
 Dependencies:

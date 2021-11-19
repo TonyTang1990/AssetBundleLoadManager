@@ -139,14 +139,14 @@ namespace TResource
                     // 已经在加载但没有完成的下(比如之前异步加载),立刻转成同步加载
                     // Note:
                     // 如果依赖AB里有动态下载的AB资源则不会立马完整所有加载需要等待
-                    ResourceLogger.log($"BundleAsset:{ResourcePath}打断异步加载,触发同步加载!");
+                    ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}BundleAsset:{ResourcePath}打断异步加载,触发同步加载!");
                     mMainBundleLoader.loadImmediately();
                 }
                 else if(mIsABLoaded && mAssetAsyncRequest != null)
                 {
                     // AB加载完成但是Asset还在异步加载的情况
                     // 取消Asset的异步加载回调，避免多次加载完成返回并触发再次加载Asset
-                    ResourceLogger.log($"BundleAsset:{ResourcePath}所有AssetBundle加载完成,取消Asset异步加载完成回调注册!");
+                    ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}BundleAsset:{ResourcePath}所有AssetBundle加载完成,取消Asset异步加载完成回调注册!");
                     mAssetAsyncRequest.completed -= onAssetAsyncLoadComplete;
                     doLoadAsset();
                 }
@@ -177,7 +177,7 @@ namespace TResource
         /// </summary>
         protected void onAssetBundleLoadComplete()
         {
-            ResourceLogger.log($"Asset:{ResourcePath}的所在AB:{MainAssetBundlePath}加载完成!");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}的所在AB:{MainAssetBundlePath}加载完成!");
             doLoadAsset();
         }
 
@@ -213,7 +213,7 @@ namespace TResource
         /// <param name="asset"></param>
         protected void onAssetLoadComplete(Object asset)
         {
-            ResourceLogger.log($"Asset:{ResourcePath}加载完成!");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}加载完成!");
             // 加载完成后无论都要设置setResource确保后续的正常使用
             mAssetInfo.setResource(asset);
             if (asset != null)

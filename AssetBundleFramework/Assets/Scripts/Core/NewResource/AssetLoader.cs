@@ -232,7 +232,7 @@ namespace TResource
         protected override void onLoad()
         {
             base.onLoad();
-            ResourceLogger.log($"开始加载Asset:{ResourcePath}!");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始加载Asset:{ResourcePath}!");
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace TResource
         {
             if (!mRequestUidAndInfoMap.ContainsKey(requestUID))
             {
-                ResourceLogger.log($"绑定Asset:{ResourcePath}加载请求UID:{requestUID}成功!");
+                ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}绑定Asset:{ResourcePath}加载请求UID:{requestUID}成功!");
                 var assetRequestInfo = ObjectPool.Singleton.pop<AssetRequestInfo>();
                 assetRequestInfo.init(requestUID, loadAssetCompleteCallBack);
                 mRequestInfoList.Add(assetRequestInfo);
@@ -303,7 +303,7 @@ namespace TResource
             base.cancelRequest(requestUID);
             if(removeRequest(requestUID))
             {
-                ResourceLogger.log($"Asset:{ResourcePath}取消请求UID:{requestUID}成功!");
+                ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}取消请求UID:{requestUID}成功!");
                 // 所有请求都取消表示没人再请求此Asset了
                 if (mRequestUidAndInfoMap.Count == 0)
                 {
@@ -327,7 +327,7 @@ namespace TResource
             AssetRequestInfo assetRequestInfo;
             if (mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
             {
-                ResourceLogger.log($"Asset:{ResourcePath}移除请求UID:{requestUID}成功!");
+                ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}移除请求UID:{requestUID}成功!");
                 mRequestInfoList.Remove(assetRequestInfo);
                 mRequestUidAndInfoMap.Remove(requestUID);
                 LoaderManager.Singleton.removeAssetRequestUID(requestUID);

@@ -317,10 +317,12 @@ namespace TResource
         public void onPlayBGM()
         {
             DIYLog.Log("onPlayBGM()");
+            var param1 = InputParam1.text;
+            DIYLog.Log("Param1 = " + param1);
 #if NEW_RESOURCE
             TResource.AssetLoader assetLoader;
             AudioManager.Singleton.playBGM(
-                "Assets/Res/audios/music/backgroundmusic.mp3",
+                param1,
                 out assetLoader
             );
 #endif
@@ -332,10 +334,12 @@ namespace TResource
         public void onPlaySound()
         {
             DIYLog.Log("onPlaySound()");
+            var param1 = InputParam1.text;
+            DIYLog.Log("Param1 = " + param1);
 #if NEW_RESOURCE
             TResource.AssetLoader assetLoader;
             AudioManager.Singleton.playSFXSound(
-                "Assets/Res/audios/sfx/sfx1/explosion.wav",
+                param1,
                 out assetLoader
             );
 #endif
@@ -348,21 +352,18 @@ namespace TResource
         public void onLoadMaterial()
         {
             DIYLog.Log("onLoadMaterial()");
+            var param1 = InputParam1.text;
+            DIYLog.Log("Param1 = " + param1);
 #if NEW_RESOURCE
             var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
             var image = btnloadmat.GetComponent<Image>();
             ResourceManager.Singleton.getMaterial(
-                image, 
-                "Assets/Res/sharematerials/sharematerial.mat",
+                image,
+                param1,
                 (material, requestUid) =>
                 {
                     Material mat = material;
                     image.material = mat;
-                    //延时测试材质回收
-                    CoroutineManager.Singleton.delayedCall(10.0f, () =>
-                    {
-                        Destroy(mat);
-                    });
                 }
             );
 #endif
@@ -452,22 +453,26 @@ namespace TResource
 
 
         /// <summary>
-        /// AB异步加载
+        /// 异步加载窗口
         /// </summary>
-        public void onAsynABLoad()
+        public void onAsynLoadWindowPrefab()
         {
-            DIYLog.Log("onTestAsynAndSyncABLoad()");
+            DIYLog.Log("onAsynLoadWindowPrefab()");
 #if NEW_RESOURCE
             if (mMainWindow == null)
             {
-                onLoadWindowPrefab();
+                onDestroyWindowInstance();
             }
-
-            var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-            var param1 = InputParam1.text;
-            DIYLog.Log("Param1 = " + param1);
             AssetLoader assetLoader;
-            AtlasManager.Singleton.setImageSingleSpriteAsync(image, param1, out assetLoader);
+            ResourceManager.Singleton.getPrefabInstanceAsync(
+                "Assets/Res/windows/MainWindow.prefab",
+                out assetLoader,
+                (prefabInstance, requestUid) =>
+                {
+                    mMainWindow = prefabInstance;
+                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+                }
+            );
 #endif
         }
 
@@ -488,7 +493,7 @@ namespace TResource
             ResourceManager.Singleton.getPrefabInstanceAsync(
                 "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
                 out assetLoader,
-                (instance) =>
+                (instance, requestUid) =>
                 {
                     mActorInstance = instance;
                     Debug.Log($"异步加载pre_zombunny完成!");

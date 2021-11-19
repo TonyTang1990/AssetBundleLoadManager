@@ -185,6 +185,7 @@ namespace TResource
                 Debug.LogError($"ResourcePath:{ResourcePath}未处于等待加载状态,不应该触发立刻加载!");
                 return;
             }
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}ResourcePath:{ResourcePath}触发立刻加载!");
             LoadMethod = ResourceLoadMethod.Sync;
             doLoad();
         }
@@ -243,7 +244,7 @@ namespace TResource
         /// </summary>
         protected virtual void onFailed()
         {
-            ResourceLogger.log($"资源:{ResourcePath}加载失败!");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}资源:{ResourcePath}加载失败!");
         }
 
         /// <summary>
@@ -268,7 +269,7 @@ namespace TResource
         /// </summary>
         protected virtual void onCancel()
         {
-            ResourceLogger.log($"资源:{ResourcePath}加载请求取消!");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}资源:{ResourcePath}加载请求取消!");
         }
 
         /// <summary>
@@ -276,7 +277,7 @@ namespace TResource
         /// </summary>
         protected virtual void complete()
         {
-            ResourceLogger.log($"加载资源:{ResourcePath}完成!");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}加载资源:{ResourcePath}完成!");
             LoadState = ResourceLoadState.Complete;
             onComplete();
         }
