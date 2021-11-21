@@ -65,3 +65,7 @@ MonoBehaviour:
     CollectRule: 1
     BuildRule: 4
     ConstName: 
+  - CollectFolderPath: Assets/Res/scenes
+    CollectRule: 0
+    BuildRule: 1
+    ConstName: 

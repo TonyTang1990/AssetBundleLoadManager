@@ -886,6 +886,33 @@ MonoBehaviour:
   - AssetPath: assets/res/actors/zombunny/zombunny.fbx
     ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
+  - AssetPath: assets/res/scenes/assetbundleframeworkscene.unity
+    ABPath: assets/res/scenes/assetbundleframeworkscene
+    ABVariantPath: bundle
+  - AssetPath: assets/res/textures/chaichainingwang.jpg
+    ABPath: assets/res/textures/chaichainingwang
+    ABVariantPath: bundle
+  - AssetPath: assets/res/scenes/newassetbundleframeworkscene.unity
+    ABPath: assets/res/scenes/newassetbundleframeworkscene
+    ABVariantPath: bundle
+  - AssetPath: assets/res/scenes/sceneprefabs/testscene2prefab.prefab
+    ABPath: assets/res/scenes/sceneprefabs/testscene2prefab
+    ABVariantPath: bundle
+  - AssetPath: assets/res/scenes/sceneprefabs/testscene2prefab2.prefab
+    ABPath: assets/res/scenes/sceneprefabs/testscene2prefab2
+    ABVariantPath: bundle
+  - AssetPath: assets/res/scenes/sceneprefabs/testscene3prefab.prefab
+    ABPath: assets/res/scenes/sceneprefabs/testscene3prefab
+    ABVariantPath: bundle
+  - AssetPath: assets/res/scenes/shadervariantscollectscene.unity
+    ABPath: assets/res/scenes/shadervariantscollectscene
+    ABVariantPath: bundle
+  - AssetPath: assets/res/scenes/testscene2.unity
+    ABPath: assets/res/scenes/testscene2
+    ABVariantPath: bundle
+  - AssetPath: assets/res/scenes/testscene3.unity
+    ABPath: assets/res/scenes/testscene3
+    ABVariantPath: bundle
   - AssetPath: assets/res/assetbuildinfo/assetbuildinfo.asset
     ABPath: assetbuildinfo
     ABVariantPath: bundle
@@ -965,5 +992,33 @@ MonoBehaviour:
     DepABPathList:
     - assets/res/actors/zombunny/zombunnyanimations
     - assets/res/actors/zombunny/materials
+  - ABPath: assets/res/scenes/assetbundleframeworkscene
+    DepABPathList:
+    - assets/res/textures/chaichainingwang
+  - ABPath: assets/res/textures/chaichainingwang
+    DepABPathList: []
+  - ABPath: assets/res/scenes/newassetbundleframeworkscene
+    DepABPathList:
+    - assets/res/textures/chaichainingwang
+  - ABPath: assets/res/scenes/sceneprefabs/testscene2prefab
+    DepABPathList:
+    - assets/res/sharematerials/sharematerial
+  - ABPath: assets/res/scenes/sceneprefabs/testscene2prefab2
+    DepABPathList:
+    - assets/res/sharematerials/sharematerial
+  - ABPath: assets/res/scenes/sceneprefabs/testscene3prefab
+    DepABPathList:
+    - assets/res/sharematerials/sharematerial
+  - ABPath: assets/res/scenes/shadervariantscollectscene
+    DepABPathList: []
+  - ABPath: assets/res/scenes/testscene2
+    DepABPathList:
+    - assets/res/scenes/sceneprefabs/testscene2prefab2
+    - assets/res/sharematerials/sharematerial
+    - assets/res/scenes/sceneprefabs/testscene2prefab
+  - ABPath: assets/res/scenes/testscene3
+    DepABPathList:
+    - assets/res/sharematerials/sharematerial
+    - assets/res/scenes/sceneprefabs/testscene3prefab
   - ABPath: assetbuildinfo
     DepABPathList: []

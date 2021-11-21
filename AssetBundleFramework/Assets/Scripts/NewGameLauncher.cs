@@ -49,6 +49,11 @@ namespace TResource
         public TImage TImgBG;
 
         /// <summary>
+        /// 测试背景TImage2访问资源
+        /// </summary>
+        public TImage TImgBG2;
+
+        /// <summary>
         /// 测试背景TRawImage访问资源
         /// </summary>
         public TRawImage TRawImgBG;
@@ -477,17 +482,29 @@ namespace TResource
         }
 
         /// <summary>
-        /// 测试AB异步和同步加载
+        /// 测试异步转同步窗口加载
         /// </summary>
-        public void onTestAsynAndSyncABLoad()
+        public void onAsynToSyncLoadWindow()
         {
-            DIYLog.Log("onTestAsynAndSyncABLoad()");
+            DIYLog.Log("onAsynToSyncLoadWindow()");
 #if NEW_RESOURCE
             if (mMainWindow == null)
             {
-                onLoadWindowPrefab();
+                onDestroyWindowInstance();
             }
-
+            AssetLoader assetLoader;
+            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+                "Assets/Res/windows/MainWindow.prefab",
+                out assetLoader,
+                (prefabInstance, requestUid) =>
+                {
+                    mMainWindow = prefabInstance;
+                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+                }
+            );
+            // 将异步转同步加载
+            assetLoader.loadImmediately();
+            /*
             TResource.AssetLoader assetLoader;
             // 测试大批量异步加载资源后立刻同步加载其中一个该源
             ResourceManager.Singleton.getPrefabInstanceAsync(
@@ -555,6 +572,7 @@ namespace TResource
             );
 
             CoroutineManager.Singleton.startCoroutine(DoAsyncLoadResource());
+            */
 #endif
         }
 
@@ -575,20 +593,99 @@ namespace TResource
         }
 
         /// <summary>
-        /// 销毁异步和同步加载
+        /// 取消异步窗口加载请求回调
         /// </summary>
-        public void onDestroyAsynAndSyncLoad()
+        public void onCancelAsynLoadWindow()
         {
-            DIYLog.Log("onDestroyAsynAndSyncLoad()");
+            DIYLog.Log("onCancelAsynLoadWindow()");
 #if NEW_RESOURCE
-            GameObject.Destroy(mMainWindow);
-            mMainWindow = null;
-            GameObject.Destroy(mActorInstance);
-            mActorInstance = null;
-            GameObject.Destroy(mActorInstance2);
-            mActorInstance2 = null;
-            GameObject.Destroy(mSFXInstance);
-            mSFXInstance = null;
+            if (mMainWindow == null)
+            {
+                onDestroyWindowInstance();
+            }
+            AssetLoader assetLoader;
+            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+                "Assets/Res/windows/MainWindow.prefab",
+                out assetLoader,
+                (prefabInstance, requestUid) =>
+                {
+                    mMainWindow = prefabInstance;
+                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+                }
+            );
+            // 取消异步加载请求
+            assetLoader.cancelRequest(requestUID);
+#endif
+        }
+
+        /// <summary>
+        /// 多异步请求单个Sprite
+        /// </summary>
+        public void onMultipleAsyncLoadSingleTSprite()
+        {
+            DIYLog.Log("onMultipleAsyncLoadTSprite()");
+            var param1 = InputParam1.text;
+            DIYLog.Log("Param1 = " + param1);
+#if NEW_RESOURCE
+            AssetLoader assetLoader1;
+            AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
+            AssetLoader assetLoader2;
+            AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG2, param1, out assetLoader2);
+#endif
+        }
+
+        /// <summary>
+        /// 多异步请求多个Sprite
+        /// </summary>
+        public void onMultipleAsyncLoadMultipleTSprite()
+        {
+            DIYLog.Log("onMultipleAsyncLoadTSprite()");
+            var param1 = InputParam1.text;
+            DIYLog.Log("Param1 = " + param1);
+            var param2 = InputParam2.text;
+            DIYLog.Log("Param2 = " + param2);
+#if NEW_RESOURCE
+            AssetLoader assetLoader1;
+            AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
+            AssetLoader assetLoader2;
+            AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG2, param2, out assetLoader2);
+#endif
+        }
+
+
+        /// <summary>
+        /// 异步+同步加载窗口但取消异步请求
+        /// </summary>
+        public void onAsyncAndSyncLoadWindowButCancelAsync()
+        {
+            DIYLog.Log("onAsyncAndSyncLoadWindowButCancelAsync()");
+#if NEW_RESOURCE
+            if (mMainWindow == null)
+            {
+                onDestroyWindowInstance();
+            }
+            AssetLoader assetLoader;
+            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+                "Assets/Res/windows/MainWindow.prefab",
+                out assetLoader,
+                (prefabInstance, requestUid) =>
+                {
+                    Debug.Log($"getPrefabInstanceAsync()");
+                    mMainWindow = prefabInstance;
+                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+                }
+            );
+            // 取消异步加载请求后同步加载窗口
+            assetLoader.cancelRequest(requestUID);
+            ResourceManager.Singleton.getPrefabInstance(
+                "Assets/Res/windows/MainWindow.prefab",
+                (prefabInstance, requestUid) =>
+                {
+                    Debug.Log($"getPrefabInstance()");
+                    mMainWindow = prefabInstance;
+                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+                }
+            );
 #endif
         }
 

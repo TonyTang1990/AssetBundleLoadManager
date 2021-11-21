@@ -1,6 +1,6 @@
 ﻿构建平台：Android
 构建版本：1
-构建时间：2021/11/20 1:07:49
+构建时间：2021/11/20 22:42:05
 
 --配置信息--
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : LoadByFolderPath
@@ -16,6 +16,7 @@ Directory : Assets/Res/shadervariants || CollectRule : Collect || BuildRule : Lo
 Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : LoadByFolderPath
 Directory : Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas || CollectRule : Ignore || BuildRule : Ignore
 Directory : Assets/Res/assetbuildinfo || CollectRule : Ignore || BuildRule : Ignore
+Directory : Assets/Res/scenes || CollectRule : Collect || BuildRule : LoadByFilePath
 
 --构建参数--
 CompressOption：ChunkBasedCompressionLZ4
@@ -47,9 +48,18 @@ assets/res/prefabs/rawimagebuildin.bundle
 assets/res/prefabs/sfxtemplate.bundle
 assets/res/prefabs/testmd5comparison.bundle
 assets/res/prefabs/testmd5comparisonresourceupdate.bundle
+assets/res/scenes/assetbundleframeworkscene.bundle
+assets/res/scenes/newassetbundleframeworkscene.bundle
+assets/res/scenes/sceneprefabs/testscene2prefab.bundle
+assets/res/scenes/sceneprefabs/testscene2prefab2.bundle
+assets/res/scenes/sceneprefabs/testscene3prefab.bundle
+assets/res/scenes/shadervariantscollectscene.bundle
+assets/res/scenes/testscene2.bundle
+assets/res/scenes/testscene3.bundle
 assets/res/shaders/rim lit bumped specular.bundle
 assets/res/sharematerials/sharebluematerial.bundle
 assets/res/sharematerials/sharematerial.bundle
 assets/res/sharematerials/shareredmaterial.bundle
+assets/res/textures/chaichainingwang.bundle
 assets/res/windows/mainwindow.bundle
 shaderlist.bundle

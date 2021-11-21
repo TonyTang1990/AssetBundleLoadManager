@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1994044330
+CRC: 1167189674
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -106,5 +106,42 @@ AssetBundleManifest:
         Dependency_0: assets/res/actors/zombunny/materials.bundle
         Dependency_1: assets/res/actors/zombunny/zombunnyanimations.bundle
     Info_28:
+      Name: assets/res/scenes/assetbundleframeworkscene.bundle
+      Dependencies:
+        Dependency_0: assets/res/textures/chaichainingwang.bundle
+    Info_29:
+      Name: assets/res/textures/chaichainingwang.bundle
+      Dependencies: {}
+    Info_30:
+      Name: assets/res/scenes/newassetbundleframeworkscene.bundle
+      Dependencies:
+        Dependency_0: assets/res/textures/chaichainingwang.bundle
+    Info_31:
+      Name: assets/res/scenes/sceneprefabs/testscene2prefab.bundle
+      Dependencies:
+        Dependency_0: assets/res/sharematerials/sharematerial.bundle
+    Info_32:
+      Name: assets/res/scenes/sceneprefabs/testscene2prefab2.bundle
+      Dependencies:
+        Dependency_0: assets/res/sharematerials/sharematerial.bundle
+    Info_33:
+      Name: assets/res/scenes/sceneprefabs/testscene3prefab.bundle
+      Dependencies:
+        Dependency_0: assets/res/sharematerials/sharematerial.bundle
+    Info_34:
+      Name: assets/res/scenes/shadervariantscollectscene.bundle
+      Dependencies: {}
+    Info_35:
+      Name: assets/res/scenes/testscene2.bundle
+      Dependencies:
+        Dependency_0: assets/res/sharematerials/sharematerial.bundle
+        Dependency_1: assets/res/scenes/sceneprefabs/testscene2prefab.bundle
+        Dependency_2: assets/res/scenes/sceneprefabs/testscene2prefab2.bundle
+    Info_36:
+      Name: assets/res/scenes/testscene3.bundle
+      Dependencies:
+        Dependency_0: assets/res/sharematerials/sharematerial.bundle
+        Dependency_1: assets/res/scenes/sceneprefabs/testscene3prefab.bundle
+    Info_37:
       Name: assetbuildinfo.bundle
       Dependencies: {}
