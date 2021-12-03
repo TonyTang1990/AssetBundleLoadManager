@@ -55,6 +55,7 @@ public class ModelManager : SingletonTemplate<ModelManager>
         {
             var modelPrefab = loader.obtainAsset<GameObject>();
             var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
+            loader.bindAsset<GameObject>(modelinstance);
 #if UNITY_EDITOR
             ResourceUtility.FindMeshRenderShaderBack(modelinstance);
 #endif

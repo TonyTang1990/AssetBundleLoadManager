@@ -180,9 +180,9 @@ namespace TResource
                 Debug.LogError($"ResourcePath:{ResourcePath}已加载完成不应该触发立刻加载!");
                 return;
             }
-            if(IsWaiting)
+            if(!IsWaiting && !IsCancel)
             {
-                Debug.LogError($"ResourcePath:{ResourcePath}未处于等待加载状态,不应该触发立刻加载!");
+                Debug.LogError($"ResourcePath:{ResourcePath}未处于等待加载和取消状态,不应该触发立刻加载!");
                 return;
             }
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}ResourcePath:{ResourcePath}触发立刻加载!");

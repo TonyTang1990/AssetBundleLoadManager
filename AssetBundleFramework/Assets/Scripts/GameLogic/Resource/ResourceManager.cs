@@ -142,7 +142,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                     (loader2, requestUid2) =>
                     {
                         // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
-                        loader2.getAsset<Shader>();
+                        loader2.obtainAsset<Shader>();
                     },
                     loadtype);
                 }

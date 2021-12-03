@@ -165,6 +165,11 @@ namespace TResource
         }
 
         /// <summary>
+        /// FPS帧数计数
+        /// </summary>
+        private int mFPSFrameCount;
+
+        /// <summary>
         /// 经历的时间
         /// </summary>
         private float mTotalDeltaTime;
@@ -612,13 +617,14 @@ namespace TResource
         public virtual void update()
         {
             Frame++;
+            mFPSFrameCount++;
             LoaderManager.Singleton.update();
             mTotalDeltaTime += Time.deltaTime;
             if (mTotalDeltaTime >= mFPSUpdateInterval)
             {
-                CurrentFPS = (int)(Frame / mTotalDeltaTime);
+                CurrentFPS = (int)(mFPSFrameCount / mTotalDeltaTime);
                 mTotalDeltaTime = 0f;
-                Frame = 0;
+                mFPSFrameCount = 0;
             }
             checkUnusedResource();
         }
