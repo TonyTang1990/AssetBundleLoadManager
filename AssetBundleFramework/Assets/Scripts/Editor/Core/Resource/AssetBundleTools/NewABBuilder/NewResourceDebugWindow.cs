@@ -345,7 +345,7 @@ namespace TResource
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label($"AssetBundle检测时间间隔 : {assetbundleresourcemodule.CheckUnsedABTimeInterval}s", GUILayout.Width(200f), GUILayout.Height(20f));
-            GUILayout.Label($"AssetBundle最短生存时长 : {assetbundleresourcemodule.ABMinimumLifeTime}s", GUILayout.Width(200f), GUILayout.Height(20f));
+            GUILayout.Label($"AssetBundle最短生存时长 : {assetbundleresourcemodule.ResourceMinimumLifeTime}s", GUILayout.Width(200f), GUILayout.Height(20f));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label($"单帧最大卸载AB数量 : {assetbundleresourcemodule.MaxUnloadABNumberPerFrame}", GUILayout.Width(200f), GUILayout.Height(20f));
