@@ -204,7 +204,7 @@ namespace TResource
         /// <param name="asyncOperation"></param>
         protected void onAssetAsyncLoadComplete(AsyncOperation asyncOperation)
         {
-            if (mAssetAsyncRequest.asset == null)
+            if (mAssetAsyncRequest.asset == null || IsDone)
             {
                 Debug.LogError($"Asset Path:{ResourcePath}异步加载被同步打断，理论上已经取消回调监听，不应该进入这里!");
                 return;

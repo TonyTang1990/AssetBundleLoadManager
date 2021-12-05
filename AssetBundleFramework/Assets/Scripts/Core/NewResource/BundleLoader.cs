@@ -202,7 +202,7 @@ namespace TResource
             // 依赖的AB的计数一开始也要添加，在加载完成后无需返还(作为依赖计数统计一次即可)
             AssetBundleInfo depAssetBundleInfo;
             // 等于null的话意味着上层已经出问题了，这里只是避免阻断
-            if(DepABPaths!= null)
+            if (DepABPaths != null)
             {
                 for (int i = 0, length = DepABPaths.Length; i < length; i++)
                 {
@@ -285,7 +285,7 @@ namespace TResource
             // 依赖AB一律采取Normal加载方式
             if (LoadMethod == ResourceLoadMethod.Sync)
             {
-                if(mAssetBundlePathAndBundleLoaderMap.Count == 0)
+                if (mAssetBundlePathAndBundleLoaderMap.Count == 0)
                 {
                     loadAssetBundleSync();
                     BundleLoader assetBundleLoader;
@@ -304,11 +304,11 @@ namespace TResource
                 {
                     // 有异步或者动态下载未加载完的AssetBundle
                     // 此时异步加载的需要转同步加载
-                    foreach(var loadUncomplated in mLoadUnCompleteAssetBundlePathMap)
+                    foreach (var loadUncomplated in mLoadUnCompleteAssetBundlePathMap)
                     {
                         ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{loadUncomplated.Key}异步或动态下载未加载完成，转同步加载!");
                         // 如果是当前资源的异步加载正在进行，我们需要取消异步加载完成回调，避免触发多次加载完成回调
-                        if(loadUncomplated.Key.Equals(ResourcePath))
+                        if (loadUncomplated.Key.Equals(ResourcePath))
                         {
                             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}取消AssetBundle:{loadUncomplated.Key}的异步加载完成回调注册!");
                             mAssetBundleAsyncRequest.completed -= onAssetBundleAsyncLoadComplete;
@@ -327,7 +327,7 @@ namespace TResource
                 BundleLoader assetBundleLoader;
                 int assetBundleLoadUID;
                 // 等于null的话意味着上层已经出问题了，这里只是避免阻断
-                if(DepABPaths != null)
+                if (DepABPaths != null)
                 {
                     for (int i = 0, length = DepABPaths.Length; i < length; i++)
                     {
@@ -392,7 +392,7 @@ namespace TResource
         /// <param name="asyncOperation"></param>
         protected void onAssetBundleAsyncLoadComplete(AsyncOperation asyncOperation)
         {
-            if(mAssetBundleAsyncRequest.assetBundle == null)
+            if (mAssetBundleAsyncRequest.assetBundle == null || IsDone)
             {
                 Debug.LogError($"AssetBundle Path:{ResourcePath}异步加载被同步打断，理论上已经取消回调监听，不应该进入这里!");
                 return;
