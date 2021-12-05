@@ -19,11 +19,11 @@ public static class AssetBundlePath {
     #region AssetBundle
 #if UNITY_STANDALONE
     /// <summary> AB包内资源路径 /// </summary>
-    public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/PC/";
+    public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/StandaloneWindows64/";
     /// <summary> AB热更新资源路径 /// </summary>
-    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/PC/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/StandaloneWindows64/";
     /// <summary> 依赖信息文件名 /// </summary>
-    public const string DependencyFileName = "PC";
+    public const string DependencyFileName = "StandaloneWindows64";
 #elif UNITY_ANDROID
     /// <summary> AB包内资源路径 /// </summary>
     public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/Android/";
