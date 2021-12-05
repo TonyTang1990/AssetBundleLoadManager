@@ -207,7 +207,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
                 sfxaudioinfo.Loader = loader;
                 audiosource.clip = ac;
                 audiosource.Play();
-                Timer.Singleton.addTimer(() =>
+                TimerManager.Singleton.addUpdateTimer(() =>
                 {
                     // 手动释放音效资源绑定，因为音效绑定对象会进池会导致无法满足释放条件
                     sfxaudioinfo.SFXAudioSource.clip = null;

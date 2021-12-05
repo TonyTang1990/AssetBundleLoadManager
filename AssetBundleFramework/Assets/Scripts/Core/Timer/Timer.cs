@@ -1,341 +1,232 @@
-/*
+﻿/*
  * Description:             Timer.cs
- * Author:                  TONYTANG
- * Create Date:             2019/09/01
+ * Author:                  TANGHUAN
+ * Create Date:             2021/02/07
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
+// TODO:
+// 支持每隔一段时间触发调用的Timer
 
 /// <summary>
-/// 不依赖于Monobehaviour的定时器(类似携程)
-/// 支持延时+自定义条件的触发形式
+/// Timer数据
 /// </summary>
-public class Timer
+public class Timer : IRecycle
 {
     /// <summary>
-    /// 单例对象(相比SingletonTemplate,可以避免默认构造函数是public)
+    /// 唯一ID
     /// </summary>
-    public readonly static Timer Singleton = new Timer();
+    public long UID
+    {
+        get;
+        protected set;
+    }
 
     /// <summary>
-    /// Timer数据
+    /// 是否暂停单个定时器
     /// </summary>
-    private class TimerData : IRecycle
+    protected bool mIsPause;
+
+    /// <summary>
+    /// 需要触发的回调
+    /// </summary>
+    protected Action mCallBack;
+
+    /// <summary>
+    /// 延时时间
+    /// </summary>
+    protected float mDelayTime;
+
+    /// <summary>
+    /// 是否是Update Timer反之为FixedUpdate Timer
+    /// </summary>
+    protected bool mIsUpdate;
+
+    /// <summary>
+    /// 自定义触发条件
+    /// </summary>
+    protected Func<bool> mTriggerCondition;
+
+    /// <summary>
+    /// 经过的时间
+    /// </summary>
+    protected float mTimePassed;
+
+    /// <summary>
+    /// 是否结束
+    /// </summary>
+    protected bool mIsOver;
+
+    public Timer()
     {
-        /// <summary>
-        /// 唯一ID
-        /// </summary>
-        public long UID
-        {
-            get;
-            set;
-        }
+        UID = 0;
+        mCallBack = null;
+        mDelayTime = 0f;
+        mIsUpdate = true;
+        mTriggerCondition = null;
+        mTimePassed = 0f;
+        mIsPause = false;
+        mIsOver = false;
+    }
 
-        /// <summary>
-        /// 是否暂停单个定时器
-        /// </summary>
-        public bool IsPause
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// 设置Timer数据
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="callback"></param>
+    /// <param name="delaytime"></param>
+    /// <param name="useupdate"></param>
+    /// <param name="triggeercondition"></param>
+    public void setData(long uid, Action callback, float delaytime = 0, bool useupdate = true, Func<bool> triggeercondition = null)
+    {
+        UID = uid;
+        mCallBack = callback;
+        mDelayTime = delaytime;
+        mIsUpdate = useupdate;
+        mTriggerCondition = triggeercondition;
+        mTimePassed = 0f;
+        mIsPause = false;
+        mIsOver = false;
+    }
 
-        /// <summary>
-        /// 需要触发的回调
-        /// </summary>
-        public Action CallBack
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// 暂停Timer
+    /// </summary>
+    public void pause()
+    {
+        mIsPause = true;
+    }
 
-        /// <summary>
-        /// 延时时间
-        /// </summary>
-        public float DelayTime
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// 继续Timer
+    /// </summary>
+    public void resume()
+    {
+        mIsPause = false;
+    }
 
-        /// <summary>
-        /// 自定义触发条件
-        /// </summary>
-        public Func<bool> TriggerCondition
-        {
-            get;
-            set;
-        }
+    /// <summary>
+    /// 停止计时器
+    /// </summary>
+    public void stop()
+    {
+        mIsOver = true;
+    }
 
-        /// <summary>
-        /// 经过的时间
-        /// </summary>
-        public float TimePassed
+    /// <summary>
+    /// Update更新TimerData
+    /// </summary>
+    /// <param name="timepassed"></param>
+    /// <returns></returns>
+    public void update(float timepassed)
+    {
+        if(mIsUpdate)
         {
-            get;
-            set;
-        }
-
-        public TimerData()
-        {
-            UID = 0;
-            CallBack = null;
-            DelayTime = 0f;
-            TriggerCondition = null;
-            TimePassed = 0f;
-        }
-
-        public TimerData(long uid, Action callback, float delaytime = 0, Func<bool> triggeercondition = null)
-        {
-            UID = uid;
-            CallBack = callback;
-            DelayTime = delaytime;
-            TriggerCondition = triggeercondition;
-            TimePassed = 0f;
-        }
-
-        /// <summary>
-        /// 更新TimerData
-        /// </summary>
-        /// <param name="timepassed"></param>
-        /// <returns></returns>
-        public bool update(float timepassed)
-        {
-            if(!IsPause)
+            if (!mIsPause)
             {
-                TimePassed += timepassed;
-                if(TimePassed >= DelayTime)
+                mTimePassed += timepassed;
+                if (mTimePassed >= mDelayTime)
                 {
-                    if(TriggerCondition != null)
+                    if (mTriggerCondition != null)
                     {
-                        if(TriggerCondition.Invoke())
+                        if (mTriggerCondition.Invoke())
                         {
-                            CallBack.Invoke();
-                            return true;
+                            mIsOver = true;
+                            mCallBack.Invoke();
+                            return;
                         }
                     }
                     else
                     {
-                        CallBack.Invoke();
-                        return true;
+                        mIsOver = true;
+                        mCallBack.Invoke();
+                        return;
                     }
                 }
             }
-            return false;
-        }
-
-        /// <summary>
-        /// 对象池弹出创建时
-        /// </summary>
-        public void onCreate()
-        {
-            UID = 0;
-            CallBack = null;
-            DelayTime = 0f;
-            TriggerCondition = null;
-            TimePassed = 0f;
-        }
-
-        /// <summary>
-        /// 对象池回收时
-        /// </summary>
-        public void onDispose()
-        {
-            UID = 0;
-            CallBack = null;
-            DelayTime = 0f;
-            TriggerCondition = null;
-            TimePassed = 0f;
         }
     }
 
     /// <summary>
-    /// 是否暂停所有计时器
+    /// FixedUpdate更新TimerData
     /// </summary>
-    public bool IsPause
-    {
-        get;
-        set;
-    }
-
-    /// <summary>
-    /// Timer的唯一ID
-    /// </summary>
-    private long mTimerUID;
-
-    /// <summary>
-    /// 需要判定的计时数据
-    /// </summary>
-    private Dictionary<long, TimerData> TimerDataMap;
-
-    /// <summary>
-    /// 需要清除的定时器列表
-    /// </summary>
-    private List<long> mClearTimerList;
-
-    /// <summary>
-    /// 延迟一帧添加的Timer定时数据(为了避免Update的时候也在添加Timer造成foreach无法完成遍历)
-    /// </summary>
-    private Dictionary<long, TimerData> mLaterAddedTimerMap;
-
-    private Timer()
-    {
-        mTimerUID = 0;
-        TimerDataMap = new Dictionary<long, TimerData>();
-        mClearTimerList = new List<long>();
-        mLaterAddedTimerMap = new Dictionary<long, TimerData>();
-    }
-
-    /// <summary>
-    /// 添加定时器
-    /// </summary>
-    /// <param name="callback"></param>
-    /// <param name="delaytime"></param>
-    /// <param name="triggeercondition"></param>
+    /// <param name="timepassed"></param>
     /// <returns></returns>
-    public long addTimer(Action callback, float delaytime = 0, Func<bool> triggeercondition = null)
+    public void fixedUpdate(float timepassed)
     {
-        var newtimeruid = getNewTimerUID();
-        //DIYLog.Log(string.Format("添加UID定时器:{0}", newtimeruid));
-        var timerdata = ObjectPool.Singleton.pop<TimerData>();
-        timerdata.UID = newtimeruid;
-        timerdata.CallBack = callback;
-        timerdata.DelayTime = delaytime;
-        timerdata.TriggerCondition = triggeercondition;
-        timerdata.TimePassed = 0;
-        mLaterAddedTimerMap.Add(newtimeruid, timerdata);
-        return newtimeruid;
-    }
-
-    /// <summary>
-    /// 移除定时器
-    /// </summary>
-    /// <param name="uid"></param>
-    /// <returns></returns>
-    public bool removeTimer(long uid)
-    {
-        if (TimerDataMap.ContainsKey(uid))
+        if(!mIsUpdate)
         {
-            //DIYLog.Log(string.Format("移除UID定时器:{0}", uid));
-            var timerdata = TimerDataMap[uid];
-            ObjectPool.Singleton.push<TimerData>(timerdata);
-            TimerDataMap.Remove(uid);
-            return true;
-        }
-        else if(mLaterAddedTimerMap.ContainsKey(uid))
-        {
-            //DIYLog.Log(string.Format("移除UID待添加定时器:{0}", uid));
-            mLaterAddedTimerMap.Remove(uid);
-            return true;
-        }
-        else
-        {
-            //DIYLog.LogError(string.Format("无效的Timer UID:{0},无法移除Timer!", uid));
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// 暂停指定定时器
-    /// </summary>
-    /// <param name="uid"></param>
-    /// <returns></returns>
-    public bool pauseTimer(long uid)
-    {
-        if(TimerDataMap.ContainsKey(uid))
-        {
-            //DIYLog.Log(string.Format("暂停UID定时器:{0}", uid));
-            TimerDataMap[uid].IsPause = true;
-            return true;
-        }
-        else if (mLaterAddedTimerMap.ContainsKey(uid))
-        {
-            //DIYLog.Log(string.Format("暂停待添加UID定时器:{0}", uid));
-            mLaterAddedTimerMap[uid].IsPause = true;
-            return true;
-        }
-        else
-        {
-            //DIYLog.LogError(string.Format("无效的Timer UID:{0},无法暂停Timer!", uid));
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// 继续指定定时器
-    /// </summary>
-    /// <param name="uid"></param>
-    /// <returns></returns>
-    public bool resumeTimer(long uid)
-    {
-        if (TimerDataMap.ContainsKey(uid))
-        {
-            //DIYLog.Log(string.Format("继续UID定时器:{0}", uid));
-            TimerDataMap[uid].IsPause = false;
-            return true;
-        }
-        else if (mLaterAddedTimerMap.ContainsKey(uid))
-        {
-            //DIYLog.Log(string.Format("继续待添加UID定时器:{0}", uid));
-            mLaterAddedTimerMap[uid].IsPause = false;
-            return true;
-        }
-        else
-        {
-            //DIYLog.LogError(string.Format("无效的Timer UID:{0},无法继续Timer!", uid));
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// 清除所有定时器
-    /// </summary>
-    public void clearAllTimer()
-    {
-        //DIYLog.Log("清除所有定时器");
-        TimerDataMap.Clear();
-        mLaterAddedTimerMap.Clear();
-    }
-
-    /// <summary>
-    /// 更新所有定时器
-    /// </summary>
-	public void Update () {
-		if(!IsPause)
-        {
-            //延时一帧添加(为了避免Update的时候也在添加Timer造成foreach无法完成遍历)
-            if (mLaterAddedTimerMap.Count > 0)
+            if (!mIsPause)
             {
-                foreach (var addedtimer in mLaterAddedTimerMap)
+                mTimePassed += timepassed;
+                if (mTimePassed >= mDelayTime)
                 {
-                    TimerDataMap.Add(addedtimer.Key, addedtimer.Value);
-                }
-                mLaterAddedTimerMap.Clear();
-            }
-            mClearTimerList.Clear();
-            foreach (var timerdata in TimerDataMap.Values)
-            {
-                if(timerdata.update(Time.deltaTime))
-                {
-                    mClearTimerList.Add(timerdata.UID);
+                    if (mTriggerCondition != null)
+                    {
+                        if (mTriggerCondition.Invoke())
+                        {
+                            mIsOver = true;
+                            mCallBack.Invoke();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        mIsOver = true;
+                        mCallBack.Invoke();
+                        return;
+                    }
                 }
             }
-            foreach(var cleartimeruid in mClearTimerList)
-            {
-                removeTimer(cleartimeruid);
-            }
         }
-	}
+    }
 
     /// <summary>
-    /// 得到一个最新的定时器UID
+    /// 对象池弹出创建时
+    /// </summary>
+    public void onCreate()
+    {
+        UID = 0;
+        mCallBack = null;
+        mDelayTime = 0f;
+        mIsUpdate = true;
+        mTriggerCondition = null;
+        mTimePassed = 0f;
+        mIsPause = false;
+        mIsOver = false;
+    }
+
+    /// <summary>
+    /// 是否暂停
     /// </summary>
     /// <returns></returns>
-    private long getNewTimerUID()
+    public bool isPaused()
     {
-        return ++mTimerUID;
+        return mIsPause;
+    }
+
+    /// <summary>
+    /// 是否结束
+    /// </summary>
+    /// <returns></returns>
+    public bool isOver()
+    {
+        return mIsOver;
+    }
+
+    /// <summary>
+    /// 对象池回收时
+    /// </summary>
+    public void onDispose()
+    {
+        UID = 0;
+        mCallBack = null;
+        mDelayTime = 0f;
+        mIsUpdate = true;
+        mTriggerCondition = null;
+        mTimePassed = 0f;
+        mIsPause = false;
+        mIsOver = false;
     }
 }
