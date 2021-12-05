@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 2032630270
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2ad66053424e65d47c02b952c3d805af
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/audios/music/backgroundmusic.mp3
+Dependencies: []

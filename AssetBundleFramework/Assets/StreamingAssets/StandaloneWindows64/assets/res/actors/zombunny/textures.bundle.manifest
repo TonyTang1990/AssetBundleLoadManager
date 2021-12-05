@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 1472843255
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d3bf7739c5e3be4e14655a40f97b07ab
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 0a6f9ca6de27cedd10f0532db8ca5f17
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/actors/zombunny/Textures/ZomBunnyDiffuse.tif
+- Assets/Res/actors/zombunny/Textures/ZomBunnyNormals.tif
+Dependencies: []

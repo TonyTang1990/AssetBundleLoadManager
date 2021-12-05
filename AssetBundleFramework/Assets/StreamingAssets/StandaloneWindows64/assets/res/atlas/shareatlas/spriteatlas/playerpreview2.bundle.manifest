@@ -1,0 +1,48 @@
+ManifestFileVersion: 0
+CRC: 1242756419
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0002b8787d04fd41c7d59bb405cf33bd
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8f482d1115e1803eb3af0f87c71223fd
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpainMadridPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNaraPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNagasakiPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShizuokaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewFukuokaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamanashiPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokushimaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShimanePreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSagaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOkinawaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOoitaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShigaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDWakayamaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpaceCommandPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOsakaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSaitamaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewHokkaidoPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokyoPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/playerpreview2.spriteatlas
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOkayamaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTochigiPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTottoriPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamaguchiPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewOsakaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDToyamaPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNiigataPreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamagataPreview.png
+Dependencies: []

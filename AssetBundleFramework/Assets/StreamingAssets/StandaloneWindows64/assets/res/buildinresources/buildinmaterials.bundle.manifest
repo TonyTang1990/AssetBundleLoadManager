@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 2154294649
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4ed5ad1dae1f071a95fabfbbf2a13c95
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cc27a7c2b7aeda57fe404097db2213c0
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/buildinresources/buildinmaterials/Default-Material.mat
+- Assets/Res/buildinresources/buildinmaterials/Default-ParticleSystem.mat
+- Assets/Res/buildinresources/buildinmaterials/Default-Particle.mat
+- Assets/Res/buildinresources/buildinmaterials/Sprites-Default.mat
+Dependencies:
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/StandaloneWindows64/shaderlist.bundle
