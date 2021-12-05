@@ -178,6 +178,32 @@ namespace TResource
         }
 
         /// <summary>
+        /// 真正执行资源卸载指定类型不再使用的资源接口
+        /// </summary>
+        /// <param name="resourceloadtype"></param>
+        protected override void doUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
+        {
+            // 递归判定卸载所有不再可用的正常加载AB
+            bool hasunsedAssetBundle = true;
+            while (hasunsedAssetBundle)
+            {
+                // 检查回收不再使用正常已加载的AB
+                checkUnsedAssetBundleResources();
+
+                if (mUnsedAssetBundleInfoList.Count == 0)
+                {
+                    //不再有可卸载的AB
+                    hasunsedAssetBundle = false;
+                }
+                else
+                {
+                    // 有可卸载的AB
+                    doUnloadUnsedAssetBundleWithLimit(true);
+                }
+            }
+        }
+
+        /// <summary>
         /// 执行不再使用资源监察
         /// </summary>
         protected override void doCheckUnusedResource()
@@ -209,10 +235,9 @@ namespace TResource
             {
                 if (loadedAssetBundleInfo.Value.IsUnsed)
                 {
-                    if ((time - loadedAssetBundleInfo.Value.LastUsedTime) > ABMinimumLifeTime)
-                    {
-                        mUnsedAssetBundleInfoList.Add(loadedAssetBundleInfo.Value);
-                    }
+                    // 强制卸载不需要判定有效资源生命时长
+                    //if ((time - loadedAssetBundleInfo.Value.LastUsedTime) > ResourceMinimumLifeTime)
+                    mUnsedAssetBundleInfoList.Add(loadedAssetBundleInfo.Value);
                 }
             }
 

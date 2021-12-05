@@ -504,91 +504,6 @@ namespace TResource
             );
             // 将异步转同步加载
             assetLoader.loadImmediately();
-            /*
-            TResource.AssetLoader assetLoader;
-            // 测试大批量异步加载资源后立刻同步加载其中一个该源
-            ResourceManager.Singleton.getPrefabInstanceAsync(
-                "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
-                out assetLoader,
-                (instance, requestUid) =>
-                {
-                    mActorInstance = instance;
-                    Debug.Log($"异步加载pre_zombunny完成!");
-                },
-                ResourceLoadType.NormalLoad
-            );
-
-            var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-            TResource.AssetLoader assetLoader2;
-            AtlasManager.Singleton.setImageSingleSpriteAsync(
-                image,
-                "Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.png",
-                out assetLoader2
-            );
-            TResource.AssetLoader assetLoader3;
-            AtlasManager.Singleton.setImageSingleSpriteAsync(
-                image,
-                "Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture.png",
-                out assetLoader3
-            );
-            TResource.AssetLoader assetLoader4;
-            AtlasManager.Singleton.setImageSingleSpriteAsync(
-                image,
-                "Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse.png",
-                out assetLoader4
-            );
-
-            var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
-            TResource.AssetLoader assetLoader5;
-            ResourceManager.Singleton.getMaterialAsync(
-                btnloadmat.gameObject,
-                "Assets/Res/sharematerials/sharematerial.mat",
-                out assetLoader5,
-                (mat, requestUid) =>
-                {
-                    btnloadmat.GetComponent<Image>().material = mat;
-                }
-            );
-
-            TResource.AssetLoader assetLoader6;
-            ResourceManager.Singleton.getPrefabInstance(
-                "Assets/Res/prefabs/SFXTemplate.prefab",
-                (instance, requestUid) =>
-                {
-                    mSFXInstance = instance;
-                }
-            );
-            TResource.AssetLoader assetLoader7;
-            ResourceManager.Singleton.getAudioClipAsync(
-                mSFXInstance,
-                "Assets/Res/audios/sfx/sfx1/explosion.wav",
-                out assetLoader7,
-                (audioclip, requestUid) =>
-                {
-                    var audiosource = mSFXInstance.GetComponent<AudioSource>();
-                    audiosource.clip = audioclip;
-                    audiosource.Play();
-                }
-            );
-
-            CoroutineManager.Singleton.startCoroutine(DoAsyncLoadResource());
-            */
-#endif
-        }
-
-        private IEnumerator DoAsyncLoadResource()
-        {
-            yield return new WaitForEndOfFrame();
-#if NEW_RESOURCE
-            //测试异步加载后同步加载同一资源
-            ResourceManager.Singleton.getPrefabInstance(
-                "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
-                (instance, requestUid) =>
-                {
-                    mActorInstance2 = instance;
-                }
-            );
-            DIYLog.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
 #endif
         }
 
@@ -709,6 +624,27 @@ namespace TResource
         }
 
         /// <summary>
+        /// 打印AB依赖信息
+        /// </summary>
+        public void onPrintABDepInfo()
+        {
+            DIYLog.Log("onPrintABDepInfo()");
+            if(mRMM.CurrentResourceModule is AssetBundleModule)
+            {
+                (mRMM.CurrentResourceModule as AssetBundleModule).printAllResourceDpInfo();
+            }
+        }
+
+        /// <summary>
+        /// 打印已加载资源信息
+        /// </summary>
+        public void onPrintLoadedResourceInfo()
+        {
+            DIYLog.Log("onPrintLoadedResourceInfo()");
+            mRMM.CurrentResourceModule.printAllLoadedResourceOwnersAndRefCount();
+        }
+
+        /// <summary>
         /// 卸载不再使用的Asset
         /// </summary>
         public void onUnloadUnsedAssets()
@@ -720,18 +656,18 @@ namespace TResource
         /// <summary>
         /// 切换资源Log开关
         /// </summary>
-        public void changeResourceLogSwitch()
+        public void onChangeResourceLogSwitch()
         {
-            DIYLog.Log("changeResourceLogSwitch()");
+            DIYLog.Log("onChangeResourceLogSwitch()");
             ResourceLogger.LogSwitch = !ResourceLogger.LogSwitch;
         }
 
         /// <summary>
         /// 打印版本信息
         /// </summary>
-        public void printVersionInfo()
+        public void onPrintVersionInfo()
         {
-            DIYLog.Log("printVersionInfo()");
+            DIYLog.Log("onPrintVersionInfo()");
             VersionConfigModuleManager.Singleton.initVerisonConfigData();
             if (HotUpdateModuleManager.Singleton.ServerVersionConfig != null)
             {
@@ -746,9 +682,9 @@ namespace TResource
         /// <summary>
         /// 存储最新版本信息
         /// </summary>
-        public void saveNewVersionInfo()
+        public void onSaveNewVersionInfo()
         {
-            DIYLog.Log("saveNewVersionInfo()");
+            DIYLog.Log("onSaveNewVersionInfo()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
@@ -776,9 +712,9 @@ namespace TResource
         /// <summary>
         /// 打印所有表格数据
         /// </summary>
-        public void printAllExcellData()
+        public void onPrintAllExcellData()
         {
-            DIYLog.Log("printAllExcellData()");
+            DIYLog.Log("onPrintAllExcellData()");
             var languagelist = GameDataManager.Singleton.t_languagecontainer.getList();
             foreach (var language in languagelist)
             {
@@ -812,9 +748,9 @@ namespace TResource
         /// <summary>
         /// 打印所有AB路径信息
         /// </summary>
-        public void printAllABPath()
+        public void onPrintAllABPath()
         {
-            DIYLog.Log("printAllABPath()");
+            DIYLog.Log("onPrintAllABPath()");
             AssetBundlePath.PrintAllPathInfo();
         }
 
@@ -830,18 +766,18 @@ namespace TResource
         /// <summary>
         /// 获取服务器版本信息
         /// </summary>
-        public void obtainServerVersionConfig()
+        public void onObtainServerVersionConfig()
         {
-            DIYLog.Log("obtainServerVersionConfig()");
+            DIYLog.Log("onObtainServerVersionConfig()");
             HotUpdateModuleManager.Singleton.doObtainServerVersionConfig(serverVersionConfigHotUpdateCompleteCallBack);
         }
 
         /// <summary>
         /// 版本强更测试
         /// </summary>
-        public void testVersionwHotUpdate()
+        public void onTestVersionwHotUpdate()
         {
-            DIYLog.Log("testVersionwHotUpdate()");
+            DIYLog.Log("onTestVersionwHotUpdate()");
             if (HotUpdateModuleManager.Singleton.ServerVersionConfig != null)
             {
                 if (HotUpdateModuleManager.Singleton.checkVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
@@ -858,9 +794,9 @@ namespace TResource
         /// <summary>
         /// 资源热更测试
         /// </summary>
-        public void testResourceHotUpdate()
+        public void onTestResourceHotUpdate()
         {
-            DIYLog.Log("testResourceHotUpdate()");
+            DIYLog.Log("onTestResourceHotUpdate()");
             if (HotUpdateModuleManager.Singleton.ServerVersionConfig != null)
             {
                 if (HotUpdateModuleManager.Singleton.checkResourceHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode))
@@ -904,9 +840,9 @@ namespace TResource
         /// <summary>
         /// 测试热更新完整流程
         /// </summary>
-        public void testHotUpdateFullWorkFlow()
+        public void onTestHotUpdateFullWorkFlow()
         {
-            DIYLog.Log("testHotUpdateFullWorkFlow()");
+            DIYLog.Log("onTestHotUpdateFullWorkFlow()");
             VersionConfigModuleManager.Singleton.initVerisonConfigData();
             //检测是否强更过版本
             HotUpdateModuleManager.Singleton.checkHasVersionHotUpdate();
@@ -982,9 +918,9 @@ namespace TResource
         /// <summary>
         /// 尝试进游戏(验证版本强更以及资源热更相关判定)
         /// </summary>
-        public void tryEnterGame()
+        public void onTryEnterGame()
         {
-            DIYLog.Log("tryEnterGame()");
+            DIYLog.Log("onTryEnterGame()");
             VersionConfigModuleManager.Singleton.initVerisonConfigData();
             if (HotUpdateModuleManager.Singleton.HotUpdateSwitch)
             {
@@ -1018,9 +954,9 @@ namespace TResource
         /// <summary>
         /// 强制卸载指定AB
         /// </summary>
-        public void forceUnloadSpecificAB()
+        public void onForceUnloadSpecificAB()
         {
-            DIYLog.Log("forceUnloadSpecificAB()");
+            DIYLog.Log("onForceUnloadSpecificAB()");
             if (ResourceModuleManager.Singleton.CurrentResourceModule.ResLoadMode == ResourceLoadMode.AssetBundle)
             {
                 var param1 = InputParam1.text;

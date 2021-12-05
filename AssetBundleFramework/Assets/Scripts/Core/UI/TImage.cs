@@ -31,7 +31,7 @@ namespace TUI
         }
 #else
         /// <summary>
-        /// 资源加载器
+        /// 资源加载器(默认采用对象绑定所以不需要再OnDestroy时返还计数)
         /// </summary>
         public TResource.AssetLoader Loader
         {

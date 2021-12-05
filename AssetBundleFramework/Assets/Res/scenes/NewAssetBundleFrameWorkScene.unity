@@ -203,8 +203,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1230477525}
-        m_MethodName: 
+      - m_Target: {fileID: 1230477527}
+        m_MethodName: onPrintVersionInfo
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -563,7 +563,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 203959510}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1230477527}
+        m_MethodName: onTButtonListenerClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   EnableLongtimePress: 1
   IsLongtimePressOnlyOnce: 1
   LongtimePressTimeInterval: 2
@@ -1654,8 +1665,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1230477525}
-        m_MethodName: 
+      - m_Target: {fileID: 1230477527}
+        m_MethodName: onChangeResourceLogSwitch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1818,7 +1829,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1230477527}
-        m_MethodName: obtainServerVersionConfig
+        m_MethodName: onObtainServerVersionConfig
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1947,8 +1958,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1230477525}
-        m_MethodName: 
+      - m_Target: {fileID: 1230477527}
+        m_MethodName: onTestVersionwHotUpdate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2363,8 +2374,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1230477525}
-        m_MethodName: 
+      - m_Target: {fileID: 1230477527}
+        m_MethodName: onTestResourceHotUpdate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2790,8 +2801,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1230477525}
-        m_MethodName: 
+      - m_Target: {fileID: 1230477527}
+        m_MethodName: onTryEnterGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3347,8 +3358,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1230477525}
-        m_MethodName: 
+      - m_Target: {fileID: 1230477527}
+        m_MethodName: onPrintAllExcellData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4547,8 +4558,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1230477525}
-        m_MethodName: 
+      - m_Target: {fileID: 1230477527}
+        m_MethodName: onSaveNewVersionInfo
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4678,7 +4689,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1230477527}
-        m_MethodName: printAllABPath
+        m_MethodName: onPrintAllABPath
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4964,7 +4975,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1230477527}
-        m_MethodName: forceUnloadSpecificAB
+        m_MethodName: onForceUnloadSpecificAB
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7606,8 +7617,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1230477525}
-        m_MethodName: 
+      - m_Target: {fileID: 1230477527}
+        m_MethodName: onTestHotUpdateFullWorkFlow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

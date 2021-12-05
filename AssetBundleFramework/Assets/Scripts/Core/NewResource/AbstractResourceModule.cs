@@ -109,10 +109,10 @@ namespace TResource
         }
 
         /// <summary>
-        /// AB最短的有效生存时间
-        /// 用于避免短时间内频繁删除卸载同一个AB的情况(比如同一个窗口AB资源不断重复打开关闭)
+        /// 资源(Asset或者AssetBundle)最短的有效生存时间
+        /// 用于避免短时间内频繁删除卸载同一个资源的情况(比如同一个窗口资源资源不断重复打开关闭)
         /// </summary>
-        public float ABMinimumLifeTime
+        public float ResourceMinimumLifeTime
         {
             get;
             protected set;
@@ -195,7 +195,7 @@ namespace TResource
             // TODO: 根据设备设定相关参数，改成读表控制
             CheckUnsedABTimeInterval = 10.0f;
             MaxUnloadABNumberPerFrame = 5;
-            ABMinimumLifeTime = 40.0f;
+            ResourceMinimumLifeTime = 40.0f;
             ResourceRecycleFPSThreshold = 20;
 
             mFPSUpdateInterval = 1.0f;
@@ -212,7 +212,7 @@ namespace TResource
         public AssetInfo getOrCreateAssetInfo<T>(string assetPath, string ownerAssetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
         {
             AssetInfo assetInfo = getAssetInfo(assetPath);
-            if(assetInfo == null)
+            if (assetInfo == null)
             {
                 assetInfo = createAssetInfo<T>(assetPath, ownerAssetBundlePath, loadType);
                 addAssetInfo(assetInfo);
@@ -295,7 +295,7 @@ namespace TResource
         public bool deleteAssetInfo(string assetPath)
         {
             AssetInfo assetInfo;
-            if(mAllLoadedNormalAssetInfoMap.TryGetValue(assetPath, out assetInfo))
+            if (mAllLoadedNormalAssetInfoMap.TryGetValue(assetPath, out assetInfo))
             {
                 mAllLoadedNormalAssetInfoMap.Remove(assetPath);
                 assetInfo.dispose();
@@ -402,7 +402,7 @@ namespace TResource
         public bool deleteAssetBundleInfo(string assetBundlePath)
         {
             AssetBundleInfo assetBundleInfo;
-            if(mAllLoadedNormalAssetBundleInfoMap.TryGetValue(assetBundlePath, out assetBundleInfo))
+            if (mAllLoadedNormalAssetBundleInfoMap.TryGetValue(assetBundlePath, out assetBundleInfo))
             {
                 mAllLoadedNormalAssetBundleInfoMap.Remove(assetBundlePath);
                 assetBundleInfo.dispose();
@@ -423,11 +423,11 @@ namespace TResource
         /// <returns></returns>
         public Dictionary<string, AssetInfo> getSpecificLoadTypeAssetInfoMap(ResourceLoadType loadtype)
         {
-            if(loadtype == ResourceLoadType.NormalLoad)
+            if (loadtype == ResourceLoadType.NormalLoad)
             {
                 return mAllLoadedNormalAssetInfoMap;
             }
-            else if(loadtype == ResourceLoadType.PermanentLoad)
+            else if (loadtype == ResourceLoadType.PermanentLoad)
             {
                 return mAllLoadedPermanentAssetInfoMap;
             }
@@ -526,7 +526,7 @@ namespace TResource
             assetLoader = LoaderManager.Singleton.getAssetLoader(assetPath);
             if (assetLoader != null)
             {
-                if(assetLoader.IsDone)
+                if (assetLoader.IsDone)
                 {
                     completeHandler.Invoke(assetLoader, 0);
                     return 0;
@@ -658,8 +658,8 @@ namespace TResource
             }
 
             mUnloadUnsedABTotalDeltaTime += Time.deltaTime;
-            if(CurrentFPS >= ResourceRecycleFPSThreshold 
-                && mUnloadUnsedABTotalDeltaTime > CheckUnsedABTimeInterval 
+            if (CurrentFPS >= ResourceRecycleFPSThreshold
+                && mUnloadUnsedABTotalDeltaTime > CheckUnsedABTimeInterval
                 && !LoaderManager.Singleton.HasLoadingTask)
             {
                 // 因为Asset依赖加载是无法准确得知的，所以无法做到Asset级别准确卸载
@@ -677,6 +677,36 @@ namespace TResource
         {
 
         }
+
+        /// <summary>
+        /// 提供给外部的触发卸载所有正常加载不再使用的资源(递归判定，不限制回收数量)
+        /// Note:
+        /// 同步接口，回收数量会比较大，只建议切场景时场景卸载后调用一次
+        /// </summary>
+        public void unloadAllUnsedNormalLoadedResources()
+        {
+            unloadSpecificLoadTypeUnsedResource(ResourceLoadType.NormalLoad);
+        }
+
+        /// <summary>
+        /// 卸载指定类型不再使用的资源(Note:不支持卸载常驻资源类型)
+        /// </summary>
+        /// <param name="resourceloadtype">资源加载类型</param>
+        protected void unloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
+        {
+            if (resourceloadtype == ResourceLoadType.PermanentLoad)
+            {
+                ResourceLogger.logErr("不允许卸载常驻AB资源!");
+                return;
+            }
+            doUnloadSpecificLoadTypeUnsedResource(resourceloadtype);
+        }
+
+        /// <summary>
+        /// 真正执行资源卸载指定类型不再使用的资源接口
+        /// </summary>
+        /// <param name="resourceloadtype">资源加载类型</param>
+        protected abstract void doUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype);
 
         #region 调试开发工具
         /// <summary>
@@ -711,6 +741,36 @@ namespace TResource
                 }
             }
             return unsednumber;
+        }
+
+        /// <summary>
+        /// 打印当前资源所有使用者信息以及索引计数(开发用)
+        /// </summary>
+        public void printAllLoadedResourceOwnersAndRefCount()
+        {
+            ResourceLogger.log("Normal Loaded AssetBundle Info:");
+            foreach (var assetBundleInfo in mAllLoadedNormalAssetBundleInfoMap)
+            {
+                assetBundleInfo.Value.printAllOwnersNameAndRefCount();
+            }
+
+            ResourceLogger.log("Permanent Loaded AssetBundle Info:");
+            foreach (var assetBundleInfo in mAllLoadedPermanentAssetBundleInfoMap)
+            {
+                assetBundleInfo.Value.printAllOwnersNameAndRefCount();
+            }
+
+            ResourceLogger.log("Normal Loaded Asset Info:");
+            foreach (var assetBundleInfo in mAllLoadedNormalAssetInfoMap)
+            {
+                assetBundleInfo.Value.printAllOwnersNameAndRefCount();
+            }
+
+            ResourceLogger.log("Permanent Loaded Asset Info:");
+            foreach (var assetBundleInfo in mAllLoadedPermanentAssetInfoMap)
+            {
+                assetBundleInfo.Value.printAllOwnersNameAndRefCount();
+            }
         }
         #endregion
     }

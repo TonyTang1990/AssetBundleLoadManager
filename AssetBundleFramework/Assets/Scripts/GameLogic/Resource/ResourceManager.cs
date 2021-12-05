@@ -129,35 +129,38 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
         out bundleLoader,
         (loader, requestUid) =>
         {
-            var bundle = loader.getAssetBundle();
-            var allAssetNames = bundle.GetAllAssetNames();
-            TResource.AssetLoader assetLoader;
-            for (int i = 0, length = allAssetNames.Length; i < length; i++)
+            var bundle = loader?.getAssetBundle();
+            var allAssetNames = bundle?.GetAllAssetNames();
+            if(allAssetNames != null)
             {
-                if(!allAssetNames[i].EndsWith(".shadervariants"))
+                TResource.AssetLoader assetLoader;
+                for (int i = 0, length = allAssetNames.Length; i < length; i++)
                 {
-                    TResource.ResourceModuleManager.Singleton.requstAssetSync<Shader>(
-                    allAssetNames[i],
-                    out assetLoader,
-                    (loader2, requestUid2) =>
+                    if (!allAssetNames[i].EndsWith(".shadervariants"))
                     {
-                        // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
-                        loader2.obtainAsset<Shader>();
-                    },
-                    loadtype);
-                }
-                else
-                {
-                    TResource.ResourceModuleManager.Singleton.requstAssetSync<ShaderVariantCollection>(
-                    allAssetNames[i],
-                    out assetLoader,
-                    (loader3, requestUid3) =>
+                        TResource.ResourceModuleManager.Singleton.requstAssetSync<Shader>(
+                        allAssetNames[i],
+                        out assetLoader,
+                        (loader2, requestUid2) =>
+                        {
+                            // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
+                            loader2.obtainAsset<Shader>();
+                        },
+                        loadtype);
+                    }
+                    else
                     {
-                        var shaderVariants = loader3.getAsset<ShaderVariantCollection>();
-                        // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
-                        shaderVariants?.WarmUp();
-                    },
-                    loadtype);
+                        TResource.ResourceModuleManager.Singleton.requstAssetSync<ShaderVariantCollection>(
+                        allAssetNames[i],
+                        out assetLoader,
+                        (loader3, requestUid3) =>
+                        {
+                            var shaderVariants = loader3.getAsset<ShaderVariantCollection>();
+                            // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
+                            shaderVariants?.WarmUp();
+                        },
+                        loadtype);
+                    }
                 }
             }
             callback?.Invoke();

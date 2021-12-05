@@ -211,7 +211,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
                 {
                     // 手动释放音效资源绑定，因为音效绑定对象会进池会导致无法满足释放条件
                     sfxaudioinfo.SFXAudioSource.clip = null;
-                    sfxaudioinfo.Loader.releaseAsset<AudioClip>(sfxaudioinfo.SFXAudioGo);
+                    sfxaudioinfo.Loader.releaseOwner(sfxaudioinfo.SFXAudioGo);
                     mAudioGoPool.Push(mSFXInstanceID, sfxaudioinfo.SFXAudioGo);
                     ObjectPool.Singleton.push<SFXAudioInfo>(sfxaudioinfo);
                 }, ac.length);
@@ -235,7 +235,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
         //背景音效是挂载DontDestroyOnLoad上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
         if (mCurrentBGMAssetLoader != null)
         {
-            mCurrentBGMAssetLoader.releaseAsset<AudioClip>(mBGMAudioSource);
+            mCurrentBGMAssetLoader.releaseOwner(mBGMAudioSource);
             mCurrentBGMAssetLoader = null;
         }
 

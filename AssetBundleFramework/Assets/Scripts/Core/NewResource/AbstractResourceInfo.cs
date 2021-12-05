@@ -157,7 +157,12 @@ namespace TResource
         /// </summary>
         public virtual void release()
         {
-            RefCount = Mathf.Max(0, RefCount - 1);
+            var newRefCount = RefCount - 1;
+            if(newRefCount < 0)
+            {
+                Debug.LogError($"资源:{ResourcePath}的索引计数信息小于了0,请检查代码!");
+            }
+            RefCount = Mathf.Max(0, newRefCount);
         }
 
         /// <summary>
@@ -251,5 +256,32 @@ namespace TResource
             mResource = null;
             mReferenceOwnerList.Clear();
         }
+
+        #region 辅助调试工具
+        /// <summary>
+        /// 打印当前AB所有使用者信息以及索引计数(开发用)
+        /// </summary>
+        public void printAllOwnersNameAndRefCount()
+        {
+            ResourceLogger.log(string.Format("Resource Path: {0}", ResourcePath));
+            ResourceLogger.log(string.Format("Ref Count: {0}", RefCount));
+            if (mReferenceOwnerList.Count == 0)
+            {
+                ResourceLogger.log("    Owners Name : None");
+            }
+            else
+            {
+                ResourceLogger.log("    Owners Name :");
+                for (int i = 0, length = mReferenceOwnerList.Count; i < length; i++)
+                {
+                    if (mReferenceOwnerList[i].Target != null)
+                    {
+                        ResourceLogger.log(string.Format("      owner[{0}] : {1}", i, mReferenceOwnerList[i].Target.ToString()));
+                    }
+                }
+            }
+            ResourceLogger.log(string.Format("  Last Used Time: {0}", LastUsedTime));
+        }
+        #endregion
     }
 }

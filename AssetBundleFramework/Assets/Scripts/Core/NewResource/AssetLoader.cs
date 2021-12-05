@@ -191,21 +191,35 @@ namespace TResource
         }
 
         /// <summary>
-        /// 为Asset添加指定owner的引用并返回该Asset
+        /// 添加资源引用，引用计数+1(用于不需要获取指定Asset直接添加计数的情况)
+        /// </summary>
+        public void retainAsset()
+        {
+            mAssetInfo.retain();
+        }
+
+        /// <summary>
+        /// 减少Asset资源资源计数
+        /// 所有owner都销毁且自身索引计数归零并且所属AssetBundle引用计数归零+绑定对象为空时可回收
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public void releaseAsset()
+        {
+            mAssetInfo.release();
+        }
+
+        /// <summary>
+        /// 解除Asset资源的指定Owner对象绑定
         /// 所有owner都销毁且所属ab引用计数归零可回收
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public T releaseAsset<T>(UnityEngine.Object owner) where T : UnityEngine.Object
+        public bool releaseOwner(UnityEngine.Object owner)
         {
-            if (!IsDone)
-            {
-                loadImmediately();
-            }
-            T asset = mAssetInfo.getResource<T>();
-            mAssetInfo.releaseOwner(owner);
-            return asset;
+            return mAssetInfo.releaseOwner(owner);
         }
 
         /// <summary>

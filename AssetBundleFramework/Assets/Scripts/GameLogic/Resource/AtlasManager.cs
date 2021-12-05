@@ -251,15 +251,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     //{
     //    DIYLog.Log($"加载SpriteAtlas:{atlaspath}");
     //    // Later Bind -- 依赖使用SpriteAtlas的加载都会触发这里
-    //    ResourceModuleManager.Singleton.requstResource(
-    //    atlaspath,
-    //    (abi) =>
-    //    {
-    //        var assetname = Path.GetFileName(atlaspath);
-    //        DIYLog.Log($"Later Bind加载SpriteAtlas:{atlaspath}");
-    //        var sa = abi.loadAsset<SpriteAtlas>(assetname);
-    //        callback(sa);
-    //    });
+    //    // TODO:待填坑
     //}
 
     /// <summary>
@@ -279,7 +271,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
             out assetBundleLoader,
             (loader, requestUid) =>
             {
-                var bundle = loader.obtainAssetBundle();
+                var bundle = loader?.obtainAssetBundle();
                 callback?.Invoke(requestUid);
             },
             loadtype
@@ -303,7 +295,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
             out bundleLoader,
             (loader, requestUid) =>
             {
-                var bundle = loader.obtainAssetBundle();
+                var bundle = loader?.obtainAssetBundle();
                 callback?.Invoke(requestUid);
             },
             loadtype
@@ -380,7 +372,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 // 清除老的资源引用
                 if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
                 {
-                    timg.Loader.releaseAsset<Sprite>(timg);
+                    timg.Loader.releaseOwner(timg);
                     timg.Loader = null;
                 }
                 var sprite = loader.bindAsset<Sprite>(timg);
@@ -412,7 +404,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 // 清除老的资源引用
                 if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
                 {
-                    timg.Loader.releaseAsset<Sprite>(timg);
+                    timg.Loader.releaseOwner(timg);
                     timg.Loader = null;
                 }
                 var sprite = loader.bindAsset<Sprite>(timg);
@@ -447,7 +439,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 // 清除老的资源引用
                 if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
                 {
-                    timg.Loader.releaseAsset<SpriteAtlas>(timg);
+                    timg.Loader.releaseOwner(timg);
                     timg.Loader = null;
                 }
                 var atlasname = Path.GetFileNameWithoutExtension(atlaspath);
@@ -487,7 +479,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 // 清除老的资源引用
                 if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
                 {
-                    timg.Loader.releaseAsset<SpriteAtlas>(timg);
+                    timg.Loader.releaseOwner(timg);
                     timg.Loader = null;
                 }
                 var atlasname = Path.GetFileNameWithoutExtension(atlaspath);
@@ -528,7 +520,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 // 清除老的资源引用
                 if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
                 {
-                    timg.Loader.releaseAsset<Sprite>(timg);
+                    timg.Loader.releaseOwner(timg);
                     timg.Loader = null;
                 }
                 var sprite = loader.bindAsset<Sprite>(timg);
@@ -564,7 +556,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 // 清除老的资源引用
                 if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
                 {
-                    timg.Loader.releaseAsset<Sprite>(timg);
+                    timg.Loader.releaseOwner(timg);
                     timg.Loader = null;
                 }
                 var sprite = loader.bindAsset<Sprite>(timg);
@@ -597,7 +589,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 // 清除老的资源引用
                 if (trawimg.Loader != null && !string.IsNullOrEmpty(trawimg.TextureName))
                 {
-                    trawimg.Loader.releaseAsset<Texture>(trawimg);
+                    trawimg.Loader.releaseOwner(trawimg);
                 }
                 var texture = loader.bindAsset<Texture>(trawimg);
                 trawimg.texture = texture;
@@ -629,7 +621,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 // 清除老的资源引用
                 if (trawimg.Loader != null && !string.IsNullOrEmpty(trawimg.TextureName))
                 {
-                    trawimg.Loader.releaseAsset<Texture>(trawimg);
+                    trawimg.Loader.releaseOwner(trawimg);
                 }
                 var texture = loader.getAsset<Texture>();
                 loader.bindAsset<Texture>(texture);

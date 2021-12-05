@@ -71,18 +71,6 @@ namespace TResource
             CurrentResourceModule.init();
         }
 
-        ///// <summary>
-        ///// 同步请求Asset资源
-        ///// 同步Asset资源加载统一入口
-        ///// </summary>
-        ///// <param name="assetPath">资源路径(带后缀)</param>
-        ///// <param name="loadType">资源加载类型</param>
-        //public T requstAssetSync<T>(string assetPath, out AssetLoader assetLoader, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
-        //{
-        //    CurrentResourceModule.requstAsset<T>(assetPath, out assetLoader, null, loadType, ResourceLoadMethod.Sync);
-        //    return assetLoader.getAsset<T>();
-        //}
-
         /// <summary>
         /// 同步请求Asset资源(为未来支持动态资源加载做准备)
         /// 同步Asset资源加载统一入口
@@ -107,17 +95,6 @@ namespace TResource
         {
             return CurrentResourceModule.requstAsset<T>(assetPath, out assetLoader, completeHandler, loadType, ResourceLoadMethod.Async);
         }
-
-        ///// <summary>
-        ///// 同步请求AssetBundle资源
-        ///// 同步AssetBundle资源加载统一入口
-        ///// </summary>
-        ///// <param name="assetBundlePath">AB资源路径</param>
-        ///// <param name="loadType">资源加载类型</param>
-        //public int requstAssetBundleSync(string assetBundlePath, out BundleLoader assetBundleLoader, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
-        //{
-        //    return CurrentResourceModule.requstAssetBundle(assetBundlePath, out assetBundleLoader, null, loadType, ResourceLoadMethod.Sync);
-        //}
 
         /// <summary>
         /// 同步请求AssetBundle资源(回调式--为未来支持动态资源加载做准备)

@@ -235,7 +235,27 @@ namespace TResource
         /// <param name="owner"></param>
         /// <returns></returns>
         public abstract AssetBundle bindAssetBundle(UnityEngine.Object owner);
-        
+
+        /// <summary>
+        /// 添加资源引用，引用计数+1(用于不需要获取指定AssetBundle直接添加计数的情况)
+        /// </summary>
+        public void retainAssetBundle()
+        {
+            AssetBundleInfo.retain();
+        }
+
+        /// <summary>
+        /// 减少AssetBundle资源资源计数
+        /// 所有owner都销毁且自身索引计数归零并且所属所有Asset都引用计数归零+绑定对象为空时可回收
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public void releaseAssetBundle()
+        {
+            AssetBundleInfo.release();
+        }
+
         /// <summary>
         /// 获取索引计数
         /// </summary>
