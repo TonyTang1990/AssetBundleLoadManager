@@ -7,6 +7,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace TResource
@@ -20,11 +23,30 @@ namespace TResource
         /// <summary>
         /// 资源加载模式
         /// </summary>
-        public ResourceLoadMode LoadMode
+        public ResourceLoadMode ResLoadMode
         {
-            get;
-            set;
+            get
+            {
+                return mResLoadMode;
+            }
+            set
+            {
+#if UNITY_EDITOR
+                mResLoadMode = value;
+                PlayerPrefs.SetInt(ResLoadModeKey, (int)mResLoadMode);
+                Debug.Log(string.Format("切换资源加载模式到 : {0},重新运行Editor后生效!", mResLoadMode));
+                if (EditorApplication.isPlaying)
+                {
+                    EditorApplication.isPlaying = false;
+                }
+#else
+                //非编辑器只支持AssetBundle模式
+                mResLoadMode = ResourceLoadMode.AssetBundle;
+                Debug.Log("真机模式只支持AssetBundle模式，不允许切换!");
+#endif
+            }
         }
+        private ResourceLoadMode mResLoadMode;
 
         /// <summary>
         /// 当前资源加载模块
@@ -53,21 +75,21 @@ namespace TResource
         public void init()
         {
 #if UNITY_EDITOR
-            LoadMode = (ResourceLoadMode)PlayerPrefs.GetInt(ResLoadModeKey, (int)ResourceLoadMode.AssetBundle);
-            if (LoadMode == ResourceLoadMode.AssetBundle)
+            mResLoadMode = (ResourceLoadMode)PlayerPrefs.GetInt(ResLoadModeKey, (int)ResourceLoadMode.AssetBundle);
+            if (mResLoadMode == ResourceLoadMode.AssetBundle)
             {
                 CurrentResourceModule = new AssetBundleModule();
             }
-            else if (LoadMode == ResourceLoadMode.AssetDatabase)
+            else if (mResLoadMode == ResourceLoadMode.AssetDatabase)
             {
                 CurrentResourceModule = new AssetDatabaseModule();
             }
 #else
             //非编辑器只支持AssetBundle模式
-            LoadMode = ResourceLoadMode.AssetBundle;
+            mResLoadMode = ResourceLoadMode.AssetBundle;
             CurrentResourceModule = new AssetBundleModule();
 #endif
-            Debug.Log(string.Format("当前资源加载模式 : {0}", LoadMode));
+            Debug.Log(string.Format("当前资源加载模式 : {0}", mResLoadMode));
             CurrentResourceModule.init();
         }
 

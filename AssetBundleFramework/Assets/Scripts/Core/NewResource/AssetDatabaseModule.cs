@@ -44,8 +44,12 @@ namespace TResource
         /// <returns>请求UID</returns>
         protected override int realRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
-            assetLoader = null;
-            return 0;
+            var requestUID = LoaderManager.Singleton.GetNextRequestUID();
+            var assetDatabaseLoader = LoaderManager.Singleton.createAssetDatabaseLoader<T>(assetPath, loadType, loadMethod) as AssetDatabaseLoader;
+            assetDatabaseLoader.addRequest(requestUID, completeHandler);
+            assetLoader = assetDatabaseLoader as AssetDatabaseLoader;
+            assetDatabaseLoader.load();
+            return requestUID;
         }
 
         /// <summary>

@@ -129,8 +129,15 @@ public class GameLauncher : MonoBehaviour {
 
     private void Update()
     {
-        Timer.Singleton.Update();
         ResourceModuleManager.Singleton.Update();
+        TimerManager.Singleton.update(Time.deltaTime);
+        UpdateManager.Singleton.update(Time.deltaTime);
+    }
+
+    private void FixedUpdate()
+    {
+        TimerManager.Singleton.fixedUpdate(Time.fixedDeltaTime);
+        UpdateManager.Singleton.fixedUpdate(Time.fixedDeltaTime);
     }
 
     private void OnDestroy()

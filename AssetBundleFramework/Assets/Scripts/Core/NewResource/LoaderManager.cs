@@ -484,6 +484,38 @@ namespace TResource
 
         #region 调试用
         /// <summary>
+        /// 获取所有AssetBundle加载器
+        /// </summary>
+        /// <returns></returns>
+        public void getAllAssetBundleLoader(ref List<BundleLoader> allAssetBundleLoader)
+        {
+            allAssetBundleLoader.Clear();
+            foreach (var loader in mAllLoaderMap)
+            {
+                if(loader.Value is BundleLoader)
+                {
+                    allAssetBundleLoader.Add(loader.Value as BundleLoader);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取所有Asset加载器
+        /// </summary>
+        /// <returns></returns>
+        public void getAllAssetLoader(ref List<AssetLoader> allAssetLoader)
+        {
+            allAssetLoader.Clear();
+            foreach (var loader in mAllLoaderMap)
+            {
+                if (loader.Value is AssetLoader)
+                {
+                    allAssetLoader.Add(loader.Value as AssetLoader);
+                }
+            }
+        }
+
+        /// <summary>
         /// 获取所有等待加载的AssetBundle加载器
         /// </summary>
         /// <returns></returns>
@@ -492,7 +524,7 @@ namespace TResource
             waitLoadedAssetBundleLoader.Clear();
             foreach (var waitLoadedLoader in mAllWaitLoadLoaderList)
             {
-                if(waitLoadedLoader is BundleLoader)
+                if (waitLoadedLoader is BundleLoader)
                 {
                     waitLoadedAssetBundleLoader.Add(waitLoadedLoader as BundleLoader);
                 }

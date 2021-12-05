@@ -91,8 +91,8 @@ namespace TResource
         /// </summary>
         protected Dictionary<string, AssetBundleInfo> mAllLoadedPermanentAssetBundleInfoMap;
 
-        /// <summary> 检测未使用AB时间间隔(在请求队列为空时才检测未使用AB) /// </summary>
-        public float CheckUnsedABTimeInterval
+        /// <summary> 检测未使用资源时间间隔(在请求队列为空时才检测未使用资源) /// </summary>
+        public float CheckUnsedResourceTimeInterval
         {
             get;
             protected set;
@@ -128,9 +128,9 @@ namespace TResource
         }
 
         /// <summary>
-        /// AB资源卸载经历的时间
+        /// 资源卸载经历的时间
         /// </summary>
-        private float mUnloadUnsedABTotalDeltaTime;
+        private float mUnloadUnsedResourceTotalDeltaTime;
         #endregion
 
         #region AB模式相关信息获取(采用延迟绑定的方式来解决AB模式下特有的AB信息获取)
@@ -193,7 +193,7 @@ namespace TResource
             mAllLoadedPermanentAssetBundleInfoMap = new Dictionary<string, AssetBundleInfo>();
 
             // TODO: 根据设备设定相关参数，改成读表控制
-            CheckUnsedABTimeInterval = 10.0f;
+            CheckUnsedResourceTimeInterval = 10.0f;
             MaxUnloadABNumberPerFrame = 5;
             ResourceMinimumLifeTime = 40.0f;
             ResourceRecycleFPSThreshold = 20;
@@ -657,15 +657,15 @@ namespace TResource
                 return;
             }
 
-            mUnloadUnsedABTotalDeltaTime += Time.deltaTime;
+            mUnloadUnsedResourceTotalDeltaTime += Time.deltaTime;
             if (CurrentFPS >= ResourceRecycleFPSThreshold
-                && mUnloadUnsedABTotalDeltaTime > CheckUnsedABTimeInterval
+                && mUnloadUnsedResourceTotalDeltaTime > CheckUnsedResourceTimeInterval
                 && !LoaderManager.Singleton.HasLoadingTask)
             {
                 // 因为Asset依赖加载是无法准确得知的，所以无法做到Asset级别准确卸载
                 // 所以只对AssetBundle进行卸载检测判定
                 // 而AssetBundle的卸载判定里包含了相关Asset使用计数信息为0和无有效绑定对象
-                mUnloadUnsedABTotalDeltaTime = 0f;
+                mUnloadUnsedResourceTotalDeltaTime = 0f;
                 doCheckUnusedResource();
             }
         }
