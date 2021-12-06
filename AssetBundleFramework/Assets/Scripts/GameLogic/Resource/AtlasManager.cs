@@ -435,7 +435,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
             out assetLoader,
             (loader, requestUid) =>
             {
-                DIYLog.Log($"加载SpriteAtlas:{atlaspath} AB完成!");
+                DIYLog.Log($"加载SpriteAtlas:{atlaspath}完成!");
                 // 清除老的资源引用
                 if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
                 {

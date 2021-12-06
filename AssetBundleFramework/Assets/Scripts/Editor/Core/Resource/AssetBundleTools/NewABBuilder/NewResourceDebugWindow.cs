@@ -483,11 +483,11 @@ namespace TResource
             Color preColor = GUI.color;
             if (assetBundleInfo.IsUnsed)
             {
-                GUI.color = !assetBundleInfo.IsUnsed ? preColor : Color.yellow;
+                GUI.color = Color.yellow;
             }
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(string.Format("资源名 : {0}", assetBundleInfo.ResourcePath), GUILayout.Width(500.0f));
+            EditorGUILayout.LabelField(string.Format("AssetBundle路径 : {0}", assetBundleInfo.ResourcePath), GUILayout.Width(600.0f));
             EditorGUILayout.LabelField(string.Format("是否就绪 : {0}", assetBundleInfo.IsReady), GUILayout.Width(100.0f));
             EditorGUILayout.LabelField(string.Format("引用计数 : {0}", assetBundleInfo.RefCount), GUILayout.Width(100.0f));
             EditorGUILayout.LabelField(string.Format("最近使用时间 : {0}", assetBundleInfo.LastUsedTime), GUILayout.Width(150.0f));
@@ -530,8 +530,13 @@ namespace TResource
         /// <param name="assetInfo"></param>
         private void displayOneAssetInfoUI(AssetInfo assetInfo)
         {
+            var preColor = GUI.color;
+            if (assetInfo.IsUnsed)
+            {
+                GUI.color = Color.yellow;
+            }
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(string.Format("资源名 : {0}", assetInfo.ResourcePath), GUILayout.Width(500.0f));
+            EditorGUILayout.LabelField(string.Format("Asset路径 : {0}", assetInfo.ResourcePath), GUILayout.Width(600.0f));
             EditorGUILayout.LabelField(string.Format("是否就绪 : {0}", assetInfo.IsReady), GUILayout.Width(100.0f));
             EditorGUILayout.LabelField(string.Format("引用计数 : {0}", assetInfo.RefCount), GUILayout.Width(100.0f));
             EditorGUILayout.LabelField(string.Format("最近使用时间 : {0}", assetInfo.LastUsedTime), GUILayout.Width(150.0f));
@@ -544,6 +549,7 @@ namespace TResource
                 }
             }
             EditorGUILayout.EndHorizontal();
+            GUI.color = preColor;
         }
 
         /// <summary>
@@ -656,7 +662,7 @@ namespace TResource
             EditorGUILayout.BeginVertical();
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(string.Format("Asset路径 : {0}", assetLoader.ResourcePath), GUILayout.Width(500.0f));
+            EditorGUILayout.LabelField(string.Format("Asset路径 : {0}", assetLoader.ResourcePath), GUILayout.Width(600.0f));
             EditorGUILayout.LabelField(string.Format("加载状态 : {0}", assetLoader.LoadState), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("加载方式 : {0}", assetLoader.LoadMethod), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("加载类型 : {0}", assetLoader.LoadType), GUILayout.Width(150.0f));
@@ -804,13 +810,13 @@ namespace TResource
         /// <summary>
         /// 强制卸载指定AB
         /// </summary>
-        /// <param name="abname"></param>
-        private void forceUnloadSpecificAB(string abname)
+        /// <param name="abnPath"></param>
+        private void forceUnloadSpecificAB(string abnPath)
         {
             if (isAssetBundleModule())
             {
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-                assetbundleresourcemodule.forceUnloadSpecificAssetBundle(abname);
+                assetbundleresourcemodule.forceUnloadSpecificAssetBundle(abnPath);
             }
             else
             {

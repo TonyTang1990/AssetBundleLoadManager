@@ -112,6 +112,7 @@ namespace TResource
         protected override void onComplete()
         {
             base.onComplete();
+            mAssetDatabaseAsyncRequest = null;
         }
     }
 }
