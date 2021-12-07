@@ -74,6 +74,17 @@ namespace TResource
         }
 
         /// <summary>
+        /// 拥有资源是否不再使用
+        /// </summary>
+        public bool IsUnsed
+        {
+            get
+            {
+                return AssetBundleInfo != null ? AssetBundleInfo.IsUnsed : true;
+            }
+        }
+
+        /// <summary>
         /// AssetBundle信息
         /// </summary>
         public AssetBundleInfo AssetBundleInfo

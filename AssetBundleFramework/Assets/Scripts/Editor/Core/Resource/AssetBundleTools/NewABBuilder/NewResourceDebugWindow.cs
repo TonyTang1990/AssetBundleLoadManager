@@ -105,9 +105,14 @@ namespace TResource
         private List<AssetLoader> mAllAssetLoader = new List<AssetLoader>();
 
         /// <summary>
-        /// AssetBundle的Asset信息折叠控制Map<AssetBundle路径, Asset信息是否折叠显示>
+        /// AssetBundle的Asset信息折叠控制Map<AssetBundle路径, AssetBundle的Asset信息是否折叠显示>
         /// </summary>
         private Dictionary<string, bool> mAssetBundleAssetInfoFoldMap = new Dictionary<string, bool>();
+
+        /// <summary>
+        /// AssetBundle加载器依赖信息折叠控制Map<AssetBundle路径, AssetBundle加载器依赖信息是否折叠显示>
+        /// </summary>
+        private Dictionary<string, bool> mAssetBundleLoaderDepFoldMap = new Dictionary<string, bool>();
         #endregion
 
         #region AssetDatabase模式展示数据
@@ -485,6 +490,10 @@ namespace TResource
             {
                 GUI.color = Color.yellow;
             }
+            if (!mAssetBundleAssetInfoFoldMap.ContainsKey(assetBundleInfo.ResourcePath))
+            {
+                mAssetBundleAssetInfoFoldMap.Add(assetBundleInfo.ResourcePath, true);
+            }
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(string.Format("AssetBundle路径 : {0}", assetBundleInfo.ResourcePath), GUILayout.Width(600.0f));
@@ -500,25 +509,25 @@ namespace TResource
                     EditorGUILayout.ObjectField((UnityEngine.Object)refowner.Target, typeof(UnityEngine.Object), true, GUILayout.Width(200.0f));
                 }
             }
-            if (!mAssetBundleAssetInfoFoldMap.ContainsKey(assetBundleInfo.ResourcePath))
-            {
-                mAssetBundleAssetInfoFoldMap.Add(assetBundleInfo.ResourcePath, true);
-            }
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(string.Format("Asset引用信息列表 : {0}", assetBundleInfo.AllLoadedAssetInfoMap.Count == 0 ? "无" : string.Empty), GUILayout.Width(200.0f));
             EditorGUILayout.EndHorizontal();
             if (assetBundleInfo.AllLoadedAssetInfoMap.Count > 0)
             {
-                mAssetBundleAssetInfoFoldMap[assetBundleInfo.ResourcePath] = EditorGUILayout.Foldout(mAssetBundleAssetInfoFoldMap[assetBundleInfo.ResourcePath], assetBundleInfo.ResourcePath);
+                mAssetBundleAssetInfoFoldMap[assetBundleInfo.ResourcePath] = EditorGUILayout.Foldout(mAssetBundleAssetInfoFoldMap[assetBundleInfo.ResourcePath], $"Asset引用信息列表 : {assetBundleInfo.AllLoadedAssetInfoMap.Count}");
                 if (mAssetBundleAssetInfoFoldMap[assetBundleInfo.ResourcePath])
                 {
-                    foreach (var assetInfo in assetBundleInfo.AllLoadedAssetInfoMap)
+                    if (assetBundleInfo.AllLoadedAssetInfoMap.Count > 0)
                     {
-                        EditorGUILayout.BeginHorizontal();
-                        displayOneAssetInfoUI(assetInfo.Value);
-                        EditorGUILayout.EndHorizontal();
+                        foreach (var assetInfo in assetBundleInfo.AllLoadedAssetInfoMap)
+                        {
+                            displayOneAssetInfoUI(assetInfo.Value);
+                        }
                     }
                 }
+            }
+            else
+            {
+                EditorGUILayout.LabelField($"Asset引用信息列表 : 无", GUILayout.Width(200.0f));
             }
             EditorGUILayout.EndVertical();
             GUI.color = preColor;
@@ -530,11 +539,6 @@ namespace TResource
         /// <param name="assetInfo"></param>
         private void displayOneAssetInfoUI(AssetInfo assetInfo)
         {
-            var preColor = GUI.color;
-            if (assetInfo.IsUnsed)
-            {
-                GUI.color = Color.yellow;
-            }
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(string.Format("Asset路径 : {0}", assetInfo.ResourcePath), GUILayout.Width(600.0f));
             EditorGUILayout.LabelField(string.Format("是否就绪 : {0}", assetInfo.IsReady), GUILayout.Width(100.0f));
@@ -549,7 +553,6 @@ namespace TResource
                 }
             }
             EditorGUILayout.EndHorizontal();
-            GUI.color = preColor;
         }
 
         /// <summary>
@@ -578,19 +581,15 @@ namespace TResource
         /// </summary>
         private void displayAssetBundleLoaderInfoUI()
         {
-            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.BeginVertical();
             LoaderManager.Singleton.getAllAssetBundleLoader(ref mAllAssetBundleLoader);
-            EditorGUILayout.BeginHorizontal();
             GUILayout.Label(string.Format("AssetBundle加载器信息 : {0}", mAllAssetBundleLoader.Count == 0 ? "无" : string.Empty));
-            EditorGUILayout.EndHorizontal();
             foreach (var assetBundleLoader in mAllAssetBundleLoader)
             {
                 displayOneAssetBundleLoaderInfoUI(assetBundleLoader);
             }
             LoaderManager.Singleton.getAllAssetLoader(ref mAllAssetLoader);
-            EditorGUILayout.BeginHorizontal();
             GUILayout.Label(string.Format("Asset加载器信息 : {0}", mAllAssetLoader.Count == 0 ? "无" : string.Empty));
-            EditorGUILayout.EndHorizontal();
             foreach (var assetLoader in mAllAssetLoader)
             {
                 displayOneAssetLoaderInfoUI(assetLoader);
@@ -605,28 +604,55 @@ namespace TResource
         private void displayOneAssetBundleLoaderInfoUI(BundleLoader bundleLoader)
         {
             var preColor = GUI.color;
-            if (bundleLoader.IsWaiting || bundleLoader.IsLoading)
+            if (bundleLoader.IsUnsed)
             {
                 GUI.color = Color.yellow;
             }
-            EditorGUILayout.BeginVertical();
+            else if (bundleLoader.IsLoading)
+            {
+                GUI.color = Color.red;
+            }
+            else if (bundleLoader.IsWaiting)
+            {
+                GUI.color = Color.gray;
+            }
+            if (!mAssetBundleLoaderDepFoldMap.ContainsKey(bundleLoader.ResourcePath))
+            {
+                mAssetBundleLoaderDepFoldMap.Add(bundleLoader.ResourcePath, true);
+            }
+            EditorGUILayout.BeginVertical("box");
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(string.Format("AssetBundle路径 : {0}", bundleLoader.ResourcePath), GUILayout.Width(600.0f));
             EditorGUILayout.LabelField(string.Format("加载状态 : {0}", bundleLoader.LoadState), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("加载方式 : {0}", bundleLoader.LoadMethod), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("加载类型 : {0}", bundleLoader.LoadType), GUILayout.Width(150.0f));
-            EditorGUILayout.LabelField(string.Format("依赖资源数量 : {0}", bundleLoader.DepABPaths.Length), GUILayout.Width(150.0f));
-            EditorGUILayout.LabelField(string.Format("已加载AssetBundle资源数量 : {0}", bundleLoader.LoadCompletedAssetBundleNumer - 1), GUILayout.Width(150.0f));
+            EditorGUILayout.LabelField(string.Format("依赖资源数量 : {0}", bundleLoader.DepABPaths?.Length), GUILayout.Width(150.0f));
+            EditorGUILayout.LabelField(string.Format("已加载AssetBundle资源数量 : {0}", bundleLoader.LoadCompletedAssetBundleNumer - 1), GUILayout.Width(200.0f));
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.LabelField("依赖资源加载信息列表 :", GUILayout.Width(200.0f));
-            EditorGUILayout.BeginHorizontal();
-            for (int i = 0, length = bundleLoader.DepAssetBundleInfoList.Count; i < length; i++)
+            var depCount = bundleLoader.DepAssetBundleInfoList.Count;
+            if (depCount > 0)
             {
-                var depabi = bundleLoader.DepAssetBundleInfoList[i];
-                EditorGUILayout.LabelField($"{i}. {depabi.ResourcePath} 是否加载完成:{depabi.IsReady}", GUILayout.Width(150.0f));
+                mAssetBundleLoaderDepFoldMap[bundleLoader.ResourcePath] = EditorGUILayout.Foldout(mAssetBundleLoaderDepFoldMap[bundleLoader.ResourcePath], $"依赖资源加载信息列表 : {depCount}");
+                if (mAssetBundleLoaderDepFoldMap[bundleLoader.ResourcePath])
+                {
+                    if (depCount > 0)
+                    {
+                        for (int i = 0, length = depCount; i < length; i++)
+                        {
+                            EditorGUILayout.BeginHorizontal();
+                            var depabi = bundleLoader.DepAssetBundleInfoList[i];
+                            EditorGUILayout.LabelField($"\t{i}. {depabi.ResourcePath}", GUILayout.Width(600.0f));
+                            EditorGUILayout.LabelField($"是否加载完成:{depabi.IsReady}", GUILayout.Width(150f));
+                            EditorGUILayout.EndHorizontal();
+                        }
+                    }
+                }
             }
-            EditorGUILayout.EndHorizontal();
+            else
+            {
+                EditorGUILayout.LabelField($"依赖资源加载信息列表 : 无", GUILayout.Width(200.0f));
+            }
             EditorGUILayout.EndVertical();
             GUI.color = preColor;
         }
@@ -636,11 +662,9 @@ namespace TResource
         /// </summary>
         private void displayAssetDatabaseLoaderInfoUI()
         {
-            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.BeginVertical();
             LoaderManager.Singleton.getAllAssetLoader(ref mAllAssetDatabaseLoader);
-            EditorGUILayout.BeginHorizontal();
             GUILayout.Label(string.Format("AssetDatabase加载器信息 : {0}", mAllAssetDatabaseLoader.Count == 0 ? "无" : string.Empty));
-            EditorGUILayout.EndHorizontal();
             foreach (var waitLoadedAssetLoader in mAllAssetDatabaseLoader)
             {
                 displayOneAssetLoaderInfoUI(waitLoadedAssetLoader);
@@ -655,11 +679,19 @@ namespace TResource
         private void displayOneAssetLoaderInfoUI(AssetLoader assetLoader)
         {
             var preColor = GUI.color;
-            if (assetLoader.IsWaiting || assetLoader.IsLoading)
+            if(assetLoader.IsUnsed)
             {
                 GUI.color = Color.yellow;
             }
-            EditorGUILayout.BeginVertical();
+            else if (assetLoader.IsLoading)
+            {
+                GUI.color = Color.red;
+            }
+            else if(assetLoader.IsWaiting)
+            {
+                GUI.color = Color.gray;
+            }
+            EditorGUILayout.BeginVertical("box");
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(string.Format("Asset路径 : {0}", assetLoader.ResourcePath), GUILayout.Width(600.0f));

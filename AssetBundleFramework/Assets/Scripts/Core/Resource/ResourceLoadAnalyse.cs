@@ -110,22 +110,22 @@ public class ResourceLoadAnalyse : SingletonTemplate<ResourceLoadAnalyse> {
     /// <summary>
     /// 增加指定资源加载次数
     /// </summary>
-    /// <param name="abname"></param>
-    public void addResourceLoadedTime(string abname)
+    /// <param name="assetBundlePath"></param>
+    public void addResourceLoadedTime(string assetBundlePath)
     {
-        if(ResourceLoadAnalyseMap.ContainsKey(abname))
+        if(ResourceLoadAnalyseMap.ContainsKey(assetBundlePath))
         {
-            ResourceLoadAnalyseMap[abname].ResourceLoadTimeCount = ResourceLoadAnalyseMap[abname].ResourceLoadTimeCount + 1;
+            ResourceLoadAnalyseMap[assetBundlePath].ResourceLoadTimeCount = ResourceLoadAnalyseMap[assetBundlePath].ResourceLoadTimeCount + 1;
         }
         else
         {
             var abloadinfo = new ResourceLoadInfo();
-            abloadinfo.ABName = abname;
+            abloadinfo.ABName = assetBundlePath;
             abloadinfo.ResourceLoadTimeCount = 1;
             abloadinfo.ResourceUnloadTimeCount = 0;
             var now = DateTime.Now;
             abloadinfo.ResourceFirstLoadTime = string.Format("{0}-{1}-{2}", now.Hour, now.Minute, now.Second);
-            ResourceLoadAnalyseMap.Add(abname, abloadinfo);
+            ResourceLoadAnalyseMap.Add(assetBundlePath, abloadinfo);
         }
     }
 
