@@ -67,6 +67,10 @@ namespace TResource
         /// <returns></returns>
         private string[] getAssetBundleDpInfo(string abpath)
         {
+            if(string.IsNullOrEmpty(abpath))
+            {
+                return null;
+            }
             if (mAssetBuildInfo.ABPathDepMap.ContainsKey(abpath))
             {
                 return mAssetBuildInfo.ABPathDepMap[abpath];

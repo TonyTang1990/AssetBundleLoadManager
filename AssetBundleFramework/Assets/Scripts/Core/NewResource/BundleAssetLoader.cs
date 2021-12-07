@@ -107,15 +107,18 @@ namespace TResource
             // 后续加载取消时会返还对应计数，AB的计数会在AB加载完成后返还(因为AB的计数会在AB加载器创建时添加计数)
             // 仅主AB采取和Asset加载方式一致的方式，依赖AB采用NormalLoad方式
             mABInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getOrCreateAssetBundleInfo(MainAssetBundlePath, LoadType);
-            mABInfo.retain();
+            mABInfo?.retain();
             // 关联AssetInfo和AssetBundleInfo
-            mABInfo.addAssetInfo(mAssetInfo);
-            AssetBundleInfo depAssetBundleInfo;
-            for(int i = 0, length = DepABPaths.Length; i < length; i++)
+            mABInfo?.addAssetInfo(mAssetInfo);
+            if(DepABPaths != null)
             {
-                depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getOrCreateAssetBundleInfo(DepABPaths[i], ResourceLoadType.NormalLoad);
-                mDepAssetBundleInfoList.Add(depAssetBundleInfo);
-                depAssetBundleInfo.retain();
+                AssetBundleInfo depAssetBundleInfo;
+                for (int i = 0, length = DepABPaths.Length; i < length; i++)
+                {
+                    depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getOrCreateAssetBundleInfo(DepABPaths[i], ResourceLoadType.NormalLoad);
+                    mDepAssetBundleInfoList.Add(depAssetBundleInfo);
+                    depAssetBundleInfo.retain();
+                }
             }
         }
 
@@ -188,13 +191,20 @@ namespace TResource
         {
             if (LoadMethod == ResourceLoadMethod.Sync)
             {
-                var asset = mMainBundleLoader.obtainAssetBundle().LoadAsset(mAssetInfo.AssetName, mAssetInfo.AssetType);
+                var asset = mMainBundleLoader != null ? mMainBundleLoader.obtainAssetBundle().LoadAsset(mAssetInfo.AssetName, mAssetInfo.AssetType) : null;
                 onAssetLoadComplete(asset);
             }
             else if (LoadMethod == ResourceLoadMethod.Async)
             {
-                mAssetAsyncRequest = mMainBundleLoader.obtainAssetBundle().LoadAssetAsync(mAssetInfo.AssetName, mAssetInfo.AssetType);
-                mAssetAsyncRequest.completed += onAssetAsyncLoadComplete;
+                if(mMainBundleLoader != null)
+                {
+                    mAssetAsyncRequest = mMainBundleLoader.obtainAssetBundle().LoadAssetAsync(mAssetInfo.AssetName, mAssetInfo.AssetType);
+                    mAssetAsyncRequest.completed += onAssetAsyncLoadComplete;
+                }
+                else
+                {
+                    onAssetAsyncLoadComplete(null);
+                }
             }
         }
 
@@ -248,7 +258,7 @@ namespace TResource
             // 上层多个加载逻辑回调，在完成后根据调用getAsset或bindAsset情况去添加计数和绑定
             // 返还提前添加的Asset以及AssetBundle计数信息，确保正确的资源管理
             // 依赖AB的真正计数添加由BundleLoader去负责(确保单个AB的依赖AB计数只添加一次)
-            mABInfo.release();
+            mABInfo?.release();
             for (int i = 0, length = mDepAssetBundleInfoList.Count; i < length; i++)
             {
                 mDepAssetBundleInfoList[i].release();

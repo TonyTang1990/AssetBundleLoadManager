@@ -193,7 +193,7 @@ namespace TResource
             mAllLoadedPermanentAssetBundleInfoMap = new Dictionary<string, AssetBundleInfo>();
 
             // TODO: 根据设备设定相关参数，改成读表控制
-            CheckUnsedResourceTimeInterval = 10.0f;
+            CheckUnsedResourceTimeInterval = 20.0f;
             MaxUnloadABNumberPerFrame = 5;
             ResourceMinimumLifeTime = 40.0f;
             ResourceRecycleFPSThreshold = 20;
@@ -317,6 +317,10 @@ namespace TResource
         /// <returns></returns>
         public AssetBundleInfo getOrCreateAssetBundleInfo(string assetBundlePath, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
+            if(string.IsNullOrEmpty(assetBundlePath))
+            {
+                return null;
+            }
             AssetBundleInfo assetBundleInfo = getAssetBundleInfo(assetBundlePath);
             if (assetBundleInfo == null)
             {
@@ -334,6 +338,10 @@ namespace TResource
         /// <returns></returns>
         public AssetBundleInfo getAssetBundleInfo(string assetBundlePath)
         {
+            if(string.IsNullOrEmpty(assetBundlePath))
+            {
+                return null;
+            }
             AssetBundleInfo assetBundleInfo;
             if (mAllLoadedNormalAssetBundleInfoMap.TryGetValue(assetBundlePath, out assetBundleInfo))
             {
@@ -521,6 +529,12 @@ namespace TResource
         /// <returns>请求UID</returns>
         public int requstAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object
         {
+            if (string.IsNullOrEmpty(assetPath))
+            {
+                assetLoader = null;
+                Debug.LogError($"不允许传空Asset路径!");
+                return 0;
+            }
             // 统一小写
             assetPath = assetPath.ToLower();
             assetLoader = LoaderManager.Singleton.getAssetLoader(assetPath);
@@ -572,6 +586,13 @@ namespace TResource
         /// <returns>请求UID</returns>
         public int requstAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
+            if (string.IsNullOrEmpty(abPath))
+            {
+                abLoader = null;
+                Debug.LogError($"不允许传空AssetBundle路径!");
+                completeHandler?.Invoke(abLoader, 0);
+                return 0;
+            }
             // 统一小写
             abPath = abPath.ToLower();
             abLoader = LoaderManager.Singleton.getAssetBundleLoader(abPath);
@@ -579,7 +600,7 @@ namespace TResource
             {
                 if (abLoader.IsDone)
                 {
-                    completeHandler.Invoke(abLoader, 0);
+                    completeHandler?.Invoke(abLoader, 0);
                     return 0;
                 }
                 else

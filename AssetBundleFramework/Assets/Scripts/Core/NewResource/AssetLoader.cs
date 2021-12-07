@@ -73,6 +73,17 @@ namespace TResource
         }
 
         /// <summary>
+        /// 拥有资源是否不再使用
+        /// </summary>
+        public bool IsUnsed
+        {
+            get
+            {
+                return mAssetInfo != null ? mAssetInfo.IsUnsed : true;
+            }
+        }
+
+        /// <summary>
         /// Asset信息
         /// </summary>
         protected AssetInfo mAssetInfo;
