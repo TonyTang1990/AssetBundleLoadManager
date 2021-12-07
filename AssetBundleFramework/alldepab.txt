@@ -6,6 +6,8 @@ assets/res/atlas/shareatlas/tutorialatlas
 
 assets/res/audios/music/backgroundmusic
 
+assets/res/audios/music/df_bg_music
+
 assets/res/audios/sfx/sfx1/coins
 
 assets/res/audios/sfx/sfx1/correct
@@ -40,7 +42,13 @@ assets/res/prefabs/testmd5comparison
 assets/res/prefabs/testmd5comparisonresourceupdate
 	assets/res/buildinresources/buildinmaterials
 
+assets/res/sharematerials/sharebluematerial
+	shaderlist
+
 assets/res/sharematerials/sharematerial
+	shaderlist
+
+assets/res/sharematerials/shareredmaterial
 	shaderlist
 
 assets/res/actors/cube
@@ -64,6 +72,34 @@ assets/res/actors/zombunny/zombunnyanimations
 assets/res/actors/zombunny
 	assets/res/actors/zombunny/zombunnyanimations
 	assets/res/actors/zombunny/materials
+
+assets/res/scenes/assetbundleframeworkscene
+	assets/res/textures/chaichainingwang
+
+assets/res/textures/chaichainingwang
+
+assets/res/scenes/newassetbundleframeworkscene
+	assets/res/textures/chaichainingwang
+
+assets/res/scenes/sceneprefabs/testscene2prefab
+	assets/res/sharematerials/sharematerial
+
+assets/res/scenes/sceneprefabs/testscene2prefab2
+	assets/res/sharematerials/sharematerial
+
+assets/res/scenes/sceneprefabs/testscene3prefab
+	assets/res/sharematerials/sharematerial
+
+assets/res/scenes/shadervariantscollectscene
+
+assets/res/scenes/testscene2
+	assets/res/scenes/sceneprefabs/testscene2prefab2
+	assets/res/sharematerials/sharematerial
+	assets/res/scenes/sceneprefabs/testscene2prefab
+
+assets/res/scenes/testscene3
+	assets/res/sharematerials/sharematerial
+	assets/res/scenes/sceneprefabs/testscene3prefab
 
 assetbuildinfo
 

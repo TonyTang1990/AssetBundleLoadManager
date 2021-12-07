@@ -697,6 +697,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
+    1: NEW_RESOURCE
     7: NEW_RESOURCE
   platformArchitecture: {}
   scriptingBackend:

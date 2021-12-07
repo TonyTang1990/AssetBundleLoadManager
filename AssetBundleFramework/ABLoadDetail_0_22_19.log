@@ -1,0 +1,102 @@
+AssetBundleName : assets/res/windows/mainwindow
+	ABLoadTimeCount : 6
+	ABUnloadTimeCount : 2
+	ABFirstLoadTime : 0-18-54
+	ABLastUnloadTime : 0-20-11
+
+AssetBundleName : assets/res/atlas/shareatlas/spriteatlas/playerpreview
+	ABLoadTimeCount : 2
+	ABUnloadTimeCount : 2
+	ABFirstLoadTime : 0-18-54
+	ABLastUnloadTime : 0-20-31
+
+AssetBundleName : assets/res/shaders/rim lit bumped specular
+	ABLoadTimeCount : 2
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 0-20-32
+	ABLastUnloadTime : 0-21-12
+
+AssetBundleName : assets/res/actors/zombunny/textures
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 0-20-32
+	ABLastUnloadTime : 0-21-12
+
+AssetBundleName : assets/res/actors/zombunny/materials
+	ABLoadTimeCount : 4
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 0-20-32
+	ABLastUnloadTime : 0-21-10
+
+AssetBundleName : assets/res/actors/zombunny/zombunnyanimations
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 0-20-32
+	ABLastUnloadTime : 0-21-10
+
+AssetBundleName : assets/res/actors/zombunny
+	ABLoadTimeCount : 3
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 0-20-32
+	ABLastUnloadTime : 0-20-52
+
+AssetBundleName : assets/res/audios/sfx/sfx1/explosion
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 1
+	ABFirstLoadTime : 0-18-58
+	ABLastUnloadTime : 0-19-10
+
+AssetBundleName : assets/res/sharematerials/sharebluematerial
+	ABLoadTimeCount : 2
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 0-20-10
+	ABLastUnloadTime : 
+
+AssetBundleName : assets/res/sharematerials/sharematerial
+	ABLoadTimeCount : 2
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 0-21-10
+	ABLastUnloadTime : 
+
+AssetBundleName : assets/res/sharematerials/shareredmaterial
+	ABLoadTimeCount : 2
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 0-20-5
+	ABLastUnloadTime : 
+
+AssetBundleName : assets/res/audios/music/df_bg_music
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 0-19-4
+	ABLastUnloadTime : 
+
+AssetBundleName : assets/res/atlas/shareatlas/tutorialatlas
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 0-18-54
+	ABLastUnloadTime : 
+
+AssetBundleName : assets/res/scenes/testscene2
+	ABLoadTimeCount : 4
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 0-21-10
+	ABLastUnloadTime : 
+
+AssetBundleName : assets/res/scenes/sceneprefabs/testscene2prefab2
+	ABLoadTimeCount : 2
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 0-21-10
+	ABLastUnloadTime : 
+
+AssetBundleName : shaderlist
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 0-20-5
+	ABLastUnloadTime : 
+
+AssetBundleName : assets/res/scenes/sceneprefabs/testscene2prefab
+	ABLoadTimeCount : 2
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 0-21-10
+	ABLastUnloadTime : 
+

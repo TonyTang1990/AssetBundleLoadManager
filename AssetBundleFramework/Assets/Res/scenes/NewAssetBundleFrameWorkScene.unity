@@ -829,7 +829,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1230477527}
-        m_MethodName: onTestAsynAndSyncABLoad
+        m_MethodName: onAsynToSyncLoadWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
