@@ -134,8 +134,10 @@ public class BuildWindow : BaseEditorWindow
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("打包版本号:", GUILayout.Width(70.0f));
         BuildVersion = EditorGUILayout.TextField(BuildVersion, GUILayout.Width(50.0f));
+        BuildVersion = string.IsNullOrEmpty(BuildVersion) ? "1.0" : BuildVersion;
         EditorGUILayout.LabelField("打包资源版本号:", GUILayout.Width(90.0f));
         BuildResourceVersion = EditorGUILayout.IntField(BuildResourceVersion, GUILayout.Width(50.0f));
+        BuildResourceVersion = BuildResourceVersion > 0 ? BuildResourceVersion : 1;
         EditorGUILayout.LabelField("打包平台:", GUILayout.Width(60.0f));
         BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(BuildTarget, GUILayout.Width(100.0f));
         GUILayout.EndHorizontal();

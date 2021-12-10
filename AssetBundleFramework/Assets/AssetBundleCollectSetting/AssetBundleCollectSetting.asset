@@ -69,3 +69,7 @@ MonoBehaviour:
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+  - CollectFolderPath: Assets/Res/textures
+    CollectRule: 0
+    BuildRule: 1
+    ConstName: 

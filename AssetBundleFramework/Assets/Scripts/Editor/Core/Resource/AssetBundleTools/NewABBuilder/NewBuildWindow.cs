@@ -1,9 +1,10 @@
 ﻿/*
- * Description:             HotUpdateOperationWindow.cs
+ * Description:             NewBuildWindow.cs
  * Author:                  TONYTANG
- * Create Date:             2019//11/26
+ * Create Date:             2020//10/25
  */
 
+using MotionFramework.Editor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,11 +16,658 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// HotUpdateOperationWindow.cs
-/// 热更新操作窗口
+/// NewBuildWindow.cs
+/// 新版打包工具(整合Android和IOS打包,资源打包以及热更新功能)
 /// </summary>
-public class HotUpdateOperationWindow : BaseEditorWindow
+public class NewBuildWindow : BaseEditorWindow
 {
+    /// <summary>
+    /// 操作类型
+    /// </summary>
+    public enum EOperationType
+    {
+        Build = 1,                  // 打包窗口
+        ResourceBuild,              // 资源打包窗口
+        ResourceCollect,            // 资源搜集窗口
+        HotUpdate,                  // 热更新窗口
+    }
+
+    /// <summary>
+    /// 整体UI滚动位置
+    /// </summary>
+    private Vector2 mWindowUiScrollPos;
+
+    /// <summary>
+    /// 当前窗口操作类型
+    /// </summary>
+    private EOperationType CurrentOperationType = EOperationType.Build;
+
+    /// <summary>
+    /// 窗口操作类型名字数组
+    /// </summary>
+    private string[] mOperationTypeNameArray;
+
+    /// <summary>
+    /// 操作面板
+    /// </summary>
+    private string[] mToolBarStrings = { "版本打包", "资源打包", "资源搜集", "热更新" };
+
+    /// <summary>
+    /// 操作面板选择索引
+    /// </summary>
+    private int mToolBarSelectIndex;
+
+    /// <summary>
+    /// 上次打开的文件夹路径
+    /// </summary>
+    private string LastOpenFolderPath = "Assets/";
+
+    /// <summary>
+    /// 项目路径Hash值(用于使得PlayerPrefs存储的Key值唯一)
+    /// </summary>
+    private int mProjectPathHashValue;
+
+    [MenuItem("Tools/New AssetBundle/打包窗口", priority = 200)]
+    static void ShowWindow()
+    {
+        var newBuildWindow = EditorWindow.GetWindow<NewBuildWindow>(false, "打包窗口");
+        newBuildWindow.Show();
+    }
+
+    /// <summary>
+    /// 初始化数据
+    /// </summary>
+    protected override void InitData()
+    {
+        base.InitData();
+        mOperationTypeNameArray = Enum.GetNames(typeof(EOperationType));
+        mToolBarSelectIndex = 0;
+        CurrentOperationType = (EOperationType)Enum.Parse(typeof(EOperationType), mOperationTypeNameArray[mToolBarSelectIndex]);
+
+        #region 打包部分
+        InitBuildData();
+        #endregion
+
+        #region 资源打包部分
+        InitResourceData();
+        #endregion
+
+        #region 热更新部分
+        InitHotUpdateData();
+        #endregion
+    }
+
+    /// <summary>
+    /// 保存数据
+    /// </summary>
+    protected override void SaveData()
+    {
+        base.SaveData();
+        #region 打包部分
+        SaveBuildData();
+        #endregion
+
+        #region 资源打包部分
+        SaveResourceData();
+        #endregion
+
+        #region 热更新部分
+        SaveHotUpdateData();
+        #endregion
+    }
+
+    public void OnGUI()
+    {
+        mWindowUiScrollPos = GUILayout.BeginScrollView(mWindowUiScrollPos);
+        GUILayout.BeginVertical();
+        DisplayTagArea();
+        if (CurrentOperationType == EOperationType.Build)
+        {
+            DisplayBuildArea();
+        }
+        else if (CurrentOperationType == EOperationType.ResourceBuild)
+        {
+            DisplayResourceBuildArea();
+        }
+        else if (CurrentOperationType == EOperationType.ResourceCollect)
+        {
+            DisplayResourceCollectArea();
+        }
+        else if (CurrentOperationType == EOperationType.HotUpdate)
+        {
+            DisplayHotUpdateArea();
+        }
+        GUILayout.EndVertical();
+        GUILayout.EndScrollView();
+    }
+
+    /// <summary>
+    /// 显示标签部分
+    /// </summary>
+    private void DisplayTagArea()
+    {
+        GUILayout.BeginHorizontal();
+        var pretollbarselectindex = mToolBarSelectIndex;
+        mToolBarSelectIndex = GUILayout.Toolbar(mToolBarSelectIndex, mToolBarStrings, EditorStyles.toolbarButton, GUILayout.ExpandWidth(true));
+        if(pretollbarselectindex != mToolBarSelectIndex)
+        {
+            CurrentOperationType = (EOperationType)Enum.Parse(typeof(EOperationType), mOperationTypeNameArray[mToolBarSelectIndex]);
+        }
+        GUILayout.EndHorizontal();
+    }
+
+    #region 公共部分
+    /// <summary>
+    /// 显示包内版本和资源版本信息区域
+    /// </summary>
+    private void DisplayInnerVersionAndResourceVersionInfoArea()
+    {
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("包内版本号:", GUILayout.Width(100f));
+        GUILayout.Label($"{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode}", "box", GUILayout.Width(100f));
+        EditorGUILayout.LabelField("包内资源版本号:", GUILayout.Width(100f));
+        GUILayout.Label($"{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}", "box", GUILayout.Width(100f));
+        GUILayout.EndHorizontal();
+    }
+
+    /// <summary>
+    /// 显示打包信息区域
+    /// </summary>
+    private void DisplayBuildInfoArea()
+    {
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("打包版本号:", GUILayout.Width(100f));
+        BuildVersion = EditorGUILayout.TextField(BuildVersion, GUILayout.Width(100f));
+        BuildVersion = string.IsNullOrEmpty(BuildVersion) ? "1.0" : BuildVersion;
+        EditorGUILayout.LabelField("打包资源版本号:", GUILayout.Width(100f));
+        BuildResourceVersion = EditorGUILayout.IntField(BuildResourceVersion, GUILayout.Width(100f));
+        BuildResourceVersion = BuildResourceVersion > 0 ? BuildResourceVersion : 1;
+        GUILayout.EndHorizontal();
+    }
+    #endregion
+
+    #region 打包部分
+    #region 存储相关Key
+    /// <summary>
+    /// 打包版本号Key
+    /// </summary>
+    private const string BuildVersionKey = "BuildVersionKey";
+
+    /// <summary>
+    /// 打包资源版本号Key
+    /// </summary>
+    private const string BuildResourceVersionKey = "BuildResourceVersionKey";
+
+    /// <summary>
+    /// 打包平台Key
+    /// </summary>
+    private const string BuildTargetKey = "BuildTargetKey";
+
+    /// <summary>
+    /// 打包输出路径存储Key
+    /// </summary>
+    private const string BuildOutputPathKey = "BuildOutputPathKey";
+    #endregion
+
+    /// <summary>
+    /// 打包版本号
+    /// </summary>
+    public string BuildVersion
+    {
+        get;
+        private set;
+    }
+
+    /// <summary>
+    /// 打包资源版本号
+    /// </summary>
+    public int BuildResourceVersion
+    {
+        get;
+        private set;
+    }
+
+    /// <summary>
+    /// 打包平台
+    /// </summary>
+    public BuildTarget BuildTarget
+    {
+        get;
+        private set;
+    }
+
+    /// <summary>
+    /// 打包输出路径
+    /// </summary>
+    public string BuildOutputPath
+    {
+        get;
+        private set;
+    }
+
+    /// <summary>
+    /// 初始化打包数据
+    /// </summary>
+    private void InitBuildData()
+    {
+        Debug.Log("NewBuildWindow:InitBuildData()");
+        mProjectPathHashValue = Application.dataPath.GetHashCode();
+        BuildVersion = PlayerPrefs.GetString($"{mProjectPathHashValue}_{BuildVersionKey}");
+        BuildResourceVersion = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{BuildResourceVersionKey}");
+        BuildTarget = (BuildTarget)PlayerPrefs.GetInt($"{mProjectPathHashValue}_{BuildTargetKey}", (int)EditorUserBuildSettings.activeBuildTarget);
+        BuildOutputPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{BuildOutputPathKey}");
+        Debug.Log("打包窗口读取配置:");
+        Debug.Log("版本号设置:" + BuildVersion);
+        Debug.Log("资源版本号设置:" + BuildResourceVersion);
+        Debug.Log("打包平台:" + Enum.GetName(typeof(BuildTarget), BuildTarget));
+        Debug.Log("打包输出路径:" + BuildOutputPath);
+    }
+
+    /// <summary>
+    /// 保存打包数据
+    /// </summary>
+    private void SaveBuildData()
+    {
+        Debug.Log("NewBuildWindow:SaveBuildData()");
+        PlayerPrefs.SetString($"{mProjectPathHashValue}_{BuildVersionKey}", BuildVersion);
+        PlayerPrefs.SetInt($"{mProjectPathHashValue}_{BuildResourceVersionKey}", BuildResourceVersion);
+        PlayerPrefs.SetInt($"{mProjectPathHashValue}_{BuildTargetKey}", (int)BuildTarget);
+        PlayerPrefs.SetString($"{mProjectPathHashValue}_{BuildOutputPathKey}", BuildOutputPath);
+        Debug.Log("打包窗口保存配置:");
+        Debug.Log("版本号设置:" + BuildVersion);
+        Debug.Log("资源版本号设置:" + BuildResourceVersion);
+        Debug.Log("打包平台:" + Enum.GetName(typeof(BuildTarget), BuildTarget));
+        Debug.Log("打包输出路径:" + BuildOutputPath);
+    }
+
+    /// <summary>
+    /// 显示打包部分
+    /// </summary>
+    private void DisplayBuildArea()
+    {
+        GUILayout.BeginVertical();
+        DisplayInnerVersionAndResourceVersionInfoArea();
+        DisplayBuildInfoArea();
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("打包平台:", GUILayout.Width(100f));
+        BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(BuildTarget, GUILayout.Width(100f));
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("打包输出目录:", GUILayout.Width(100f));
+        BuildOutputPath = EditorGUILayout.TextField("", BuildOutputPath);
+        if (GUILayout.Button("选择打包输出目录", GUILayout.Width(200f)))
+        {
+            BuildOutputPath = EditorUtility.OpenFolderPanel("打包输出目录", "请选择打包输出目录!", "");
+        }
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("打包", GUILayout.ExpandWidth(true)))
+        {
+            DoBuild();
+        }
+        GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
+    }
+
+
+    /// <summary>
+    /// 执行打包
+    /// </summary>
+    private void DoBuild()
+    {
+        Debug.Log("DoBuild()");
+        if (!string.IsNullOrEmpty(BuildOutputPath))
+        {
+            if (!Directory.Exists(BuildOutputPath))
+            {
+                Directory.CreateDirectory(BuildOutputPath);
+            }
+            var buildtargetgroup = GetCorrespondingBuildTaregtGroup(BuildTarget);
+            Debug.Log($"打包分组:{Enum.GetName(typeof(BuildTargetGroup), buildtargetgroup)}");
+            if (buildtargetgroup != BuildTargetGroup.Unknown)
+            {
+                double newversioncode;
+                if (double.TryParse(BuildVersion, out newversioncode))
+                {
+                    VersionConfigModuleManager.Singleton.initVerisonConfigData();
+                    var innerversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode;
+                    var innerresourceversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
+                    Debug.Log("打包版本信息:");
+                    Debug.Log($"版本号:{newversioncode} 资源版本号:{BuildResourceVersion}");
+                    Debug.Log($"包内VersionConfig信息:");
+                    Debug.Log($"版本号:{innerversioncode} 资源版本号:{innerresourceversioncode}");
+                    var prebundleversion = PlayerSettings.bundleVersion;
+                    PlayerSettings.bundleVersion = newversioncode.ToString();
+                    Debug.Log($"打包修改版本号从:{prebundleversion}到{PlayerSettings.bundleVersion}");
+                    Debug.Log($"打包修改VersionConfig从:Version:{innerversioncode}到{newversioncode} ResourceVersion:{innerresourceversioncode}到{BuildResourceVersion}");
+                    VersionConfigModuleManager.Singleton.saveNewVersionCodeInnerConfig(newversioncode);
+                    VersionConfigModuleManager.Singleton.saveNewResoueceCodeInnerConfig(BuildResourceVersion);
+                    BuildPlayerOptions buildplayeroptions = new BuildPlayerOptions();
+                    buildplayeroptions.locationPathName = BuildOutputPath + Path.DirectorySeparatorChar + PlayerSettings.productName + GetCorrespondingBuildFilePostfix(BuildTarget);
+                    buildplayeroptions.scenes = GetBuildSceneArray();
+                    buildplayeroptions.target = BuildTarget;
+                    Debug.Log($"打包平台:{Enum.GetName(typeof(BuildTarget), BuildTarget)}");
+                    Debug.Log($"打包输出路径:{buildplayeroptions.locationPathName}");
+                    buildplayeroptions.targetGroup = buildtargetgroup;
+                    EditorUserBuildSettings.SwitchActiveBuildTarget(buildtargetgroup, BuildTarget);
+                    BuildPipeline.BuildPlayer(buildplayeroptions);
+                }
+                else
+                {
+                    Debug.LogError($"输入的版本号:{BuildVersion}无效,打包失败!");
+                }
+            }
+            else
+            {
+                Debug.LogError("不支持的打包平台选择,打包失败!");
+            }
+        }
+        else
+        {
+            Debug.LogError("打包输出目录为空或不存在,打包失败!");
+        }
+    }
+
+    /// <summary>
+    /// 获取需要打包的场景数组
+    /// </summary>
+    /// <returns></returns>
+    private string[] GetBuildSceneArray()
+    {
+        //暂时默认BuildSetting里设置的场景才是要进包的场景
+        List<string> editorscenes = new List<string>();
+        foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
+        {
+            if (!scene.enabled) continue;
+            editorscenes.Add(scene.path);
+            Debug.Log($"需要打包的场景:{scene.path}");
+        }
+        return editorscenes.ToArray();
+    }
+
+    /// <summary>
+    /// 获取对应的打包分组
+    /// </summary>
+    /// <param name="buildtarget"></param>
+    /// <returns></returns>
+    private BuildTargetGroup GetCorrespondingBuildTaregtGroup(BuildTarget buildtarget)
+    {
+        switch (buildtarget)
+        {
+            case BuildTarget.StandaloneWindows:
+            case BuildTarget.StandaloneWindows64:
+                return BuildTargetGroup.Standalone;
+            case BuildTarget.Android:
+                return BuildTargetGroup.Android;
+            case BuildTarget.iOS:
+                return BuildTargetGroup.iOS;
+            default:
+                return BuildTargetGroup.Unknown;
+        }
+    }
+
+    /// <summary>
+    /// 获取对应的打包分组的打包文件后缀
+    /// </summary>
+    /// <param name="buildtarget"></param>
+    /// <returns></returns>
+    private string GetCorrespondingBuildFilePostfix(BuildTarget buildtarget)
+    {
+        switch (buildtarget)
+        {
+            case BuildTarget.StandaloneWindows:
+            case BuildTarget.StandaloneWindows64:
+                return ".exe";
+            case BuildTarget.Android:
+                return ".apk";
+            case BuildTarget.iOS:
+                return "";
+            default:
+                return "";
+        }
+    }
+    #endregion
+
+    #region 资源打包部分
+    /// <summary>
+    /// 压缩格式设置本地存储Key
+    /// </summary>
+    private const string ABBuildSettingCompressOptionKey = "ABBuildSettingCompressOption";
+
+    /// <summary>
+    /// 是否强制重新打包设置本地存储Key
+    /// </summary>
+    private const string ABBuildSettingIsForceRebuildKey = "ABBuildSettingIsForceRebuild";
+
+    /// <summary>
+    /// 是否AppendHash设置本地存储Key
+    /// </summary>
+    private const string ABBuildSettingIsAppendHashKey = "ABBuildSettingIsAppendHash";
+
+    /// <summary>
+    /// 是否Disable Write Type Tree设置本地存储Key
+    /// </summary>
+    private const string ABBuildSettingIsDisableWriteTypeTreeKey = "ABBuildSettingIsDisableWriteTypeTree";
+
+    /// <summary>
+    /// 是否Ignore Type Tree Change设置本地存储Key
+    /// </summary>
+    private const string ABBuildSettingIsIgnoreTypeTreeChangesKey = "ABBuildSettingIsIgnoreTypeTreeChanges";
+
+    /// <summary>
+    /// 是否受用PlayerSettingVersion设置本地存储Key
+    /// </summary>
+    private const string ABBuildSettingIsUsePlayerSettingVersionKey = "ABBuildSettingIsUsePlayerSettingVersion";
+
+    /// <summary>
+    /// 初始化资源数据
+    /// </summary>
+    private void InitResourceData()
+    {
+        Debug.Log($"NewBuildWindow:InitResourceData()");
+        // 创建资源打包器
+        var appVersion = new Version(Application.version);
+        var buildVersion = appVersion.Revision;
+        var buildTarget = EditorUserBuildSettings.activeBuildTarget;
+        mAssetBuilder = new AssetBundleBuilder(buildTarget, buildVersion);
+
+        // 读取配置
+        LoadSettingsFromPlayerPrefs(mAssetBuilder);
+    }
+
+    /// <summary>
+    /// 保存打包数据
+    /// </summary>
+    private void SaveResourceData()
+    {
+
+    }
+
+    /// <summary>
+    /// 存储配置
+    /// </summary>
+    private static void SaveSettingsToPlayerPrefs(AssetBundleBuilder builder)
+    {
+        PlayerPrefs.SetString(ABBuildSettingCompressOptionKey, builder.CompressOption.ToString());
+        PlayerPrefs.SetInt(ABBuildSettingIsForceRebuildKey, builder.IsForceRebuild ? 1 : 0);
+        PlayerPrefs.SetInt(ABBuildSettingIsAppendHashKey, builder.IsAppendHash ? 1 : 0);
+        PlayerPrefs.SetInt(ABBuildSettingIsDisableWriteTypeTreeKey, builder.IsDisableWriteTypeTree ? 1 : 0);
+        PlayerPrefs.SetInt(ABBuildSettingIsIgnoreTypeTreeChangesKey, builder.IsIgnoreTypeTreeChanges ? 1 : 0);
+    }
+
+    /// <summary>
+    /// 读取配置
+    /// </summary>
+    private static void LoadSettingsFromPlayerPrefs(AssetBundleBuilder builder)
+    {
+        builder.CompressOption = (AssetBundleBuilder.ECompressOption)Enum.Parse(typeof(AssetBundleBuilder.ECompressOption), PlayerPrefs.GetString(ABBuildSettingCompressOptionKey, AssetBundleBuilder.ECompressOption.Uncompressed.ToString()));
+        builder.IsForceRebuild = PlayerPrefs.GetInt(ABBuildSettingIsForceRebuildKey, 0) != 0;
+        builder.IsAppendHash = PlayerPrefs.GetInt(ABBuildSettingIsAppendHashKey, 0) != 0;
+        builder.IsDisableWriteTypeTree = PlayerPrefs.GetInt(ABBuildSettingIsDisableWriteTypeTreeKey, 0) != 0;
+        builder.IsIgnoreTypeTreeChanges = PlayerPrefs.GetInt(ABBuildSettingIsIgnoreTypeTreeChangesKey, 0) != 0;
+    }
+
+    /// <summary>
+    /// 构建器
+    /// </summary>
+    private AssetBundleBuilder mAssetBuilder = null;
+
+    /// <summary>
+    /// 是否展开设置
+    /// </summary>
+    private bool mShowSettingFoldout = true;
+
+    /// <summary>
+    /// 显示打包区域
+    /// </summary>
+    private void DisplayResourceBuildArea()
+    {
+        // 标题
+        EditorGUILayout.LabelField("Build setup");
+        EditorGUILayout.Space();
+
+        DisplayBuildInfoArea();
+        // 构建版本
+        //mAssetBuilder.BuildVersion = EditorGUILayout.IntField("Build Version", mAssetBuilder.BuildVersion, GUILayout.MaxWidth(250));
+
+        // 输出路径
+        EditorGUILayout.LabelField("Build Output", mAssetBuilder.OutputDirectory);
+
+        // 构建选项
+        EditorGUILayout.Space();
+        mAssetBuilder.IsForceRebuild = GUILayout.Toggle(mAssetBuilder.IsForceRebuild, "Froce Rebuild", GUILayout.MaxWidth(120));
+
+        // 高级选项
+        using (new EditorGUI.DisabledScope(false))
+        {
+            EditorGUILayout.Space();
+            mShowSettingFoldout = EditorGUILayout.Foldout(mShowSettingFoldout, "Advanced Settings");
+            if (mShowSettingFoldout)
+            {
+                int indent = EditorGUI.indentLevel;
+                EditorGUI.indentLevel = 1;
+                mAssetBuilder.CompressOption = (AssetBundleBuilder.ECompressOption)EditorGUILayout.EnumPopup("Compression", mAssetBuilder.CompressOption);
+                mAssetBuilder.IsAppendHash = EditorGUILayout.ToggleLeft("Append Hash", mAssetBuilder.IsAppendHash, GUILayout.MaxWidth(120));
+                mAssetBuilder.IsDisableWriteTypeTree = EditorGUILayout.ToggleLeft("Disable Write Type Tree", mAssetBuilder.IsDisableWriteTypeTree, GUILayout.MaxWidth(200));
+                mAssetBuilder.IsIgnoreTypeTreeChanges = EditorGUILayout.ToggleLeft("Ignore Type Tree Changes", mAssetBuilder.IsIgnoreTypeTreeChanges, GUILayout.MaxWidth(200));
+                EditorGUI.indentLevel = indent;
+            }
+        }
+
+        // 构建按钮
+        EditorGUILayout.Space();
+        if (GUILayout.Button("Build", GUILayout.MaxHeight(40)))
+        {
+            string title;
+            string content;
+            if (mAssetBuilder.IsForceRebuild)
+            {
+                title = "警告";
+                content = "确定开始强制构建吗，这样会删除所有已有构建的文件";
+            }
+            else
+            {
+                title = "提示";
+                content = "确定开始增量构建吗";
+            }
+            if (EditorUtility.DisplayDialog(title, content, "Yes", "No"))
+            {
+                // 清空控制台
+                EditorUtilities.ClearUnityConsole();
+
+                // 存储配置
+                SaveSettingsToPlayerPrefs(mAssetBuilder);
+
+                EditorApplication.delayCall += ExecuteBuild;
+            }
+            else
+            {
+                Debug.LogWarning("[Build] 打包已经取消");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 执行构建
+    /// </summary>
+    private void ExecuteBuild()
+    {
+        var timecounter = new TimeCounter();
+        timecounter.Start("AssetBundleBuild");
+        mAssetBuilder.PreAssetBuild();
+        mAssetBuilder.PostAssetBuild();
+        timecounter.End();
+    }
+    #endregion
+
+    #region 资源搜集部分
+    /// <summary>
+    /// 显示资源搜集区域
+    /// </summary>
+    private void DisplayResourceCollectArea()
+    {
+        GUILayout.BeginVertical();
+        EditorGUILayout.LabelField("AB打包资源搜集:", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f));
+        for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
+        {
+            DisplayOneCollect(AssetBundleCollectSettingData.Setting.AssetBundleCollectors[i]);
+        }
+        if (GUILayout.Button("+", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
+        {
+            var chosenfolderpath = EditorUtility.OpenFolderPanel("选择搜集目录", LastOpenFolderPath, "");
+            if (string.IsNullOrEmpty(chosenfolderpath) == false && AssetBundleCollectSettingData.AddAssetBundleCollector(chosenfolderpath))
+            {
+                var relativefolderpath = PathUtilities.GetAssetsRelativeFolderPath(chosenfolderpath);
+                LastOpenFolderPath = relativefolderpath;
+                Debug.Log($"添加资源搜集目录:{chosenfolderpath}成功!");
+            }
+        }
+        if (GUILayout.Button("保存", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
+        {
+            AssetBundleCollectSettingData.SaveFile();
+        }
+        GUILayout.EndVertical();
+    }
+
+    /// <summary>
+    /// 显示单个搜集信息
+    /// </summary>
+    /// <param name="collector"></param>
+    private void DisplayOneCollect(Collector collector)
+    {
+        GUILayout.BeginHorizontal("Box");
+        EditorGUILayout.LabelField(collector.CollectFolderPath, GUILayout.ExpandWidth(true), GUILayout.Height(20.0f));
+        collector.CollectRule = (EAssetBundleCollectRule)EditorGUILayout.EnumPopup(collector.CollectRule, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
+        collector.BuildRule = (EAssetBundleBuildRule)EditorGUILayout.EnumPopup(collector.BuildRule, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
+        // 强制Igore规则的目录打包规则为Ignore
+        if (collector.CollectRule == EAssetBundleCollectRule.Ignore)
+        {
+            collector.BuildRule = EAssetBundleBuildRule.Ignore;
+        }
+        if(collector.BuildRule == EAssetBundleBuildRule.LoadByConstName)
+        {
+            collector.ConstName = EditorGUILayout.TextField(collector.ConstName, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
+        }
+        else
+        {
+            collector.ConstName = string.Empty;
+        }
+        if (GUILayout.Button("-", GUILayout.Width(30.0f), GUILayout.Height(20.0f)))
+        {
+            if (AssetBundleCollectSettingData.RemoveAssetBundleCollector(collector))
+            {
+                Debug.Log($"移除资源搜集目录:{collector.CollectFolderPath}成功!");
+            }
+            else
+            {
+                Debug.LogError($"移除资源搜集目录:{collector.CollectFolderPath}失败!");
+            }
+        }
+        GUILayout.EndHorizontal();
+    }
+    #endregion
+
+    #region 热更新部分
     #region 存储相关Key
     /// <summary>
     /// AB目录存储Key
@@ -51,11 +699,6 @@ public class HotUpdateOperationWindow : BaseEditorWindow
     /// </summary>
     private const string HotUpdatePreparationPreferenceKey = "HotUpdatePreparationABListKey";
     #endregion
-
-    /// <summary>
-    /// 项目路径Hash值(用于使得PlayerPrefs存储的Key值唯一)
-    /// </summary>
-    private int mProjectPathHashValue;
 
     /// <summary>
     /// 文件改变状态
@@ -127,11 +770,6 @@ public class HotUpdateOperationWindow : BaseEditorWindow
     private List<KeyValuePair<string, KeyValuePair<string, EChangedFileStatus>>> mMD5ChangedABFileNameList;
 
     /// <summary>
-    /// 整体UI滚动位置
-    /// </summary>
-    private Vector2 mWindowUiScrollPos;
-
-    /// <summary>
     /// AB的MD5计算结果
     /// </summary>
     private string mAssetBundleMD5CaculationResult = "未触发MD5计算!";
@@ -191,18 +829,12 @@ public class HotUpdateOperationWindow : BaseEditorWindow
     /// </summary>
     private const char SeparaterKeyChar = ' ';
 
-    [MenuItem("Tools/HotUpdate/热更新操作工具", false, 102)]
-    public static void hotUpdateOpterationWindow()
-    {
-        var hotupdateoperationwindow = EditorWindow.GetWindow<HotUpdateOperationWindow>(false, "热更新工具");
-        hotupdateoperationwindow.Show();
-    }
-    
     /// <summary>
-    /// 初始化窗口数据
+    /// 初始化热更新数据
     /// </summary>
-    protected override void InitData()
+    private void InitHotUpdateData()
     {
+        Debug.Log($"NewBuildWindow:InitHotUpdateData()");
         mProjectPathHashValue = Application.dataPath.GetHashCode();
         ABFolderPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{ABFolderPathPreferenceKey}");
         ABMd5OutputFolderPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{MD5OutputFolderPathPreferenceKey}");
@@ -221,10 +853,11 @@ public class HotUpdateOperationWindow : BaseEditorWindow
     }
 
     /// <summary>
-    /// 保存数据
+    /// 保存热更新数据
     /// </summary>
-    protected override void SaveData()
+    private void SaveHotUpdateData()
     {
+        Debug.Log($"NewBuildWindow:SaveHotUpdateData()");
         PlayerPrefs.SetString($"{mProjectPathHashValue}_{ABFolderPathPreferenceKey}", ABFolderPath);
         PlayerPrefs.SetString($"{mProjectPathHashValue}_{MD5OutputFolderPathPreferenceKey}", ABMd5OutputFolderPath);
         PlayerPrefs.SetString($"{mProjectPathHashValue}_{MD5ComparisonSourceFilePathPreferenceKey}", ABMd5CompareSourceFilePath);
@@ -240,16 +873,13 @@ public class HotUpdateOperationWindow : BaseEditorWindow
         Debug.Log("热更新AB拷贝目录:" + HotUpdateOutputFolderPath);
     }
 
-    public void OnGUI()
+    /// <summary>
+    /// 显示热更新区域
+    /// </summary>
+    private void DisplayHotUpdateArea()
     {
-        mWindowUiScrollPos = GUILayout.BeginScrollView(mWindowUiScrollPos);
         GUILayout.BeginVertical();
-        GUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("包内版本号:", GUILayout.Width(100f));
-        GUILayout.Label($"{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode}", "box", GUILayout.Width(120f));
-        EditorGUILayout.LabelField("包内资源版本号:", GUILayout.Width(120f));
-        GUILayout.Label($"{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}", "box", GUILayout.Width(120f));
-        GUILayout.EndHorizontal();
+        DisplayInnerVersionAndResourceVersionInfoArea();
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("AB目录:", GUILayout.Width(120f));
         ABFolderPath = EditorGUILayout.TextField("", ABFolderPath);
@@ -339,7 +969,6 @@ public class HotUpdateOperationWindow : BaseEditorWindow
         displayHotUpdatePreparationResult();
         displayNotice();
         GUILayout.EndVertical();
-        GUILayout.EndScrollView();
     }
 
     /// <summary>
@@ -453,7 +1082,7 @@ public class HotUpdateOperationWindow : BaseEditorWindow
                 // 进行对比
                 foreach (var md51 in md51map)
                 {
-                     if (md52map.ContainsKey(md51.Key))
+                    if (md52map.ContainsKey(md51.Key))
                     {
                         //如果写入老版MD5的路径可能会因为老版MD5生成不是在同一台电脑上，绝对路径不对
                         //所以这里采用写入最新的MD5的路径确保能得到正确的AB路径
@@ -630,7 +1259,7 @@ public class HotUpdateOperationWindow : BaseEditorWindow
                 Debug.LogError($"填写的版本号:{mHotUpdateVersion}无效，请填写有效的版本号!");
                 return false;
             }
-            if(versionnumber <= 0)
+            if (versionnumber <= 0)
             {
                 Debug.LogError($"填写的版本号:{versionnumber}小于等于0无效，请填写有效的版本号!");
                 return false;
@@ -728,4 +1357,5 @@ public class HotUpdateOperationWindow : BaseEditorWindow
         GUI.color = Color.white;
         GUILayout.EndVertical();
     }
+    #endregion
 }

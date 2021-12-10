@@ -31,28 +31,63 @@ namespace MotionFramework.Editor
 		/// </summary>
 		private readonly string _outputRoot;
 
-		// 构建相关
+		/// <summary>
+		/// 构建平台
+		/// </summary>
 		public BuildTarget BuildTarget { private set; get; } = BuildTarget.NoTarget;
+
+		/// <summary>
+		/// 版本号
+		/// </summary>
 		public int BuildVersion { set; get; } = -1;
+
+		/// <summary>
+		/// 资源版本号
+		/// </summary>
+		public int ResourceVersion { set; get; } = 1;
+
+		/// <summary>
+		/// 输出目录
+		/// </summary>
 		public string OutputDirectory { private set; get; } = string.Empty;
 
-		// 构建选项
+		/// <summary>
+		/// 构建选项
+		/// </summary>
 		public ECompressOption CompressOption = ECompressOption.Uncompressed;
+
+		/// <summary>
+		/// 是否强制重新打包资源
+		/// </summary>
 		public bool IsForceRebuild = false;
+
+		/// <summary>
+		/// 
+		/// </summary>
 		public bool IsAppendHash = false;
+
+		/// <summary>
+		/// 
+		/// </summary>
 		public bool IsDisableWriteTypeTree = false;
+
+		/// <summary>
+		/// 
+		/// </summary>
 		public bool IsIgnoreTypeTreeChanges = false;
 
 		/// <summary>
 		/// AssetBuilder
 		/// </summary>
 		/// <param name="buildTarget">构建平台</param>
-		/// <param name="buildVersion">构建版本</param>
-		public AssetBundleBuilder(BuildTarget buildTarget, int buildVersion)
+		/// <param name="buildVersion">构建版本号</param>
+		/// <param name="resourceVersion">资源版本号</param>
+		public AssetBundleBuilder(BuildTarget buildTarget, int buildVersion, int resourceVersion = 1)
 		{
 			_outputRoot = AssetBundleBuilderHelper.GetDefaultOutputRootPath();
 			BuildTarget = buildTarget;
 			BuildVersion = buildVersion;
+			ResourceVersion = resourceVersion;
 			OutputDirectory = GetOutputDirectory();
 		}
 
