@@ -56,7 +56,11 @@ namespace TResource
                     ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetDatabase:{ResourcePath}资源异步未加载完成,取消Asset异步加载完成回调注册!");
                     mAssetDatabaseAsyncRequest.completed -= onAssetAsyncLoadComplete;
                 }
+#if UNITY_EDITOR
                 var asset = AssetDatabase.LoadAssetAtPath(mAssetInfo.ResourcePath, mAssetInfo.AssetType);
+#else
+                Object asset = null;
+#endif
                 onAssetLoadComplete(asset);
             }
             else if (LoadMethod == ResourceLoadMethod.Async)

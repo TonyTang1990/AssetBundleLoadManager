@@ -116,7 +116,11 @@ namespace TResource
         {
             UpdateManager.Singleton.unregisterFixedUpdate(OnFixedUpdate);
             IsDone = true;
+#if UNITY_EDITOR
             Asset = AssetDatabase.LoadAssetAtPath(AssetPath, AssetType);
+#else
+            Asset = null;
+#endif
             completed?.Invoke(this);
         }
     }
