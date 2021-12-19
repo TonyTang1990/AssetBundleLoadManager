@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -32,6 +33,11 @@ public class BuildWindow : BaseEditorWindow
     /// 打包平台Key
     /// </summary>
     private const string BuildTargetKey = "BuildTargetKey";
+
+    /// <summary>
+    /// 打包开发版本Key
+    /// </summary>
+    private const string BuildDevelopmentKey = "BuildDevelopmentKey";
 
     /// <summary>
     /// 打包输出路径存储Key
@@ -72,6 +78,15 @@ public class BuildWindow : BaseEditorWindow
     }
 
     /// <summary>
+    /// 是否是开发版本
+    /// </summary>
+    public bool IsDevelopment
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
     /// 打包输出路径
     /// </summary>
     public string BuildOutputPath
@@ -102,12 +117,17 @@ public class BuildWindow : BaseEditorWindow
         BuildVersion = PlayerPrefs.GetString($"{mProjectPathHashValue}_{BuildVersionKey}");
         BuildResourceVersion = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{BuildResourceVersionKey}");
         BuildTarget = (BuildTarget)PlayerPrefs.GetInt($"{mProjectPathHashValue}_{BuildTargetKey}");
+        IsDevelopment = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{BuildDevelopmentKey}") != 0;
         BuildOutputPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{BuildOutputPathKey}");
-        Debug.Log("打包窗口读取配置:");
-        Debug.Log("版本号设置:" + BuildVersion);
-        Debug.Log("资源版本号设置:" + BuildResourceVersion);
-        Debug.Log("打包平台:" + Enum.GetName(typeof(BuildTarget), BuildTarget));
-        Debug.Log("打包输出路径:" + BuildOutputPath);
+        Debug.Log($"打包窗口读取配置:");
+        Debug.Log($"版本号设置:{BuildVersion}");
+        Debug.Log($"资源版本号设置:{BuildResourceVersion}");
+        Debug.Log($"打包平台:{Enum.GetName(typeof(BuildTarget), BuildTarget)}");
+        Debug.Log($"打包开发版本:{IsDevelopment}");
+        Debug.Log($"打包输出路径:{BuildOutputPath}");
+        VersionConfigModuleManager.Singleton.initVerisonConfigData();
+        Debug.Log($"包内版本号:{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode}");
+        Debug.Log($"包内资源版本号:{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}");
     }
 
     /// <summary>
@@ -119,11 +139,13 @@ public class BuildWindow : BaseEditorWindow
         PlayerPrefs.SetString($"{mProjectPathHashValue}_{BuildVersionKey}", BuildVersion);
         PlayerPrefs.SetInt($"{mProjectPathHashValue}_{BuildResourceVersionKey}", BuildResourceVersion);
         PlayerPrefs.SetInt($"{mProjectPathHashValue}_{BuildTargetKey}", (int)BuildTarget);
+        PlayerPrefs.SetInt($"{mProjectPathHashValue}_{BuildDevelopmentKey}", IsDevelopment ? 1 : 0);
         PlayerPrefs.SetString($"{mProjectPathHashValue}_{BuildOutputPathKey}", BuildOutputPath);
         Debug.Log("打包窗口保存配置:");
         Debug.Log("版本号设置:" + BuildVersion);
         Debug.Log("资源版本号设置:" + BuildResourceVersion);
         Debug.Log("打包平台:" + Enum.GetName(typeof(BuildTarget), BuildTarget));
+        Debug.Log($"打包开发版本:{IsDevelopment}");
         Debug.Log("打包输出路径:" + BuildOutputPath);
     }
 
@@ -131,15 +153,32 @@ public class BuildWindow : BaseEditorWindow
     {
         mWindowUiScrollPos = GUILayout.BeginScrollView(mWindowUiScrollPos);
         GUILayout.BeginVertical();
+        DisplayInnerVersionAndResourceVersionInfoArea();
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("打包版本号:", GUILayout.Width(70.0f));
+        EditorGUI.BeginChangeCheck();
         BuildVersion = EditorGUILayout.TextField(BuildVersion, GUILayout.Width(50.0f));
+        if(EditorGUI.EndChangeCheck())
+        {
+            double buildVersion = 0;
+            if (!double.TryParse(BuildVersion, out buildVersion))
+            {
+                Debug.Log($"不支持的版本格式:{BuildVersion},请输入有效版本号值!");
+                BuildVersion = "1.0";
+            }
+            else
+            {
+                BuildVersion = buildVersion.ToString("N1", CultureInfo.CreateSpecificCulture("en-US"));
+            }
+        }
         BuildVersion = string.IsNullOrEmpty(BuildVersion) ? "1.0" : BuildVersion;
         EditorGUILayout.LabelField("打包资源版本号:", GUILayout.Width(90.0f));
         BuildResourceVersion = EditorGUILayout.IntField(BuildResourceVersion, GUILayout.Width(50.0f));
         BuildResourceVersion = BuildResourceVersion > 0 ? BuildResourceVersion : 1;
         EditorGUILayout.LabelField("打包平台:", GUILayout.Width(60.0f));
         BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(BuildTarget, GUILayout.Width(100.0f));
+        EditorGUILayout.LabelField($"开发版本:", GUILayout.Width(60f), GUILayout.Height(20f));
+        IsDevelopment = EditorGUILayout.Toggle(IsDevelopment, GUILayout.Width(100.0f));
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("打包输出目录:", GUILayout.Width(80.0f));
@@ -160,119 +199,32 @@ public class BuildWindow : BaseEditorWindow
     }
 
     /// <summary>
+    /// 显示包内版本和资源版本信息区域
+    /// </summary>
+    private void DisplayInnerVersionAndResourceVersionInfoArea()
+    {
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("包内版本号:", GUILayout.Width(100f));
+        GUILayout.Label($"{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode}", "box", GUILayout.Width(100f));
+        EditorGUILayout.LabelField("包内资源版本号:", GUILayout.Width(100f));
+        GUILayout.Label($"{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}", "box", GUILayout.Width(100f));
+        GUILayout.EndHorizontal();
+    }
+
+    /// <summary>
     /// 执行打包
     /// </summary>
     private void DoBuild()
     {
         Debug.Log("DoBuild()");
-        if(!string.IsNullOrEmpty(BuildOutputPath))
+        double buildVersion = 0;
+        if (!double.TryParse(BuildVersion, out buildVersion))
         {
-            if(!Directory.Exists(BuildOutputPath))
-            {
-                Directory.CreateDirectory(BuildOutputPath);
-            }
-            var buildtargetgroup = GetCorrespondingBuildTaregtGroup(BuildTarget);
-            Debug.Log($"打包分组:{Enum.GetName(typeof(BuildTargetGroup), buildtargetgroup)}");
-            if (buildtargetgroup != BuildTargetGroup.Unknown)
-            {
-                double newversioncode;
-                if(double.TryParse(BuildVersion, out newversioncode))
-                {
-                    VersionConfigModuleManager.Singleton.initVerisonConfigData();
-                    var innerversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode;
-                    var innerresourceversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
-                    Debug.Log("打包版本信息:");
-                    Debug.Log($"版本号:{newversioncode} 资源版本号:{BuildResourceVersion}");
-                    Debug.Log($"包内VersionConfig信息:");
-                    Debug.Log($"版本号:{innerversioncode} 资源版本号:{innerresourceversioncode}");
-                    var prebundleversion = PlayerSettings.bundleVersion;
-                    PlayerSettings.bundleVersion = newversioncode.ToString();
-                    Debug.Log($"打包修改版本号从:{prebundleversion}到{PlayerSettings.bundleVersion}");
-                    Debug.Log($"打包修改VersionConfig从:Version:{innerversioncode}到{newversioncode} ResourceVersion:{innerresourceversioncode}到{BuildResourceVersion}");
-                    VersionConfigModuleManager.Singleton.saveNewVersionCodeInnerConfig(newversioncode);
-                    VersionConfigModuleManager.Singleton.saveNewResoueceCodeInnerConfig(BuildResourceVersion);
-                    BuildPlayerOptions buildplayeroptions = new BuildPlayerOptions();
-                    buildplayeroptions.locationPathName = BuildOutputPath + Path.DirectorySeparatorChar + PlayerSettings.productName + GetCorrespondingBuildFilePostfix(BuildTarget);
-                    buildplayeroptions.scenes = GetBuildSceneArray();
-                    buildplayeroptions.target = BuildTarget;
-                    Debug.Log($"打包平台:{Enum.GetName(typeof(BuildTarget), BuildTarget)}");
-                    Debug.Log($"打包输出路径:{buildplayeroptions.locationPathName}");
-                    buildplayeroptions.targetGroup = buildtargetgroup;
-                    EditorUserBuildSettings.SwitchActiveBuildTarget(buildtargetgroup, BuildTarget);
-                    BuildPipeline.BuildPlayer(buildplayeroptions);
-                }
-                else
-                {
-                    Debug.LogError($"输入的版本号:{BuildVersion}无效,打包失败!");
-                }
-            }
-            else
-            {
-                Debug.LogError("不支持的打包平台选择,打包失败!");
-            }
+            Debug.LogError($"解析版本号:{BuildVersion}失败,格式无效!");
+            return;
         }
-        else
-        {
-            Debug.LogError("打包输出目录为空或不存在,打包失败!");
-        }
-    }
-
-    /// <summary>
-    /// 获取需要打包的场景数组
-    /// </summary>
-    /// <returns></returns>
-    private string[] GetBuildSceneArray()
-    {
-        //暂时默认BuildSetting里设置的场景才是要进包的场景
-        List<string> editorscenes = new List<string>();
-        foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
-        {
-            if (!scene.enabled) continue;
-            editorscenes.Add(scene.path);
-            Debug.Log($"需要打包的场景:{scene.path}");
-        }
-        return editorscenes.ToArray();
-    }
-
-    /// <summary>
-    /// 获取对应的打包分组
-    /// </summary>
-    /// <param name="buildtarget"></param>
-    /// <returns></returns>
-    private BuildTargetGroup GetCorrespondingBuildTaregtGroup(BuildTarget buildtarget)
-    {
-        switch(buildtarget)
-        {
-            case BuildTarget.StandaloneWindows:
-            case BuildTarget.StandaloneWindows64:
-                return BuildTargetGroup.Standalone;
-            case BuildTarget.Android:
-                return BuildTargetGroup.Android;
-            case BuildTarget.iOS:
-                return BuildTargetGroup.iOS;
-            default:
-                return BuildTargetGroup.Unknown;
-        }
-    }
-
-    /// <summary>
-    /// 获取对应的打包分组的打包文件后缀
-    /// </summary>
-    /// <param name="buildtarget"></param>
-    /// <returns></returns>
-    private string GetCorrespondingBuildFilePostfix(BuildTarget buildtarget)
-    {
-        switch (buildtarget)
-        {
-            case BuildTarget.StandaloneWindows:
-            case BuildTarget.StandaloneWindows64:
-                return ".exe";
-            case BuildTarget.Android:
-                return ".apk";
-            case BuildTarget.iOS:
-                return "";
-            default:
-                return "";
-        }
+        BuildVersion = buildVersion.ToString("N1", CultureInfo.CreateSpecificCulture("en-US"));
+        buildVersion = double.Parse(BuildVersion);
+        BuildTool.DoBuild(BuildOutputPath, BuildTarget, buildVersion, BuildResourceVersion, IsDevelopment);
     }
 }

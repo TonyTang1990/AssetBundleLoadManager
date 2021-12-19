@@ -39,7 +39,7 @@ namespace MotionFramework.Editor
 		/// <summary>
 		/// 版本号
 		/// </summary>
-		public int BuildVersion { set; get; } = -1;
+		public double BuildVersion { set; get; } = -1;
 
 		/// <summary>
 		/// 资源版本号
@@ -82,7 +82,7 @@ namespace MotionFramework.Editor
 		/// <param name="buildTarget">构建平台</param>
 		/// <param name="buildVersion">构建版本号</param>
 		/// <param name="resourceVersion">资源版本号</param>
-		public AssetBundleBuilder(BuildTarget buildTarget, int buildVersion, int resourceVersion = 1)
+		public AssetBundleBuilder(BuildTarget buildTarget, double buildVersion, int resourceVersion = 1)
 		{
 			_outputRoot = AssetBundleBuilderHelper.GetDefaultOutputRootPath();
 			BuildTarget = buildTarget;
@@ -103,10 +103,10 @@ namespace MotionFramework.Editor
 				throw new Exception("[BuildPatch] 请选择目标平台");
 
 			// 检测构建版本是否合法
-			if (EditorUtilities.IsNumber(BuildVersion.ToString()) == false)
-				throw new Exception($"[BuildPatch] 版本号格式非法：{BuildVersion}");
-			if (BuildVersion < 0)
-				throw new Exception("[BuildPatch] 请先设置版本号");
+			//if (EditorUtilities.IsNumber(BuildVersion.ToString()) == false)
+			//	throw new Exception($"[BuildPatch] 版本号格式非法：{BuildVersion}");
+			//if (BuildVersion < 0)
+			//	throw new Exception("[BuildPatch] 请先设置版本号");
 
 			// 检测输出目录是否为空
 			if (string.IsNullOrEmpty(OutputDirectory))
