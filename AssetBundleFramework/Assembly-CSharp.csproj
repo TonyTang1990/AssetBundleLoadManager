@@ -147,12 +147,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-BumpNolight.shader" />
+    <None Include="Assets\StreamingAssets\Android\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-Diffuse.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-BlitCopyDepth.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-DepthNormalsTexture.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Sprites-Default.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardParticleShadow.cginc" />
-    <None Include="Assets\StreamingAssets\Android\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-AddPass.shader" />
     <None Include="Assets\StreamingAssets\StandaloneWindows64\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesRendertex.shader" />

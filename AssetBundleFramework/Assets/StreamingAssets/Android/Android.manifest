@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1167189674
+CRC: 1374841728
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -143,5 +143,11 @@ AssetBundleManifest:
         Dependency_0: assets/res/sharematerials/sharematerial.bundle
         Dependency_1: assets/res/scenes/sceneprefabs/testscene3prefab.bundle
     Info_37:
+      Name: assets/res/textures/chaichaifengjing.bundle
+      Dependencies: {}
+    Info_38:
+      Name: assets/res/textures/chaichaishenqingzhushi.bundle
+      Dependencies: {}
+    Info_39:
       Name: assetbuildinfo.bundle
       Dependencies: {}

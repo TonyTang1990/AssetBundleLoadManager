@@ -1,6 +1,6 @@
 ﻿构建平台：Android
-构建版本：1
-构建时间：2021/11/20 22:42:05
+构建版本：3
+构建时间：2021/12/19 22:45:40
 
 --配置信息--
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : LoadByFolderPath
@@ -17,6 +17,7 @@ Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : LoadByFold
 Directory : Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas || CollectRule : Ignore || BuildRule : Ignore
 Directory : Assets/Res/assetbuildinfo || CollectRule : Ignore || BuildRule : Ignore
 Directory : Assets/Res/scenes || CollectRule : Collect || BuildRule : LoadByFilePath
+Directory : Assets/Res/textures || CollectRule : Collect || BuildRule : LoadByFilePath
 
 --构建参数--
 CompressOption：ChunkBasedCompressionLZ4
@@ -60,6 +61,8 @@ assets/res/shaders/rim lit bumped specular.bundle
 assets/res/sharematerials/sharebluematerial.bundle
 assets/res/sharematerials/sharematerial.bundle
 assets/res/sharematerials/shareredmaterial.bundle
+assets/res/textures/chaichaifengjing.bundle
 assets/res/textures/chaichainingwang.bundle
+assets/res/textures/chaichaishenqingzhushi.bundle
 assets/res/windows/mainwindow.bundle
 shaderlist.bundle

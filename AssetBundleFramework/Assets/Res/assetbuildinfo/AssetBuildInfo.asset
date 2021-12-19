@@ -913,6 +913,12 @@ MonoBehaviour:
   - AssetPath: assets/res/scenes/testscene3.unity
     ABPath: assets/res/scenes/testscene3
     ABVariantPath: bundle
+  - AssetPath: assets/res/textures/chaichaifengjing.jpg
+    ABPath: assets/res/textures/chaichaifengjing
+    ABVariantPath: bundle
+  - AssetPath: assets/res/textures/chaichaishenqingzhushi.jpg
+    ABPath: assets/res/textures/chaichaishenqingzhushi
+    ABVariantPath: bundle
   - AssetPath: assets/res/assetbuildinfo/assetbuildinfo.asset
     ABPath: assetbuildinfo
     ABVariantPath: bundle
@@ -1020,5 +1026,9 @@ MonoBehaviour:
     DepABPathList:
     - assets/res/sharematerials/sharematerial
     - assets/res/scenes/sceneprefabs/testscene3prefab
+  - ABPath: assets/res/textures/chaichaifengjing
+    DepABPathList: []
+  - ABPath: assets/res/textures/chaichaishenqingzhushi
+    DepABPathList: []
   - ABPath: assetbuildinfo
     DepABPathList: []
