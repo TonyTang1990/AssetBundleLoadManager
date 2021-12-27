@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
+using System.Security.Cryptography;
 
 namespace MotionFramework.Editor
 {
@@ -39,7 +40,7 @@ namespace MotionFramework.Editor
 		/// <summary>
 		/// 版本号
 		/// </summary>
-		public double BuildVersion { set; get; } = -1;
+		public string BuildVersion { set; get; } = "1.0";
 
 		/// <summary>
 		/// 资源版本号
@@ -82,7 +83,7 @@ namespace MotionFramework.Editor
 		/// <param name="buildTarget">构建平台</param>
 		/// <param name="buildVersion">构建版本号</param>
 		/// <param name="resourceVersion">资源版本号</param>
-		public AssetBundleBuilder(BuildTarget buildTarget, double buildVersion, int resourceVersion = 1)
+		public AssetBundleBuilder(BuildTarget buildTarget, string buildVersion, int resourceVersion = 1)
 		{
 			_outputRoot = AssetBundleBuilderHelper.GetDefaultOutputRootPath();
 			BuildTarget = buildTarget;
@@ -189,6 +190,18 @@ namespace MotionFramework.Editor
 			if (unityManifest == null)
 				throw new Exception("[BuildPatch] 构建过程中发生错误！");
 
+			// 个人采用AssetBuildInfo.asset作为依赖加载信息文件，不再需要Unity自定义生成的依赖文件
+			// 这里采用删除Unity生成的依赖信息文件来避免热更不必要的文件
+			// 考虑到.manifest文件最终不会进包，这里保留对应平台的Editor依赖信息方便查看
+			var allDependenciesFileName = PathUtilities.GetFolderName(OutputDirectory);
+			var allDependenciesFilePath = Path.Combine(OutputDirectory, allDependenciesFileName);
+			//var allDependenciesManifestFilePath = Path.Combine(OutputDirectory, $"{allDependenciesFileName}{ResourceConstData.AssetBundleDefaultManifestPostfixWithPoint}");
+            File.Delete(allDependenciesFilePath);
+			//File.Delete(allDependenciesManifestFilePath);
+
+			// 单独生成包内的AssetBundle的MD5信息(用于热更新判定)
+			CreateAssetBundleMd5InfoFile();
+
             // 视频单独打包
             PackVideo(buildMap);
 			//// 加密资源文件
@@ -276,7 +289,7 @@ namespace MotionFramework.Editor
 		}
 		private string GetOutputDirectory()
 		{
-            return $"{_outputRoot}/{BuildTarget}";
+            return $"{_outputRoot}/{BuildTarget}/";
             //{AssetBundleBuildConstData.UnityManifestFileName}";
 		}
 		private string GetPackageDirectory()
@@ -455,10 +468,42 @@ namespace MotionFramework.Editor
 				assetInfo.AssetBundleVariant = ResourceConstData.AssetBundleDefaultVariant;
 			}
 		}
-		#endregion
+        #endregion
 
-		#region 视频相关
-		private void PackVideo(List<AssetInfo> buildMap)
+        #region AssetBundle资源热更新相关
+		/// <summary>
+		/// 创建AssetBundle的MD5信息文件
+		/// </summary>
+		private void CreateAssetBundleMd5InfoFile()
+        {
+			var assetBundleMd5FilePath = AssetBundlePath.GetInnerAssetBundleMd5FilePath();
+			// 确保创建最新的
+			FileUtilities.DeleteFile(assetBundleMd5FilePath);
+            VersionConfigModuleManager.Singleton.initVerisonConfigData();
+            var resourceversion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
+            using (var md5SW = new StreamWriter(assetBundleMd5FilePath, false, Encoding.UTF8))
+            {
+                var abfilespath = Directory.GetFiles(OutputDirectory, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
+					!f.EndsWith(".meta") && !f.EndsWith(".manifest") && !f.Equals("readme.txt")
+				);
+                var md5hash = MD5.Create();
+				// 第一行是版本号信息
+				// 第二行是资源版本号信息
+				// 格式:AB全路径+":"+MD5值
+				md5SW.WriteLine(Application.version);
+				md5SW.WriteLine(resourceversion);
+                foreach (var abfilepath in abfilespath)
+                {
+					var fileMd5 = FileUtilities.GetFileMD5(abfilepath, md5hash);
+					md5SW.WriteLine($"{abfilepath}{ResourceConstData.AssetBundlleInfoSeparater}{fileMd5}");
+                }
+                Debug.Log($"AB的MD5版本号:{Application.version}资源版本号:{resourceversion}计算完毕!");
+            }
+        }
+        #endregion
+
+        #region 视频相关
+        private void PackVideo(List<AssetInfo> buildMap)
 		{
 			// 注意：在Unity2018.4截止的版本里，安卓还不支持压缩的视频Bundle
 			if (BuildTarget == BuildTarget.Android)

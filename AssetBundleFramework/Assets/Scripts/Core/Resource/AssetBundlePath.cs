@@ -21,27 +21,24 @@ public static class AssetBundlePath {
     /// <summary> AB包内资源路径 /// </summary>
     public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/StandaloneWindows64/";
     /// <summary> AB热更新资源路径 /// </summary>
-    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/StandaloneWindows64/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "HotUpdate/StandaloneWindows64/";
     /// <summary> 依赖信息文件名 /// </summary>
     public const string DependencyFileName = "StandaloneWindows64";
 #elif UNITY_ANDROID
     /// <summary> AB包内资源路径 /// </summary>
     public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/Android/";
     /// <summary> AB热更新资源路径 /// </summary>
-    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/Android/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "HotUpdate/Android/";
     /// <summary> 依赖信息文件名 /// </summary>
     public const string DependencyFileName = "Android";
 #elif UNITY_IOS
     /// <summary> AB包内资源路径 /// </summary>
     public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/IOS/";
     /// <summary> AB热更新资源路径 /// </summary>
-    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/IOS/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "HotUpdate/IOS/";
     /// <summary> 依赖信息文件名 /// </summary>
     public const string DependencyFileName = "IOS";
 #endif
-
-    /// <summary> 依赖信息Asset名 /// </summary>
-    public const string DependencyAssetName = "AssetBundleManifest";
 
     /// <summary>
     /// 打印所有路径信息
@@ -51,7 +48,6 @@ public static class AssetBundlePath {
         DIYLog.Log(string.Format("ABBuildinPath : {0}", ABBuildinPath));
         DIYLog.Log(string.Format("ABHotUpdatePath : {0}", ABHotUpdatePath));
         DIYLog.Log(string.Format("DependencyFileName : {0}", DependencyFileName));
-        DIYLog.Log(string.Format("DependencyAssetName : {0}", DependencyAssetName));
     }
 
     /// <summary>
@@ -116,6 +112,15 @@ public static class AssetBundlePath {
             ResourceLogger.log(string.Format("AB包外目录:{0}不存在，新创建一个!", ABHotUpdatePath));
             Directory.CreateDirectory(ABHotUpdatePath);
         }
+    }
+
+    /// <summary>
+    /// 获取包内AssetBundle的MD5信息文件(AssetBundleMd5InfoFileName.txt)
+    /// </summary>
+    /// <returns></returns>
+    public static string GetInnerAssetBundleMd5FilePath()
+    {
+        return Path.Combine(Application.dataPath, $"Resources/{ResourceConstData.AssetBundleMd5InfoFileName}");
     }
     #endregion
 }

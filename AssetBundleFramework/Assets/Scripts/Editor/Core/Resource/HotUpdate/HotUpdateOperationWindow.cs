@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using static HotUpdateTool;
 
 /// <summary>
 /// HotUpdateOperationWindow.cs
@@ -56,16 +57,6 @@ public class HotUpdateOperationWindow : BaseEditorWindow
     /// 项目路径Hash值(用于使得PlayerPrefs存储的Key值唯一)
     /// </summary>
     private int mProjectPathHashValue;
-
-    /// <summary>
-    /// 文件改变状态
-    /// </summary>
-    private enum EChangedFileStatus
-    {
-        Changed = 1,            // 改变
-        Delete,                 // 移除
-        Add,                    // 增加
-    }
 
     /// <summary>
     /// AB目录
@@ -197,7 +188,7 @@ public class HotUpdateOperationWindow : BaseEditorWindow
         var hotupdateoperationwindow = EditorWindow.GetWindow<HotUpdateOperationWindow>(false, "热更新工具");
         hotupdateoperationwindow.Show();
     }
-    
+
     /// <summary>
     /// 初始化窗口数据
     /// </summary>
@@ -347,66 +338,104 @@ public class HotUpdateOperationWindow : BaseEditorWindow
     /// </summary>
     private void doAssetBundleMd5Caculation()
     {
-        if (Directory.Exists(ABFolderPath))
+        if (HotUpdateTool.DoAssetBundleMd5Caculation(ABFolderPath, ABMd5OutputFolderPath))
         {
-            if (Directory.Exists(ABMd5OutputFolderPath))
-            {
-                VersionConfigModuleManager.Singleton.initVerisonConfigData();
-                var resourceversion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
-                var targetplatform = EditorUserBuildSettings.activeBuildTarget;
-                // 文件名格式: MD5+版本号+资源版本号+平台+时间戳(年_月_日_时_分_秒)+.txt
-                var nowdate = DateTime.Now;
-                var md5filename = $"MD5-{Application.version}-{resourceversion}-{targetplatform}-{nowdate.Year}_{nowdate.Month}_{nowdate.Day}_{nowdate.Hour}_{nowdate.Minute}_{nowdate.Second}.txt";
-                var md5filefullpath = ABMd5OutputFolderPath + Path.DirectorySeparatorChar + md5filename;
-                var abfilespath = Directory.GetFiles(ABFolderPath, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
-                    !f.EndsWith(".meta") && !f.EndsWith(".manifest")
-                );
-                if (!File.Exists(md5filefullpath))
-                {
-                    using (File.Create(md5filefullpath))
-                    {
-
-                    }
-                }
-                using (var md5sw = new StreamWriter(md5filefullpath, false, Encoding.UTF8))
-                {
-                    var md5hash = MD5.Create();
-                    //第一行是版本号信息
-                    //第二行是资源版本号信息
-                    //后面是AB详细(AB名+":"+MD5值+":"AB全路径)
-                    md5sw.WriteLine(Application.version);
-                    md5sw.WriteLine(resourceversion);
-                    var sb = new StringBuilder();
-                    foreach (var abfilepath in abfilespath)
-                    {
-                        using (var abfilefs = File.OpenRead(abfilepath))
-                        {
-                            sb.Clear();
-                            var abfilename = Path.GetFileName(abfilepath);
-                            var md5value = md5hash.ComputeHash(abfilefs);
-                            foreach (var md5byte in md5value)
-                            {
-                                sb.Append(md5byte.ToString("x2"));
-                            }
-                            md5sw.WriteLine(abfilename + SeparaterKeyChar + sb.ToString() + SeparaterKeyChar + abfilepath);
-                        }
-                    }
-                }
-                Debug.Log("AB的MD5计算完毕!");
-                Debug.Log($"AB的MD5文件路径:{md5filefullpath}");
-                mAssetBundleMD5CaculationResult = "AB的MD5计算完毕!";
-            }
-            else
-            {
-                Debug.LogError("MD5输出目录不存在，请选择有效AB的MD5分析输出目录!");
-                mAssetBundleMD5CaculationResult = "MD5输出目录不存在，请选择有效AB的MD5分析输出目录!!";
-            }
+            mAssetBundleMD5CaculationResult = "AB的MD5计算完毕!";
         }
         else
         {
-            Debug.LogError("目标AB目录不存在，请选择有效目录!");
-            mAssetBundleMD5CaculationResult = "目标AB目录不存在，请选择有效目录!!";
+            mAssetBundleMD5CaculationResult = "AB的MD5计算出问题了!";
         }
+        //if (Directory.Exists(ABFolderPath))
+        //{
+        //    if (Directory.Exists(ABMd5OutputFolderPath))
+        //    {
+        //        VersionConfigModuleManager.Singleton.initVerisonConfigData();
+        //        var resourceversion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
+        //        var targetplatform = EditorUserBuildSettings.activeBuildTarget;
+        //        // 文件名格式: MD5+版本号+资源版本号+平台+时间戳(年_月_日_时_分_秒)+.txt
+        //        var nowdate = DateTime.Now;
+        //        var md5filename = $"MD5-{Application.version}-{resourceversion}-{targetplatform}-{nowdate.Year}_{nowdate.Month}_{nowdate.Day}_{nowdate.Hour}_{nowdate.Minute}_{nowdate.Second}.json";
+        //        var md5filefullpath = ABMd5OutputFolderPath + Path.DirectorySeparatorChar + md5filename;
+        //        var abfilespath = Directory.GetFiles(ABFolderPath, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
+        //            !f.EndsWith(".meta") && !f.EndsWith(".manifest")
+        //        );
+        //        // 确保创建最新的
+        //        if (File.Exists(md5filefullpath))
+        //        {
+        //            File.Delete(md5filefullpath);
+        //        }
+        //        // 改用Json存储
+        //        HotUpdateAssetBundleInfo hotUpdateAssetBundleInfo = new HotUpdateAssetBundleInfo(Application.version, resourceversion);
+        //        var sb = new StringBuilder();
+        //        var md5hash = MD5.Create();
+        //        foreach (var abfilepath in abfilespath)
+        //        {
+        //            using (var abfilefs = File.OpenRead(abfilepath))
+        //            {
+        //                sb.Clear();
+        //                var abfilename = Path.GetFileName(abfilepath);
+        //                var md5value = md5hash.ComputeHash(abfilefs);
+        //                foreach (var md5byte in md5value)
+        //                {
+        //                    sb.Append(md5byte.ToString("x2"));
+        //                }
+        //                HotUpdateSingleAssetBundleInfo singleAssetBundleInfo = new HotUpdateSingleAssetBundleInfo(abfilepath, sb.ToString());
+        //            }
+        //        }
+        //        string json = JsonUtility.ToJson(hotUpdateAssetBundleInfo);
+        //        using (var hotUpdateAssetBundleInfoSW = new StreamWriter(md5filefullpath, false, Encoding.UTF8))
+        //        {
+        //            hotUpdateAssetBundleInfoSW.Write(json);
+        //        }
+        //        /*
+        //        if (!File.Exists(md5filefullpath))
+        //        {
+        //            using (File.Create(md5filefullpath))
+        //            {
+
+        //            }
+        //        }
+        //        using (var md5sw = new StreamWriter(md5filefullpath, false, Encoding.UTF8))
+        //        {
+        //            var md5hash = MD5.Create();
+        //            //第一行是版本号信息
+        //            //第二行是资源版本号信息
+        //            //后面是AB详细(AB名+":"+MD5值+":"AB全路径)
+        //            md5sw.WriteLine(Application.version);
+        //            md5sw.WriteLine(resourceversion);
+        //            var sb = new StringBuilder();
+        //            foreach (var abfilepath in abfilespath)
+        //            {
+        //                using (var abfilefs = File.OpenRead(abfilepath))
+        //                {
+        //                    sb.Clear();
+        //                    var abfilename = Path.GetFileName(abfilepath);
+        //                    var md5value = md5hash.ComputeHash(abfilefs);
+        //                    foreach (var md5byte in md5value)
+        //                    {
+        //                        sb.Append(md5byte.ToString("x2"));
+        //                    }
+        //                    md5sw.WriteLine(abfilename + SeparaterKeyChar + sb.ToString() + SeparaterKeyChar + abfilepath);
+        //                }
+        //            }
+        //        }
+        //        */
+        //        Debug.Log("AB的MD5计算完毕!");
+        //        Debug.Log($"AB的MD5文件路径:{md5filefullpath}");
+        //        mAssetBundleMD5CaculationResult = "AB的MD5计算完毕!";
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError("MD5输出目录不存在，请选择有效AB的MD5分析输出目录!");
+        //        mAssetBundleMD5CaculationResult = "MD5输出目录不存在，请选择有效AB的MD5分析输出目录!!";
+        //    }
+        //}
+        //else
+        //{
+        //    Debug.LogError("目标AB目录不存在，请选择有效目录!");
+        //    mAssetBundleMD5CaculationResult = "目标AB目录不存在，请选择有效目录!!";
+        //}
     }
 
     /// <summary>
@@ -433,7 +462,7 @@ public class HotUpdateOperationWindow : BaseEditorWindow
                     {
                         //第一行是版本号信息
                         //第二行是资源版本号信息
-                        //后面是AB详细(AB名+":"+MD5值+":"AB全路径)
+                        //格式:AB全路径+":"+MD5值
                         mABMD5ComparisonSourceVersion = md51sr.ReadLine();
                         mABMD5ComparisonSourceResourceVersion = md51sr.ReadLine();
                         while (!md51sr.EndOfStream)

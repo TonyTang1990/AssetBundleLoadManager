@@ -43,4 +43,24 @@ public static class ResourceConstData
     /// AssetBundle文件默认的后缀名
     /// </summary>
     public const string AssetBundleDefaultVariantWithPoint = ".bundle";
+
+    /// <summary>
+    /// AssetBundle依赖信息文件默认的后缀名
+    /// </summary>
+    public const string AssetBundleDefaultManifestPostfixWithPoint = ".manifest";
+
+    /// <summary>
+    /// 包内AB的MD5信息记录文件名
+    /// </summary>
+    public const string AssetBundleMd5InfoFileName = "AssetBundleMd5.txt";
+
+    /// <summary>
+    /// 包外热更新AB的MD5信息记录文件名
+    /// </summary>
+    public const string HotUpdateAssetBundleMd5InfoFileName = "HotUpdateResourceMd5.txt";
+
+    /// <summary>
+    /// AssetBundle信息分隔符
+    /// </summary>
+    public const char AssetBundlleInfoSeparater = ':';
 }

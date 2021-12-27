@@ -38,8 +38,9 @@ public static class BuildTool
         }
         if (string.IsNullOrEmpty(buildOutputPath))
         {
-            buildOutputPath = $"{Application.dataPath}/../../../Build/";
+            buildOutputPath = $"{Application.dataPath}/../../../Build";
         }
+        buildOutputPath = $"{buildOutputPath}/{versionCode}/{resourceVersionCode}/";
         Debug.Log($"buildOutputPath:{buildOutputPath}");
         if (!string.IsNullOrEmpty(buildOutputPath))
         {
@@ -80,6 +81,9 @@ public static class BuildTool
                 buildplayeroptions.targetGroup = buildtargetgroup;
                 EditorUserBuildSettings.SwitchActiveBuildTarget(buildtargetgroup, buildTarget);
                 BuildPipeline.BuildPlayer(buildplayeroptions);
+                // 拷贝AssetBundleMd5.txt到打包输出目录(未来热更新对比需要的文件)
+                var innerAssetBundleMd5FilePath = AssetBundlePath.GetInnerAssetBundleMd5FilePath();
+                FileUtilities.CopyFileToFolder(innerAssetBundleMd5FilePath, buildOutputPath);
             }
             else
             {

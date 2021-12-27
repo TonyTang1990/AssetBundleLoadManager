@@ -8,6 +8,7 @@ using MotionFramework.Editor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -124,6 +125,16 @@ public class ResourceBuildWindow : BaseEditorWindow
 
     #region 资源打包部分
     /// <summary>
+    /// 打包版本号Key
+    /// </summary>
+    private const string ABBuildVersionKey = "ABBuildVersionKey";
+
+    /// <summary>
+    /// 打包资源版本号Key
+    /// </summary>
+    private const string ABBuildResourceVersionKey = "ABBuildResourceVersionKey";
+
+    /// <summary>
     /// 压缩格式设置本地存储Key
     /// </summary>
     private const string ABBuildSettingCompressOptionKey = "ABBuildSettingCompressOption";
@@ -154,15 +165,20 @@ public class ResourceBuildWindow : BaseEditorWindow
     private const string ABBuildSettingIsUsePlayerSettingVersionKey = "ABBuildSettingIsUsePlayerSettingVersion";
 
     /// <summary>
+    /// 项目路径Hash值(用于使得PlayerPrefs存储的Key值唯一)
+    /// </summary>
+    private int mProjectPathHashValue;
+
+    /// <summary>
     /// 初始化资源数据
     /// </summary>
     private void InitResourceData()
     {
         Debug.Log($"NewBuildWindow:InitResourceData()");
+        mProjectPathHashValue = Application.dataPath.GetHashCode();
         // 创建资源打包器
         var buildTarget = EditorUserBuildSettings.activeBuildTarget;
-        var buildVersion = double.Parse(Application.version);
-        mAssetBuilder = new AssetBundleBuilder(buildTarget, buildVersion);
+        mAssetBuilder = new AssetBundleBuilder(buildTarget, Application.version);
 
         // 读取配置
         LoadSettingsFromPlayerPrefs(mAssetBuilder);
@@ -179,8 +195,10 @@ public class ResourceBuildWindow : BaseEditorWindow
     /// <summary>
     /// 存储配置
     /// </summary>
-    private static void SaveSettingsToPlayerPrefs(AssetBundleBuilder builder)
+    private void SaveSettingsToPlayerPrefs(AssetBundleBuilder builder)
     {
+        PlayerPrefs.SetString($"{mProjectPathHashValue}_{ABBuildVersionKey}", builder.BuildVersion);
+        PlayerPrefs.SetInt($"{mProjectPathHashValue}_{ABBuildResourceVersionKey}", builder.ResourceVersion);
         PlayerPrefs.SetString(ABBuildSettingCompressOptionKey, builder.CompressOption.ToString());
         PlayerPrefs.SetInt(ABBuildSettingIsForceRebuildKey, builder.IsForceRebuild ? 1 : 0);
         PlayerPrefs.SetInt(ABBuildSettingIsAppendHashKey, builder.IsAppendHash ? 1 : 0);
@@ -191,13 +209,15 @@ public class ResourceBuildWindow : BaseEditorWindow
     /// <summary>
     /// 读取配置
     /// </summary>
-    private static void LoadSettingsFromPlayerPrefs(AssetBundleBuilder builder)
+    private void LoadSettingsFromPlayerPrefs(AssetBundleBuilder builder)
     {
+        builder.BuildVersion = PlayerPrefs.GetString($"{mProjectPathHashValue}_{ABBuildVersionKey}", "1.0");
+        builder.ResourceVersion = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{ABBuildResourceVersionKey}", 1);
         builder.CompressOption = (AssetBundleBuilder.ECompressOption)Enum.Parse(typeof(AssetBundleBuilder.ECompressOption), PlayerPrefs.GetString(ABBuildSettingCompressOptionKey, AssetBundleBuilder.ECompressOption.Uncompressed.ToString()));
-        builder.IsForceRebuild = PlayerPrefs.GetInt(ABBuildSettingIsForceRebuildKey, 0) != 0;
-        builder.IsAppendHash = PlayerPrefs.GetInt(ABBuildSettingIsAppendHashKey, 0) != 0;
-        builder.IsDisableWriteTypeTree = PlayerPrefs.GetInt(ABBuildSettingIsDisableWriteTypeTreeKey, 0) != 0;
-        builder.IsIgnoreTypeTreeChanges = PlayerPrefs.GetInt(ABBuildSettingIsIgnoreTypeTreeChangesKey, 0) != 0;
+        builder.IsForceRebuild = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{ABBuildSettingIsForceRebuildKey}", 0) != 0;
+        builder.IsAppendHash = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{ABBuildSettingIsAppendHashKey}", 0) != 0;
+        builder.IsDisableWriteTypeTree = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{ABBuildSettingIsDisableWriteTypeTreeKey}", 0) != 0;
+        builder.IsIgnoreTypeTreeChanges = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{ABBuildSettingIsIgnoreTypeTreeChangesKey}", 0) != 0;
     }
 
     /// <summary>
@@ -220,7 +240,24 @@ public class ResourceBuildWindow : BaseEditorWindow
         EditorGUILayout.Space();
 
         // 构建版本
-        //mAssetBuilder.BuildVersion = EditorGUILayout.IntField("Build Version", mAssetBuilder.BuildVersion, GUILayout.MaxWidth(250));
+        mAssetBuilder.BuildVersion = EditorGUILayout.TextField("Build Version", mAssetBuilder.BuildVersion, GUILayout.Width(50.0f));
+        if (EditorGUI.EndChangeCheck())
+        {
+            double buildVersion = 0;
+            if (!double.TryParse(mAssetBuilder.BuildVersion, out buildVersion))
+            {
+                Debug.Log($"不支持的版本格式:{mAssetBuilder.BuildVersion},请输入有效版本号值!");
+                mAssetBuilder.BuildVersion = "1.0";
+            }
+            else
+            {
+                mAssetBuilder.BuildVersion = buildVersion.ToString("N1", CultureInfo.CreateSpecificCulture("en-US"));
+            }
+        }
+        mAssetBuilder.BuildVersion = string.IsNullOrEmpty(mAssetBuilder.BuildVersion) ? "1.0" : mAssetBuilder.BuildVersion;
+        EditorGUILayout.LabelField("打包资源版本号:", GUILayout.Width(90.0f));
+        mAssetBuilder.ResourceVersion = EditorGUILayout.IntField(mAssetBuilder.ResourceVersion, GUILayout.Width(50.0f));
+        mAssetBuilder.ResourceVersion = mAssetBuilder.ResourceVersion > 0 ? mAssetBuilder.ResourceVersion : 1;
 
         // 输出路径
         EditorGUILayout.LabelField("Build Output", mAssetBuilder.OutputDirectory);
@@ -266,8 +303,8 @@ public class ResourceBuildWindow : BaseEditorWindow
             {
                 // 清空控制台
                 EditorUtilities.ClearUnityConsole();
-                var appVersion = float.Parse(Application.version);
-                mAssetBuilder.BuildVersion = appVersion;
+                //var appVersion = float.Parse(Application.version);
+                //mAssetBuilder.BuildVersion = Application.version;
 
                 // 存储配置
                 SaveSettingsToPlayerPrefs(mAssetBuilder);

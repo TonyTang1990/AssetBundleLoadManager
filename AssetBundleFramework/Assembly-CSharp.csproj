@@ -142,6 +142,8 @@
     <Compile Include="Assets\Scripts\GameLogic\Resource\SharedTextureManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Resource\WindowManager.cs" />
     <Compile Include="Assets\Scripts\NewGameLauncher.cs" />
+    <Compile Include="Assets\Scripts\Utilities\FileUtilities.cs" />
+    <Compile Include="Assets\Scripts\Utilities\FolderUtilities.cs" />
     <Compile Include="Assets\Scripts\Utilities\PathUtilities.cs" />
     <Compile Include="Assets\Scripts\Utilities\Utilities.cs" />
   </ItemGroup>

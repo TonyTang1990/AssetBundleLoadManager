@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             PathUtilities.cs
  * Author:                  TONYTANG
  * Create Date:             2021//04/11
@@ -6,16 +6,28 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
 /// PathUtilities.cs
-/// Â·¾¶¾²Ì¬¹¤¾ßÀà
+/// è·¯å¾„é™æ€å·¥å…·ç±»
 /// </summary>
 public static class PathUtilities
 {
     /// <summary>
-    /// »ñÈ¡×ÊÔ´AssetÏà¶ÔÂ·¾¶
+    /// è·å–æŒ‡å®šè·¯å¾„çš„ç›®å½•å
+    /// </summary>
+    /// <param name="path">è·¯å¾„</param>
+    /// <returns></returns>
+    public static string GetFolderName(string path)
+    {
+        var directoryInfo = new DirectoryInfo(Path.GetDirectoryName(path));
+        return directoryInfo.Name;
+    }
+
+    /// <summary>
+    /// è·å–èµ„æºAssetç›¸å¯¹è·¯å¾„
     /// </summary>
     /// <param name="folderfullpath"></param>
     /// <returns></returns>
@@ -29,7 +41,7 @@ public static class PathUtilities
         }
         else
         {
-            Debug.LogError($"Ä¿Â¼:{folderfullpath}²»ÊÇÏîÄ¿ÓĞĞ§Â·¾¶,»ñÈ¡Ïà¶ÔÂ·¾¶Ê§°Ü!");
+            Debug.LogError($"ç›®å½•:{folderfullpath}ä¸æ˜¯é¡¹ç›®æœ‰æ•ˆè·¯å¾„,è·å–ç›¸å¯¹è·¯å¾„å¤±è´¥!");
             return string.Empty;
         }
     }

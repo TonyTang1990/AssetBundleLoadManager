@@ -73,7 +73,7 @@ namespace MotionFramework.Editor
 				Debug.LogWarning($"Create new {nameof(AssetBundleCollectSetting)}.asset : {AssetBundleCollectSettingFileRelativePath}");
 				mSetting = ScriptableObject.CreateInstance<AssetBundleCollectSetting>();
                 var assetbundlecollectsettingfolderpath = Application.dataPath + AssetBundleCollectSettingSaveFolderRelativePath;
-                Utilities.CheckAndCreateSpecificFolder(assetbundlecollectsettingfolderpath);
+                FolderUtilities.CheckAndCreateSpecificFolder(assetbundlecollectsettingfolderpath);
 				AssetDatabase.CreateAsset(Setting, AssetBundleCollectSettingFileRelativePath);
 				AssetDatabase.SaveAssets();
 				AssetDatabase.Refresh();

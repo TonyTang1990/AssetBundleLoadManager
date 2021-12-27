@@ -334,8 +334,12 @@ Tools->HotUpdate->热更新操作工具
    ![AssetBundleMD5Caculation](/img/Unity/HotUpdate/AssetBundleMD5Caculation.png)
 
 2. 对比两个版本的MD5文件信息得出需要热更新的AB文件信息
+
 3. 执行热更新AB准备操作自动复制需要热更新的AB到热更新准备目录(然后手动拷贝需要强更或热更的资源到真正的热更新目录)
+
 4. 执行热更新准备操作，生成热更新所需的最新资源热更新信息文件(ResourceUpdateList.txt)和服务器最新版本信息文件(ServerVersionConfig.json)
+
+
 
 ## 导表模块
 

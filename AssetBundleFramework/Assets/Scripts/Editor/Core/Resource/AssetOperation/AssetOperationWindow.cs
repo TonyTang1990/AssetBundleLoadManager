@@ -494,8 +494,8 @@ public class AssetOperationWindow : BaseEditorWindow
         var textureextractoutputfolderpath = Application.dataPath + mBuildInTextureExtractRelativeOutputFolderPath;
         Debug.Log("materialextractoutputfolderpath = " + materialextractoutputfolderpath);
         Debug.Log("textureextractoutputfolderpath = " + textureextractoutputfolderpath);
-        Utilities.CheckAndCreateSpecificFolder(materialextractoutputfolderpath);
-        Utilities.CheckAndCreateSpecificFolder(textureextractoutputfolderpath);
+        FolderUtilities.CheckAndCreateSpecificFolder(materialextractoutputfolderpath);
+        FolderUtilities.CheckAndCreateSpecificFolder(textureextractoutputfolderpath);
         var referencebuildinobjectlist = getReferenceBuildInResourceExcludeShader(asset);
         referencebuildinobjectlist = referencebuildinobjectlist.Distinct().ToList();
         Debug.Log(string.Format("引用内置资源数量:{0}", referencebuildinobjectlist.Count));
