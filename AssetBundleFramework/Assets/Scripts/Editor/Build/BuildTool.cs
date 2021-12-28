@@ -40,7 +40,10 @@ public static class BuildTool
         {
             buildOutputPath = $"{Application.dataPath}/../../../Build";
         }
-        buildOutputPath = $"{buildOutputPath}/{versionCode}/{resourceVersionCode}/";
+        // 输出目录结构:Build/版本号/资源版本号/时间戳/包名.apk
+        var now = DateTime.Now;
+        var timeStamp = $"{now.Year}_{now.Month}_{now.Day}_{now.Hour}_{now.Minute}_{now.Second}";
+        buildOutputPath = $"{buildOutputPath}/{versionCode}/{resourceVersionCode}/{timeStamp}";
         Debug.Log($"buildOutputPath:{buildOutputPath}");
         if (!string.IsNullOrEmpty(buildOutputPath))
         {
@@ -66,8 +69,7 @@ public static class BuildTool
                 VersionConfigModuleManager.Singleton.saveNewVersionCodeInnerConfig(versionCode);
                 VersionConfigModuleManager.Singleton.saveNewResoueceCodeInnerConfig(resourceVersionCode);
                 BuildPlayerOptions buildplayeroptions = new BuildPlayerOptions();
-                var version_Code = versionCode.ToString().Replace('.', '-');
-                buildplayeroptions.locationPathName = buildOutputPath + Path.DirectorySeparatorChar + PlayerSettings.productName + $"_{version_Code}_{resourceVersionCode}" + GetCorrespondingBuildFilePostfix(buildTarget);
+                buildplayeroptions.locationPathName = $"{buildOutputPath}{Path.DirectorySeparatorChar}{PlayerSettings.productName}{GetCorrespondingBuildFilePostfix(buildTarget)}";
                 buildplayeroptions.scenes = GetBuildSceneArray();
                 buildplayeroptions.target = buildTarget;
                 buildplayeroptions.options = BuildOptions.StrictMode;

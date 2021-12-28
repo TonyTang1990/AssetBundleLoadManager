@@ -57,10 +57,10 @@ public static class ResourceConstData
     /// <summary>
     /// 包外热更新AB的MD5信息记录文件名
     /// </summary>
-    public const string HotUpdateAssetBundleMd5InfoFileName = "HotUpdateResourceMd5.txt";
+    public const string HotUpdateAssetBundleMd5InfoFileName = "HotUpdateAssetBundleMd5.txt";
 
     /// <summary>
     /// AssetBundle信息分隔符
     /// </summary>
-    public const char AssetBundlleInfoSeparater = ':';
+    public const char AssetBundlleInfoSeparater = '|';
 }

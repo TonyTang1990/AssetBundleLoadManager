@@ -254,6 +254,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Details\VertexLit.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Lightmap-VertexLit.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-Glossy.shader" />
+    <None Include="Assets\Resources\AssetBundleMd5.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\DiffuseBase.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-VertexLit.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\TerrainPreview.cginc" />

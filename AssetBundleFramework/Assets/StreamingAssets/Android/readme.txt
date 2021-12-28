@@ -1,6 +1,5 @@
 ﻿构建平台：Android
-构建版本：3.40000009536743
-构建时间：2021/12/26 18:42:13
+构建时间：2021/12/29 0:39:15
 
 --配置信息--
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : LoadByFolderPath

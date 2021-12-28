@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             StringExtension.cs
  * Author:                  TONYTANG
  * Create Date:             2018/08/08
@@ -10,12 +10,12 @@ using UnityEngine;
 
 /// <summary>
 /// StringExtension.cs
-/// StringÀ©Õ¹·½·¨
+/// Stringæ‰©å±•æ–¹æ³•
 /// </summary>
 public static class StringExtension {
 
     /// <summary>
-    /// ÅĞ¶¨×Ö·û´®ÊÇ·ñÎªnull»òÕß""
+    /// åˆ¤å®šå­—ç¬¦ä¸²æ˜¯å¦ä¸ºnullæˆ–è€…""
     /// </summary>
     /// <param name="s"></param>
     /// <returns></returns>
@@ -25,7 +25,7 @@ public static class StringExtension {
     }
 
     /// <summary>
-    /// ÒÆ³ıÊ×¸ö×Ö·û
+    /// ç§»é™¤é¦–ä¸ªå­—ç¬¦
     /// </summary>
     public static string RemoveFirstChar(this System.String str)
     {
@@ -35,7 +35,7 @@ public static class StringExtension {
     }
 
     /// <summary>
-    /// ÒÆ³ıÄ©Î²×Ö·û
+    /// ç§»é™¤æœ«å°¾å­—ç¬¦
     /// </summary>
     public static string RemoveLastChar(this System.String str)
     {

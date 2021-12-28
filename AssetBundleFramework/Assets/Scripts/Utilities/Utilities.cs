@@ -18,7 +18,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 /// </summary>
 public static class Utilities
 {
-
     /// <summary>
     /// 序列化数据到指定文件
     /// </summary>

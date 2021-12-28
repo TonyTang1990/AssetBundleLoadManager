@@ -38,16 +38,6 @@ namespace MotionFramework.Editor
 		public BuildTarget BuildTarget { private set; get; } = BuildTarget.NoTarget;
 
 		/// <summary>
-		/// 版本号
-		/// </summary>
-		public string BuildVersion { set; get; } = "1.0";
-
-		/// <summary>
-		/// 资源版本号
-		/// </summary>
-		public int ResourceVersion { set; get; } = 1;
-
-		/// <summary>
 		/// 输出目录
 		/// </summary>
 		public string OutputDirectory { private set; get; } = string.Empty;
@@ -83,12 +73,10 @@ namespace MotionFramework.Editor
 		/// <param name="buildTarget">构建平台</param>
 		/// <param name="buildVersion">构建版本号</param>
 		/// <param name="resourceVersion">资源版本号</param>
-		public AssetBundleBuilder(BuildTarget buildTarget, string buildVersion, int resourceVersion = 1)
+		public AssetBundleBuilder(BuildTarget buildTarget)
 		{
 			_outputRoot = AssetBundleBuilderHelper.GetDefaultOutputRootPath();
 			BuildTarget = buildTarget;
-			BuildVersion = buildVersion;
-			ResourceVersion = resourceVersion;
 			OutputDirectory = GetOutputDirectory();
 		}
 
@@ -294,7 +282,7 @@ namespace MotionFramework.Editor
 		}
 		private string GetPackageDirectory()
 		{
-			return $"{_outputRoot}/{BuildTarget}/{BuildVersion}";
+			return $"{_outputRoot}/{BuildTarget}/";
 		}
 
 		#region 准备工作
@@ -483,21 +471,19 @@ namespace MotionFramework.Editor
             var resourceversion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
             using (var md5SW = new StreamWriter(assetBundleMd5FilePath, false, Encoding.UTF8))
             {
-                var abfilespath = Directory.GetFiles(OutputDirectory, "*.*", SearchOption.TopDirectoryOnly).Where(f =>
-					!f.EndsWith(".meta") && !f.EndsWith(".manifest") && !f.Equals("readme.txt")
+                var abFilesFullPath = Directory.GetFiles(OutputDirectory, "*.*", SearchOption.AllDirectories).Where(f =>
+					!f.EndsWith(".meta") && !f.EndsWith(".manifest") && !f.EndsWith("readme.txt")
 				);
                 var md5hash = MD5.Create();
-				// 第一行是版本号信息
-				// 第二行是资源版本号信息
 				// 格式:AB全路径+":"+MD5值
-				md5SW.WriteLine(Application.version);
-				md5SW.WriteLine(resourceversion);
-                foreach (var abfilepath in abfilespath)
+				foreach (var abFilePath in abFilesFullPath)
                 {
-					var fileMd5 = FileUtilities.GetFileMD5(abfilepath, md5hash);
-					md5SW.WriteLine($"{abfilepath}{ResourceConstData.AssetBundlleInfoSeparater}{fileMd5}");
+					var abRelativePath = abFilePath.Remove(0, OutputDirectory.Length);
+					abRelativePath = EditorUtilities.GetRegularPath(abRelativePath);
+					var fileMd5 = FileUtilities.GetFileMD5(abFilePath, md5hash);
+					md5SW.WriteLine($"{abRelativePath}{ResourceConstData.AssetBundlleInfoSeparater}{fileMd5}");
                 }
-                Debug.Log($"AB的MD5版本号:{Application.version}资源版本号:{resourceversion}计算完毕!");
+                Debug.Log($"AssetBundle的包内MD5信息计算完毕!");
             }
         }
         #endregion
@@ -605,7 +591,6 @@ namespace MotionFramework.Editor
 
 			StringBuilder content = new StringBuilder();
 			AppendData(content, $"构建平台：{BuildTarget}");
-			AppendData(content, $"构建版本：{BuildVersion}");
 			AppendData(content, $"构建时间：{DateTime.Now}");
 
 			AppendData(content, "");

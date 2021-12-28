@@ -24,13 +24,9 @@ public static class ResourceBuildTool
     /// <param name="buildTarget">打包平台</param>
     /// <param name="isForceBuild">是否强制重新打包</param>
     /// <param name="buildVersion">打包版本</param>
-    public static void DoBuildAssetBundle(BuildTarget buildTarget, bool isForceBuild = false, string buildVersion = "1")
+    public static void DoBuildAssetBundle(BuildTarget buildTarget, bool isForceBuild = false)
     {
-        if(string.IsNullOrEmpty(buildVersion))
-        {
-            buildVersion = Application.version;
-        }
-        var assetBundleBuilder = new AssetBundleBuilder(buildTarget, buildVersion);
+        var assetBundleBuilder = new AssetBundleBuilder(buildTarget);
         assetBundleBuilder.CompressOption = AssetBundleBuilder.ECompressOption.ChunkBasedCompressionLZ4;
         assetBundleBuilder.IsForceRebuild = isForceBuild;
         assetBundleBuilder.IsAppendHash = false;
@@ -55,13 +51,6 @@ public static class ResourceBuildTool
     /// <param name="assetBundleBuilder"></param>
     private static void ExecuteAssetBundleBuild(AssetBundleBuilder assetBundleBuilder)
     {
-        double buildVersion = 0;
-        if (!double.TryParse(assetBundleBuilder.BuildVersion, out buildVersion))
-        {
-            Debug.LogError($"解析版本号:{assetBundleBuilder.BuildVersion}失败,格式无效，执行资源打包失败!");
-            return;
-        }
-        assetBundleBuilder.BuildVersion = buildVersion.ToString("N1", CultureInfo.CreateSpecificCulture("en-US"));
         var timecounter = new TimeCounter();
         timecounter.Start("AssetBundleBuild");
         assetBundleBuilder.PreAssetBuild();
