@@ -51,9 +51,18 @@ public class TWebRequest {
         }
 
         /// <summary>
+        /// 文件MD5用于校验
+        /// </summary>
+        public string FileMD5
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// 任务完成回调
         /// </summary>
-        public Action<string, DownloadHandler, WebTaskRequestStatus> CompleteCallback
+        public Action<string, string, DownloadHandler, WebTaskRequestStatus> CompleteCallback
         {
             get;
             private set;
@@ -72,11 +81,13 @@ public class TWebRequest {
         /// Web请求任务信息构造函数
         /// </summary>
         /// <param name="url"></param>
+        /// <param name="fileMD5">文件MD5(不传表示不校验)</param>
         /// <param name="callback"></param>
         /// <param name="timeout"></param>
-        public WebRequestTaskInfo(string url, Action<string, DownloadHandler, WebTaskRequestStatus> callback, int timeout)
+        public WebRequestTaskInfo(string url, string fileMD5, Action<string, string, DownloadHandler, WebTaskRequestStatus> callback, int timeout)
         {
             URL = url;
+            FileMD5 = fileMD5;
             CompleteCallback = callback;
             TimeOut = timeout;
         }
@@ -144,15 +155,16 @@ public class TWebRequest {
     /// 请求任务入队列
     /// </summary>
     /// <param name="url">url</param>
+    /// <param name="fileMD5">文件MD5</param>
     /// <param name="completecallback">完成回调</param>
     /// <param name="timeout">超时时间</param>
-    public void enqueue(string url, Action<string, DownloadHandler, WebRequestTaskInfo.WebTaskRequestStatus> completecallback, int timeout = 5)
+    public void enqueue(string url, string fileMD5, Action<string, string, DownloadHandler, WebRequestTaskInfo.WebTaskRequestStatus> completecallback, int timeout = 5)
     {
         if(TWRequestStatus != TWebRequestStatus.TW_In_Progress)
         {
             if(!url.IsNullOrEmpty() && completecallback != null)
             {
-                var newtask = new WebRequestTaskInfo(url, completecallback, timeout);
+                var newtask = new WebRequestTaskInfo(url, fileMD5, completecallback, timeout);
                 mWebRequestTaskQueue.Enqueue(newtask);
             }
             else
@@ -224,28 +236,30 @@ public class TWebRequest {
     {
         TWRequestStatus = TWebRequestStatus.TW_In_Progress;
 
-        while(mWebRequestTaskQueue.Count > 0 && TWRequestStatus == TWebRequestStatus.TW_In_Progress)
+        while (mWebRequestTaskQueue.Count > 0 && TWRequestStatus == TWebRequestStatus.TW_In_Progress)
         {
+            //TODO:
+            //MD5信息做资源验证，确保资源下对以及未被修改
             var task = mWebRequestTaskQueue.Dequeue();
-            Debug.Log(string.Format("下载资源 : {0}", task.URL));
+            Debug.Log($"下载资源:{task.URL}");
             mCurrentInProgressWebRequest = UnityWebRequest.Get(task.URL);
             mCurrentInProgressWebRequest.timeout = task.TimeOut;
             yield return mCurrentInProgressWebRequest.SendWebRequest();
             if (mCurrentInProgressWebRequest.isNetworkError || mCurrentInProgressWebRequest.isHttpError)
             {
-                Debug.LogError(string.Format("{0}资源下载出错!", task.URL));
+                Debug.LogError($"{task.URL}资源下载出错!");
                 Debug.LogError(mCurrentInProgressWebRequest.error);
                 if(mCurrentInProgressWebRequest.isHttpError)
                 {
-                    Debug.LogError(string.Format("responseCode : ", mCurrentInProgressWebRequest.responseCode));
+                    Debug.LogError($"responseCode:{mCurrentInProgressWebRequest.responseCode}");
                 }
-                task.CompleteCallback(task.URL, mCurrentInProgressWebRequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Faield);
+                task.CompleteCallback(task.URL, task.FileMD5, mCurrentInProgressWebRequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Faield);
             }
             else
             {
-                Debug.Log(string.Format("{0} webrequest.isDone:{1}!", task.URL, mCurrentInProgressWebRequest.isDone));
-                Debug.Log(string.Format("{0}资源下载完成!", task.URL));
-                task.CompleteCallback(task.URL, mCurrentInProgressWebRequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete);
+                Debug.Log($"{task.URL} webrequest.isDone:{mCurrentInProgressWebRequest.isDone}!");
+                Debug.Log($"{task.URL}资源下载完成!");
+                task.CompleteCallback(task.URL, task.FileMD5, mCurrentInProgressWebRequest.downloadHandler, WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete);
             }
         }
 

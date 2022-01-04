@@ -1,0 +1,213 @@
+ManifestFileVersion: 0
+CRC: 2956170885
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7417b101a7018d9c78b4e3ce3cfe3ff1
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 470cca400d407431202629e6187d5a07
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 72
+  Script: {instanceID: 0}
+- Class: 200
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Standard
+  Unlit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorNormalRendertex.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Trees/CameraFacingBillboardTree.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-Bumped.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Unlit/Unlit-AlphaTest.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-BumpSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Particle-Alpha-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Skybox.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-BumpSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-Glossy.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle MultiplyDouble.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-BumpSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Lightmap-Unlit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeavesRendertex.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResources/PerformanceTools/FrameDebuggerRenderTargetDisplay.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Decal.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Cubemaps/CubeBlend.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorAlbedoRenderTex.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/Internal-VRDistortion.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Particle-Add.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-RefractionDetail.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SoftOcclusion/TreeSoftOcclusionLeavesRendertex.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Skybox-Cubed.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-Bumped.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-DiffuseDetail.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResources/Font.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeaves.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/SpatialMappingWireframe.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Unlit/Unlit-Color.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-Colored.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VideoDecode.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-ODSWorldTexture.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorBarkRendertex.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitCopy.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/FirstPass.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Terrain-Utilities.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitCopyWithDepth.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-Parallax.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/AddPass.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Cubemaps/CubeBlurOdd.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SoftOcclusion/TreeSoftOcclusionLeaves.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-Bumped.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Bumped.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/BlitTexArraySlice.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitToDepth.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-ParallaxSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUIRoundedRect.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Unlit-Text.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-DeferredShading.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUITexture.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Unlit/Unlit-Normal.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SoftOcclusion/TreeSoftOcclusionBark.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Mask.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/SpatialMappingOcclusion.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Specular-FirstPass.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-CombineDepthNormals.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Utils/BrushPreview.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VideoDecodeAndroid.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-VertexLit-OnlyDirectionalLights.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Compositing.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-Glossy.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-BumpVertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-Parallax.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-ParallaxSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitCopyDepth.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-Detail.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeavesFastOptimized.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-BumpNolight.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Default.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-BumpSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Default.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-Refraction.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-Parallax.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-Flare.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Premultiply
+  Blend.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Standard.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/BlitTexArraySliceToDepth_MSAA.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/VertexColors.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Utils/GenNormalmap.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-CubemapToEquirect.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-BlendShape.compute
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/TextureUV.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Alpha
+  Blend.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeavesOptimized.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeavesFast.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Multiply.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-Halo.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SpeedTree8.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitToDepth_MSAA.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/ClippingMask.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-Bumped.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Unlit-Detail.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Skybox-Procedural.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/VideoBackground.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-ErrorShader.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-Clear.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Specular-Base.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AR/Shaders/TangoARRender.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUITextureClipText.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorBarkOptimized.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-DiffuseFast.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-Glossy.shader
+- Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Unlit/Unlit-Alpha.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-Glossy.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Standard-Base.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Trees/BillboardTree.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-Skinning.compute
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Flare.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Standard-AddPass.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Skybox.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-DefaultFont.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-MotionVectors.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Skybox-Panoramic.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-Bumped.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Unlit-TextDetail.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUITextureClip.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-Parallax.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-StencilWrite.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-ParallaxSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-Transparent.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VideoDecodeOSX.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-CompositeOverdraw.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Cubemaps/CubeBlur.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Specular-AddPass.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Utils/TerrainLayerUtils.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorBark.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-DefaultETC1.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Particle-Alpha.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Standard
+  Surface.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-Glossy.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SoftOcclusion/TreeSoftOcclusionBarkRendertex.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/UV1sAsPositions.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-BumpSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/DiffuseBase.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Particle-Multiply.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-PrePassLighting.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Overdraw.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Cubemaps/CubeCopy.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle AddMultiply.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle AddSmooth.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/DiffuseBaseGen.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle VertexLit
+  Blended.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-ScreenSpaceShadows.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-SoftEdgeUnlit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-Bumped.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AutodeskInteractive.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Standard-FirstPass.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-ParallaxSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-Bumped.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Blend.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUITextureBlit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-ConvertTexture.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Utils/PaintHeight.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Standard-BaseGen.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Add.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Details/VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/StandardSpecular.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-BumpSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Unlit-Transparent.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-BumpSpec-1DirectionalLight.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-DepthNormalsTexture.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Details/WavingGrassBillboard.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-VertexLit.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-Glossy.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-BumpSpec.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-DeferredReflections.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/ShowLightMask.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/BlitTexArraySliceToDepth.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SpeedTree.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle Anim
+  Alpha Blend.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SpeedTreeBillboard.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Details/WavingGrass.shader
+Dependencies: []

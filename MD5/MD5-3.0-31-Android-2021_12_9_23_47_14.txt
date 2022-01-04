@@ -1,6 +1,0 @@
-﻿3.0
-31
-Android 90a327f61ed3fc6b1ba7b333f5382278 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android\Android
-assetbuildinfo.bundle 106f89d6da28342b94a52f10111af42a G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android\assetbuildinfo.bundle
-readme.txt 43775fa8b606123e2a82f98c9108110c G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android\readme.txt
-shaderlist.bundle 2ac2d75f7d91fda7880f447e21b2e289 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android\shaderlist.bundle

@@ -21,21 +21,21 @@ public static class AssetBundlePath {
     /// <summary> AB包内资源路径 /// </summary>
     public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/StandaloneWindows64/";
     /// <summary> AB热更新资源路径 /// </summary>
-    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "HotUpdate/StandaloneWindows64/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/HotUpdate/StandaloneWindows64/";
     /// <summary> 依赖信息文件名 /// </summary>
     public const string DependencyFileName = "StandaloneWindows64";
 #elif UNITY_ANDROID
     /// <summary> AB包内资源路径 /// </summary>
     public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/Android/";
     /// <summary> AB热更新资源路径 /// </summary>
-    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "HotUpdate/Android/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/HotUpdate/Android/";
     /// <summary> 依赖信息文件名 /// </summary>
     public const string DependencyFileName = "Android";
 #elif UNITY_IOS
     /// <summary> AB包内资源路径 /// </summary>
     public readonly static string ABBuildinPath = Application.streamingAssetsPath + "/IOS/";
     /// <summary> AB热更新资源路径 /// </summary>
-    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "HotUpdate/IOS/";
+    public readonly static string ABHotUpdatePath = Application.persistentDataPath + "/HotUpdate/IOS/";
     /// <summary> 依赖信息文件名 /// </summary>
     public const string DependencyFileName = "IOS";
 #endif

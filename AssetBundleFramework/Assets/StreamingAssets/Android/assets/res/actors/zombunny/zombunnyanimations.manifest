@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 1549262391
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c81e23f1b0c3c94f29009b7bcfd354ee
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c33d3594fb840798e3bd468c6c9d34d3
+HashAppended: 0
+ClassTypes:
+- Class: 74
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/actors/zombunny/ZombunnyAnimations/Death.anim
+- Assets/Res/actors/zombunny/ZombunnyAnimations/Idle.anim
+- Assets/Res/actors/zombunny/ZombunnyAnimations/Move.anim
+Dependencies: []

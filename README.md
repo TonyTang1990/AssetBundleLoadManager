@@ -4,23 +4,45 @@
 
 
 
-## 资源加载管理模块
+## 资源加载管理和打包模块
+
+### 新版AssetBundle加载管理
 
 基于索引计数+组件绑定的AssetBundle加载管理框架。(参考: tangzx/ABSystem思路)
 
-### 功能支持
+为了弥补以前设计和实现上不足的地方，从而有了新版AssetBundle加载管理和打包的编写。
 
-1. 支持编辑器和真机加载AssetBundle同步和异步加载(统一采用callback风格)
-2. 设计上没有考虑支持Asset异步加载统一都是同步加载(AssetBundle.LoadAsset & AssetBundle.LoadAllAssets)
-3. 支持三种基本的资源加载类型(NormalLoad -- 正常加载(可通过Tick检测判定正常卸载) Preload -- 预加载(切场景才会卸载) PermanentLoad -- 永久加载(常驻内存永不卸载))
-4. 基于UnityEngine.Object的AB索引生命周期绑定
-5. 底层统一管理AB索引计数，管理资源加载释放
-6. 支持卸载频率，卸载帧率门槛，单次卸载数量等设置。采用Long Time Unused First Unload(越久没用越先卸载)原则卸载。
-7. 支持最大AB异步加载携程数量配置(采用队列模式)
-8. 支持编辑器下使用AssetDatabase模式(只需设置AB名字，无需打包AB，暂时只支持同步--**2021/4/21新版打包修改后不需要设置AB名字，直接采用全路径加载**)
-9. 采用[AssetBundleBrowser](https://github.com/Unity-Technologies/AssetBundles-Browser)工具打包AB(**2021/4/21新版AB打包修改后不再采用**)
+老版的资源加载管理缺点：
 
-### 类说明
+1. 面向AssetBundle级别，没有面向Asset级别的加载管理，无法做到Asset级别的加载异步以及Asset级别加载取消的。
+2. 老版AssetDatabase模式要求资源必须在设置AB名字后才能正确使用(因为依赖了AB名字作为加载参数而非资源全路径)，无法做到资源导入即可快速使用的迭代开发
+3. 资源加载类型分类(普通，预加载，常驻)设计过于面向切场景的游戏设计，不通用到所有游戏类型
+4. 老版AssetBundle异步加载采用了开携程的方式，代码流程看起来会比较混乱
+5. 老版异步加载没有考虑设计上支持逻辑层加载打断
+6. 老版代码没有涉及考虑动态AB下载的设计(边玩边下)
+7. 资源加载代码设计还比较混乱，不容易让人看懂看明白
+
+综合上面4个问题，新版资源加载管理将支持:
+
+1. 面向Asset级别加载管理，支持Asset和AssetBundle级别的同步异步加载。
+2. 支持资源导入后AssetDatabase模式马上就能配置全路径加载
+3. 资源加载类型只提供普通和常驻两种(且不支持运行时切换相同Asset或AssetBundle的加载类型，意味着一旦第一次加载设定了类型，就再也不能改变，同时第一次因为加载Asset而加载某个AssetBundle的加载类型和Asset一致)，同时提供统一的加载管理策略，细节管理策略由上层自己设计(比如对象池，预加载)
+4. 新版异步加载准备采用监听回调的方式来实现，保证流程清晰易懂
+5. 新版设计请求UID的概念来支持加载打断设计(仅逻辑层面的打断，资源加载不会打断，当所有逻辑回调都取消时，加载完成时会返还索引计数确保资源正确卸载)
+6. 设计上支持动态AB下载(未来填坑)
+7. 加载流程重新设计，让代码更清晰
+8. **保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)**
+9. **支持非回调式的同步加载返回(通过抽象Loader支持LoadImmediately的方式实现)**
+
+Note:
+
+1. 一直以来设计上都是加载完成后才添加索引计数和对象绑定，这样对于异步加载以及异步打断的资源管理来说是有漏洞的，**新版资源加载管理准备设计成提前添加索引计数，等加载完成后再考虑是否返还计数的方式确保异步加载以及异步加载打断的正确资源管理**
+
+设计主要参考:
+
+[XAsset](https://github.com/xasset/xasset)
+
+#### 类说明
 
 Manager统一管理：
 
@@ -30,25 +52,31 @@ Manager统一管理：
 资源加载类：
 
     - ResourceLoadMethod(资源加载方式枚举类型 -- 同步 or 异步)
-    - ResourceLoadMode(资源加载模式 -- AssetBundle or AssetDatabase(**限Editor模式下可切换，且当前仅支持同步加载方式，异步加载待支持**))
-    - ResourceLoadState(资源加载状态 -- 错误，等待加载， 加载中，完成之类的)
-    - ResourceLoadType(资源加载类型 -- 正常加载，预加载，永久加载)
+    - ResourceLoadMode(资源加载模式 -- AssetBundle or AssetDatabase(**限Editor模式下可切换，支持同步和异步(异步是本地模拟延迟加载来实现的)加载方式**))
+    - ResourceLoadState(资源加载状态 -- 错误，等待加载， 加载中，完成，取消之类的)
+    - ResourceLoadType(资源加载类型 -- 正常加载，常驻加载)
     - ResourceModuleManager(资源加载模块统一入口管理类)
     - AbstractResourceModule(资源加载模块抽象)
-    - AbstractResourceInfo(资源加载信息抽象)
     - AssetBundleModule(AssetBundle模式下的实际加载管理模块)
-    - AssetBundleAsyncQueue(AB异步加载队列)
-    - AssetBundleLoader(AB资源加载任务类)
-    - AssetBundleInfo(AB信息以及加载状态类 -- AB访问，索引计数以及AB依赖关系抽象都在这一层)
+    - AssetDatabaseModule(AssetDatabase模式下的实际加载管理模块)
+    - AbstractResourceInfo(资源加载使用信息抽象)
+    - AssetBundleInfo(AssetBundle资源使用信息)
+    - AssetInfo(Asset资源使用信息)
+    - LoaderManager(加载器管理单例类)
+    - Loadable(资源加载器基类--抽象加载流程)
+    - AssetLoader(Asset加载器基类抽象)
+    - BundleAssetLoader(AssetBundle模式下的Asset加载器)
+    - AssetDatabaseLoader(AssetDatabase模式下的Asset加载器)
+    - BundleLoader(AssetBundle加载器基类抽象)
+    - AssetBundleLoader(本地AssetBundle加载器)
+    - DownloadAssetBundleLoader(动态资源AsserBundle加载器)
+    - AssetDatabaseAsyncRequest(AssetDatabase模式下异步加载模拟)
     - AssetBundlePath(AB资源路径相关 -- 处理多平台以及热更资源加载路径问题)
     - ResourceDebugWindow.cs(Editor运行模式下可视化查看资源加载(AssetBundle和AssetDatabase两种都支持)详细信息的辅助工具窗口)
-    - AssetDatabaseModule(AssetDatabase模式下的实际加载管理模块)
-    - AssetDatabaseLoader(AssetDatabase模式下的资源加载任务类)
-    - AssetDatabaseInfo(AssetDatabase模式下资源加载信息类)
     - ResourceConstData(资源打包加载相关常量数据)
     - ResourceLoadAnalyse(资源加载统计分析工具)
 
-### AB加载管理方案
+#### AB加载管理方案
 
 加载管理方案：
 
@@ -67,35 +95,7 @@ Manager统一管理：
 
 #### Demo使用说明
 
-**--------------------------2021/4/21重大更新即将来临-------------------------**
-
-Note:
-
-**2021/4/20新版AB打包工具重新开始编写，对后续加载接口也有影响，所以下面部分Demo展示以及热更新展示可能已经不是最新的了，新版AB打包还未完成，需要等待更新。**
-
-**新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展，资源加载和打包部分修改完成(2021/5/5)，热更新相关部分还待修改。**
-
-**主要变动如下:**
-
-**1. 打包AB的策略由抽象的目录打包策略设定决定**
-
-**2. 打包后的AB保留目录结构，确保AB模式和AssetDatabase模式加载都面向Asset路径保持一致性**
-
-这里先简单的看下新的AB搜集和打包界面:
-
-![AssetBundleCollectWindow](./img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG)
-
-![AssetBundleBuildWindow](./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG)
-
-关于Asset路径与AB路径关联信息以及AB依赖信息最终都存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbundlebuildinfo的AB里)，通过Asset路径如何加载到对应AB以及依赖AB的关键就在这里。(这里和MotionFramework自定义Manifest文件输出不一样，采用打包AB的方式，为了和热更新AB走一套机制)
-
-让我们先来看下大致数据信息结构:
-
-![AssetBundleBuildInfoView1](./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG)
-
-![AssetBundleBuildInfoView2](./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG)
-
-**--------------------------2021/4/21重大更新即将来临-------------------------**
+先打开资源调试工具
 
 Tools->Debug->资源调试工具
 
@@ -109,9 +109,9 @@ Tools->Debug->资源调试工具
 
    ![AssetBundleLoadManagerUI](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png)
 
-4. AssetBundkle异步加载模式加载队列信息查看界面
+4. 加载器信息查看界面
 
-   ![AssetBundleAsyncUI](./img/Unity/AssetBundle-Framework/AssetBundleAsyncUI.png)
+   ![AssetBundleAsyncUI](./img/Unity/AssetBundle-Framework/LoaderDebugUI.png)
 
 5. 测试界面
 
@@ -120,120 +120,62 @@ Tools->Debug->资源调试工具
 6. 点击加载窗口预制件按钮后:
 
    ```CS
-           ResourceManager.Singleton.getPrefabInstance("Assets/Res/windows/MainWindow", (arg) =>
-           {
-               mMainWindow = arg;
-               mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-           });
+   ResourceManager.Singleton.getPrefabInstance(
+       "Assets/Res/windows/MainWindow.prefab",
+       (prefabInstance, requestUid) =>
+       {
+           mMainWindow = prefabInstance;
+           mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+       }
+   );
    ```
 
 ​	![AssetBundleLoadManagerUIAfterLoadWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png)
 可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)
 
-5. 点击测试异步和同步加载按钮后
+5. 点击测试异步转同步加载窗口
 
 ```CS
-   /// <summary>
-    /// 测试AB异步和同步加载
-    /// </summary>
-    public void onTestAsynAndSyncABLoad()
+/// <summary>
+/// 测试异步转同步窗口加载
+/// </summary>
+public void onAsynToSyncLoadWindow()
+{
+    DIYLog.Log("onAsynToSyncLoadWindow()");
+    if (mMainWindow == null)
     {
-        DIYLog.Log("onTestAsynAndSyncABLoad()");
-        if(mMainWindow == null)
+        onDestroyWindowInstance();
+    }
+    AssetLoader assetLoader;
+    var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+        "Assets/Res/windows/MainWindow.prefab",
+        out assetLoader,
+        (prefabInstance, requestUid) =>
         {
-            onLoadWindowPrefab();
+            mMainWindow = prefabInstance;
+            mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
         }
-
-        // 测试大批量异步加载资源后立刻同步加载其中一个该源
-        ResourceManager.Singleton.getPrefabInstance(
-        "Assets/Res/actors/zombunny/pre_Zombunny",
-        (instance) =>
-        {
-            mActorInstance = instance;
-            Debug.Log($"异步加载pre_zombunny完成!");
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-
-        var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-        AtlasManager.Singleton.setImageSingleSprite(
-            image,
-            "Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient",
-            ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Async);
-        AtlasManager.Singleton.setImageSingleSprite(
-            image,
-            "Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture",
-            ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Async);
-        AtlasManager.Singleton.setImageSingleSprite(
-            image,
-            "Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse",
-            ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Async);
-
-        var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
-        ResourceManager.Singleton.getMaterial(
-            btnloadmat.gameObject, 
-            "Assets/Res/sharematerials/sharematerial",
-            (mat) =>
-            {
-                btnloadmat.GetComponent<Image>().material = mat;
-            },
-            ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Async);
-
-        ResourceManager.Singleton.getPrefabInstance(
-            "Assets/Res/prefabs/SFXTemplate",
-            (instance) =>
-            {
-                mSFXInstance = instance;
-            },
-            ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Sync);
-
-        ResourceManager.Singleton.getAudioClip(
-            mSFXInstance, 
-            "Assets/Res/audios/sfx/sfx1/explosion",
-            (audioclip) =>
-            {
-                var audiosource = mSFXInstance.GetComponent<AudioSource>();
-                audiosource.clip = audioclip;
-                audiosource.Play();
-            },
-            ResourceLoadType.NormalLoad,
-            ResourceLoadMethod.Async);
-
-        CoroutineManager.Singleton.startCoroutine(DoAsyncLoadResource());
-    }
-
-    private IEnumerator DoAsyncLoadResource()
-    {
-        yield return new WaitForEndOfFrame();
-        //测试异步加载后同步加载同一资源
-        ResourceManager.Singleton.getPrefabInstance(
-        "Assets/Res/actors/zombunny/pre_Zombunny",
-        (instance) =>
-        {
-            mActorInstance2 = instance;
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Sync);
-        DIYLog.Log("actorinstance2.transform.name = " + mActorInstance2.transform.name);
-    }
+    );
+    // 将异步转同步加载
+    assetLoader.loadImmediately();
+}
 ```
-
-​	![AssetBundleLoadManagerUIAfterLoadSprites](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadResources.png)
-可以看到我们切换的所有Sprite资源都被绑定到了imgBG对象上，因为不是作为依赖AB加载进来的所以每一个sprite所在的AB引用计数依然为0.
 
 6. 点击销毁窗口实例对象后
 
 ```CS
+/// <summary>
+/// 销毁窗口实例对象
+/// </summary>
+public void onDestroyWindowInstance()
+{
+    DIYLog.Log("onDestroyWindowInstance()");
     GameObject.Destroy(mMainWindow);
+}
 ```
 
 ​	![AssetBundleLoadManagerUIAfterDestroyWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png)
-窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow和imgBG都被销毁了)
+窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow被销毁了)
 
 7. 等待回收检测回收后
    ![AssetBundleLoadManagerUIAfterUnloadAB](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png)
@@ -244,19 +186,67 @@ Note:
 读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。
 
 ```CS
-    mRMM.requstResource(
-    "shaderlist",
-    (abi) =>
+/// <summary>
+/// 加载常驻Shader
+/// </summary>
+public void onLoadPermanentShaderList()
+{
+    DIYLog.Log("onLoadPermanentShaderList()");
+    ResourceManager.Singleton.loadAllShader("shaderlist", () =>
     {
-        var svc = abi.loadAsset<ShaderVariantCollection>(ResourceConstData.ShaderVariantsAssetName);
-            // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
-            svc?.WarmUp();
-            // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
-            abi.loadAllAsset<Shader>();
-            callback?.Invoke();
     },
-    ResourceLoadType.PermanentLoad);          // Shader常驻
+    ResourceLoadType.PermanentLoad);
+}
 ```
+
+
+
+
+
+### 新版AssetBundle打包
+
+**2021/4/20新版AB打包工具重新开始编写，对后续加载接口也有影响，所以下面部分Demo展示以及热更新展示可能已经不是最新的了，新版AB打包还未完成，需要等待更新。**
+
+**新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展，资源加载和打包部分修改完成(2021/5/5)，热更新相关部分还待修改。**
+
+**主要变动如下:**
+
+**1. 打包AB的策略由抽象的目录打包策略设定决定**
+
+**2. 打包后的AB保留目录结构，确保AB模式和AssetDatabase模式加载都面向Asset路径保持一致性**
+
+#### 核心AB打包思想和流程
+
+1. 通过抽象纯虚拟的打包策略设置(即AB收集打包策略设置界面--设置指定目录的打包策略)，做到AB打包策略设置完全抽象AB名字设置无关化(这样一来无需设置AB或清除AB名字，自己完全掌控AB打包策略和打包结论)
+2. 打包时分析打包策略设置的所有有效资源信息，统计出所有有效资源的是否参与打包以及依赖相关等信息，然后结合所有的打包策略设置分析出所有有效Asset的AB打包名字(如果Asset满足多个打包策略设置，默认采用最里层的打包策略设置，找不到符合的采用默认收集打包规则)**(这一步是分析关键，下面细说一下详细步骤)**
+   - 通过自定义设置的打包策略得到所有的有效参与打包路径列表
+   - 通过AssetDatabase.FindAssets()结合打包路径列表得出所有需要分析的Asset
+   - 通过AssetDatabase.GetDependencies(***, true)遍历所有需要分析的Asset列表得出所有Asset的使用信息(是否有依赖使用，是否是需要参与打包的灯)
+   - 通过遍历得到的所有Asset使用信息的路径信息分析设置Asset的AB打包变体信息
+   - 通过遍历得到的所有Asset信息列表结合AssetDatabase.GetDependencies(***, false)接口排除依赖未设置参与打包的Asset资源并得出最终的打包信息列表List<AssetBundleBuildInfo>
+   - 在最后分析得出最后的打包结论之前，这里我个人将AB的依赖信息文件(AssetBuildInfo.asset)的生成和打包信息单独插入在这里，方便AB依赖信息可以跟AB资源一起构建参与热更
+   - 最后根据分析得出的打包信息列表List<AssetBundleBuildInfo>构建真真的打包信息List<AssetBundleBuild>进行打包
+   - AB打包完成后进行一些后续的特殊资源处理(比如视频单独打包。AB打包的依赖文件删除(个人采用自定义生成的AssetBuildInfo.Asset作为依赖加载信息文件)。循环依赖检查。创建打包说明文件等。)
+3. 不同的打包规则通过反射创建每样一个来实现获取对应打包规则的打包AB名字结论获取(采用全路径AB名的方式，方便快速查看资源打包分布)
+4. 然后根据所有有效Asset的所有AB名字打包结论来分析得出自定义的打包结论(即哪些Asset打包到哪个AB名里)
+5. 接着根据Asset的AB打包结论来生成最新的AssetBuildInfo(Asset打包信息，可以理解成我们自己分析得出的Manifest文件，用于运行时加载作为资源加载的基础信息数来源)(手动将AssetBuildInfo添加到打包信息里打包成AB，方便热更新走统一流程)
+6. 最后采用BuildPipeline.BuildAssetBundles(输出目录, 打包信息列表, ......)的接口来手动指定打包结论的方式触发AB打包。
+
+#### 相关操作UI
+
+这里先简单的看下新的AB搜集和打包界面:
+
+![AssetBundleCollectWindow](./img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG)
+
+![AssetBundleBuildWindow](./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG)
+
+关于Asset路径与AB路径关联信息以及AB依赖信息最终都存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbuildinfo的AB里)，通过Asset路径如何加载到对应AB以及依赖AB的关键就在这里。(这里和MotionFramework自定义Manifest文件输出不一样，采用打包AB的方式，为了和热更新AB走一套机制)
+
+让我们先来看下大致数据信息结构:
+
+![AssetBundleBuildInfoView1](./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG)
+
+![AssetBundleBuildInfoView2](./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG)
 
 ## 热更新模块
 
@@ -303,17 +293,19 @@ Note:
 
 3. 结合最新版本号，最新资源版本号和资源服务器地址(Json配置)拼接出最终资源热更所在的资源服务器地址
 
-4. 下载对应地址下的ResourceUpdateList.txt(里面填写了对应版本的详细资源热更信息)(这一步如果可以服务器下发的话可以省去)
+4. 下载对应地址下的AssetBundleMD5.txt(里面包含了对应详细资源MD5信息)
 
-      ResourceUpdateList.txt
+      AssetBundleMD5.txt
 
       ```tex
-      2:Android;2:mainwindow
+      assetbuildinfo.bundle|ca830d174533e87efad18f1640e5301d
+      shaderlist.bundle|2ac2d75f7d91fda7880f447e21b2e289
+      ******
       ```
 
-5. 根据比较对应地址下的ResourceUpdateList.txt里的资源热更信息和本地记录的资源热更信息得出需要更新的资源列表
+5. 根据比较对应地址下的AssetBundleMD5.txt里的资源MD5信息和本地资源MD5信息(优先包外的MD5文件)得出需要更新下载的资源列表
 
-6. 根据得出的需要更新的资源列表下载对应资源地址下的资源并存储在包外(Application.persistentDataPath + "/Android/")，同时写入本地已经热更的资源信息到本地文件(本地ResourceUpdateList.txt)
+6. 根据得出的需要更新的资源列表下载对应资源地址下的资源并存储在包外(Application.persistentDataPath + "/Android/")，同时写入最新的资源MD5信息文件(本地AssetBundleMD5.txt)到本地
 
 7. 直到所有资源热更完成，退出重进游戏
 
@@ -325,21 +317,25 @@ Note:
 
 Tools->HotUpdate->热更新操作工具
 
-![HotUpdateToolsUI](/img/Unity/HotUpdate/HotUpdateToolsUI.png)
+![HotUpdateToolsUI](./img/Unity/HotUpdate/HotUpdateToolsUI.png)
 
 主要分为以下4个步骤：
 
-1. 版本资源文件MD5计算(文件名格式:MD5+版本号+资源版本号+平台+时间戳+.txt)
+1. 每次资源打包会在包内Resource目录生成一个AssetBundleMd5.txt文件
 
-   ![AssetBundleMD5Caculation](/img/Unity/HotUpdate/AssetBundleMD5Caculation.png)
+   ![AssetBundleMD5File](./img/Unity/HotUpdate/AssetBundleMD5File.png)
 
-2. 对比两个版本的MD5文件信息得出需要热更新的AB文件信息
+2. 执行热更新准备操作，生成热更新所需服务器最新版本信息文件(ServerVersionConfig.json)并将包内对应平台资源拷贝到热更新准备目录
 
-3. 执行热更新AB准备操作自动复制需要热更新的AB到热更新准备目录(然后手动拷贝需要强更或热更的资源到真正的热更新目录)
+   ![HotUpdatePreparationFolder](./img/Unity/HotUpdate/HotUpdatePreparationFolder.png)
 
-4. 执行热更新准备操作，生成热更新所需的最新资源热更新信息文件(ResourceUpdateList.txt)和服务器最新版本信息文件(ServerVersionConfig.json)
+### 热更包外目录结构
 
+PersistentAsset -> HotUpdate -> Platform(资源热更新目录)
+PersistentAsset -> HotUpdate -> AssetBundleMd5.txt(记录热更新的AssetBundle路径和MD5信息--兼顾进游戏前资源热更和动态资源热更)(格式:热更AB路径:热更AB的MD5/n热更AB路径:热更AB的MD5******)
+PersistentAsset -> Config -> VersionConfig.json(包外版本信息--用于进游戏前强更和热更判定)
 
+PersistentAsset -> HotUpdate -> 版本强更包
 
 ## 导表模块
 
@@ -380,18 +376,13 @@ Tools->Assets->Asset相关处理
 
     ![BuildInResourceExtraction](./img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png)
 
-5. Shader变体搜集工具
+5. Shader变体搜集工具(半成品，只是简单的把所有材质放到场景中用摄像机照射一次让Unity能搜集到变体，**可能会遗漏一些特殊情况下的变体**)
 
    ![ShaderVariantsCollection](./img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png) 
 
 # 待做事项
 
-1.  ~~编辑器模式支持AssetDatabase的资源回收以及类型分类( 1. 正常加载 2.预加载 3. 永久加载)~~
-2.  ~~优化AssetBundle模式绑定同一组件对象时，老的资源无法及时释放问题(因为没有挂载任何有效信息，现阶段的抽象无法反推原有组件绑定的资源信息，无法及时释放老的资源加载信息)(考虑重写部分组件来解决此问题 e.g. 重写Image成TImage后保持索引基数对象来保证关联性)~~
-3.  支持编辑器模式下AssetDatabase资源异步加载(方便暴露出AssetBundle加载模式下的异步问题)
-4.  ~~支持真机资源热更以及版本强更(**热更模块**)~~
 5.  支持真机代码热更(Lua + XLua)
-6.  ~~跨版本资源热更自动化分析~~
 7.  热更新资源正确性校验
 
 # 个人博客
@@ -410,6 +401,10 @@ Tools->Assets->Asset相关处理
 
 [tangzx/ABSystem](https://github.com/tangzx/ABSystem)
 
-感谢MotionFramework作者的无私分享,MotionFramework的Github连接:
+感谢MotionFramework作者的无私分享,MotionFramework的Github链接:
 
 [MotionFramework](https://github.com/gmhevinci/MotionFramework)
+
+感谢XAsset作者的无私分享,XAsset的GitHub链接:
+
+[XAsset](https://github.com/xasset/xasset)

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             HotUpdateConfig.cs
  * Author:                  TONYTANG
  * Create Date:             2019//08/04
@@ -11,23 +11,23 @@ using UnityEngine;
 
 /// <summary>
 /// HotUpdateConfig.cs
-/// ÓÎÏ·ÈÈ¸üĞÂµØÖ·³éÏóÀà
+/// æ¸¸æˆçƒ­æ›´æ–°åœ°å€æŠ½è±¡ç±»
 /// </summary>
 [Serializable]
 public class HotUpdateConfig {
 
     /// <summary>
-    /// ÈÈ¸üAPKÃû×Ö
+    /// çƒ­æ›´APKåå­—
     /// </summary>
     public string APKName;
 
     /// <summary>
-    /// ÈÈ¸üĞÂ±¾µØ²âÊÔµØÖ·
+    /// çƒ­æ›´æ–°æœ¬åœ°æµ‹è¯•åœ°å€
     /// </summary>
     public string HotUpdateLocalURL;
 
     /// <summary>
-    /// ÈÈ¸üĞÂÕıÊ½µØÖ·
+    /// çƒ­æ›´æ–°æ­£å¼åœ°å€
     /// </summary>
     public string HotUpdateURL;
 }

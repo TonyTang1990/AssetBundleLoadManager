@@ -88,4 +88,46 @@ public static class FileUtilities
         File.Copy(filePath, targetFilePath, true);
         return true;
     }
+
+
+    /// <summary>
+    /// 复制指定目录到指定目录
+    /// </summary>
+    /// <param name="sourceFolderPath"></param>
+    /// <param name="targetFolderPath"></param>
+    /// <returns></returns>
+    public static bool CopyFolderToFolder(string sourceFolderPath, string targetFolderPath)
+    {
+        if (!Directory.Exists(sourceFolderPath))
+        {
+            Debug.LogError($"原目录:{sourceFolderPath}不存在,复制到目标目录:{targetFolderPath}失败!");
+            return false;
+        }
+        if (string.IsNullOrEmpty(targetFolderPath))
+        {
+            Debug.LogError($"无法复制文件:{sourceFolderPath}空目录,请传递有效目录!");
+            return false;
+        }
+        var sourceFolderInfo = new DirectoryInfo(sourceFolderPath);
+        var targetFolderInfo = new DirectoryInfo(targetFolderPath);
+        CopyFilesRecursively(sourceFolderInfo, targetFolderInfo);
+        return true;
+    }
+
+    /// <summary>
+    /// 复制指定目录信息到指定目录信息
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
+    {
+        foreach (DirectoryInfo dir in source.GetDirectories())
+        {
+            CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
+        }
+        foreach (FileInfo file in source.GetFiles())
+        {
+            file.CopyTo(Path.Combine(target.FullName, file.Name));
+        }
+    }
 }

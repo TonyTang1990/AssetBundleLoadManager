@@ -27,7 +27,7 @@ using UnityEngine.Networking;
 // 11. 不需要版本强更                                                                                    -> 12
 // 12. 判定是否需要资源热更(比较服务器资源版本号和本地资源版本号)
 // 13. 需要资源热更
-// 14. 拉去服务器资源热更列表信息与本地资源版本号以及已经热更到的资源信息做比较，得出需要热更的资源列表  -> 1
+// 14. 拉去服务器对应版本最新的资源MD5信息文件与本地资源MD5信息文件比较，得出需要热更的资源列表  -> 1
 // 15. 不需要资源热更
 // 16. 进入游戏
 
@@ -39,6 +39,11 @@ using UnityEngine.Networking;
 /// </summary>
 public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
 {
+    /// <summary>
+    /// 热更新资源目录名
+    /// </summary>
+    private const string HotUpdateFolderName = "HotUpdate";
+
     /// <summary>
     /// 热更开关
     /// </summary>
@@ -152,10 +157,10 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     }
 
     /// <summary>
-    /// 需要资源热更列表映射Map
-    /// Key为资源版本号，Value为该版本号需要热更新的资源列表信息
+    /// 需要资源热更的信息Map
+    /// Key为资源路径，Value为该资源最新热更信息
     /// </summary>
-    private SortedDictionary<int, List<string>> mNeedHotUpdateResourceMap;
+    private Dictionary<string, HotUpdateAssetBundleInfo> mNeedHotUpdateAssetBundleInfoMap;
 
     /// <summary>
     /// 需要资源热更的资源总数
@@ -180,14 +185,20 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     private SortedDictionary<int, List<string>> mLocalUpdatedResourceMap;
 
     /// <summary>
-    /// 资源热更列表文件名
+    /// 本地AssetBundle热更信息Map
+    /// Key为资源路径，Value为该资源本地热更信息
     /// </summary>
-    public const string ResourceUpdateListFileName = "ResourceUpdateList.txt";
+    private Dictionary<string, HotUpdateAssetBundleInfo> mLocalHotUpdateAssetBundleInfoMap;
+
+    /// <summary>
+    /// 资源热更资源MD5信息文件名
+    /// </summary>
+    public const string AssetBundleMD5FileName = ResourceConstData.AssetBundleMd5InfoFileName;
 
     /// <summary>
     /// 本地资源热更记录文件目录路径
     /// </summary>
-    private string LocalResourceUpdateListFilFolderPath;
+    private string LocalAssetBundleMD5FilFolderPath;
 
     /// <summary>
     /// 本地资源热更记录文件路径
@@ -195,7 +206,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 所有资源热更完成后内容置空
     /// 没有热更完的话会记录已经更到的资源列表
     /// </summary>
-    private string LocalResourceUpdateListFilePath;
+    private string LocalAssetBundleMD5FilePath;
 
     /// <summary>
     /// 资源热更请求
@@ -216,19 +227,20 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         mHotUpdateURL = string.Empty;
 
         mHotUpdateResourceTotalNumber = 0;
-        VersionHotUpdateCacheFolderPath = Application.persistentDataPath + "/download/";
+        VersionHotUpdateCacheFolderPath = Path.Combine(Application.persistentDataPath, HotUpdateFolderName);
         
         mVersionHotUpdateFileName = string.Empty;
         HotVersionUpdateRequest = new TWebRequest();
         mVersionHotUpdateCompleteCB = null;
 
-        mNeedHotUpdateResourceMap = new SortedDictionary<int, List<string>>();
+        mNeedHotUpdateAssetBundleInfoMap = new Dictionary<string, HotUpdateAssetBundleInfo>();
         mResourceHotUpdateCompleteCB = null;
         mResourceUpdateListMap = new Dictionary<int, List<string>>();
         mLocalUpdatedResourceMap = new SortedDictionary<int, List<string>>();
-        LocalResourceUpdateListFilFolderPath = Application.persistentDataPath + "/ResourceUpdateList/";
-        LocalResourceUpdateListFilePath = LocalResourceUpdateListFilFolderPath + ResourceUpdateListFileName;
-        Debug.Log($"资源热更新记录文件:{LocalResourceUpdateListFilePath}");
+        mLocalHotUpdateAssetBundleInfoMap = new Dictionary<string, HotUpdateAssetBundleInfo>();
+        LocalAssetBundleMD5FilFolderPath = VersionHotUpdateCacheFolderPath;
+        LocalAssetBundleMD5FilePath = Path.Combine(LocalAssetBundleMD5FilFolderPath, AssetBundleMD5FileName);
+        Debug.Log($"本地资源MD5信息文件:{LocalAssetBundleMD5FilePath}");
         mHotResourceUpdateRequest = new TWebRequest();
     }
 
@@ -238,7 +250,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     public void init()
     {
         initHotUpdateConfig();
-        initLocalUpdatedResourceInfo();
+        initLocalAssetBundleMD5Info();
     }
 
     /// <summary>
@@ -272,38 +284,41 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     }
 
     /// <summary>
-    /// 初始化本地以热更资源资源信息
+    /// 初始化本地以资源MD5信息
     /// </summary>
-    private void initLocalUpdatedResourceInfo()
+    private void initLocalAssetBundleMD5Info()
     {
         Debug.Log("初始化本地资源热更列表!");
-        mLocalUpdatedResourceMap.Clear();
-        if (File.Exists(LocalResourceUpdateListFilePath))
+        mLocalHotUpdateAssetBundleInfoMap.Clear();
+        // 包外没有读包内的AssetBundleMD5.txt
+        string[] resourceupdateinfo = null;
+        if (File.Exists(LocalAssetBundleMD5FilePath))
         {
-            var resourceupdateinfo = File.ReadAllLines(LocalResourceUpdateListFilePath);
-            foreach (var updatedresource in resourceupdateinfo)
-            {
-                //避免因为最后一个空行导致报错
-                if(updatedresource.IsNullOrEmpty())
-                {
-                    continue;
-                }
-                var resourceinfo = updatedresource.Split(':');
-                var resversion = int.Parse(resourceinfo[0]);
-                var resname = resourceinfo[1];
-                List<string> updatedreslist;
-                if(!mLocalUpdatedResourceMap.TryGetValue(resversion, out updatedreslist))
-                {
-                    updatedreslist = new List<string>();
-                    mLocalUpdatedResourceMap.Add(resversion, updatedreslist);
-                }
-                updatedreslist.Add(resname);
-                Debug.Log(string.Format("已经更新到的资源信息 : 资源版本号:{0} 资源名:{1}", resversion, resname));
-            }
+            resourceupdateinfo = File.ReadAllLines(LocalAssetBundleMD5FilePath);
         }
         else
         {
-            Debug.Log(string.Format("{0}文件不存在，未更新任何资源!", LocalResourceUpdateListFilePath));
+            var innerAssetBundleMD5Asset = Resources.Load<TextAsset>(Path.GetFileNameWithoutExtension(AssetBundleMD5FileName));
+            resourceupdateinfo = innerAssetBundleMD5Asset.text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+        }
+        foreach (var updatedresource in resourceupdateinfo)
+        {
+            //避免因为最后一个空行导致报错
+            if(updatedresource.IsNullOrEmpty())
+            {
+                continue;
+            }
+            var resourceinfo = updatedresource.Split(ResourceConstData.AssetBundlleInfoSeparater);
+            var resPath = resourceinfo[0];
+            var resMD5 = resourceinfo[1];
+            if (!mLocalHotUpdateAssetBundleInfoMap.ContainsKey(resPath))
+            {
+                mLocalHotUpdateAssetBundleInfoMap.Add(resPath, new HotUpdateAssetBundleInfo(resPath, resMD5));
+            }
+            else
+            {
+                Debug.LogError($"有相同Asset路径资源:{resPath},请检查流程!");
+            }
         }
     }
 
@@ -319,7 +334,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         TWebRequest twr = new TWebRequest();
         //URL = 热更新URL + 服务器版本信息文件名(ServerVersionConfig.json)
         var url = mHotUpdateURL + ServerVersionConfigFileName; ;
-        twr.enqueue(url, serverVersionConfigCompleteCB);
+        twr.enqueue(url, null, serverVersionConfigCompleteCB);
         twr.startRequest();
     }
 
@@ -327,11 +342,12 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 服务器版本信息拉去回调
     /// </summary>
     /// <param name="url">下载地址</param>
+    /// <param name="fileMd5">文件MD5</param>
     /// <param name="downloadhandler">下载结果数据</param>
     /// <param name="requeststatus">下载状态</param>
-    private void serverVersionConfigCompleteCB(string url, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
+    private void serverVersionConfigCompleteCB(string url, string fileMd5, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
     {
-        Debug.Log(string.Format("服务器版本信息资源列表地址 : {0}", url));
+        Debug.Log($"服务器版本信息资源列表地址:{url}");
         if (requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
         {
             Debug.Log(string.Format("服务器版本信息资源下载成功!服务器版本信息 : {0}", downloadhandler.text));
@@ -370,10 +386,10 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                 Directory.Delete(AssetBundlePath.ABHotUpdatePath, true);
                 Debug.Log(string.Format("删除包外资源热更存储目录 : {0}", AssetBundlePath.ABHotUpdatePath));
             }
-            if (Directory.Exists(LocalResourceUpdateListFilFolderPath))
+            if (Directory.Exists(LocalAssetBundleMD5FilFolderPath))
             {
-                Directory.Delete(LocalResourceUpdateListFilFolderPath, true);
-                Debug.Log(string.Format("删除包外热更资源信息目录 : {0}", LocalResourceUpdateListFilFolderPath));
+                Directory.Delete(LocalAssetBundleMD5FilFolderPath, true);
+                Debug.Log(string.Format("删除包外热更资源信息目录 : {0}", LocalAssetBundleMD5FilFolderPath));
             }
             if (Directory.Exists(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFolderPath))
             {
@@ -436,7 +452,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         mVersionHotUpdateCompleteCB = completecallback;
         HotVersionUpdateRequest.resetRequest();
         var versionhotupdatefilepath = mHotUpdateURL + newhotupdateversioncode + "/" + mVersionHotUpdateFileName;
-        HotVersionUpdateRequest.enqueue(versionhotupdatefilepath, versionHotUpdateCompleteCB, 1800);
+        HotVersionUpdateRequest.enqueue(versionhotupdatefilepath, null, versionHotUpdateCompleteCB, 1800);
         HotVersionUpdateRequest.startRequest();
     }
 
@@ -444,9 +460,10 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 版本强更下载完成回调
     /// </summary>
     /// <param name="url">下载地址</param>
+    /// <param name="fileMd5">文件MD5</param>
     /// <param name="downloadhandler">下载结果数据</param>
     /// <param name="requeststatus">下载状态</param>
-    private void versionHotUpdateCompleteCB(string url, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
+    private void versionHotUpdateCompleteCB(string url, string fileMd5, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
     {
         Debug.Log(string.Format("版本强更资源地址 : {0}", url));
         if (requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
@@ -531,10 +548,10 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         mResourceHotUpdateCompleteCB = completecallback;
         //拉取服务器热更资源信息与本地资源热更信息进行比较
         TWebRequest twr = new TWebRequest();
-        //URL = 基础URL + 当前版本号 + "/" + 热更资源信息文件名(ResourceUpdateList.txt)
-        var url = mHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode + "/" + ResourceUpdateListFileName;
+        //URL = 基础URL + 当前版本号 + "/" + 热更资源MD5信息文件名(AssetBundleMD5.txt)
+        var url = mHotUpdateURL + ServerVersionConfig.VersionCode + "/" + ServerVersionConfig.ResourceVersionCode + "/" + AssetBundleMD5FileName;
         mHotResourceUpdateRequest.resetRequest();
-        twr.enqueue(url, resourceListHotUpdateCompleteCB);
+        twr.enqueue(url, null, resourceMD5InfoHotUpdateCompleteCB);
         twr.startRequest();
     }
 
@@ -542,21 +559,21 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 热更资源列表下载完成回调
     /// </summary>
     /// <param name="url">下载地址</param>
+    /// <param name="fileMd5">文件MD5</param>
     /// <param name="downloadhandler">下载结果数据</param>
     /// <param name="requeststatus">下载状态</param>
-    private void resourceListHotUpdateCompleteCB(string url, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
+    private void resourceMD5InfoHotUpdateCompleteCB(string url, string fileMd5, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
     {
-        Debug.Log(string.Format("热更资源列表地址 : {0}", url));
+        Debug.Log(string.Format("热更资源热更信息地址 : {0}", url));
         if (requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
         {
-            Debug.Log(string.Format("热更资源列表下载成功!热更资源列表信息 : {0}", downloadhandler.text));
-            mNeedHotUpdateResourceMap.Clear();
+            Debug.Log(string.Format("热更资源MD5信息文件下载成功!热更资源MD5信息文件大小: {0}KB", downloadhandler.data.Length / 1024));
+            mNeedHotUpdateAssetBundleInfoMap.Clear();
             mHotUpdateResourceTotalNumber = 0;
-
             //TODO:
             //结合服务器上的资源MD5信息做资源验证，确保资源下对以及未被修改
-            var hotupdateresourcesmap = new SortedDictionary<int, List<string>>();
-            var hotupdateresourcesinfo = downloadhandler.text.Split(';');
+            var hotUpdateAssetBundleInfoMap = new Dictionary<string, HotUpdateAssetBundleInfo>();
+            var hotupdateresourcesinfo = downloadhandler.text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             try
             {
                 foreach (var hotupdatereousrceinfo in hotupdateresourcesinfo)
@@ -566,67 +583,41 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                     {
                         continue;
                     }
-                    var resourceinfo = hotupdatereousrceinfo.Split(':');
-                    var resversion = int.Parse(resourceinfo[0]);
-                    var resname = resourceinfo[1];
-                    List<string> reslist;
-                    if (!hotupdateresourcesmap.TryGetValue(resversion, out reslist))
+                    var resourceinfo = hotupdatereousrceinfo.Split(ResourceConstData.AssetBundlleInfoSeparater);
+                    var resPath = resourceinfo[0];
+                    var resMD5 = resourceinfo[1];
+                    if (!hotUpdateAssetBundleInfoMap.ContainsKey(resPath))
                     {
-                        reslist = new List<string>();
-                        hotupdateresourcesmap.Add(resversion, reslist);
-                    }
-                    if (!reslist.Contains(resname))
-                    {
-                        reslist.Add(resname);
-                        Debug.Log(string.Format("添加可能需要热更的资源信息,版本号 : {0}, 资源名 : {1}", resversion, resname));
+                        hotUpdateAssetBundleInfoMap.Add(resPath, new HotUpdateAssetBundleInfo(resPath, resMD5));
                     }
                     else
                     {
-                        Debug.LogError(string.Format("重复的资源热更信息！版本号 : {0} 资源名 : {1}！", resversion, resname));
+                        Debug.LogError($"重复的资源热更信息!资源路径:{resPath}资源MD5:{resMD5}，请检查流程！");
                     }
                 }
                 //根据返回的热更资源数据结合本地资源版本号以及已经热更下载的资源计算出剩下需要热更的资源数据
                 var currentresversion = VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode;
-                foreach (var hotupdateresourceinfo in hotupdateresourcesmap)
+                foreach (var hotUpdateAssetBunfleInfo in hotUpdateAssetBundleInfoMap)
                 {
-                    List<string> alreadyupdatedreslist;
-                    if(!mLocalUpdatedResourceMap.TryGetValue(hotupdateresourceinfo.Key, out alreadyupdatedreslist))
+                    var assetBundlePath = hotUpdateAssetBunfleInfo.Value.AssetBundlePath;
+                    var hotUpdateAssetBundleInfo = hotUpdateAssetBunfleInfo.Value;
+                    if (isAssetBundleNeedHotUpdate(hotUpdateAssetBundleInfo))
                     {
-                        alreadyupdatedreslist = new List<string>();
-                    }
-                    if (hotupdateresourceinfo.Key > currentresversion)
-                    {
-                        foreach(var hotupdateresource in hotupdateresourceinfo.Value)
+                        if (!mNeedHotUpdateAssetBundleInfoMap.ContainsKey(assetBundlePath))
                         {
-                            if(alreadyupdatedreslist.Contains(hotupdateresource))
-                            {
-                                Debug.Log(string.Format("资源已经热更过了： 资源版本号:{0} 资源名:{1}", hotupdateresourceinfo.Key, hotupdateresource));
-                            }
-                            else
-                            {
-                                List<string> neddhotupdatereslist;
-                                if (!mNeedHotUpdateResourceMap.TryGetValue(hotupdateresourceinfo.Key, out neddhotupdatereslist))
-                                {
-                                    neddhotupdatereslist = new List<string>();
-                                    mNeedHotUpdateResourceMap.Add(hotupdateresourceinfo.Key, neddhotupdatereslist);
-                                }
-                                if (!neddhotupdatereslist.Contains(hotupdateresource))
-                                {
-                                    neddhotupdatereslist.Add(hotupdateresource);
-                                    mHotUpdateResourceTotalNumber++;
-                                }
-                            }
+                            mNeedHotUpdateAssetBundleInfoMap.Add(assetBundlePath, hotUpdateAssetBundleInfo);
+                            mHotUpdateResourceTotalNumber++;
                         }
-
+                        else
+                        {
+                            Debug.LogError($"有重复的热更新资源路径:{assetBundlePath}，检查流程!");
+                        }
                     }
                 }                
                 Debug.Log(string.Format("需要热更的资源数 : {0}", mHotUpdateResourceTotalNumber));
-                foreach (var needhotupdateresinfo in mNeedHotUpdateResourceMap)
+                foreach (var needhotupdateresinfo in mNeedHotUpdateAssetBundleInfoMap)
                 {
-                    foreach(var needhotupdateres in needhotupdateresinfo.Value)
-                    {
-                        Debug.Log(string.Format("需要热更的资源信息 : 资源版本号:{0} 资源名:{1}", needhotupdateresinfo.Key, needhotupdateres));
-                    }
+                    Debug.Log($"需要热更的资源路径:{needhotupdateresinfo.Value.AssetBundlePath}资源MD5:{needhotupdateresinfo.Value.AssetBundleMD5}");
                 }
 
                 if(mHotUpdateResourceTotalNumber > 0)
@@ -635,19 +626,16 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                     //检查资源热更目录，不存在就创建一个
                     AssetBundlePath.CheckAndCreateABOutterPathFolder();
                     //检查资源热更列表信息目录
-                    if (!Directory.Exists(LocalResourceUpdateListFilFolderPath))
+                    if (!Directory.Exists(LocalAssetBundleMD5FilFolderPath))
                     {
-                        Directory.CreateDirectory(LocalResourceUpdateListFilFolderPath);
-                        Debug.Log(string.Format("创建目录 : {0}", LocalResourceUpdateListFilFolderPath));
+                        Directory.CreateDirectory(LocalAssetBundleMD5FilFolderPath);
+                        Debug.Log(string.Format("创建目录 : {0}", LocalAssetBundleMD5FilFolderPath));
                     }
-                    foreach (var resinfo in mNeedHotUpdateResourceMap)
+                    foreach (var resinfo in mNeedHotUpdateAssetBundleInfoMap)
                     {
-                        foreach (var res in resinfo.Value)
-                        {
-                            //URL = 基础URL + 当前版本号 + "/" + 需要热更的资源版本号 + "/" + 需要热更的资源名
-                            var finalurl = mHotUpdateURL + VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode + "/" + resinfo.Key + "/" + res;
-                            mHotResourceUpdateRequest.enqueue(finalurl, singleResourceHotUpdateCompleteCB);
-                        }
+                        //URL = 基础URL + 当前版本号 + "/" + 需要热更的资源版本号 + "/" + 需要热更的资源名
+                        var finalurl = mHotUpdateURL + ServerVersionConfig.VersionCode + "/" + ServerVersionConfig.ResourceVersionCode + "/" + resinfo.Value.AssetBundlePath;
+                        mHotResourceUpdateRequest.enqueue(finalurl, resinfo.Value.AssetBundleMD5, singleResourceHotUpdateCompleteCB);
                     }
                     mHotResourceUpdateRequest.startRequest();
                 }
@@ -680,28 +668,45 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     }
 
     /// <summary>
+    /// 指定AssetBundle热更信息是否需要热更
+    /// </summary>
+    /// <param name="hotUpdateAssetBundleInfo"></param>
+    /// <returns></returns>
+    private bool isAssetBundleNeedHotUpdate(HotUpdateAssetBundleInfo hotUpdateAssetBundleInfo)
+    {
+        if (!mLocalHotUpdateAssetBundleInfoMap.ContainsKey(hotUpdateAssetBundleInfo.AssetBundlePath)
+            || (mLocalHotUpdateAssetBundleInfoMap.ContainsKey(hotUpdateAssetBundleInfo.AssetBundlePath) && mLocalHotUpdateAssetBundleInfoMap[hotUpdateAssetBundleInfo.AssetBundlePath].AssetBundleMD5 != hotUpdateAssetBundleInfo.AssetBundleMD5))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
     /// 单个资源热更下载完成回调
     /// </summary>
     /// <param name="url">下载地址</param>
+    /// <param name="fileMd5">文件MD5</param>
     /// <param name="downloadhandler">下载结果信息</param>
     /// <param name="requeststatus">请求结果</param>
-    private void singleResourceHotUpdateCompleteCB(string url, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
+    private void singleResourceHotUpdateCompleteCB(string url, string fileMd5, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
     {
         Debug.Log(string.Format("资源 : {0}下载返回！", url));
-        var resname = Path.GetFileName(url);
-        var resversion = int.Parse(Path.GetFileName(Path.GetDirectoryName(url)));
+        var hotUpdateVersionCode = ServerVersionConfig.VersionCode;
+        var hotUpdateResourceVersionCode = ServerVersionConfig.ResourceVersionCode;
+        var hotUpdatePreURL = $"{mHotUpdateURL}{hotUpdateVersionCode}/{hotUpdateResourceVersionCode}/";
+        var resPath = url.Replace(hotUpdatePreURL, string.Empty);
         if(requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
         {
-            Debug.Log(string.Format("资源版本号 : {0} 资源名 : {1}热更下载成功！", resversion, resname));
-            //存储热更资源到包外并记录热更资源信息
-            saveHotResourceUpdate(resname, resversion, downloadhandler.data);
-            mNeedHotUpdateResourceMap[resversion].Remove(resname);
-            if(mNeedHotUpdateResourceMap[resversion].Count == 0)
-            {
-                mNeedHotUpdateResourceMap.Remove(resversion);
-            }
+            Debug.Log($"资源版本号:{hotUpdateResourceVersionCode}资源路径:{resPath}热更下载成功！");
+            // 存储热更资源到包外并记录热更资源信息
+            saveHotResourceUpdate(resPath, fileMd5, downloadhandler.data);
+            mNeedHotUpdateAssetBundleInfoMap.Remove(resPath);
             Debug.Log(string.Format("当前资源热更进度 : {0}", HotResourceUpdateProgress));
-            if(mNeedHotUpdateResourceMap.Count == 0)
+            if(mNeedHotUpdateAssetBundleInfoMap.Count == 0)
             {
                 Debug.Log("资源热更完成!");
                 mResourceHotUpdateCompleteCB(true);
@@ -711,7 +716,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         }
         else
         {
-            Debug.LogError(string.Format("资源 : {0}热更下载失败！", resname));
+            Debug.LogError(string.Format("资源 : {0}热更下载失败！", resPath));
             mHotResourceUpdateRequest.stopRequest();
             mResourceHotUpdateCompleteCB(false);
             mResourceHotUpdateCompleteCB = null;
@@ -721,31 +726,33 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// <summary>
     /// 存储热更资源并记录热更资源信息
     /// </summary>
-    /// <param name="resname">资源名</param>
-    /// <param name="resversion">资源版本号</param>
+    /// <param name="resPath">资源名</param>
+    /// <param name="resMd5">资源MD5</param>
     /// <param name="data">资源二进制数据</param>
-    private void saveHotResourceUpdate(string resname, int resversion, byte[] data)
+    private void saveHotResourceUpdate(string resPath, string resMd5, byte[] data)
     {
         //检查包外是否存在同名资源，存在的话需要先删除再存储最新到包外
-        var resfullpath = AssetBundlePath.ABHotUpdatePath + resname;
-        if (AssetBundlePath.IsABExitInOutterPath(resname))
+        var resfullpath = AssetBundlePath.ABHotUpdatePath + resPath;
+        if (AssetBundlePath.IsABExitInOutterPath(resPath))
         {
-            Debug.Log(string.Format("删除包外资源 : {0}", resname));
+            Debug.Log(string.Format("删除包外资源 : {0}", resPath));
             File.Delete(resfullpath);
         }
+        var fileFolderPath = Path.GetDirectoryName(resfullpath);
+        FolderUtilities.CheckAndCreateSpecificFolder(fileFolderPath);
         File.WriteAllBytes(resfullpath, data);
 
-        if(!File.Exists(LocalResourceUpdateListFilePath))
+        if(!File.Exists(LocalAssetBundleMD5FilePath))
         {
-            Debug.Log(string.Format("创建文件 : {0}", LocalResourceUpdateListFilePath));
-            using (var fs = File.Create(LocalResourceUpdateListFilePath))
+            Debug.Log(string.Format("创建文件 : {0}", LocalAssetBundleMD5FilePath));
+            using (var fs = File.Create(LocalAssetBundleMD5FilePath))
             {
                 fs.Close();
             }
         }
-        using (var sw = File.AppendText(LocalResourceUpdateListFilePath))
+        using (var sw = File.AppendText(LocalAssetBundleMD5FilePath))
         {
-            sw.WriteLine(resversion + ":" + resname);
+            sw.WriteLine($"{resPath}{ResourceConstData.AssetBundlleInfoSeparater}{resMd5}");
             sw.Close();
         }
         Debug.Log(string.Format("写入已更资源 : {0}", resfullpath));
