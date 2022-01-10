@@ -447,13 +447,13 @@ namespace MotionFramework.Editor
 			{
 				string extension = Path.GetExtension(folderName);
 				string label = AssetBundleCollectSettingData.GetAssetBundleLabel(assetInfo.AssetPath);
-				assetInfo.AssetBundleLabel = EditorUtilities.GetRegularPath(label.Replace(extension, string.Empty));
+				assetInfo.AssetBundleLabel = PathUtilities.GetRegularPath(label.Replace(extension, string.Empty));
 				assetInfo.AssetBundleVariant = extension.RemoveFirstChar();
 			}
 			else
 			{
 				string label = AssetBundleCollectSettingData.GetAssetBundleLabel(assetInfo.AssetPath);
-				assetInfo.AssetBundleLabel = EditorUtilities.GetRegularPath(label);
+				assetInfo.AssetBundleLabel = PathUtilities.GetRegularPath(label);
 				assetInfo.AssetBundleVariant = ResourceConstData.AssetBundleDefaultVariant;
 			}
 		}
@@ -483,7 +483,7 @@ namespace MotionFramework.Editor
 				foreach (var abFilePath in abFilesFullPath)
                 {
 					var abRelativePath = abFilePath.Remove(0, OutputDirectory.Length);
-					abRelativePath = EditorUtilities.GetRegularPath(abRelativePath);
+					abRelativePath = PathUtilities.GetRegularPath(abRelativePath);
 					var fileMd5 = FileUtilities.GetFileMD5(abFilePath, md5hash);
 					md5SW.WriteLine($"{abRelativePath}{ResourceConstData.AssetBundlleInfoSeparater}{fileMd5}");
                 }
@@ -602,7 +602,7 @@ namespace MotionFramework.Editor
 			for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
 			{
 				Collector wrapper = AssetBundleCollectSettingData.Setting.AssetBundleCollectors[i];
-                if(wrapper.BuildRule != EAssetBundleBuildRule.LoadByConstName)
+                if(wrapper.BuildRule != EAssetBundleBuildRule.ByConstName)
                 {
                     AppendData(content, $"Directory : {wrapper.CollectFolderPath} || CollectRule : {wrapper.CollectRule} || BuildRule : {wrapper.BuildRule}");
                 }

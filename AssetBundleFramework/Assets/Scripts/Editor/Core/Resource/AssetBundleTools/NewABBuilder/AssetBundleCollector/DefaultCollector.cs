@@ -5,6 +5,7 @@
 //--------------------------------------------------
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace MotionFramework.Editor
@@ -54,6 +55,35 @@ namespace MotionFramework.Editor
             Debug.Assert(collector != null, "固定名字加载策略不允许传空Collector!");
             // 例如："Assets/Config/test.txt" --> "ConstName"
             return collector.ConstName;
+        }
+    }
+
+    /// <summary>
+    /// 同层以文件路径作为标签名，其他以下层目录作为标签名
+    /// </summary>
+    public class LabelByFileAndSubFolderPath : IAssetCollector
+    {
+        string IAssetCollector.GetAssetBundleLabel(string assetPath, Collector collector = null)
+        {
+            var assetFolderPath = Path.GetDirectoryName(assetPath);
+            assetFolderPath = PathUtilities.GetRegularPath(assetFolderPath);
+            // 在同层目录的文件(假设目标目录是Assets/Conif)
+            if (assetFolderPath.Equals(collector.CollectFolderPath))
+            {
+                // 例如："Assets/Config/test.txt" --> "Assets/Config/test"
+                return assetPath.Remove(assetPath.LastIndexOf("."));
+            }
+            else
+            {
+                // 例如："Assets/Config/Test/test1.txt" --> "Assets/Config/Test"
+                // 例如："Assets/Config/Test/Test2/test2.txt" --> "Assets/Config/Test"
+                var regulationContent = string.Format("({0}/)([^/]*)", collector.CollectFolderPath);
+                var regulation = new Regex(regulationContent);
+                var match = regulation.Match(assetPath);
+                var matchPath = match.Value;
+                Debug.Log($"AssetPath:{assetPath}的MatchPath:{matchPath}");
+                return matchPath;
+            }
         }
     }
 }

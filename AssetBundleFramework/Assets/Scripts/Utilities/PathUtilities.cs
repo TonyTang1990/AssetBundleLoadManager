@@ -16,6 +16,14 @@ using UnityEngine;
 public static class PathUtilities
 {
     /// <summary>
+    /// 获取规范的路径
+    /// </summary>
+    public static string GetRegularPath(string path)
+    {
+        return path.Replace('\\', '/').Replace("\\", "/"); //替换为Linux路径格式
+    }
+
+    /// <summary>
     /// 获取指定路径的目录名
     /// </summary>
     /// <param name="path">路径</param>

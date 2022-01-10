@@ -42,7 +42,7 @@ public class Collector
 
     }
 
-    public Collector(string collectrelativefolderpath, EAssetBundleCollectRule collectrule = EAssetBundleCollectRule.Collect, EAssetBundleBuildRule buildrule = EAssetBundleBuildRule.LoadByFilePath)
+    public Collector(string collectrelativefolderpath, EAssetBundleCollectRule collectrule = EAssetBundleCollectRule.Collect, EAssetBundleBuildRule buildrule = EAssetBundleBuildRule.ByFilePath)
     {
         CollectFolderPath = collectrelativefolderpath;
         CollectRule = collectrule;
@@ -56,17 +56,21 @@ public class Collector
     /// <returns></returns>
     public string GetCollectorClassName()
     {
-        if (BuildRule == EAssetBundleBuildRule.LoadByFilePath)
+        if (BuildRule == EAssetBundleBuildRule.ByFilePath)
         {
             return typeof(LabelByFilePath).Name;
         }
-        else if (BuildRule == EAssetBundleBuildRule.LoadByFolderPath)
+        else if (BuildRule == EAssetBundleBuildRule.ByFolderPath)
         {
             return typeof(LabelByFolderPath).Name;
         }
-        else if (BuildRule == EAssetBundleBuildRule.LoadByConstName)
+        else if (BuildRule == EAssetBundleBuildRule.ByConstName)
         {
             return typeof(LableByConstName).Name;
+        }
+        else if(BuildRule == EAssetBundleBuildRule.ByFileOrSubFolder)
+        {
+            return typeof(LabelByFileAndSubFolderPath).Name;
         }
         else
         {

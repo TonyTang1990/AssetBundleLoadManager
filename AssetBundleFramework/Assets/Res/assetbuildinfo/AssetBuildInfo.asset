@@ -847,38 +847,38 @@ MonoBehaviour:
   - AssetPath: assets/res/actors/sphere/pre_sphere.prefab
     ABPath: assets/res/actors/sphere
     ABVariantPath: bundle
+  - AssetPath: assets/res/actors/testbyfileandsubfolder.prefab
+    ABPath: assets/res/actors/testbyfileandsubfolder
+    ABVariantPath: bundle
   - AssetPath: assets/res/actors/zombunny/materials/eyesmaterial.mat
-    ABPath: assets/res/actors/zombunny/materials
+    ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
   - AssetPath: assets/res/actors/zombunny/textures/zombunnydiffuse.tif
-    ABPath: assets/res/actors/zombunny/textures
+    ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
   - AssetPath: assets/res/shaders/rim lit bumped specular.shader
     ABPath: assets/res/shaders/rim lit bumped specular
     ABVariantPath: bundle
   - AssetPath: assets/res/actors/zombunny/materials/zombunnymaterial.mat
-    ABPath: assets/res/actors/zombunny/materials
+    ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
   - AssetPath: assets/res/actors/zombunny/textures/zombunnynormals.tif
-    ABPath: assets/res/actors/zombunny/textures
+    ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
   - AssetPath: assets/res/actors/zombunny/zombunnyanimations/death.anim
-    ABPath: assets/res/actors/zombunny/zombunnyanimations
+    ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
   - AssetPath: assets/res/actors/zombunny/zombunnyanimations/idle.anim
-    ABPath: assets/res/actors/zombunny/zombunnyanimations
+    ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
   - AssetPath: assets/res/actors/zombunny/pre_zombunny.prefab
     ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
   - AssetPath: assets/res/actors/zombunny/zombunnyanimations/move.anim
-    ABPath: assets/res/actors/zombunny/zombunnyanimations
+    ABPath: assets/res/actors/zombunny
     ABVariantPath: bundle
   - AssetPath: assets/res/actors/zombunny/zombunny.fbx
     ABPath: assets/res/actors/zombunny
-    ABVariantPath: bundle
-  - AssetPath: assets/res/scenes/assetbundleframeworkscene.unity
-    ABPath: assets/res/scenes/assetbundleframeworkscene
     ABVariantPath: bundle
   - AssetPath: assets/res/textures/chaichainingwang.jpg
     ABPath: assets/res/textures/chaichainingwang
@@ -965,25 +965,15 @@ MonoBehaviour:
   - ABPath: assets/res/actors/sphere
     DepABPathList:
     - assets/res/sharematerials/sharematerial
-  - ABPath: assets/res/actors/zombunny/materials
-    DepABPathList:
-    - shaderlist
-    - assets/res/actors/zombunny/textures
-    - assets/res/shaders/rim lit bumped specular
-  - ABPath: assets/res/actors/zombunny/textures
-    DepABPathList: []
-  - ABPath: assets/res/shaders/rim lit bumped specular
-    DepABPathList:
-    - shaderlist
-  - ABPath: assets/res/actors/zombunny/zombunnyanimations
+  - ABPath: assets/res/actors/testbyfileandsubfolder
     DepABPathList: []
   - ABPath: assets/res/actors/zombunny
     DepABPathList:
-    - assets/res/actors/zombunny/zombunnyanimations
-    - assets/res/actors/zombunny/materials
-  - ABPath: assets/res/scenes/assetbundleframeworkscene
+    - shaderlist
+    - assets/res/shaders/rim lit bumped specular
+  - ABPath: assets/res/shaders/rim lit bumped specular
     DepABPathList:
-    - assets/res/textures/chaichainingwang
+    - shaderlist
   - ABPath: assets/res/textures/chaichainingwang
     DepABPathList: []
   - ABPath: assets/res/scenes/newassetbundleframeworkscene

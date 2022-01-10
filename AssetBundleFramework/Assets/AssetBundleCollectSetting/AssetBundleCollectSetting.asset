@@ -55,15 +55,15 @@ MonoBehaviour:
     ConstName: shaderlist
   - CollectFolderPath: Assets/Res/actors
     CollectRule: 0
-    BuildRule: 2
+    BuildRule: 4
     ConstName: 
   - CollectFolderPath: Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas
     CollectRule: 1
-    BuildRule: 4
+    BuildRule: 5
     ConstName: 
   - CollectFolderPath: Assets/Res/assetbuildinfo
     CollectRule: 1
-    BuildRule: 4
+    BuildRule: 5
     ConstName: 
   - CollectFolderPath: Assets/Res/scenes
     CollectRule: 0

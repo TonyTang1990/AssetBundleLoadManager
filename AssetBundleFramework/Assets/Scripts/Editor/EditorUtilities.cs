@@ -34,20 +34,12 @@ public static class EditorUtilities
     }
     #region 路径相关
     /// <summary>
-    /// 获取规范的路径
-    /// </summary>
-    public static string GetRegularPath(string path)
-    {
-        return path.Replace('\\', '/').Replace("\\", "/"); //替换为Linux路径格式
-    }
-
-    /// <summary>
     /// 获取项目工程路径
     /// </summary>
     public static string GetProjectPath()
     {
         string projectPath = Path.GetDirectoryName(Application.dataPath);
-        return GetRegularPath(projectPath);
+        return PathUtilities.GetRegularPath(projectPath);
     }
 
     /// <summary>

@@ -331,13 +331,13 @@ public class ResourceBuildWindow : BaseEditorWindow
         GUILayout.BeginHorizontal("Box");
         EditorGUILayout.LabelField(collector.CollectFolderPath, GUILayout.ExpandWidth(true), GUILayout.Height(20.0f));
         collector.CollectRule = (EAssetBundleCollectRule)EditorGUILayout.EnumPopup(collector.CollectRule, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
-        collector.BuildRule = (EAssetBundleBuildRule)EditorGUILayout.EnumPopup(collector.BuildRule, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
+        collector.BuildRule = (EAssetBundleBuildRule)EditorGUILayout.EnumPopup(collector.BuildRule, GUILayout.Width(150f), GUILayout.Height(20.0f));
         // 强制Igore规则的目录打包规则为Ignore
         if (collector.CollectRule == EAssetBundleCollectRule.Ignore)
         {
             collector.BuildRule = EAssetBundleBuildRule.Ignore;
         }
-        if(collector.BuildRule == EAssetBundleBuildRule.LoadByConstName)
+        if(collector.BuildRule == EAssetBundleBuildRule.ByConstName)
         {
             collector.ConstName = EditorGUILayout.TextField(collector.ConstName, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
         }

@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2022/1/10 16:24:17
+构建时间：2022/1/10 19:16:12
 
 --配置信息--
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : LoadByFolderPath
@@ -12,7 +12,7 @@ Directory : Assets/Res/sharematerials || CollectRule : Collect || BuildRule : Lo
 Directory : Assets/Res/buildinresources/buildinshaders/DefaultResources || CollectRule : Collect || BuildRule : LoadByConstName || ConstName : shaderlist
 Directory : Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra || CollectRule : Collect || BuildRule : LoadByConstName || ConstName : shaderlist
 Directory : Assets/Res/shadervariants || CollectRule : Collect || BuildRule : LoadByConstName || ConstName : shaderlist
-Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : LoadByFolderPath
+Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : LoadByFileAndSubFolderPath
 Directory : Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas || CollectRule : Ignore || BuildRule : Ignore
 Directory : Assets/Res/assetbuildinfo || CollectRule : Ignore || BuildRule : Ignore
 Directory : Assets/Res/scenes || CollectRule : Collect || BuildRule : LoadByFilePath
@@ -28,10 +28,8 @@ IgnoreTypeTreeChanges：False
 assetbuildinfo.bundle
 assets/res/actors/cube.bundle
 assets/res/actors/sphere.bundle
+assets/res/actors/testbyfileandsubfolder.bundle
 assets/res/actors/zombunny.bundle
-assets/res/actors/zombunny/materials.bundle
-assets/res/actors/zombunny/textures.bundle
-assets/res/actors/zombunny/zombunnyanimations.bundle
 assets/res/atlas/shareatlas/spriteatlas/playerpreview.bundle
 assets/res/atlas/shareatlas/spriteatlas/playerpreview2.bundle
 assets/res/atlas/shareatlas/tutorialatlas.bundle
@@ -45,7 +43,6 @@ assets/res/buildinresources/buildintextures.bundle
 assets/res/prefabs/imagebuildin.bundle
 assets/res/prefabs/rawimagebuildin.bundle
 assets/res/prefabs/sfxtemplate.bundle
-assets/res/scenes/assetbundleframeworkscene.bundle
 assets/res/scenes/newassetbundleframeworkscene.bundle
 assets/res/scenes/sceneprefabs/testscene2prefab.bundle
 assets/res/scenes/sceneprefabs/testscene2prefab2.bundle

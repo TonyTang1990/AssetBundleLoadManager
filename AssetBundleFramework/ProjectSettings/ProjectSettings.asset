@@ -698,7 +698,7 @@ PlayerSettings:
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
     1: NEW_RESOURCE
-    7: NEW_RESOURCE
+    7: 
   platformArchitecture: {}
   scriptingBackend:
     Android: 1

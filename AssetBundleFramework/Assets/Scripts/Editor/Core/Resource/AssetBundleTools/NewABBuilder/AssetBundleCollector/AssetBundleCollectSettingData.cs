@@ -93,6 +93,7 @@ namespace MotionFramework.Editor
 			types.Add(typeof(LabelByFilePath));
             types.Add(typeof(LabelByFolderPath));
             types.Add(typeof(LableByConstName));
+            types.Add(typeof(LabelByFileAndSubFolderPath));
             for (int i = 0; i < types.Count; i++)
             {
                 Type type = types[i];

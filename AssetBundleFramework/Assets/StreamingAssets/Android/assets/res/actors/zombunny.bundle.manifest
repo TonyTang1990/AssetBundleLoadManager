@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2228540782
+CRC: 1100439607
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cf522196dd1833a58cf9a56ee1cf7e82
+    Hash: 205d235fe471e84712877c387286a348
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f3eaf3b7e1f0d48363ae1756918d22a8
+    Hash: 51dffd5638eef9f0825944c64a30d700
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -15,7 +15,11 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
 - Class: 43
+  Script: {instanceID: 0}
+- Class: 48
   Script: {instanceID: 0}
 - Class: 74
   Script: {instanceID: 0}
@@ -25,8 +29,16 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/Res/actors/zombunny/ZombunnyAnimations/Death.anim
+- Assets/Res/actors/zombunny/ZombunnyAnimations/Idle.anim
+- Assets/Res/actors/zombunny/Textures/ZomBunnyDiffuse.tif
 - Assets/Res/actors/zombunny/pre_Zombunny.prefab
+- Assets/Res/actors/zombunny/Materials/ZombunnyMaterial.mat
+- Assets/Res/actors/zombunny/ZombunnyAnimations/Move.anim
 - Assets/Res/actors/zombunny/Zombunny.fbx
+- Assets/Res/actors/zombunny/Textures/ZomBunnyNormals.tif
+- Assets/Res/actors/zombunny/Materials/EyesMaterial.mat
 Dependencies:
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/materials.bundle
-- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/actors/zombunny/zombunnyanimations.bundle
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/assets/res/shaders/rim
+  lit bumped specular.bundle
+- G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android/shaderlist.bundle

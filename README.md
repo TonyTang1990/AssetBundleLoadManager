@@ -1,7 +1,5 @@
 # 功能模块
 
-**2021/12/7，新版资源加载管理打包热更新框架初版正式完成。**
-
 ## 资源加载管理和打包模块
 
 ### 新版AssetBundle加载管理
@@ -342,7 +340,9 @@ Tools->HotUpdate->热更新操作工具
 ### 热更包外目录结构
 
 PersistentAsset -> HotUpdate -> Platform(资源热更新目录)
+
 PersistentAsset -> HotUpdate -> AssetBundleMd5.txt(记录热更新的AssetBundle路径和MD5信息--兼顾进游戏前资源热更和动态资源热更)(格式:热更AB路径:热更AB的MD5/n热更AB路径:热更AB的MD5******)
+
 PersistentAsset -> Config -> VersionConfig.json(包外版本信息--用于进游戏前强更和热更判定)
 
 PersistentAsset -> HotUpdate -> 版本强更包

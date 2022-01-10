@@ -16,8 +16,9 @@ using System;
 [Serializable]
 public enum EAssetBundleBuildRule
 {
-    LoadByFilePath = 1,                 // 按文件加载策略
-    LoadByFolderPath,                   // 按目录加载策略
-    LoadByConstName,                    // 按固定名字加载策略(AB不含路径，但Asset含路径)
-    Ignore,                             // 不参与打包策略
+    ByFilePath = 1,                 // 按文件加载策略
+    ByFolderPath,                   // 按目录加载策略
+    ByConstName,                    // 按固定名字加载策略(AB不含路径，但Asset含路径)
+    ByFileOrSubFolder,              // 同层按文件，其他按下一层目录路径
+    Ignore,                         // 不参与打包策略
 }
