@@ -178,7 +178,11 @@ public class BuildWindow : BaseEditorWindow
         EditorGUILayout.LabelField("打包平台:", GUILayout.Width(60.0f));
         BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(BuildTarget, GUILayout.Width(100.0f));
         EditorGUILayout.LabelField($"开发版本:", GUILayout.Width(60f), GUILayout.Height(20f));
-        IsDevelopment = EditorGUILayout.Toggle(IsDevelopment, GUILayout.Width(100.0f));
+        IsDevelopment = EditorGUILayout.Toggle(IsDevelopment, GUILayout.Width(20f));
+        if (GUILayout.Button("修改包内版本信息", GUILayout.Width(120f), GUILayout.Height(20f)))
+        {
+            DoModifyInnerVersionConfig();
+        }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("打包输出目录:", GUILayout.Width(80.0f));
@@ -209,6 +213,20 @@ public class BuildWindow : BaseEditorWindow
         EditorGUILayout.LabelField("包内资源版本号:", GUILayout.Width(100f));
         GUILayout.Label($"{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}", "box", GUILayout.Width(100f));
         GUILayout.EndHorizontal();
+    }
+
+    /// <summary>
+    /// 执行修改包内版本信息
+    /// </summary>
+    private void DoModifyInnerVersionConfig()
+    {
+        double buildVersion = 0;
+        if (!double.TryParse(BuildVersion, out buildVersion))
+        {
+            Debug.LogError($"解析版本号:{BuildVersion}失败,格式无效!");
+            return;
+        }
+        BuildTool.ModifyInnerVersionConfig(buildVersion, BuildResourceVersion);
     }
 
     /// <summary>

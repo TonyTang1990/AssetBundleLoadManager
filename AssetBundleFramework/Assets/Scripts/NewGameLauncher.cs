@@ -8,6 +8,7 @@ using Data;
 using System.Collections;
 using TUI;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace TResource
@@ -920,6 +921,31 @@ namespace TResource
                 yield return new WaitForSeconds(1.0f);
                 Debug.Log(string.Format("当前版本热更进度 : {0}", HotUpdateModuleManager.Singleton.HotResourceUpdateProgress));
             }
+        }
+
+        /// <summary>
+        /// 测试URL拉去
+        /// </summary>
+        public void onRequestURLResource()
+        {
+            DIYLog.Log("onRequestURLResource()");
+            var url = InputParam1.text;
+            DIYLog.Log("Param1 = " + url);
+            TWebRequest hotResourceUpdateRequest = new TWebRequest();
+            hotResourceUpdateRequest.enqueue(url, null, resourceHotUpdateCompleteCB);
+            hotResourceUpdateRequest.startRequest();
+        }
+
+        /// <summary>
+        /// 单个资源热更下载完成回调
+        /// </summary>
+        /// <param name="url">下载地址</param>
+        /// <param name="fileMd5">文件MD5</param>
+        /// <param name="downloadhandler">下载结果信息</param>
+        /// <param name="requeststatus">请求结果</param>
+        private void resourceHotUpdateCompleteCB(string url, string fileMd5, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
+        {
+            DIYLog.Log($"资源URL:{url}下载结果:{requeststatus}");
         }
 
         /// <summary>

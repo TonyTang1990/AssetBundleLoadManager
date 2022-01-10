@@ -29,7 +29,7 @@ public class HotUpdateAssetBundleInfo
     public string AssetBundleMD5
     {
         get;
-        private set;
+        set;
     }
 
     private HotUpdateAssetBundleInfo()

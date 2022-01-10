@@ -72,6 +72,14 @@ public class HotUpdateOperationWindow : BaseEditorWindow
         hotupdateoperationwindow.Show();
     }
 
+
+    //[MenuItem("Tools/HotUpdate/关闭热更新操作工具", false, 103)]
+    //public static void closeHotUpdateOpterationWindow()
+    //{
+    //    var hotupdateoperationwindow = EditorWindow.GetWindow<HotUpdateOperationWindow>(false, "热更新工具");
+    //    hotupdateoperationwindow.Close();
+    //}
+
     /// <summary>
     /// 初始化窗口数据
     /// </summary>
@@ -83,6 +91,9 @@ public class HotUpdateOperationWindow : BaseEditorWindow
         Debug.Log("热更新输出目录:" + HotUpdateOutputFolderPath);
         VersionConfigModuleManager.Singleton.initVerisonConfigData();
         BuildTarget = EditorUserBuildSettings.activeBuildTarget;
+        // 默认热更新版本信息就是包内版本信息
+        mHotUpdateVersion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode.ToString();
+        mHotUpdateResourceVersion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
     }
 
     /// <summary>
@@ -171,9 +182,12 @@ public class HotUpdateOperationWindow : BaseEditorWindow
     /// </summary>
     private void displayHotUpdatePreparationResult()
     {
-        GUILayout.BeginVertical();
-        GUILayout.Label(mHotUpdatePreparationResult);
-        GUILayout.EndVertical();
+        if(!string.IsNullOrEmpty(mHotUpdatePreparationResult))
+        {
+            GUILayout.BeginVertical();
+            GUILayout.Label(mHotUpdatePreparationResult);
+            GUILayout.EndVertical();
+        }
     }
 
     /// <summary>

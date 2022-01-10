@@ -32,6 +32,15 @@ public static class HotUpdateTool
     };
 
     /// <summary>
+    /// 热更新文件后缀名黑名单列表
+    /// </summary>
+    private static List<string> HotUpdateFilePostFixBlackList = new List<string>
+    {
+        ".meta",
+        ".manifest",
+    };
+
+    /// <summary>
     /// 执行热更新准备任务
     /// </summary>
     /// <param name="assetBundleFolderPath">包内资源目录</param>
@@ -79,9 +88,9 @@ public static class HotUpdateTool
             return false;
         }
 
-        if (VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode >= hotupdateResourceVersion)
+        if (VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode > hotupdateResourceVersion)
         {
-            Debug.LogError($"包内资源版本号:{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}大于等于热更新资源版本号:{hotupdateResourceVersion}，请检查填写的资源版本号是否正确!");
+            Debug.LogError($"包内资源版本号:{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}大于热更新资源版本号:{hotupdateResourceVersion}，请检查填写的资源版本号是否正确!");
             return false;
         }
 
@@ -106,7 +115,7 @@ public static class HotUpdateTool
         versionupdatefilefolderpath = Path.Combine(versionupdatefilefolderpath, hotupdateResourceVersion.ToString());
         // 确保热更新目录最新且存在
         FolderUtilities.RecreateSpecificFolder(versionupdatefilefolderpath);
-        FileUtilities.CopyFolderToFolder(platformAssetBundlePath, versionupdatefilefolderpath);
+        FileUtilities.CopyFolderToFolder(platformAssetBundlePath, versionupdatefilefolderpath, HotUpdateFilePostFixBlackList);
 
         // 复制最新的包内AssetBundleMD5.txt文件到资源目录下
         var innerAssetBundleMd5FilePath = Path.Combine(Application.dataPath, "Resources");

@@ -199,6 +199,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Utils\GenNormalmap.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\FirstPass.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorBarkOptimized.shader" />
+    <None Include="Assets\StreamingAssets\Android\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\license.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-MotionVectors.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorNormalRendertex.shader" />

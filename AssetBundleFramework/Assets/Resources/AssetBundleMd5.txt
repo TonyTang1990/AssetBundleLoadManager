@@ -1,4 +1,4 @@
-﻿assetbuildinfo.bundle|8aa6a8b55b98ca9d54957dd0ad561ee6
+assetbuildinfo.bundle|058b6bfb684b360305fa09c96398c592
 shaderlist.bundle|2ac2d75f7d91fda7880f447e21b2e289
 assets/res/actors/cube.bundle|1bec089046ca3a50df4bc4463abd8ebe
 assets/res/actors/sphere.bundle|af2d086313bba236dc81f68202ebe29d
@@ -19,10 +19,8 @@ assets/res/buildinresources/buildintextures.bundle|5a2d0d4cc50506654a5f719d48bd2
 assets/res/prefabs/imagebuildin.bundle|2b23775e6963f1d635d750f791821492
 assets/res/prefabs/rawimagebuildin.bundle|efaa9c1d67ed37bcd8afaf5046f26c4e
 assets/res/prefabs/sfxtemplate.bundle|9f6956d0900db726e0a0902ef925d4b5
-assets/res/prefabs/testmd5comparison.bundle|57d03905af70e65b799db7ccb3e4958d
-assets/res/prefabs/testmd5comparisonresourceupdate.bundle|76401e7d6355574c37732e7a915506d7
 assets/res/scenes/assetbundleframeworkscene.bundle|7322b3223fb46263888e7cca49ebbd62
-assets/res/scenes/newassetbundleframeworkscene.bundle|36753fab2299e59ee0c4626d30f27588
+assets/res/scenes/newassetbundleframeworkscene.bundle|4623e3bfb420559e44b8055d58dd3df2
 assets/res/scenes/shadervariantscollectscene.bundle|9c3a2636296d516f1c97efc1bf7ec1f5
 assets/res/scenes/testscene2.bundle|37540a47eb155aa1674b7c62f8c06bfa
 assets/res/scenes/testscene3.bundle|f0e4de5374467c478f443284ff2b772f

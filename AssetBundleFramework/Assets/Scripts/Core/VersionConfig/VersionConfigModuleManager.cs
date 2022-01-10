@@ -187,6 +187,7 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
         }
 
         GameVersionConfig.VersionCode = versioncode;
+        InnerGameVersionConfig.VersionCode = versioncode;
         Debug.Log("newverisoncode = " + versioncode);
 
         var versionconfigdata = JsonUtility.ToJson(GameVersionConfig);
@@ -214,6 +215,7 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
         }
 
         GameVersionConfig.ResourceVersionCode = resourceversioncode;
+        InnerGameVersionConfig.ResourceVersionCode = resourceversioncode;
         Debug.Log("newresourceversioncode = " + resourceversioncode);
 
         var versionconfigdata = JsonUtility.ToJson(GameVersionConfig);

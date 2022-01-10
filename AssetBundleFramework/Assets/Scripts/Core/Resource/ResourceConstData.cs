@@ -37,12 +37,12 @@ public static class ResourceConstData
     /// <summary>
     /// AssetBundle文件默认的后缀名
     /// </summary>
-    public const string AssetBundleDefaultVariant = "";
+    public const string AssetBundleDefaultVariant = "bundle";
 
     /// <summary>
     /// AssetBundle文件默认的后缀名
     /// </summary>
-    public const string AssetBundleDefaultVariantWithPoint = "";
+    public const string AssetBundleDefaultVariantWithPoint = ".bundle";
 
     /// <summary>
     /// AssetBundle依赖信息文件默认的后缀名
@@ -53,11 +53,6 @@ public static class ResourceConstData
     /// 包内AB的MD5信息记录文件名
     /// </summary>
     public const string AssetBundleMd5InfoFileName = "AssetBundleMd5.txt";
-
-    /// <summary>
-    /// 包外热更新AB的MD5信息记录文件名
-    /// </summary>
-    public const string HotUpdateAssetBundleMd5InfoFileName = "HotUpdateAssetBundleMd5.txt";
 
     /// <summary>
     /// AssetBundle信息分隔符

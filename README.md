@@ -1,8 +1,6 @@
 # 功能模块
 
-**2021/12/7，新版资源加载管理打包框架初版正式完成。**
-
-
+**2021/12/7，新版资源加载管理打包热更新框架初版正式完成。**
 
 ## 资源加载管理和打包模块
 
@@ -38,9 +36,13 @@ Note:
 
 1. 一直以来设计上都是加载完成后才添加索引计数和对象绑定，这样对于异步加载以及异步打断的资源管理来说是有漏洞的，**新版资源加载管理准备设计成提前添加索引计数，等加载完成后再考虑是否返还计数的方式确保异步加载以及异步加载打断的正确资源管理**
 
-设计主要参考:
+加载流程设计主要参考:
 
 [XAsset](https://github.com/xasset/xasset)
+
+对象绑定加索引计数设计主要参考:
+
+[tangzx/ABSystem](https://github.com/tangzx/ABSystem)
 
 #### 类说明
 
@@ -129,11 +131,11 @@ Tools->Debug->资源调试工具
        }
    );
    ```
-
-​	![AssetBundleLoadManagerUIAfterLoadWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png)
-可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)
-
-5. 点击测试异步转同步加载窗口
+   
+   ![AssetBundleLoadManagerUIAfterLoadWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png)
+   可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)
+   
+7. 点击测试异步转同步加载窗口
 
 ```CS
 /// <summary>
@@ -161,7 +163,7 @@ public void onAsynToSyncLoadWindow()
 }
 ```
 
-6. 点击销毁窗口实例对象后
+8. 点击销毁窗口实例对象后
 
 ```CS
 /// <summary>
@@ -172,12 +174,12 @@ public void onDestroyWindowInstance()
     DIYLog.Log("onDestroyWindowInstance()");
     GameObject.Destroy(mMainWindow);
 }
+窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow被销毁了)
 ```
 
-​	![AssetBundleLoadManagerUIAfterDestroyWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png)
-窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow被销毁了)
+​		![AssetBundleLoadManagerUIAfterDestroyWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png)
 
-7. 等待回收检测回收后
+9. 等待回收检测回收后
    ![AssetBundleLoadManagerUIAfterUnloadAB](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png)
    上述资源在窗口销毁后，满足了可回收的三大条件(1. 索引计数为0 2. 绑定对象为空 3. NormalLoad加载方式)，最终被成功回收。
 
@@ -199,15 +201,9 @@ public void onLoadPermanentShaderList()
 }
 ```
 
-
-
-
-
 ### 新版AssetBundle打包
 
-**2021/4/20新版AB打包工具重新开始编写，对后续加载接口也有影响，所以下面部分Demo展示以及热更新展示可能已经不是最新的了，新版AB打包还未完成，需要等待更新。**
-
-**新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展，资源加载和打包部分修改完成(2021/5/5)，热更新相关部分还待修改。**
+**2021/4/20新版AB打包工具重新开始编写，新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展，资源加载和打包部分修改完成(2021/5/5)，热更新相关部分还待修改。**
 
 **主要变动如下:**
 
@@ -319,15 +315,29 @@ Tools->HotUpdate->热更新操作工具
 
 ![HotUpdateToolsUI](./img/Unity/HotUpdate/HotUpdateToolsUI.png)
 
-主要分为以下4个步骤：
+2. 主要分为以下2个阶段：
 
-1. 每次资源打包会在包内Resource目录生成一个AssetBundleMd5.txt文件
-
-   ![AssetBundleMD5File](./img/Unity/HotUpdate/AssetBundleMD5File.png)
-
-2. 执行热更新准备操作，生成热更新所需服务器最新版本信息文件(ServerVersionConfig.json)并将包内对应平台资源拷贝到热更新准备目录
-
-   ![HotUpdatePreparationFolder](./img/Unity/HotUpdate/HotUpdatePreparationFolder.png)
+   - 热更新准备阶段:
+   
+     1. 每次资源打包会在包内Resource目录生成一个AssetBundleMd5.txt文件用于记录和对比哪些资源需要热更
+   
+     ​	![AssetBundleMD5File](./img/Unity/HotUpdate/AssetBundleMD5File.png)
+   
+     2. 执行热更新准备操作，生成热更新所需服务器最新版本信息文件(ServerVersionConfig.json)并将包内对应平台资源拷贝到热更新准备目录
+   
+     ![HotUpdatePreparationFolder](./img/Unity/HotUpdate/HotUpdatePreparationFolder.png)
+   
+   - 热更新判定阶段
+   
+     1. 初始化包内(AssetBundleMd5.txt)和包外(AssetBundleMd5.txt)热更新的AssetBundle MD5信息(先读包内后读包外以包外为准)
+   
+     2. 游戏运行拉去服务器版本和资源版本信息进行比较是否需要版本强更或资源热更新
+     3. 需要资源热更新则拉去对应最新资源版本的资源MD5信息文件(AssetBundleMD5.txt)进行和本地资源MD5信息进行比较判定哪些资源需要热更新
+     4. 拉去所有需要热更新的资源，完成后进入游戏
+   
+   Note:
+   
+   1. 每次打包版本时会拷贝一份AssetBundleMD5.txt到打包输出目录(保存一份方便查看每个版本的资源MD5信息)
 
 ### 热更包外目录结构
 

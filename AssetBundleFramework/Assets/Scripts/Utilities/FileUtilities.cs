@@ -93,10 +93,11 @@ public static class FileUtilities
     /// <summary>
     /// 复制指定目录到指定目录
     /// </summary>
-    /// <param name="sourceFolderPath"></param>
-    /// <param name="targetFolderPath"></param>
+    /// <param name="sourceFolderPath">源目录</param>
+    /// <param name="targetFolderPath">目标目录</param>
+    /// <param name="filePostFixBlackList">文件后缀黑名单(不参与拷贝的后缀文件名列表)</param>
     /// <returns></returns>
-    public static bool CopyFolderToFolder(string sourceFolderPath, string targetFolderPath)
+    public static bool CopyFolderToFolder(string sourceFolderPath, string targetFolderPath, List<string> filePostFixBlackList = null)
     {
         if (!Directory.Exists(sourceFolderPath))
         {
@@ -110,24 +111,28 @@ public static class FileUtilities
         }
         var sourceFolderInfo = new DirectoryInfo(sourceFolderPath);
         var targetFolderInfo = new DirectoryInfo(targetFolderPath);
-        CopyFilesRecursively(sourceFolderInfo, targetFolderInfo);
+        CopyFilesRecursively(sourceFolderInfo, targetFolderInfo, filePostFixBlackList);
         return true;
     }
 
     /// <summary>
     /// 复制指定目录信息到指定目录信息
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
-    public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
+    /// <param name="source">源目录信息</param>
+    /// <param name="target">目标目录信息</param>
+    /// <param name="filePostFixBlackList">文件后缀黑名单(不参与拷贝的后缀文件名列表)</param>
+    public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target, List<string> filePostFixBlackList = null)
     {
         foreach (DirectoryInfo dir in source.GetDirectories())
         {
-            CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
+            CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name), filePostFixBlackList);
         }
         foreach (FileInfo file in source.GetFiles())
         {
-            file.CopyTo(Path.Combine(target.FullName, file.Name));
+            if(filePostFixBlackList == null || (filePostFixBlackList != null && !filePostFixBlackList.Contains(file.Extension)))
+            {
+                file.CopyTo(Path.Combine(target.FullName, file.Name));
+            }
         }
     }
 }

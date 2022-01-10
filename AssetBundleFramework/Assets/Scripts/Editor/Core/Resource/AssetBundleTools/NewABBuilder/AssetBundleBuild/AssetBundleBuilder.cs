@@ -231,7 +231,7 @@ namespace MotionFramework.Editor
 				// 不剔除后缀，确保AssetDatabase模式可以全路径(带后缀)加载
 				abbi.AssetPath = bi.assetNames[0].ToLower();//.Substring(0, bi.assetNames[0].Length - Path.GetExtension(bi.assetNames[0]).Length).ToLower();
                 abbi.ABPath = bi.assetBundleName.ToLower();
-                abbi.ABVariantPath = bi.assetBundleVariant.ToLower();
+                abbi.ABVariantPath = bi.assetBundleVariant != null ? bi.assetBundleVariant.ToLower() : null;
                 assetbundlebuildasset.AssetBuildInfoList.Add(abbi);
             }
 
@@ -469,7 +469,10 @@ namespace MotionFramework.Editor
 			FileUtilities.DeleteFile(assetBundleMd5FilePath);
             VersionConfigModuleManager.Singleton.initVerisonConfigData();
             var resourceversion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
-            using (var md5SW = new StreamWriter(assetBundleMd5FilePath, false, Encoding.UTF8))
+			// Note: 
+			// 这里如果直接指定Encoding.UTF8会出现BOM文件(默认选择了带BOM的方式)
+			// 最终导致热更新文件读取比较后的路径信息带了BOM导致https识别时报错导致下载不到正确的资源
+            using (var md5SW = new StreamWriter(assetBundleMd5FilePath, false, new UTF8Encoding(false)))
             {
                 var abFilesFullPath = Directory.GetFiles(OutputDirectory, "*.*", SearchOption.AllDirectories).Where(f =>
 					!f.EndsWith(".meta") && !f.EndsWith(".manifest") && !f.EndsWith("readme.txt")

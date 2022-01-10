@@ -19,6 +19,35 @@ using UnityEngine;
 public static class BuildTool 
 {
     /// <summary>
+    /// 修改包内版本信息
+    /// </summary>
+    /// <param name="versionCode">新的版本号</param>
+    /// <param name="resourceVersionCode">新的资源版本号</param>
+    public static bool ModifyInnerVersionConfig(double versionCode, int resourceVersionCode)
+    {
+        // 版本号格式只允许*.*
+        var versionString = versionCode.ToString("N1", CultureInfo.CreateSpecificCulture("en-US"));
+        if (!double.TryParse(versionString, out versionCode))
+        {
+            Debug.LogError($"不支持的版本号:{versionCode},请传入输入有效版本号值!");
+            return false;
+        }
+        if(resourceVersionCode <= 0)
+        {
+            Debug.LogError($"不支持的资源版本号:{resourceVersionCode},请传入输入有效资源版本号值!");
+            return false;
+        }
+        VersionConfigModuleManager.Singleton.initVerisonConfigData();
+        var innerversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode;
+        var innerresourceversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
+        Debug.Log($"包内版本号从:{innerversioncode}修改成:{versionCode}");
+        Debug.Log($"包内资源版本号从:{innerresourceversioncode}修改成:{resourceVersionCode}");
+        VersionConfigModuleManager.Singleton.saveNewVersionCodeInnerConfig(versionCode);
+        VersionConfigModuleManager.Singleton.saveNewResoueceCodeInnerConfig(resourceVersionCode);
+        return true;
+    }
+
+    /// <summary>
     /// 执行打包
     /// </summary>
     /// <param name="buildOutputPath">打包输出目录</param>
