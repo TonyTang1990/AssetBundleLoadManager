@@ -201,7 +201,7 @@ public void onLoadPermanentShaderList()
 
 ### 新版AssetBundle打包
 
-**2021/4/20新版AB打包工具重新开始编写，新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展，资源加载和打包部分修改完成(2021/5/5)，热更新相关部分还待修改。**
+**新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展。**
 
 **主要变动如下:**
 
@@ -225,6 +225,18 @@ public void onLoadPermanentShaderList()
 4. 然后根据所有有效Asset的所有AB名字打包结论来分析得出自定义的打包结论(即哪些Asset打包到哪个AB名里)
 5. 接着根据Asset的AB打包结论来生成最新的AssetBuildInfo(Asset打包信息，可以理解成我们自己分析得出的Manifest文件，用于运行时加载作为资源加载的基础信息数来源)(手动将AssetBuildInfo添加到打包信息里打包成AB，方便热更新走统一流程)
 6. 最后采用BuildPipeline.BuildAssetBundles(输出目录, 打包信息列表, ......)的接口来手动指定打包结论的方式触发AB打包。
+
+#### 打包策略支持
+
+1. 按目录打包(打包策略递归子目录判定)
+
+2. 按文件打包(打包策略递归子目录判定)
+
+3. 按固定名字打包(扩展支持固定名字打包--比如所有Shader打包到shaderlist)(打包策略递归子目录判定)
+
+4. 按文件或子目录打包(打包策略不递归子目录判定，只影响设定目录和下一层目录)
+
+5. 不参与打包(打包策略递归子目录判定)
 
 #### 相关操作UI
 
