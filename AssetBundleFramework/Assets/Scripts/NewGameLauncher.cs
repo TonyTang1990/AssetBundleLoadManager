@@ -224,7 +224,6 @@ namespace TResource
         public void onLoadWindowPrefab()
         {
             DIYLog.Log("onLoadWindowPrefab()");
-#if NEW_RESOURCE
             ResourceManager.Singleton.getPrefabInstance(
                 "Assets/Res/windows/MainWindow.prefab",
                 (prefabInstance, requestUid) =>
@@ -233,7 +232,6 @@ namespace TResource
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 }
             );
-#endif
         }
 
         /// <summary>
@@ -242,9 +240,7 @@ namespace TResource
         public void onDestroyWindowInstance()
         {
             DIYLog.Log("onDestroyWindowInstance()");
-#if NEW_RESOURCE
             GameObject.Destroy(mMainWindow);
-#endif
         }
 
         /// <summary>
@@ -257,10 +253,8 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-#if NEW_RESOURCE
             var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
             AtlasManager.Singleton.setImageSingleSprite(image, param1);
-#endif
         }
 
         /// <summary>
@@ -273,9 +267,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-#if NEW_RESOURCE
             AtlasManager.Singleton.setTImageSingleSprite(TImgBG, param1);
-#endif
         }
 
         /// <summary>
@@ -288,9 +280,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-#if NEW_RESOURCE
             AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
-#endif
         }
 
 
@@ -304,9 +294,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-#if NEW_RESOURCE
             AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
-#endif
         }
 
         /// <summary>
@@ -317,11 +305,9 @@ namespace TResource
             DIYLog.Log("onLoadTRawImageSprite()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-#if NEW_RESOURCE
             TRawImgBG.printTRawImageInfo();
             AtlasManager.Singleton.setRawImage(TRawImgBG, param1);
             TRawImgBG.printTRawImageInfo();
-#endif
         }
 
         /// <summary>
@@ -332,13 +318,11 @@ namespace TResource
             DIYLog.Log("onPlayBGM()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-#if NEW_RESOURCE
             TResource.AssetLoader assetLoader;
             AudioManager.Singleton.playBGM(
                 param1,
                 out assetLoader
             );
-#endif
         }
 
         /// <summary>
@@ -349,13 +333,11 @@ namespace TResource
             DIYLog.Log("onPlaySound()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-#if NEW_RESOURCE
             TResource.AssetLoader assetLoader;
             AudioManager.Singleton.playSFXSound(
                 param1,
                 out assetLoader
             );
-#endif
         }
 
 
@@ -367,7 +349,6 @@ namespace TResource
             DIYLog.Log("onLoadMaterial()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-#if NEW_RESOURCE
             var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
             var image = btnloadmat.GetComponent<Image>();
             ResourceManager.Singleton.getMaterial(
@@ -379,7 +360,6 @@ namespace TResource
                     image.material = mat;
                 }
             );
-#endif
         }
 
         /// <summary>
@@ -388,7 +368,6 @@ namespace TResource
         public void onLoadActorPrefab()
         {
             DIYLog.Log("onLoadActorPrefab()");
-#if NEW_RESOURCE
             ModelManager.Singleton.getModelInstance(
                 "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
                 (instance, requestUid) =>
@@ -396,7 +375,6 @@ namespace TResource
                     mActorInstance = instance;
                 }
             );
-#endif
         }
 
         /// <summary>
@@ -405,9 +383,7 @@ namespace TResource
         public void onDestroyActorInstance()
         {
             DIYLog.Log("onDestroyActorInstance()");
-#if NEW_RESOURCE
             GameObject.Destroy(mActorInstance);
-#endif
         }
 
 
@@ -419,9 +395,7 @@ namespace TResource
             DIYLog.Log("onPreloadAtlas()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-#if NEW_RESOURCE
             AtlasManager.Singleton.loadAtlas(param1, null, ResourceLoadType.PermanentLoad);
-#endif
         }
 
 
@@ -431,14 +405,12 @@ namespace TResource
         public void onLoadPermanentShaderList()
         {
             DIYLog.Log("onLoadPermanentShaderList()");
-#if NEW_RESOURCE
             ResourceManager.Singleton.loadAllShader("shaderlist", () =>
             {
 
 
             },
             ResourceLoadType.PermanentLoad);
-#endif
         }
 
         /// <summary>
@@ -447,7 +419,6 @@ namespace TResource
         public void onPreloadShaderVariants()
         {
             DIYLog.Log("onPreloadShaderVariants()");
-#if NEW_RESOURCE
             // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
             TResource.AssetLoader assetLoader;
             TResource.ResourceModuleManager.Singleton.requstAssetSync<ShaderVariantCollection>(
@@ -461,7 +432,6 @@ namespace TResource
                 },
                 ResourceLoadType.PermanentLoad
             );
-#endif
         }
 
 
@@ -471,7 +441,6 @@ namespace TResource
         public void onAsynLoadWindowPrefab()
         {
             DIYLog.Log("onAsynLoadWindowPrefab()");
-#if NEW_RESOURCE
             if (mMainWindow == null)
             {
                 onDestroyWindowInstance();
@@ -486,7 +455,6 @@ namespace TResource
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 }
             );
-#endif
         }
 
         /// <summary>
@@ -495,7 +463,6 @@ namespace TResource
         public void onAsynToSyncLoadWindow()
         {
             DIYLog.Log("onAsynToSyncLoadWindow()");
-#if NEW_RESOURCE
             if (mMainWindow == null)
             {
                 onDestroyWindowInstance();
@@ -512,7 +479,6 @@ namespace TResource
             );
             // 将异步转同步加载
             assetLoader.loadImmediately();
-#endif
         }
 
         /// <summary>
@@ -521,7 +487,6 @@ namespace TResource
         public void onCancelAsynLoadWindow()
         {
             DIYLog.Log("onCancelAsynLoadWindow()");
-#if NEW_RESOURCE
             if (mMainWindow == null)
             {
                 onDestroyWindowInstance();
@@ -538,7 +503,6 @@ namespace TResource
             );
             // 取消异步加载请求
             assetLoader.cancelRequest(requestUID);
-#endif
         }
 
         /// <summary>
@@ -549,12 +513,10 @@ namespace TResource
             DIYLog.Log("onMultipleAsyncLoadTSprite()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-#if NEW_RESOURCE
             AssetLoader assetLoader1;
             AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
             AssetLoader assetLoader2;
             AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG2, param1, out assetLoader2);
-#endif
         }
 
         /// <summary>
@@ -567,12 +529,10 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-#if NEW_RESOURCE
             AssetLoader assetLoader1;
             AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
             AssetLoader assetLoader2;
             AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG2, param2, out assetLoader2);
-#endif
         }
 
 
@@ -582,7 +542,6 @@ namespace TResource
         public void onAsyncAndSyncLoadWindowButCancelAsync()
         {
             DIYLog.Log("onAsyncAndSyncLoadWindowButCancelAsync()");
-#if NEW_RESOURCE
             if (mMainWindow == null)
             {
                 onDestroyWindowInstance();
@@ -609,7 +568,6 @@ namespace TResource
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 }
             );
-#endif
         }
 
         /// <summary>
@@ -623,12 +581,10 @@ namespace TResource
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
 
-#if NEW_RESOURCE
             //切换场景前关闭所有打开窗口，测试切场景资源卸载功能
             onDestroyWindowInstance();
 
             GameSceneManager.Singleton.loadSceneSync(param1);
-#endif
         }
 
         /// <summary>

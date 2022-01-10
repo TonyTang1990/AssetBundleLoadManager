@@ -359,7 +359,7 @@ namespace TResource
         /// </summary>
         protected virtual void loadAssetBundleSync()
         {
-            var abpath = global::AssetBundlePath.GetABLoadFullPath(ResourcePath);
+            var abpath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
             AssetBundle ab = null;
             Debug.Log($"Frame:{AbstractResourceModule.Frame}开始同步加载AssetBundle:{ResourcePath}");
 #if UNITY_EDITOR
@@ -382,7 +382,7 @@ namespace TResource
         /// </summary>
         protected virtual void loadAssetBundleAsync()
         {
-            var abpath = global::AssetBundlePath.GetABLoadFullPath(ResourcePath);
+            var abpath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
             Debug.Log($"Frame:{AbstractResourceModule.Frame}开始异步加载AssetBundle:{ResourcePath}");
 #if UNITY_EDITOR
             //因为资源不全，很多资源丢失，导致直接报错

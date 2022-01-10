@@ -1,0 +1,18 @@
+AssetBundleName : assets/res/windows/mainwindow
+	ABLoadTimeCount : 3
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 16-53-4
+	ABLastUnloadTime : 
+
+AssetBundleName : assets/res/atlas/shareatlas/tutorialatlas
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 16-53-4
+	ABLastUnloadTime : 
+
+AssetBundleName : assets/res/atlas/shareatlas/spriteatlas/playerpreview
+	ABLoadTimeCount : 1
+	ABUnloadTimeCount : 0
+	ABFirstLoadTime : 16-53-4
+	ABLastUnloadTime : 
+

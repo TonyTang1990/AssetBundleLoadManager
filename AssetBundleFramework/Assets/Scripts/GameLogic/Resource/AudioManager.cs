@@ -21,16 +21,6 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// </summary>
     public class SFXAudioInfo : IRecycle
     {
-#if !NEW_RESOURCE
-        /// <summary>
-        /// 资源加载信息
-        /// </summary>
-        public AbstractResourceInfo ABI
-        {
-            get;
-            set;
-        }
-#else
         /// <summary>
         /// Asset加载器
         /// </summary>
@@ -39,7 +29,6 @@ public class AudioManager : SingletonTemplate<AudioManager>
             get;
             set;
         }
-#endif
 
         /// <summary>
         /// 音效绑定对象
@@ -66,11 +55,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
 
         public void onDispose()
         {
-#if !NEW_RESOURCE
-            ABI = null;
-#else
             Loader = null;
-#endif
             SFXAudioGo = null;
             SFXAudioSource = null;
         }
@@ -101,17 +86,10 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// </summary>
     private AudioSource mBGMAudioSource;
 
-#if !NEW_RESOURCE
-    /// <summary>
-    /// 当前场景背景音乐的资源信息
-    /// </summary>
-    private AbstractResourceInfo mCurrentBGMARI;
-#else
     /// <summary>
     /// 当前背景音乐的Asset加载器
     /// </summary>
     private TResource.AssetLoader mCurrentBGMAssetLoader;
-#endif
 
     public AudioManager()
     {
@@ -127,62 +105,6 @@ public class AudioManager : SingletonTemplate<AudioManager>
         ObjectPool.Singleton.initialize<SFXAudioInfo>(5);
     }
 
-#if !NEW_RESOURCE
-    /// <summary>
-    /// 播放音效
-    /// </summary>
-    /// <param name="respath">资源路径</param>
-    public void playSFXSound(string respath)
-    {
-        var sfxgo = mAudioGoPool.Pop(mSFXGoTemplate);
-        ResourceModuleManager.Singleton.requstResource(respath,
-        (abi) =>
-        {
-            var sfxaudioinfo = ObjectPool.Singleton.pop<SFXAudioInfo>();
-            var sfxname = Path.GetFileName(respath);
-            var ac = abi.getAsset<AudioClip>(sfxgo, sfxname);
-            var audiosource = sfxgo.GetComponent<AudioSource>();
-            sfxaudioinfo.SFXAudioGo = sfxgo;
-            sfxaudioinfo.SFXAudioSource = audiosource;
-            sfxaudioinfo.ABI = abi;
-            audiosource.clip = ac;
-            audiosource.Play();
-            Timer.Singleton.addTimer(() =>
-            {
-                // 手动释放音效资源绑定，因为音效绑定对象会进池会导致无法满足释放条件
-                sfxaudioinfo.SFXAudioSource.clip = null;
-                sfxaudioinfo.ABI.releaseOwner(sfxaudioinfo.SFXAudioGo);
-                mAudioGoPool.Push(mSFXInstanceID, sfxaudioinfo.SFXAudioGo);
-                ObjectPool.Singleton.push<SFXAudioInfo>(sfxaudioinfo);
-            }, ac.length);
-        });
-    }
-
-    /// <summary>
-    /// 播放背景音乐
-    /// </summary>
-    /// <param name="respath">资源路径</param>
-    /// <param name="loop">是否循环播放</param>
-    public void playBGM(string respath, bool loop = true)
-    {
-        //背景音效是挂载DontDestroyOnLoad上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
-        if (mCurrentBGMARI != null)
-        {
-            mCurrentBGMARI.releaseOwner(mBGMAudioSource);
-        }
-
-        var assetname = Path.GetFileName(respath);
-        ResourceModuleManager.Singleton.requstResource(respath,
-        (ari) =>
-        {
-            mCurrentBGMARI = ari;
-            var clip = ari.getAsset<AudioClip>(mBGMAudioSource, assetname);
-            mBGMAudioSource.clip = clip;
-            mBGMAudioSource.loop = loop;
-            mBGMAudioSource.Play();
-        });
-    }
-#else
     /// <summary>
     /// 播放音效
     /// </summary>
@@ -254,6 +176,4 @@ public class AudioManager : SingletonTemplate<AudioManager>
             loadType
         );
     }
-#endif
-
 }

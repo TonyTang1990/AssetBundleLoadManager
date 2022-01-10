@@ -26,8 +26,6 @@ assets/res/prefabs/imagebuildin
 assets/res/buildinresources/buildinmaterials
 	shaderlist
 
-assets/res/prefabs/pre_svccube
-
 assets/res/prefabs/rawimagebuildin
 	assets/res/buildinresources/buildintextures
 	assets/res/buildinresources/buildinmaterials
@@ -35,12 +33,6 @@ assets/res/prefabs/rawimagebuildin
 assets/res/buildinresources/buildintextures
 
 assets/res/prefabs/sfxtemplate
-
-assets/res/prefabs/testmd5comparison
-	assets/res/buildinresources/buildinmaterials
-
-assets/res/prefabs/testmd5comparisonresourceupdate
-	assets/res/buildinresources/buildinmaterials
 
 assets/res/sharematerials/sharebluematerial
 	shaderlist
@@ -100,6 +92,10 @@ assets/res/scenes/testscene2
 assets/res/scenes/testscene3
 	assets/res/sharematerials/sharematerial
 	assets/res/scenes/sceneprefabs/testscene3prefab
+
+assets/res/textures/chaichaifengjing
+
+assets/res/textures/chaichaishenqingzhushi
 
 assetbuildinfo
 

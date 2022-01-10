@@ -17,17 +17,10 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class GameSceneManager : SingletonTemplate<GameSceneManager>
 {
-#if !NEW_RESOURCE
-    /// <summary>
-    /// 当前场景的AssetBundle信息
-    /// </summary>
-    private AbstractResourceInfo mCurrentSceneARI;
-#else
     /// <summary>
     /// 当前场景的Asset加载器信息
     /// </summary>
     private TResource.BundleLoader mCurrentSceneAssetLoader;
-#endif
 
     /// <summary>
     /// 初始化
@@ -39,100 +32,6 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         SceneManager.sceneUnloaded += onSceneUnloaded;
     }
 
-#if !NEW_RESOURCE
-    /// <summary>
-    /// 同步加载场景
-    /// </summary>
-    /// <param name="scenePath"></param>
-    public void loadSceneSync(string scenePath)
-    {
-        // 预加载资源类型需要在切换场景前卸载掉，切换场景后可能有新的预加载资源加载进来
-        ResourceModuleManager.Singleton.unloadAllUnsedPreloadLoadedResources();
-
-        // 场景资源计数采用手动管理计数的方式
-        // 切场景时手动计数减1
-        // 加载时手动计数加1，不绑定对象
-        if (mCurrentSceneARI != null)
-        {
-            mCurrentSceneARI.release();
-            mCurrentSceneARI = null;
-        }
-
-        ResourceModuleManager.Singleton.requstResource(
-        scenePath,
-        (abi) =>
-        {
-            mCurrentSceneARI = abi;
-            mCurrentSceneARI.retain();
-            // 减掉场景计数后，切换场景前强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
-            // 在新场景加载后再回收资源是为了避免不同场景引用相同资源导致频繁加载卸载
-            ResourceModuleManager.Singleton.unloadAllUnsedNormalLoadedResources();
-        });
-        var scenename = Path.GetFileNameWithoutExtension(scenePath);
-        SceneManager.LoadScene(scenename);
-    }
-
-    /// <summary>
-    /// 异步加载场景
-    /// </summary>
-    /// <param name="scenePath"></param>
-    public void loadSceneAync(string scenePath)
-    {
-        // 预加载资源类型需要在切换场景前卸载掉，切换场景后可能有新的预加载资源加载进来
-        ResourceModuleManager.Singleton.unloadAllUnsedPreloadLoadedResources();
-
-        // 场景资源计数采用手动管理计数的方式
-        // 切场景时手动计数减1
-        // 加载时手动计数加1，不绑定对象
-        if (mCurrentSceneARI != null)
-        {
-            mCurrentSceneARI.release();
-            mCurrentSceneARI = null;
-        }
-
-        ResourceModuleManager.Singleton.requstResource(
-        scenePath,
-        (abi) =>
-        {
-            mCurrentSceneARI = abi;
-            mCurrentSceneARI.retain();
-            var sceneName = Path.GetFileNameWithoutExtension(scenePath);
-            SceneManager.LoadSceneAsync(sceneName);
-            // 减掉场景计数后，切换场景前强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
-            // 在新场景加载后再回收资源是为了避免不同场景引用相同资源导致频繁加载卸载
-            ResourceModuleManager.Singleton.unloadAllUnsedNormalLoadedResources();
-        },
-        ResourceLoadType.NormalLoad,
-        ResourceLoadMethod.Async);
-    }
-
-    /// <summary>
-    /// 场景加载回调
-    /// </summary>
-    /// <param name="scene"></param>
-    /// <param name="mode"></param>
-    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log(string.Format("场景:{0}被加载!", scene.name));
-        //新场景加载后DO Something
-
-    }
-
-    /// <summary>
-    /// 场景卸载回调
-    /// </summary>
-    /// <param name="scene"></param>
-    private void onSceneUnloaded(Scene scene)
-    {
-        Debug.Log(string.Format("场景:{0}被卸载!", scene.name));
-        if(!scene.name.Equals("Preview Scene"))
-        {
-            // 场景卸载后，递归释放所有不再使用的正常加载的资源
-            // 确保所有上一个场景不再使用的正常加载AB资源正确释放
-            ResourceModuleManager.Singleton.unloadAllUnsedNormalLoadedResources();
-        }
-    }
-#else
     /// <summary>
     /// 同步加载场景
     /// </summary>
@@ -235,5 +134,4 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
             // 场景卸载后做一些事
         }
     }
-#endif
 }

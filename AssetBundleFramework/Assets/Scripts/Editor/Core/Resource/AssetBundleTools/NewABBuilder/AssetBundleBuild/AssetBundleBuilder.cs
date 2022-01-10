@@ -12,6 +12,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using System.Security.Cryptography;
+using TResource;
 
 namespace MotionFramework.Editor
 {

@@ -79,7 +79,6 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetSelectionsOperationWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\FBXAnimationExtract.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PrefabUtilitiesExtension.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\DebugTool\ResourceDebugWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\EditorResourceUtilities.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\HotUpdate\HotUpdateOperationWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\HotUpdate\HotUpdateTool.cs" />

@@ -195,10 +195,6 @@ namespace TResource
                         mCurrentABDebugToolType = ABDebugToolType.AB_Display_Wait_Loaded_LoaderInfo;
                         mFilterTextChanged = true;
                     }
-                    if (GUILayout.Button("生成一份txt的AB依赖信息", GUILayout.MaxWidth(150.0f), GUILayout.MaxHeight(30.0f)))
-                    {
-                        writeABDepInfoIntoTxt();
-                    }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     if (GUILayout.Button("强制卸载指定AB", GUILayout.MaxWidth(150.0f), GUILayout.MaxHeight(30.0f)))
@@ -787,36 +783,6 @@ namespace TResource
                 {
                     displayOneAssetInfoUI(ploadedAssetInfo.Value);
                 }
-            }
-        }
-
-        /// <summary>
-        /// 根据AB依赖二进制ab信息写一份txt的AB依赖信息文本
-        /// </summary>
-        private void writeABDepInfoIntoTxt()
-        {
-            if (isAssetBundleModule())
-            {
-                var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-                var alldepinfomap = assetbundleresourcemodule.AssetBuildInfo.ABPathDepMap;
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Application.dataPath + "/../alldepab.txt"))
-                {
-                    foreach (var depinfo in alldepinfomap)
-                    {
-                        sw.WriteLine(depinfo.Key);
-                        foreach (var dep in depinfo.Value)
-                        {
-                            sw.WriteLine("\t" + dep);
-                        }
-                        sw.WriteLine();
-                    }
-                    sw.Close();
-                    sw.Dispose();
-                }
-            }
-            else
-            {
-                Debug.LogError("非AssetBundle模式下不支持输出AB依赖信息文件！");
             }
         }
 

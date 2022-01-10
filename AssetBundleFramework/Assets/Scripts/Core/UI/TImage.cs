@@ -20,16 +20,6 @@ namespace TUI
     /// </summary>
     public class TImage : Image
     {
-#if !NEW_RESOURCE
-        /// <summary>
-        /// 资源引用信息
-        /// </summary>
-        public AbstractResourceInfo ABI
-        {
-            get;
-            set;
-        }
-#else
         /// <summary>
         /// 资源加载器(默认采用对象绑定所以不需要再OnDestroy时返还计数)
         /// </summary>
@@ -38,7 +28,6 @@ namespace TUI
             get;
             set;
         }
-#endif
 
         /// <summary>
         /// 当前图片名
@@ -52,13 +41,8 @@ namespace TUI
         public void printTImageInfo()
         {
             DIYLog.Log($"SpritePath = {SpritePath}");
-#if !NEW_RESOURCE
-            var refcount = ABI != null ? ABI.RefCount.ToString() : "无";
-            DIYLog.Log($"SpritePath引用计数 = {refcount}");
-#else
             var refcount = Loader != null ? Loader.getReferenceCount().ToString() : "无";
             DIYLog.Log($"SpritePath引用计数 = {refcount}");
-#endif
         }
     }
 }

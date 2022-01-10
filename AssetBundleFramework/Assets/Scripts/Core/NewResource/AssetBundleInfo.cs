@@ -135,13 +135,11 @@ namespace TResource
             LoaderManager.Singleton.deleteLoaderByPath(ResourcePath);
             var assetBundle = getResource<AssetBundle>();
             assetBundle.Unload(true);
-#if UNITY_EDITOR
             //AB卸载数据统计
             if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
             {
                 ResourceLoadAnalyse.Singleton.addResourceUnloadedTime(ResourcePath);
             }
-#endif
             base.dispose();
         }
     }
