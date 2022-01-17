@@ -18,16 +18,9 @@ public class AssetRelativePathTool : MonoBehaviour
     public static void GetAssetRelativePathWithPostfix()
     {
         var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
-        if (assets.Length > 0)
-        {
-            var allrelativepath = GetAllAssetRelativePath(assets, true);
-            Debug.Log($"{allrelativepath}");
-            EditorGUIUtility.systemCopyBuffer = allrelativepath;
-        }
-        else
-        {
-            Debug.LogError("未选中有效Asset!");
-        }
+        var allRelativePath = GetAllAssetRelativePath(assets, true);
+        Debug.Log($"{allRelativePath}");
+        EditorGUIUtility.systemCopyBuffer = allRelativePath;
     }
 
     [MenuItem("Assets/快速获取Asset相对路径/无后缀 &#w", false, 20000)]
@@ -35,64 +28,70 @@ public class AssetRelativePathTool : MonoBehaviour
     {
         var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
         Debug.Log($"当前选中Asset数量:{assets.Length}");
-        if (assets.Length > 0)
-        {
-            var allrelativepath = GetAllAssetRelativePath(assets, false);
-            Debug.Log($"{allrelativepath}");
-            EditorGUIUtility.systemCopyBuffer = allrelativepath;
-        }
-        else
-        {
-            Debug.LogError("未选中有效Asset!");
-        }
+        var allRelativePath = GetAllAssetRelativePath(assets, false);
+        Debug.Log($"{allRelativePath}");
+        EditorGUIUtility.systemCopyBuffer = allRelativePath;
     }
 
+    //[MenuItem("Assets/快速获取Asset相对路径/小写含后缀 &#e", false, 20000)]
+    //public static void GetAssetRelativePathWithPostfix()
+    //{
+    //    var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
+    //    var allRelativePath = GetAllAssetRelativePath(assets, true, true);
+    //    Debug.Log($"{allRelativePath}");
+    //    EditorGUIUtility.systemCopyBuffer = allRelativePath;
+    //}
+
+    //[MenuItem("Assets/快速获取Asset相对路径/小写无后缀 &#r", false, 20000)]
+    //public static void GetAssetRelativePathWithoutPostfix()
+    //{
+    //    var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
+    //    Debug.Log($"当前选中Asset数量:{assets.Length}");
+    //    var allRelativePath = GetAllAssetRelativePath(assets, false, true);
+    //    Debug.Log($"{allRelativePath}");
+    //    EditorGUIUtility.systemCopyBuffer = allRelativePath;
+    //}
 
     /// <summary>
     /// 获取Asset的相对路径
     /// </summary>
     /// <param name="asset"></param>
-    /// <param name="withpostfix">是否包含后缀名</param>
-    private static string GetAllAssetRelativePath(UnityEngine.Object[] assets, bool withpostfix = false)
+    /// <param name="withPostfix">是否包含后缀名</param>
+    /// <param name="toLowerPath">是否全小写路径</param>
+    private static string GetAllAssetRelativePath(UnityEngine.Object[] assets, bool withPostfix = false, bool toLowerPath = false)
     {
-        Debug.Assert(assets != null, "不允许传空Assets!");
-        var allrelativepaths = string.Empty;
+        if (assets == null)
+        {
+            Debug.LogError($"传递空Assets，获取相对路径失败!");
+            return string.Empty;
+        }
+        var allRelativePaths = string.Empty;
         for (int i = 0, length = assets.Length; i < length; i++)
         {
-            var assetrelativepath = GetAssetRelativePath(assets[i], withpostfix);
+            var assetrelativepath = GetAssetRelativePath(assets[i], withPostfix);
             if (i != (length - 1))
             {
                 assetrelativepath = assetrelativepath + Environment.NewLine;
             }
-            allrelativepaths += assetrelativepath;
+            allRelativePaths += assetrelativepath;
         }
-        return allrelativepaths;
+        return !toLowerPath ? allRelativePaths : allRelativePaths.ToLower();
     }
 
     /// <summary>
     /// 获取Asset的相对路径
     /// </summary>
     /// <param name="asset"></param>
-    /// <param name="withpostfix">是否包含后缀名</param>
-    private static string GetAssetRelativePath(UnityEngine.Object asset, bool withpostfix = false)
+    /// <param name="withPostfix">是否包含后缀名</param>
+    private static string GetAssetRelativePath(UnityEngine.Object asset, bool withPostfix = false)
     {
-        Debug.Assert(asset != null, "不允许传空Asset!");
-        var assetpath = AssetDatabase.GetAssetPath(asset);
-        var assetrelativepath = assetpath;
-        //var assetrelativepath = assetpath.Substring(7);
-        //if (!assetrelativepath.StartsWith("Resources/"))
-        //{
-        //    Debug.LogWarning("默认只允许访问Resources目录里的资源!");
-        //}
-        //else
-        //{
-        //    assetrelativepath = assetrelativepath.Substring(10);
-        //}
-        if (withpostfix == false)
+        Debug.Assert(asset != null, "不允许传空Asset,获取Asset相对路径失败!");
+        var assetRelativePath = AssetDatabase.GetAssetPath(asset);
+        if (withPostfix == false)
         {
-            var extension = Path.GetExtension(assetrelativepath);
-            assetrelativepath = assetrelativepath.Substring(0, assetrelativepath.Length - extension.Length);
+            var extension = Path.GetExtension(assetRelativePath);
+            assetRelativePath = assetRelativePath.Substring(0, assetRelativePath.Length - extension.Length);
         }
-        return assetrelativepath;
+        return assetRelativePath;
     }
 }
