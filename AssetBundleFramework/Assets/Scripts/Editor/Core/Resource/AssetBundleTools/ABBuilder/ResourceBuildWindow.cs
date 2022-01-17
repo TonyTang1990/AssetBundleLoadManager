@@ -18,7 +18,7 @@ using UnityEngine;
 
 /// <summary>
 /// ResourceBuildWindow.cs
-/// 新版资源打包工具
+/// 资源打包工具
 /// </summary>
 public class ResourceBuildWindow : BaseEditorWindow
 {
@@ -61,7 +61,7 @@ public class ResourceBuildWindow : BaseEditorWindow
     /// </summary>
     private string LastOpenFolderPath = "Assets/";
 
-    [MenuItem("Tools/New AssetBundle/资源打包窗口", priority = 200)]
+    [MenuItem("Tools/AssetBundle/资源打包窗口", priority = 200)]
     static void ShowWindow()
     {
         var resourceBuildWindow = EditorWindow.GetWindow<ResourceBuildWindow>(false, "资源打包窗口");

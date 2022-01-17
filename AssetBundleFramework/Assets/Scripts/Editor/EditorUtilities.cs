@@ -32,6 +32,7 @@ public static class EditorUtilities
             return _clearConsoleMethod;
         }
     }
+
     #region 路径相关
     /// <summary>
     /// 获取项目工程路径

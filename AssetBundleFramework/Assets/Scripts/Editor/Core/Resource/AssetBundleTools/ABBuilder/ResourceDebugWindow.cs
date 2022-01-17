@@ -1,5 +1,5 @@
 ﻿/*
- * Description:             NewResourceDebugWindow.cs
+ * Description:             ResourceDebugWindow.cs
  * Author:                  TONYTANG
  * Create Date:             2021//11/11
  */
@@ -14,9 +14,9 @@ namespace TResource
 {
     /// <summary>
     /// NewResourceDebugWindow.cs
-    /// 新版资源调试窗口
+    /// 资源调试窗口
     /// </summary>
-    public class NewResourceDebugWindow : BaseEditorWindow
+    public class ResourceDebugWindow : BaseEditorWindow
     {
         /// <summary>
         /// AB辅助工具类型
@@ -127,10 +127,10 @@ namespace TResource
         private List<AssetLoader> mAllAssetDatabaseLoader = new List<AssetLoader>();
         #endregion
 
-        [MenuItem("Tools/New AssetBundle/Debug/新资源调试工具", false, 103)]
-        public static void openNewResourceDebugWindow()
+        [MenuItem("Tools/AssetBundle/Debug/资源调试工具", false, 103)]
+        public static void openResourceDebugWindow()
         {
-            NewResourceDebugWindow window = EditorWindow.GetWindow<NewResourceDebugWindow>(false, "新资源调试工具");
+            ResourceDebugWindow window = EditorWindow.GetWindow<ResourceDebugWindow>(false, "资源调试工具");
             window.Show();
         }
         private void OnInspectorUpdate()
