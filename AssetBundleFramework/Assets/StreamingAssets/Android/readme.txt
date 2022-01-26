@@ -1,22 +1,22 @@
 ﻿构建平台：Android
-构建时间：2022/1/10 19:16:12
+构建时间：2022/1/26 22:07:32
 
 --配置信息--
-Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : LoadByFolderPath
-Directory : Assets/Res/audios || CollectRule : Collect || BuildRule : LoadByFilePath
-Directory : Assets/Res/windows || CollectRule : Collect || BuildRule : LoadByFilePath
-Directory : Assets/Res/prefabs || CollectRule : Collect || BuildRule : LoadByFilePath
-Directory : Assets/Res/buildinresources/buildinmaterials || CollectRule : Collect || BuildRule : LoadByFolderPath
-Directory : Assets/Res/buildinresources/buildintextures || CollectRule : Collect || BuildRule : LoadByFolderPath
-Directory : Assets/Res/sharematerials || CollectRule : Collect || BuildRule : LoadByFilePath
-Directory : Assets/Res/buildinresources/buildinshaders/DefaultResources || CollectRule : Collect || BuildRule : LoadByConstName || ConstName : shaderlist
-Directory : Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra || CollectRule : Collect || BuildRule : LoadByConstName || ConstName : shaderlist
-Directory : Assets/Res/shadervariants || CollectRule : Collect || BuildRule : LoadByConstName || ConstName : shaderlist
-Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : LoadByFileAndSubFolderPath
+Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : ByFolderPath
+Directory : Assets/Res/audios || CollectRule : Collect || BuildRule : ByFilePath
+Directory : Assets/Res/windows || CollectRule : Collect || BuildRule : ByFilePath
+Directory : Assets/Res/prefabs || CollectRule : Collect || BuildRule : ByFilePath
+Directory : Assets/Res/buildinresources/buildinmaterials || CollectRule : Collect || BuildRule : ByFolderPath
+Directory : Assets/Res/buildinresources/buildintextures || CollectRule : Collect || BuildRule : ByFolderPath
+Directory : Assets/Res/sharematerials || CollectRule : Collect || BuildRule : ByFilePath
+Directory : Assets/Res/buildinresources/buildinshaders/DefaultResources || CollectRule : Collect || BuildRule : ByConstName || ConstName : shaderlist
+Directory : Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra || CollectRule : Collect || BuildRule : ByConstName || ConstName : shaderlist
+Directory : Assets/Res/shadervariants || CollectRule : Collect || BuildRule : ByConstName || ConstName : shaderlist
+Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : ByFileOrSubFolder
 Directory : Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas || CollectRule : Ignore || BuildRule : Ignore
 Directory : Assets/Res/assetbuildinfo || CollectRule : Ignore || BuildRule : Ignore
-Directory : Assets/Res/scenes || CollectRule : Collect || BuildRule : LoadByFilePath
-Directory : Assets/Res/textures || CollectRule : Collect || BuildRule : LoadByFilePath
+Directory : Assets/Res/scenes || CollectRule : Collect || BuildRule : ByFilePath
+Directory : Assets/Res/textures || CollectRule : Collect || BuildRule : ByFilePath
 
 --构建参数--
 CompressOption：ChunkBasedCompressionLZ4

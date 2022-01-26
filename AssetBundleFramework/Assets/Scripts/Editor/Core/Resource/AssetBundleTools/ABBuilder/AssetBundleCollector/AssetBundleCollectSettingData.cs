@@ -344,5 +344,55 @@ namespace MotionFramework.Editor
 				throw new Exception($"资源收集器类型无效：{classname}");
 			}
 		}
-	}
+
+        #region 黑名单部分
+        /// <summary>
+        /// 添加后缀名黑名单
+        /// </summary>
+        /// <returns></returns>
+        public static bool AddPostFixBlackList()
+        {
+            Setting.BlackListInfo.PostFixBlackList.Add(string.Empty);
+            return true;
+        }
+
+        /// <summary>
+        /// 移除指定索引的后缀名黑名单
+        /// </summary>
+        /// <returns></returns>
+        public static bool RemovePostFixBlackList(int index)
+        {
+            var exit = Setting.BlackListInfo.PostFixBlackList.Count > index;
+            if (exit)
+            {
+                Setting.BlackListInfo.PostFixBlackList.RemoveAt(index);
+            }
+            return exit;
+        }
+
+        /// <summary>
+        /// 添加文件名黑名单
+        /// </summary>
+        /// <returns></returns>
+        public static bool AddFileNameBlackList()
+        {
+            Setting.BlackListInfo.FileNameBlackList.Add(string.Empty);
+            return true;
+        }
+
+        /// <summary>
+        /// 移除指定索引的文件名黑名单
+        /// </summary>
+        /// <returns></returns>
+        public static bool RemoveFileNameBlackList(int index)
+        {
+            var exit = Setting.BlackListInfo.FileNameBlackList.Count > index;
+            if (exit)
+            {
+                Setting.BlackListInfo.FileNameBlackList.RemoveAt(index);
+            }
+            return exit;
+        }
+        #endregion
+    }
 }

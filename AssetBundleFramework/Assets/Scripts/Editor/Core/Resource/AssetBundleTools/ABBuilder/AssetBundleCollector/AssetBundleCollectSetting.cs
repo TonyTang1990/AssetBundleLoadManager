@@ -80,6 +80,29 @@ public class Collector
 }
 
 /// <summary>
+/// 黑名单信息
+/// </summary>
+[Serializable]
+public class BlackListInfo
+{
+    /// <summary>
+    /// 后缀名黑名单列表
+    /// </summary>
+    public List<string> PostFixBlackList;
+
+    /// <summary>
+    /// 文件名黑名单列表
+    /// </summary>
+    public List<string> FileNameBlackList;
+
+    public BlackListInfo()
+    {
+        PostFixBlackList = new List<string>();
+        FileNameBlackList = new List<string>();
+    }
+}
+
+/// <summary>
 /// AssetBundleCollectSetting.cs
 /// AB打包搜集规则数据序列化类
 /// </summary>
@@ -89,4 +112,9 @@ public class AssetBundleCollectSetting : ScriptableObject
     /// 所有的AB搜集信息
     /// </summary>
     public List<Collector> AssetBundleCollectors = new List<Collector>();
+
+    /// <summary>
+    /// 黑名单信息
+    /// </summary>
+    public BlackListInfo BlackListInfo = new BlackListInfo();
 }

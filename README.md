@@ -254,6 +254,10 @@ public void onLoadPermanentShaderList()
 
 ![AssetBundleBuildInfoView2](./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG)
 
+**2022/1/26支持了资源打包后缀名黑名单可视化配置+资源名黑名单可视化配置**
+
+![PostFixBlackListAndAssetNameBlackList](./img/Unity/AssetBundle-Framework/PostFixBlackListAndAssetNameBlackList.PNG)
+
 ## 热更新模块
 
 ### 类说明
@@ -404,8 +408,9 @@ Tools->Assets->Asset相关处理
 
 # 待做事项
 
-5.  支持真机代码热更(Lua + XLua)
-7.  热更新资源正确性校验
+1. 支持真机代码热更(Lua + XLua)
+2. 热更新资源正确性校验(MD5校验)
+3. 支持AssetBundle变体概念
 
 # 个人博客
 

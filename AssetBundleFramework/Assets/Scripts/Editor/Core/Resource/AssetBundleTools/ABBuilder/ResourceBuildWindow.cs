@@ -78,6 +78,13 @@ public class ResourceBuildWindow : BaseEditorWindow
         mToolBarSelectIndex = 0;
         CurrentOperationType = (EOperationType)Enum.Parse(typeof(EOperationType), mOperationTypeNameArray[mToolBarSelectIndex]);
 
+
+        mFoldMap = new Dictionary<EFoldType, bool>();
+        foreach (var foldType in Enum.GetValues(typeof(EFoldType)))
+        {
+            mFoldMap.Add((EFoldType)foldType, false);
+        }
+
         InitResourceData();
     }
 
@@ -103,6 +110,8 @@ public class ResourceBuildWindow : BaseEditorWindow
         else if (CurrentOperationType == EOperationType.ResourceCollect)
         {
             DisplayResourceCollectArea();
+            DisplayBlackListArea();
+            DisplayCommonArea();
         }
         GUILayout.EndVertical();
         GUILayout.EndScrollView();
@@ -295,29 +304,80 @@ public class ResourceBuildWindow : BaseEditorWindow
 
     #region 资源搜集部分
     /// <summary>
+    /// 折叠类型
+    /// </summary>
+    public enum EFoldType
+    {
+        BuildRule = 1,          // 打包策略
+        BlackList,              // 黑名单
+        PostFixBlackList,       // 后缀名黑名单
+        FileNameBlackList,      // 文件名黑名单
+    }
+
+    /// <summary>
+    /// 重写EFoldType比较相关接口函数，避免EFoldType作为Dictionary Key时，
+    /// 底层调用默认Equals(object obj)和DefaultCompare.GetHashCode()导致额外的堆内存分配
+    /// 参考:
+    /// http://gad.qq.com/program/translateview/7194373
+    /// </summary>
+    public class EFoldTypeComparer : IEqualityComparer<EFoldType>
+    {
+        public bool Equals(EFoldType x, EFoldType y)
+        {
+            return x == y;
+        }
+
+        public int GetHashCode(EFoldType x)
+        {
+            return (int)x;
+        }
+    }
+
+    /// <summary>
+    /// 折叠Map
+    /// </summary>
+    private Dictionary<EFoldType, bool> mFoldMap;
+
+    /// <summary>
+    /// 后缀名黑名单每行显示个数
+    /// </summary>
+    private const int POST_FIX_NUM_PER_ROW = 10;
+
+    /// <summary>
+    /// 文件名黑名单每行显示个数
+    /// </summary>
+    private const int FILE_NAME_NUM_PER_ROW = 5;
+
+    /// <summary>
     /// 显示资源搜集区域
     /// </summary>
     private void DisplayResourceCollectArea()
     {
         GUILayout.BeginVertical();
-        EditorGUILayout.LabelField("AB打包资源搜集:", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f));
-        for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
+        mFoldMap[EFoldType.BuildRule] = EditorGUILayout.Foldout(mFoldMap[EFoldType.BuildRule], "AB打包资源搜集");
+        if (!mFoldMap[EFoldType.BuildRule])
         {
-            DisplayOneCollect(AssetBundleCollectSettingData.Setting.AssetBundleCollectors[i]);
-        }
-        if (GUILayout.Button("+", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
-        {
-            var chosenfolderpath = EditorUtility.OpenFolderPanel("选择搜集目录", LastOpenFolderPath, "");
-            if (string.IsNullOrEmpty(chosenfolderpath) == false && AssetBundleCollectSettingData.AddAssetBundleCollector(chosenfolderpath))
+            if (AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count != 0)
             {
-                var relativefolderpath = PathUtilities.GetAssetsRelativeFolderPath(chosenfolderpath);
-                LastOpenFolderPath = relativefolderpath;
-                Debug.Log($"添加资源搜集目录:{chosenfolderpath}成功!");
+                for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
+                {
+                    DisplayOneCollect(AssetBundleCollectSettingData.Setting.AssetBundleCollectors[i]);
+                }
+                if (GUILayout.Button("+", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
+                {
+                    var chosenfolderpath = EditorUtility.OpenFolderPanel("选择搜集目录", LastOpenFolderPath, "");
+                    if (string.IsNullOrEmpty(chosenfolderpath) == false && AssetBundleCollectSettingData.AddAssetBundleCollector(chosenfolderpath))
+                    {
+                        var relativefolderpath = PathUtilities.GetAssetsRelativeFolderPath(chosenfolderpath);
+                        LastOpenFolderPath = relativefolderpath;
+                        Debug.Log($"添加资源搜集目录:{chosenfolderpath}成功!");
+                    }
+                }
             }
         }
-        if (GUILayout.Button("保存", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
+        else
         {
-            AssetBundleCollectSettingData.SaveFile();
+            EditorGUILayout.LabelField("无打包策略配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
         }
         GUILayout.EndVertical();
     }
@@ -357,6 +417,172 @@ public class ResourceBuildWindow : BaseEditorWindow
             }
         }
         GUILayout.EndHorizontal();
+    }
+
+    /// <summary>
+    /// 显示黑名单区域
+    /// </summary>
+    private void DisplayBlackListArea()
+    {
+        GUILayout.BeginVertical("box");
+        mFoldMap[EFoldType.BlackList] = EditorGUILayout.Foldout(mFoldMap[EFoldType.BlackList], "AB打包资源搜集");
+        if (!mFoldMap[EFoldType.BlackList])
+        {
+            DisplayPostFixBlackListArea();
+            DisplayFileNameBlackListArea();
+        }
+        GUILayout.EndVertical();
+    }
+
+    /// <summary>
+    /// 显示后缀名黑名单区域
+    /// </summary>
+    private void DisplayPostFixBlackListArea()
+    {
+        GUILayout.BeginVertical("box");
+        mFoldMap[EFoldType.PostFixBlackList] = EditorGUILayout.Foldout(mFoldMap[EFoldType.PostFixBlackList], "后缀名黑名单");
+        if (!mFoldMap[EFoldType.PostFixBlackList])
+        {
+            if (AssetBundleCollectSettingData.Setting.BlackListInfo.PostFixBlackList.Count != 0)
+            {
+                int mod;
+                for (int i = 0; i < AssetBundleCollectSettingData.Setting.BlackListInfo.PostFixBlackList.Count; i++)
+                {
+                    mod = i % POST_FIX_NUM_PER_ROW;
+                    if (mod == 0)
+                    {
+                        GUILayout.BeginHorizontal("box");
+                    }
+                    DisplayOnePostFix(AssetBundleCollectSettingData.Setting.BlackListInfo.PostFixBlackList, i);
+                    if (mod == (POST_FIX_NUM_PER_ROW - 1) || (i == AssetBundleCollectSettingData.Setting.BlackListInfo.PostFixBlackList.Count - 1))
+                    {
+                        GUILayout.EndHorizontal();
+                    }
+                }
+            }
+            else
+            {
+                EditorGUILayout.LabelField("无后缀名黑名单配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
+            }
+
+            if (GUILayout.Button("+", GUILayout.ExpandWidth(true), GUILayout.Height(20f)))
+            {
+                AssetBundleCollectSettingData.AddPostFixBlackList();
+            }
+        }
+        GUILayout.EndVertical();
+    }
+
+    /// <summary>
+    /// 显示单个后缀名黑名单
+    /// </summary>
+    /// <param name="postFixBlackList"></param>
+    /// <param name="index"></param>
+    private void DisplayOnePostFix(List<string> postFixBlackList, int index)
+    {
+        EditorGUI.BeginChangeCheck();
+        postFixBlackList[index] = EditorGUILayout.TextField(postFixBlackList[index], GUILayout.Width(70f), GUILayout.Height(20f));
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (!postFixBlackList[index].StartsWith("."))
+            {
+                Debug.LogWarning($"后缀名必须已.开头!");
+            }
+        }
+        if (GUILayout.Button("-", GUILayout.Width(30.0f), GUILayout.Height(20.0f)))
+        {
+            var postFix = postFixBlackList[index];
+            if (AssetBundleCollectSettingData.RemovePostFixBlackList(index))
+            {
+                Debug.Log($"移除后缀名黑名单索引:{index}后缀名:{postFix}成功!");
+            }
+            else
+            {
+                Debug.LogError($"移除后缀名黑名单索引:{index}后缀名:{postFix}失败!");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 显示文件名黑名单区域
+    /// </summary>
+    private void DisplayFileNameBlackListArea()
+    {
+        GUILayout.BeginVertical("box");
+        mFoldMap[EFoldType.FileNameBlackList] = EditorGUILayout.Foldout(mFoldMap[EFoldType.FileNameBlackList], "文件名黑名单");
+        if (!mFoldMap[EFoldType.FileNameBlackList])
+        {
+            if (AssetBundleCollectSettingData.Setting.BlackListInfo.FileNameBlackList.Count != 0)
+            {
+                int mod;
+                for (int i = 0; i < AssetBundleCollectSettingData.Setting.BlackListInfo.FileNameBlackList.Count; i++)
+                {
+                    mod = i % FILE_NAME_NUM_PER_ROW;
+                    if (mod == 0)
+                    {
+                        GUILayout.BeginHorizontal("box");
+                    }
+                    DisplayOneFileName(AssetBundleCollectSettingData.Setting.BlackListInfo.FileNameBlackList, i);
+                    if (mod == (FILE_NAME_NUM_PER_ROW - 1) || (i == AssetBundleCollectSettingData.Setting.BlackListInfo.FileNameBlackList.Count - 1))
+                    {
+                        GUILayout.EndHorizontal();
+                    }
+                }
+            }
+            else
+            {
+                EditorGUILayout.LabelField("无文件名黑名单配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
+            }
+
+            if (GUILayout.Button("+", GUILayout.ExpandWidth(true), GUILayout.Height(20f)))
+            {
+                AssetBundleCollectSettingData.AddFileNameBlackList();
+            }
+        }
+        GUILayout.EndVertical();
+    }
+
+    /// <summary>
+    /// 显示单个名字黑名单
+    /// </summary>
+    /// <param name="fileNameBlackList"></param>
+    /// <param name="index"></param>
+    private void DisplayOneFileName(List<string> fileNameBlackList, int index)
+    {
+        EditorGUI.BeginChangeCheck();
+        fileNameBlackList[index] = EditorGUILayout.TextField(fileNameBlackList[index], GUILayout.Width(140f), GUILayout.Height(20f));
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (fileNameBlackList[index].Equals(string.Empty))
+            {
+                Debug.LogWarning($"文件名不能为空!");
+            }
+        }
+        if (GUILayout.Button("-", GUILayout.Width(30.0f), GUILayout.Height(20.0f)))
+        {
+            var fileName = fileNameBlackList[index];
+            if (AssetBundleCollectSettingData.RemoveFileNameBlackList(index))
+            {
+                Debug.Log($"移除文件名黑名单索引:{index}后缀名:{fileName}成功!");
+            }
+            else
+            {
+                Debug.LogError($"移除文件名黑名单索引:{index}后缀名:{fileName}失败!");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 显示公共区域
+    /// </summary>
+    private void DisplayCommonArea()
+    {
+        GUILayout.BeginVertical("box");
+        if (GUILayout.Button("保存", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
+        {
+            AssetBundleCollectSettingData.SaveFile();
+        }
+        GUILayout.EndVertical();
     }
     #endregion
 }

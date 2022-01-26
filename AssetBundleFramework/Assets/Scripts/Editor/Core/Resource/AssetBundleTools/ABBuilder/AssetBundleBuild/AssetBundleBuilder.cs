@@ -430,10 +430,20 @@ namespace MotionFramework.Editor
 				return false;
 
 			string ext = System.IO.Path.GetExtension(assetPath);
-			if (ext == "" || ext == ".dll" || ext == ".cs" || ext == ".js" || ext == ".boo" || ext == ".meta" || ext == ".tpsheet")
-				return false;
+            if (AssetBundleCollectSettingData.Setting.BlackListInfo.PostFixBlackList.Contains(ext))
+            {
+                return false;
+            }
+            //if (ext == "" || ext == ".dll" || ext == ".cs" || ext == ".js" || ext == ".boo" || ext == ".meta" || ext == ".tpsheet")
+            //	return false;
 
-			return true;
+            string fileName = Path.GetFileName(assetPath);
+            if (AssetBundleCollectSettingData.Setting.BlackListInfo.FileNameBlackList.Contains(fileName))
+            {
+                return false;
+            }
+
+            return true;
 		}
 
 		/// <summary>

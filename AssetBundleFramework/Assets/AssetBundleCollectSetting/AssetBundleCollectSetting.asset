@@ -73,3 +73,13 @@ MonoBehaviour:
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+  BlackListInfo:
+    PostFixBlackList:
+    - .dll
+    - .cs
+    - .js
+    - .boo
+    - .meta
+    - .tpsheet
+    FileNameBlackList:
+    - LightingData.asset
