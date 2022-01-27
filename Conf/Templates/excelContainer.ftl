@@ -13,7 +13,7 @@ namespace Data
     public class #CLASS_NAME#Container
     {
         private List<#CLASS_NAME#> list = null;
-        private Dictionary<int, #CLASS_NAME#> map = null;
+        private Dictionary<#ID_TYPE#, #CLASS_NAME#> map = null;
 
         public List<#CLASS_NAME#> getList()
         {
@@ -22,7 +22,7 @@ namespace Data
             return list;
         }
 
-        public Dictionary<int, #CLASS_NAME#> getMap()
+        public Dictionary<#ID_TYPE#, #CLASS_NAME#> getMap()
         {
             if (map == null || map.Count <= 0)
                 loadDataFromBin();
@@ -54,7 +54,7 @@ namespace Data
                             ClearList();
                             var count = br.ReadInt32();
                             list =  new List<#CLASS_NAME#>(count);
-                            map = new Dictionary<int, #CLASS_NAME#>(count);
+                            map = new Dictionary<#ID_TYPE#, #CLASS_NAME#>(count);
                         }
 
                         var length = br.ReadInt32();
@@ -62,7 +62,7 @@ namespace Data
                         var obj= #CLASS_NAME#Buffer.deserialize(data, ref offset);
                         offset = 0;
                         list.Add(obj);
-                        map.Add(obj.id, obj); 
+                        map.Add(obj.#ID_NAME#, obj); 
                     }
                 }catch (Exception ex)
                 {

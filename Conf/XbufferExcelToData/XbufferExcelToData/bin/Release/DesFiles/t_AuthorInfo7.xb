@@ -1,7 +1,7 @@
 // t_AuthorInfo7的注释
 class t_AuthorInfo7
 {
-	id:int;			                             //唯一id
+	Id:int;			                             //唯一id
 	author:string;			                      //作者
 	age:int;			                            //年龄
 	money:float;			                        //拥有金钱

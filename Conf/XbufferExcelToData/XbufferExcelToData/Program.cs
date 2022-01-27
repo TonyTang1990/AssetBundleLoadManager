@@ -18,6 +18,27 @@ namespace XbufferExcelToData
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("控制台参数个数:" + args.Length);
+            var argfulltext = string.Empty;
+            for(int i = 0, length = args.Length; i < length; i++)
+            {
+                argfulltext += args[i];
+                if (i != length - 1)
+                {
+                    argfulltext += " ";
+                }
+            }
+            Console.WriteLine("控制台参数:" + argfulltext);
+            var disableouputcscode = args.Length > 0 ? (bool.TryParse(args[0], out bool disablecscode) == true ? disablecscode : false) : false;
+            if(disableouputcscode)
+            {
+                Console.WriteLine("关闭生成CS代码!");
+            }
+            else
+            {
+                Console.WriteLine("开启生成CS代码!");
+            }
+
             // 读取导出配置信息
             TimeCounter.Singleton.Restart("读取导出配置");
             if(!XbufferExcelExportConfig.Singleton.LoadExportConfigData())
@@ -57,13 +78,16 @@ namespace XbufferExcelToData
             TimeCounter.Singleton.End();
 
             // 自动化生成序列化所需的代码文件
-            TimeCounter.Singleton.Restart("生成序列化代码文件");
-            XbufferDesFileToCSCode.Singleton.configFolderPath(XbufferExcelExportConfig.Singleton.ExportConfigInfo.DesFileOutputPath,
-                                                              XbufferExcelExportConfig.Singleton.ExportConfigInfo.TemplatePath,
-                                                              XbufferExcelExportConfig.Singleton.ExportConfigInfo.CSClassCodeOutputPath,
-                                                              XbufferExcelExportConfig.Singleton.ExportConfigInfo.CSBufferCodeOutputPath);
-            XbufferDesFileToCSCode.Singleton.writeAllDesFileToCSCode();
-            TimeCounter.Singleton.End();
+            if(disableouputcscode == false)
+            {
+                TimeCounter.Singleton.Restart("生成序列化代码文件");
+                XbufferDesFileToCSCode.Singleton.configFolderPath(XbufferExcelExportConfig.Singleton.ExportConfigInfo.DesFileOutputPath,
+                                                                  XbufferExcelExportConfig.Singleton.ExportConfigInfo.TemplatePath,
+                                                                  XbufferExcelExportConfig.Singleton.ExportConfigInfo.CSClassCodeOutputPath,
+                                                                  XbufferExcelExportConfig.Singleton.ExportConfigInfo.CSBufferCodeOutputPath);
+                XbufferDesFileToCSCode.Singleton.writeAllDesFileToCSCode();
+                TimeCounter.Singleton.End();
+            }
 
             // 序列化数据
             TimeCounter.Singleton.Restart("序列化数据");
@@ -81,14 +105,17 @@ namespace XbufferExcelToData
             TimeCounter.Singleton.End();
 
             // 自动化生成表格加载相关代码
-            TimeCounter.Singleton.Restart("生成表格加载代码");
-            XbufferTemplateToCSCode.Singleton.configTemplateInfo(XbufferExcelExportConfig.Singleton.ExportConfigInfo.TemplatePath,
-                                                                 XbufferExcelExportConfig.Singleton.ExportConfigInfo.CSTemplateOutputPath,
-                                                                 ExcelDataManager.Singleton.ExcelsInfoMap.Values.ToList<ExcelInfo>());
-            Utilities.RecreateSpecificFolder(XbufferTemplateToCSCode.Singleton.TemplateCSOutputPath);
-            XbufferTemplateToCSCode.Singleton.parseGameDataManagerTemplate();
-            XbufferTemplateToCSCode.Singleton.parseExcelContainerTemplate();
-            TimeCounter.Singleton.End();
+            if (disableouputcscode == false)
+            {
+                TimeCounter.Singleton.Restart("生成表格加载代码");
+                XbufferTemplateToCSCode.Singleton.configTemplateInfo(XbufferExcelExportConfig.Singleton.ExportConfigInfo.TemplatePath,
+                                                                     XbufferExcelExportConfig.Singleton.ExportConfigInfo.CSTemplateOutputPath,
+                                                                     ExcelDataManager.Singleton.ExcelsInfoMap.Values.ToList<ExcelInfo>());
+                Utilities.RecreateSpecificFolder(XbufferTemplateToCSCode.Singleton.TemplateCSOutputPath);
+                XbufferTemplateToCSCode.Singleton.parseGameDataManagerTemplate();
+                XbufferTemplateToCSCode.Singleton.parseExcelContainerTemplate();
+                TimeCounter.Singleton.End();
+            }
 
             Console.WriteLine("导表完成!输入任意键结束!");
             Console.ReadKey();

@@ -1,7 +1,7 @@
 // t_AuthorInfo4的注释
 public partial class t_AuthorInfo4
 {
-	public int id;				// 唯一id
+	public int Id;				// 唯一id
 
 	public string author;				// 作者
 

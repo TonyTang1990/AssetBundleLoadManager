@@ -1,4 +1,4 @@
-namespace xbuffer
+﻿namespace xbuffer
 {
     public static class t_author_InfoBuffer
     {

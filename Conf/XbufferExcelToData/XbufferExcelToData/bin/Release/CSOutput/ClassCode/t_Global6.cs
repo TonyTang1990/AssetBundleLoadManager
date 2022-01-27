@@ -1,7 +1,7 @@
 // t_Global6的注释
 public partial class t_Global6
 {
-	public int id;				// 唯一id
+	public int Id;				// 唯一id
 
 	public string stringvalue;				// 字符串数据
 

@@ -76,17 +76,19 @@ namespace XbufferExcelToData
             {
                 Utilities.CheckOrCreateSpecificFolder(TemplateCSOutputPath);
 
-                var templatefilefullpath = TempalteFolderPath + mExcelContainerTemplateFileName;
-                var templatecontent = File.ReadAllText(templatefilefullpath);
+                var templateFileFullPath = TempalteFolderPath + mExcelContainerTemplateFileName;
+                var templateContent = File.ReadAllText(templateFileFullPath);
                 // 为每一个excel生成单独的excelContainer.cs
-                foreach(var excelinfo in mExcelInfoList)
+                foreach(var excelInfo in mExcelInfoList)
                 {
                     // 重置模板类容
-                    mTemplateInstance.resetContent(templatecontent);
+                    mTemplateInstance.resetContent(templateContent);
                     // 替换表格加载管理里的类名
-                    mTemplateInstance.setValue("#CLASS_NAME#", excelinfo.ExcelName);
+                    mTemplateInstance.setValue("#CLASS_NAME#", excelInfo.ExcelName);
+                    mTemplateInstance.setValue("#ID_TYPE#", excelInfo.getIdType());
+                    mTemplateInstance.setValue("#ID_NAME#", excelInfo.getIdName());
                     // 输出生成内容到文件
-                    var outputfilefullpath = TemplateCSOutputPath + excelinfo.ExcelName + "Container.cs";
+                    var outputfilefullpath = TemplateCSOutputPath + excelInfo.ExcelName + "Container.cs";
                     File.WriteAllText(outputfilefullpath, mTemplateInstance.getContent());
                 }
 
@@ -137,6 +139,17 @@ namespace XbufferExcelToData
                 {
                     // 替换数据加载循环里的类名
                     mTemplateInstance.setValue("#LOOP_CLASS_NAME#", excelinfo.ExcelName);
+                    mTemplateInstance.nextLoop();
+                }
+                mTemplateInstance.endLoop();
+
+                // 循环替换配置获取List和Map方法接口定义
+                mTemplateInstance.beginLoop("#CONTAINER_GET_LOOP#");
+                foreach (var excelinfo in mExcelInfoList)
+                {
+                    // 替换配置获取List和Map循环里的类名
+                    mTemplateInstance.setValue("#LOOP_CLASS_NAME#", excelinfo.ExcelName);
+                    mTemplateInstance.setValue("#ID_TYPE#", excelinfo.getIdType());
                     mTemplateInstance.nextLoop();
                 }
                 mTemplateInstance.endLoop();

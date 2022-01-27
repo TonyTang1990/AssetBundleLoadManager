@@ -2,3 +2,11 @@ E:\TonyTang\Work\MyPorjects\CS\XbufferExcelToData\XbufferExcelToData\bin\Release
 E:\TonyTang\Work\MyPorjects\CS\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.csprojAssemblyReference.cache
 E:\TonyTang\Work\MyPorjects\CS\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.csproj.CoreCompileInputs.cache
 E:\TonyTang\Work\MyPorjects\CS\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.exe
+G:\Projects\GitHubProjects\XbufferExcellToData\XbufferExcelToData\XbufferExcelToData\bin\Release\xbuffer_parser.exe.config
+G:\Projects\GitHubProjects\XbufferExcellToData\XbufferExcelToData\XbufferExcelToData\bin\Release\xbuffer_parser.exe
+G:\Projects\GitHubProjects\XbufferExcellToData\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.csproj.CoreCompileInputs.cache
+G:\Projects\GitHubProjects\XbufferExcellToData\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.exe
+E:\TonyTang\Work\Projects\MyGitHubProjects\XbuffExcelToData\XbufferExcelToData\XbufferExcelToData\bin\Release\xbuffer_parser.exe.config
+E:\TonyTang\Work\Projects\MyGitHubProjects\XbuffExcelToData\XbufferExcelToData\XbufferExcelToData\bin\Release\xbuffer_parser.exe
+E:\TonyTang\Work\Projects\MyGitHubProjects\XbuffExcelToData\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.csproj.CoreCompileInputs.cache
+E:\TonyTang\Work\Projects\MyGitHubProjects\XbuffExcelToData\XbufferExcelToData\XbufferExcelToData\Core\Xbuffer\xbuffer_parser\obj\Release\xbuffer_parser.exe

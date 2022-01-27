@@ -1,4 +1,4 @@
-// t_author_Info的注释
+﻿// t_author_Info的注释
 public partial class t_author_Info
 {
 	public int id;				// 唯一id

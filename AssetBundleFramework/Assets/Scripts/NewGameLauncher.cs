@@ -679,15 +679,15 @@ namespace TResource
         public void onPrintAllExcellData()
         {
             DIYLog.Log("onPrintAllExcellData()");
-            var languagelist = GameDataManager.Singleton.t_languagecontainer.getList();
-            foreach (var language in languagelist)
+            var languageList = GameDataManager.Singleton.Gett_language_cnList();
+            foreach (var language in languageList)
             {
                 DIYLog.Log("----------------------------------------------");
-                DIYLog.Log(string.Format("language id : {0}", language.id));
-                DIYLog.Log(string.Format("language content : {0}", language.content));
+                DIYLog.Log(string.Format("language Key : {0}", language.Key));
+                DIYLog.Log(string.Format("language Value : {0}", language.Value));
             }
-            var authorlist = GameDataManager.Singleton.t_author_Infocontainer.getList();
-            foreach (var author in authorlist)
+            var authorList = GameDataManager.Singleton.Gett_author_InfoList();
+            foreach (var author in authorList)
             {
                 DIYLog.Log("----------------------------------------------");
                 DIYLog.Log(string.Format("author id : {0}", author.id));
@@ -696,16 +696,12 @@ namespace TResource
                 DIYLog.Log(string.Format("author national : {0}", author.national));
                 DIYLog.Log(string.Format("author sex : {0}", author.sex));
             }
-            var globallist = GameDataManager.Singleton.t_globalcontainer.getList();
-            foreach (var global in globallist)
+            var globalSList = GameDataManager.Singleton.Gett_global_sList();
+            foreach (var global in globalSList)
             {
                 DIYLog.Log("----------------------------------------------");
-                DIYLog.Log(string.Format("global id : {0}", global.id));
-                DIYLog.Log(string.Format("global intvalue : {0}", global.intvalue));
-                DIYLog.Log(string.Format("global stringvalue : {0}", global.stringvalue));
-                DIYLog.Log(string.Format("global floatvalue : {0}", global.floatvalue));
-                DIYLog.Log(string.Format("global intarrayvalue : {0}", global.intarrayvalue.ToString()));
-                DIYLog.Log(string.Format("global stringarrayvalue : {0}", global.stringarrayvalue.ToString()));
+                DIYLog.Log(string.Format("global Key : {0}", global.Key));
+                DIYLog.Log(string.Format("global stringvalue : {0}", global.Value));
             }
         }
 

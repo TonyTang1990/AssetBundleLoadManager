@@ -1,0 +1,6 @@
+// t_language的注释
+class t_language
+{
+	Id:string;			                          //语言keyID
+	string_value:string;			                //字符串值
+}

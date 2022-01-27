@@ -1,0 +1,6 @@
+// t_global_b的注释
+class t_global_b
+{
+	Key:string;			                         //唯一Key
+	Value:bool;			                         //bool值
+}

@@ -1,7 +1,7 @@
 // t_Global2的注释
 class t_Global2
 {
-	id:int;			                             //唯一id
+	Id:int;			                             //唯一id
 	stringvalue:string;			                 //字符串数据
 	intvalue:int;			                       //整形数据
 	floatvalue:float;			                   //浮点数数据

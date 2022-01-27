@@ -17,20 +17,59 @@ public static class DataAccess
 {
 
     /// <summary>
-    /// 读取指定id的全局表数据
+    /// 读取指定Key的t_global_s数据
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="key"></param>
     /// <returns></returns>
-    public static t_global readGlobalData(int id)
+    public static t_global_s readGlobalSData(string key)
     {
-        var globalcontainer = GameDataManager.Singleton.t_globalcontainer.getMap();
-        if (globalcontainer.ContainsKey(id))
+        var globalSContainer = GameDataManager.Singleton.Gett_global_sMap();
+        if (globalSContainer.ContainsKey(key))
         {
-            return globalcontainer[id];
+            return globalSContainer[key];
         }
         else
         {
-            Debug.LogError(string.Format("找不到全局表ID : {0}数据配置！", id));
+            Debug.LogError(string.Format("找不到t_global_s:{0}数据配置！", key));
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 读取指定Key的t_global_b数据
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public static t_global_b readGlobalBData(string key)
+    {
+        var globalBContainer = GameDataManager.Singleton.Gett_global_bMap();
+        if (globalBContainer.ContainsKey(key))
+        {
+            return globalBContainer[key];
+        }
+        else
+        {
+            Debug.LogError(string.Format("找不到t_global_b:{0}数据配置！", key));
+            return null;
+        }
+    }
+
+
+    /// <summary>
+    /// 读取指定Key的t_global_i数据
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public static t_global_i readGlobalIData(string key)
+    {
+        var globalIContainer = GameDataManager.Singleton.Gett_global_iMap();
+        if (globalIContainer.ContainsKey(key))
+        {
+            return globalIContainer[key];
+        }
+        else
+        {
+            Debug.LogError(string.Format("找不到t_global_i:{0}数据配置！", key));
             return null;
         }
     }
@@ -42,10 +81,10 @@ public static class DataAccess
     /// <returns></returns>
     public static t_author_Info readAutorInfo(int id)
     {
-        var authorcontainer = GameDataManager.Singleton.t_author_Infocontainer.getMap();
-        if (authorcontainer.ContainsKey(id))
+        var authorContainer = GameDataManager.Singleton.Gett_author_InfoMap();
+        if (authorContainer.ContainsKey(id))
         {
-            return authorcontainer[id];
+            return authorContainer[id];
         }
         else
         {
@@ -57,18 +96,19 @@ public static class DataAccess
     /// <summary>
     /// 读取指定id的语言包字符串信息
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="key"></param>
     /// <returns></returns>
-    public static string readLanguageInfo(int id)
+    public static string readLanguageInfo(string key)
     {
-        var languagecontainer = GameDataManager.Singleton.t_languagecontainer.getMap();
-        if (languagecontainer.ContainsKey(id))
+        // TODO: 多语言判定读取
+        var languageContainer = GameDataManager.Singleton.Gett_language_cnMap();
+        if (languageContainer.ContainsKey(key))
         {
-            return languagecontainer[id].content;
+            return languageContainer[key].Value;
         }
         else
         {
-            Debug.LogError(string.Format("找不到语言包表ID : {0}数据配置！", id));
+            Debug.LogError(string.Format("找不到语言包表:{0}数据配置！", key));
             return null;
         }
     }
@@ -76,19 +116,20 @@ public static class DataAccess
     /// <summary>
     /// 读取指定id的语言包信息
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="key"></param>
     /// <param paras="">参数</param>
     /// <returns></returns>
-    public static string readLanguageInfo(int id, params object[] paras)
+    public static string readLanguageInfo(string key, params object[] paras)
     {
-        var languagecontainer = GameDataManager.Singleton.t_languagecontainer.getMap();
-        if (languagecontainer.ContainsKey(id))
+        // TODO: 多语言判定读取
+        var languageContainer = GameDataManager.Singleton.Gett_language_cnMap();
+        if (languageContainer.ContainsKey(key))
         {
-            return string.Format(languagecontainer[id].content, paras);
+            return string.Format(languageContainer[key].Value, paras);
         }
         else
         {
-            Debug.LogError(string.Format("找不到语言包表ID : {0}数据配置！", id));
+            Debug.LogError(string.Format("找不到语言包表:{0}数据配置！", key));
             return null;
         }
     }

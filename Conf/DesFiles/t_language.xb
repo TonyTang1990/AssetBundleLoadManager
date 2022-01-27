@@ -1,6 +1,0 @@
-// t_language的注释
-class t_language
-{
-	id:int;			                             //唯一id
-	content:string;			                     //字符串数据
-}

@@ -1,0 +1,6 @@
+// t_global_i的注释
+class t_global_i
+{
+	Key:string;			                         //唯一Key
+	Value:int;			                          //整形值
+}

@@ -62,7 +62,7 @@ namespace Data
                         var obj= t_AuthorInfo2Buffer.deserialize(data, ref offset);
                         offset = 0;
                         list.Add(obj);
-                        map.Add(obj.id, obj); 
+                        map.Add(obj.Id, obj); 
                     }
                 }catch (Exception ex)
                 {

@@ -1,0 +1,6 @@
+// t_global_s的注释
+class t_global_s
+{
+	Key:string;			                         //唯一Key
+	Value:string;			                       //字符串值
+}

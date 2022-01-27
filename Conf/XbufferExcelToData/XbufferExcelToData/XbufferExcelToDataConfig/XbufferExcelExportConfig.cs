@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace XbufferExcelToData
 {
@@ -39,41 +40,13 @@ namespace XbufferExcelToData
         /// </summary>
         public bool LoadExportConfigData()
         {
-            if(File.Exists(XMLConfigFileFullPath))
+            if (File.Exists(XMLConfigFileFullPath))
             {
-                XmlDocument xmldoc = new XmlDocument();
-                xmldoc.Load(XMLConfigFileFullPath);
-                var rootnode = xmldoc.DocumentElement;
-                var rootnodename = rootnode.Name;
-                var reflecttype = this.GetType().Assembly.GetType("XbufferExcelToData." + rootnodename);
-                if(reflecttype ==  typeof(ExportConfig))
-                {
-                    ExportConfigInfo = new ExportConfig();
-                    var childnodes = rootnode.ChildNodes;
-                    for(int i = 0, length = childnodes.Count; i < length; i++)
-                    {
-                        var property = ExportConfigInfo.GetType().GetProperty(childnodes[i].Name);
-                        if(property != null)
-                        {
-                            // 支持配置相对路径
-                            var fullpath = Path.GetFullPath(childnodes[i].InnerText);
-                            fullpath = fullpath.Replace("\\", "/");
-                            property.SetValue(ExportConfigInfo, fullpath);
-                        }
-                        else
-                        {
-                            Console.WriteLine(string.Format("不支持的属性配置 : {0}", childnodes[i].Name));
-                        }
-                    }
-                    ExportConfigInfo.printOutAllInfo();
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine(string.Format("找不到配置的类型数据信息 : {0}", rootnodename));
-                    Console.WriteLine("当前只支持ExportConfig类型信息配置");
-                    return false;
-                }
+                XmlSerializer ser = new XmlSerializer(typeof(ExportConfig));
+                FileStream fs = new FileStream(XMLConfigFileFullPath, FileMode.Open);
+                ExportConfigInfo = (ExportConfig)ser.Deserialize(fs);
+                fs.Close();
+                return ExportConfigInfo != null;
             }
             else
             {

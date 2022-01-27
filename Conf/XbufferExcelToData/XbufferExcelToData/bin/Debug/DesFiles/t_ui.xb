@@ -1,0 +1,8 @@
+// t_ui的注释
+class t_ui
+{
+	WinName:string;			                     //窗口名
+	ResPath:string;			                     //资源路径
+	IsFullScreen:bool;			                  //是否全屏
+	Layer:int;			                          //UI层级Layer
+}
