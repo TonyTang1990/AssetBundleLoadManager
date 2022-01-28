@@ -27,29 +27,14 @@ namespace TResource
         public const string ShaderVariantsAssetName = "DIYShaderVariantsCollection";
 
         /// <summary>
-        /// Asset打包信息Asset名(用于存储Asset打包映射AB信息(从而做到根据Asset路径就能查到AB名字))
-        /// </summary>
-        public const string AssetBuildInfoAssetName = "AssetBuildInfo";
-
-        /// <summary>
         /// Asset打包信息Asset相对存储目录
         /// </summary>
         public const string AssetBuildInfoAssetRelativePath = "/Res/assetbuildinfo";
 
         /// <summary>
-        /// AssetBundle文件默认的后缀名
+        /// 依赖文件Manifest的Asset名
         /// </summary>
-        public const string AssetBundleDefaultVariant = "bundle";
-
-        /// <summary>
-        /// AssetBundle文件默认的后缀名
-        /// </summary>
-        public const string AssetBundleDefaultVariantWithPoint = ".bundle";
-
-        /// <summary>
-        /// AssetBundle依赖信息文件默认的后缀名
-        /// </summary>
-        public const string AssetBundleDefaultManifestPostfixWithPoint = ".manifest";
+        public const string AssetBundleManifestAssetName = "AssetBundleManifest";
 
         /// <summary>
         /// 包内AB的MD5信息记录文件名

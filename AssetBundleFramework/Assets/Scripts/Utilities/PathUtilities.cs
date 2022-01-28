@@ -53,4 +53,38 @@ public static class PathUtilities
             return string.Empty;
         }
     }
+
+    /// <summary>
+    /// 获取Asset的全路径
+    /// </summary>
+    /// <param name="assetpath">Asset相对路径</param>
+    /// <returns></returns>
+    public static string GetAssetFullPath(string assetpath)
+    {
+        var index = Application.dataPath.LastIndexOf("Assets");
+        var assetfullpath = Application.dataPath.Substring(0, index) + assetpath;
+        return assetfullpath;
+    }
+
+    /// <summary>
+    /// 获取指定路径移除指定后缀名的路径
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="postFix"></param>
+    /// <returns></returns>
+    public static string GetPathWithoutPostFix(string path, string postFix)
+    {
+        var hasPostFix = !string.IsNullOrEmpty(postFix);
+        if (!hasPostFix)
+        {
+            return path;
+        }
+        if (!path.EndsWith(postFix))
+        {
+            Debug.LogError($"Path:{path}没有以后缀:{postFix}结尾,移除失败!");
+            return path;
+        }
+        var postFixIndex = path.LastIndexOf(postFix);
+        return path.Substring(0, postFixIndex);
+    }
 }

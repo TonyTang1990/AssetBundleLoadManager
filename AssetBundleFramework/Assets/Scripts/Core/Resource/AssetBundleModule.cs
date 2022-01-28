@@ -32,6 +32,59 @@ namespace TResource
         protected AssetBuildInfoAsset mAssetBuildInfo;
 
         /// <summary>
+        /// AssetBundle依赖信息Map
+        /// Ket为AssetBundle的路径(不带后缀),Value为依赖的AssetBundle路径列表(不带后缀)
+        /// Note:
+        /// 不带后缀是为了上层加载AssetBundle对后缀名无感知
+        /// </summary>
+        public Dictionary<string, string[]> AssetBundleDependencyMap
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 加载AssetBundle依赖信息
+        /// </summary>
+        private void loadAssetBuildManifest()
+        {
+            AssetBundleDependencyMap = new Dictionary<string, string[]>();
+            // Note:
+            // 依赖AB不带后缀
+            var abPath = AssetBundlePath.GetABLoadFullPathNoPostFix(AssetBundlePath.DependencyFileName);
+            AssetBundle ab = AssetBundle.LoadFromFile(abPath);
+            if (ab != null)
+            {
+                var assetBundlePostFix = AssetBundlePath.GetAssetBundlePostFix();
+                var hasAssetBundlePostFix = !string.IsNullOrEmpty(assetBundlePostFix);
+                assetBundlePostFix = hasAssetBundlePostFix ? $".{assetBundlePostFix}" : assetBundlePostFix;
+                var assetBundleManifest = ab.LoadAsset<AssetBundleManifest>(ResourceConstData.AssetBundleManifestAssetName);
+                var allAssetBundlePath = assetBundleManifest.GetAllAssetBundles();
+                for (int i = 0, length = allAssetBundlePath.Length; i < length; i++)
+                {
+                    var assetBundlePath = allAssetBundlePath[i];
+                    var dependenciesPathes = assetBundleManifest.GetAllDependencies(assetBundlePath);
+                    if (hasAssetBundlePostFix)
+                    {
+                        assetBundlePath = PathUtilities.GetPathWithoutPostFix(assetBundlePath, assetBundlePostFix);
+                        for (int j = 0, length2 = dependenciesPathes.Length; j < length2; j++)
+                        {
+                            var dependenciesPath = dependenciesPathes[j];
+                            dependenciesPathes[j] = PathUtilities.GetPathWithoutPostFix(dependenciesPath, assetBundlePostFix);
+                        }
+                    }
+                    AssetBundleDependencyMap.Add(assetBundlePath, dependenciesPathes);
+                }
+                ab.Unload(true);
+                Debug.Log("AssetBundle依赖信息文件加载成功!");
+            }
+            else
+            {
+                Debug.LogError($"找不到AssetBundle依赖信息文件:{AssetBundlePath.DependencyFileName}");
+            }
+        }
+
+        /// <summary>
         /// 加载Asset打包信息
         /// </summary>
         private void loadAssetBuildInfo()
@@ -42,21 +95,21 @@ namespace TResource
                 Resources.UnloadAsset(mAssetBuildInfo);
                 mAssetBuildInfo = null;
             }
-            // AssetBundle打包信息比较特殊，在未加载完成前拿不到AB名字映射
-            // 所以这里单独特殊加载,不走正常流程
-            var abpath = AssetBundlePath.GetABLoadFullPath(ResourceConstData.AssetBuildInfoAssetName.ToLower());
+            // AssetBundle打包信息没有依赖信息，直接加载即可
+            var assetBuildInfoAssetName = AssetBundlePath.GetAssetBuildInfoAssetName();
+            var abpath = AssetBundlePath.GetABLoadFullPath(assetBuildInfoAssetName.ToLower());
             AssetBundle ab = null;
             ab = AssetBundle.LoadFromFile(abpath);
             if (ab != null)
             {
-                mAssetBuildInfo = ab.LoadAsset<AssetBuildInfoAsset>(ResourceConstData.AssetBuildInfoAssetName);
+                mAssetBuildInfo = ab.LoadAsset<AssetBuildInfoAsset>(assetBuildInfoAssetName);
                 mAssetBuildInfo.init();
                 ab.Unload(false);
                 Debug.Log("Asset打包信息文件加载成功!");
             }
             else
             {
-                Debug.LogError($"找不到Asset打包信息文件:{ResourceConstData.AssetBuildInfoAssetName}");
+                Debug.LogError($"找不到Asset打包信息文件:{assetBuildInfoAssetName}");
             }
         }
 
@@ -67,13 +120,13 @@ namespace TResource
         /// <returns></returns>
         private string[] getAssetBundleDpInfo(string abpath)
         {
-            if(string.IsNullOrEmpty(abpath))
+            if (string.IsNullOrEmpty(abpath))
             {
                 return null;
             }
-            if (mAssetBuildInfo.ABPathDepMap.ContainsKey(abpath))
+            if (AssetBundleDependencyMap.ContainsKey(abpath))
             {
-                return mAssetBuildInfo.ABPathDepMap[abpath];
+                return AssetBundleDependencyMap[abpath];
             }
             else
             {
@@ -106,12 +159,12 @@ namespace TResource
         /// </summary>
         public void printAllResourceDpInfo()
         {
-            foreach (var abinfo in mAssetBuildInfo.ABPathDepMap)
+            foreach (var abinfo in AssetBundleDependencyMap)
             {
-                ResourceLogger.log(string.Format("AB Name:{0}", abinfo.Key));
+                ResourceLogger.log(string.Format("AB Path:{0}", abinfo.Key));
                 foreach (var dpfile in abinfo.Value)
                 {
-                    ResourceLogger.log(string.Format("       DP AB Name:{0}", dpfile));
+                    ResourceLogger.log(string.Format("       DP AB Path:{0}", dpfile));
                 }
             }
         }
@@ -132,6 +185,8 @@ namespace TResource
             mUnsedAssetBundleInfoList = new List<AssetBundleInfo>();
 
             ResLoadMode = ResourceLoadMode.AssetBundle;
+            // 加载AssetBundle依赖信息
+            loadAssetBuildManifest();
             // 加载Asset打包信息
             loadAssetBuildInfo();
             // 延迟绑定AB相关信息获取委托

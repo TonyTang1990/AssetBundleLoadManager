@@ -145,15 +145,14 @@ namespace MotionFramework.Editor
 
 			// 准备工作
 			List<AssetBundleBuild> buildInfoList = new List<AssetBundleBuild>();
-            Dictionary<string, AssetBundleBuildInfo> abbuildinfomap = new Dictionary<string, AssetBundleBuildInfo>();
-			List<AssetInfo> buildMap = GetBuildMap(ref abbuildinfomap);
-			if (buildMap.Count == 0)
+			List<AssetInfo> buildAssetInfoList = GetBuildAssetInfoList();
+			if (buildAssetInfoList.Count == 0)
 				throw new Exception("[BuildPatch] 构建列表不能为空");
 
-			Log($"构建列表里总共有{buildMap.Count}个资源需要构建");
-			for (int i = 0; i < buildMap.Count; i++)
+			Log($"构建列表里总共有{buildAssetInfoList.Count}个资源需要构建");
+			for (int i = 0; i < buildAssetInfoList.Count; i++)
 			{
-            	AssetInfo assetInfo = buildMap[i];
+            	AssetInfo assetInfo = buildAssetInfoList[i];
 				AssetBundleBuild buildInfo = new AssetBundleBuild();
                 buildInfo.assetBundleName = assetInfo.AssetBundleLabel;
                 buildInfo.assetBundleVariant = assetInfo.AssetBundleVariant;
@@ -163,14 +162,14 @@ namespace MotionFramework.Editor
             // AssetBuildInfoAsset打包信息单独打包
             var assetbuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBuildInfoAssetRelativePath}/{ResourceConstData.AssetBuildInfoAssetName}.asset";
             var buildinfo = new AssetBundleBuild();
-            buildinfo.assetBundleName = ResourceConstData.AssetBuildInfoAssetName;
-            buildinfo.assetBundleVariant = ResourceConstData.AssetBundleDefaultVariant;
-            buildinfo.assetNames = new string[] { assetbuildinfoassetrelativepath };
+            buildinfo.assetBundleName = GetAssetBuildInfoAssetName();
+			buildinfo.assetBundleVariant = GetBuildAssetBundlePostFix();
+			buildinfo.assetNames = new string[] { assetbuildinfoassetrelativepath };
             buildInfoList.Add(buildinfo);
             abbuildinfomap.Add(assetbuildinfoassetrelativepath, new AssetBundleBuildInfo(ResourceConstData.AssetBuildInfoAssetName.ToLower()));
 
-            // 更新AB打包信息Asset(e.g.比如Asset打包信息, AB打包依赖信息)
-            UpdateAssetBundleBuildInfoAsset(buildInfoList, abbuildinfomap);
+            // 更新AB打包信息Asset(e.g.比如Asset打包信息)
+            UpdateAssetBundleBuildInfoAsset(buildInfoList);
 
             // 开始构建
             Log($"开始构建......");
@@ -192,7 +191,7 @@ namespace MotionFramework.Editor
 			CreateAssetBundleMd5InfoFile();
 
             // 视频单独打包
-            PackVideo(buildMap);
+            PackVideo(buildAssetInfoList);
 			//// 加密资源文件
 			//List<string> encryptList = EncryptFiles(unityManifest);
 
@@ -212,8 +211,7 @@ namespace MotionFramework.Editor
         /// 更新AssetBundle打包编译信息Asset
         /// </summary>
         /// <param name="buildinfolist"></param>
-        /// <param name="abmanifest"></param>
-        private void UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuild> buildinfolist, Dictionary<string, AssetBundleBuildInfo> abbuildinfomap)
+        private void UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuild> buildinfolist)
         {
             // Note: AssetBundle打包信息统一存小写，确保和AB打包那方一致
             var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBuildInfoAssetRelativePath}/{ResourceConstData.AssetBuildInfoAssetName}.asset";
@@ -235,10 +233,6 @@ namespace MotionFramework.Editor
                 abbi.ABVariantPath = bi.assetBundleVariant != null ? bi.assetBundleVariant.ToLower() : null;
                 assetbundlebuildasset.AssetBuildInfoList.Add(abbi);
             }
-
-            // AssetBundle打包信息构建
-            assetbundlebuildasset.AssetBundleBuildInfoList.Clear();
-            assetbundlebuildasset.AssetBundleBuildInfoList = abbuildinfomap.Values.ToList();
 
             EditorUtility.SetDirty(assetbundlebuildasset);
             AssetDatabase.SaveAssets();
@@ -290,7 +284,7 @@ namespace MotionFramework.Editor
 		/// <summary>
 		/// 准备工作
 		/// </summary>
-		private List<AssetInfo> GetBuildMap(ref Dictionary<string, AssetBundleBuildInfo> abbuildinfomap)
+		private List<AssetInfo> GetBuildAssetInfoList()
 		{
 			int progressBarCount = 0;
 			Dictionary<string, AssetInfo> allAsset = new Dictionary<string, AssetInfo>();
@@ -357,42 +351,6 @@ namespace MotionFramework.Editor
 				EditorUtility.DisplayProgressBar("进度", $"设置资源标签：{progressBarCount}/{allAsset.Count}", (float)progressBarCount / allAsset.Count);
 			}
 
-            // 整理Asset所有有效的Asset依赖
-            // 设置资源标签
-            TimeCounter timercounter = new TimeCounter();
-            timercounter.Start("AB依赖分析");
-            progressBarCount = 0;
-            foreach (KeyValuePair<string, AssetInfo> pair in allAsset)
-            {
-                AssetBundleBuildInfo abbuildinfo = null;
-                if (!abbuildinfomap.TryGetValue(pair.Value.AssetBundleLabel, out abbuildinfo))
-                {
-                    // 统一小写，确保和AssetBuildInfo那方一致
-                    var assetbundlelabletolower = pair.Value.AssetBundleLabel.ToLower();
-                    abbuildinfo = new AssetBundleBuildInfo(assetbundlelabletolower);
-                    abbuildinfomap.Add(pair.Value.AssetBundleLabel, abbuildinfo);
-                }
-                var directdepends = AssetDatabase.GetDependencies(pair.Key, false);
-                foreach(var directdepend in directdepends)
-                {
-                    AssetInfo assetinfo = null;
-                    // allAsset里包含的才是有效的Asset
-                    if(allAsset.TryGetValue(directdepend, out assetinfo))
-                    {
-                        // 统一小写，确保和AssetBuildInfo那方一致
-                        var assetablablelower = assetinfo.AssetBundleLabel.ToLower();
-                        if (!pair.Value.AssetBundleLabel.Equals(assetinfo.AssetBundleLabel) && !abbuildinfo.DepABPathList.Contains(assetablablelower))
-                        {
-                            abbuildinfo.DepABPathList.Add(assetablablelower);
-                        }
-                    }
-                }
-                // 进度条
-                progressBarCount++;
-                EditorUtility.DisplayProgressBar("进度", $"整理AB依赖关系：{progressBarCount}/{allAsset.Count}", (float)progressBarCount / allAsset.Count);
-            }
-            timercounter.End();
-
             EditorUtility.ClearProgressBar();
 
 			// 返回结果
@@ -417,6 +375,55 @@ namespace MotionFramework.Editor
 			}
 			return depends;
 		}
+
+        /// <summary>
+        /// 获取AB打包后缀名
+        /// </summary>
+        /// <returns></returns>
+        private string GetBuildAssetBundlePostFix()
+        {
+            if (BuildTarget == BuildTarget.StandaloneWindows || BuildTarget == BuildTarget.StandaloneWindows64)
+            {
+                return AssetBundlePath.WindowAssetBundlePostFix;
+            }
+            if (BuildTarget == BuildTarget.Android)
+            {
+                return AssetBundlePath.AndroidAssetBundlePostFix;
+            }
+            if (BuildTarget == BuildTarget.iOS)
+            {
+                return AssetBundlePath.IOSAssetBundlePostFix;
+            }
+            else
+            {
+                Debug.LogError($"不支持的打包平台:{BuildTarget},获取AB后缀名失败!");
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 获取Asset打包信息文件名
+        /// </summary>
+        private string GetAssetBuildInfoAssetName()
+        {
+            if (BuildTarget == BuildTarget.StandaloneWindows || BuildTarget == BuildTarget.StandaloneWindows64)
+            {
+                return AssetBundlePath.WindowAssetBuildInfoAssetName;
+            }
+            if (BuildTarget == BuildTarget.Android)
+            {
+                return AssetBundlePath.AndroidAssetBuildInfoAssetName;
+            }
+            if (BuildTarget == BuildTarget.iOS)
+            {
+                return AssetBundlePath.IOSAssetBuildInfoAssetName;
+            }
+            else
+            {
+                Debug.LogError($"不支持的打包平台:{BuildTarget},获取Asset打包信息文件名失败!");
+                return string.Empty;
+            }
+        }
 
         /// <summary>
         /// 检测资源是否有效
@@ -451,29 +458,19 @@ namespace MotionFramework.Editor
 		/// </summary>
 		private void SetAssetBundleLabelAndVariant(AssetInfo assetInfo)
 		{
-			// 如果资源所在文件夹的名称包含后缀符号，则为变体资源
-			string folderName = Path.GetDirectoryName(assetInfo.AssetPath); // "Assets/Texture.HD/background.jpg" --> "Assets/Texture.HD"
-			if (Path.HasExtension(folderName))
-			{
-				string extension = Path.GetExtension(folderName);
-				string label = AssetBundleCollectSettingData.GetAssetBundleLabel(assetInfo.AssetPath);
-				assetInfo.AssetBundleLabel = PathUtilities.GetRegularPath(label.Replace(extension, string.Empty));
-				assetInfo.AssetBundleVariant = extension.RemoveFirstChar();
-			}
-			else
-			{
-				string label = AssetBundleCollectSettingData.GetAssetBundleLabel(assetInfo.AssetPath);
-				assetInfo.AssetBundleLabel = PathUtilities.GetRegularPath(label);
-				assetInfo.AssetBundleVariant = ResourceConstData.AssetBundleDefaultVariant;
-			}
-		}
+            // Note:
+            // 不支持变体功能，变体功能只用于区分不同平台的AB包后缀
+            string label = AssetBundleCollectSettingData.GetAssetBundleLabel(assetInfo.AssetPath);
+            assetInfo.AssetBundleLabel = PathUtilities.GetRegularPath(label);
+            assetInfo.AssetBundleVariant = GetBuildAssetBundlePostFix();
+        }
         #endregion
 
         #region AssetBundle资源热更新相关
-		/// <summary>
-		/// 创建AssetBundle的MD5信息文件
-		/// </summary>
-		private void CreateAssetBundleMd5InfoFile()
+        /// <summary>
+        /// 创建AssetBundle的MD5信息文件
+        /// </summary>
+        private void CreateAssetBundleMd5InfoFile()
         {
 			var assetBundleMd5FilePath = AssetBundlePath.GetInnerAssetBundleMd5FilePath();
 			// 确保创建最新的
@@ -503,15 +500,15 @@ namespace MotionFramework.Editor
         #endregion
 
         #region 视频相关
-        private void PackVideo(List<AssetInfo> buildMap)
+        private void PackVideo(List<AssetInfo> buildAssetInfoList)
 		{
 			// 注意：在Unity2018.4截止的版本里，安卓还不支持压缩的视频Bundle
 			if (BuildTarget == BuildTarget.Android)
 			{
 				Log($"开始视频单独打包（安卓平台）");
-				for (int i = 0; i < buildMap.Count; i++)
+				for (int i = 0; i < buildAssetInfoList.Count; i++)
 				{
-					AssetInfo assetInfo = buildMap[i];
+					AssetInfo assetInfo = buildAssetInfoList[i];
 					if (assetInfo.IsVideoAsset)
 					{
 						BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
