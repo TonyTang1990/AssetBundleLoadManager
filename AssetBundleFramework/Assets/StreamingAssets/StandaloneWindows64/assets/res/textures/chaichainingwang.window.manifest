@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 1046490114
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7b5f8c010a5c5e81071acb9d9267ac22
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 0a6f9ca6de27cedd10f0532db8ca5f17
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/textures/chaichainingwang.jpg
+Dependencies: []

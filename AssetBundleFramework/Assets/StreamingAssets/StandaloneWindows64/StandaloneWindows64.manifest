@@ -1,147 +1,129 @@
 ManifestFileVersion: 0
-CRC: 3487041270
+CRC: 1273528872
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: assets/res/atlas/shareatlas/spriteatlas/playerpreview.bundle
+      Name: assets/res/atlas/shareatlas/spriteatlas/playerpreview.window
       Dependencies: {}
     Info_1:
-      Name: assets/res/atlas/shareatlas/spriteatlas/playerpreview2.bundle
+      Name: assets/res/atlas/shareatlas/spriteatlas/playerpreview2.window
       Dependencies: {}
     Info_2:
-      Name: assets/res/atlas/shareatlas/tutorialatlas.bundle
+      Name: assets/res/atlas/shareatlas/tutorialatlas.window
       Dependencies: {}
     Info_3:
-      Name: assets/res/audios/music/backgroundmusic.bundle
+      Name: assets/res/audios/music/backgroundmusic.window
       Dependencies: {}
     Info_4:
-      Name: assets/res/audios/music/df_bg_music.bundle
+      Name: assets/res/audios/music/df_bg_music.window
       Dependencies: {}
     Info_5:
-      Name: assets/res/audios/sfx/sfx1/coins.bundle
+      Name: assets/res/audios/sfx/sfx1/coins.window
       Dependencies: {}
     Info_6:
-      Name: assets/res/audios/sfx/sfx1/correct.bundle
+      Name: assets/res/audios/sfx/sfx1/correct.window
       Dependencies: {}
     Info_7:
-      Name: assets/res/audios/sfx/sfx1/explosion.bundle
+      Name: assets/res/audios/sfx/sfx1/explosion.window
       Dependencies: {}
     Info_8:
-      Name: assets/res/windows/mainwindow.bundle
+      Name: assets/res/windows/mainwindow.window
       Dependencies:
-        Dependency_0: assets/res/atlas/shareatlas/spriteatlas/playerpreview.bundle
-        Dependency_1: assets/res/atlas/shareatlas/tutorialatlas.bundle
+        Dependency_0: assets/res/atlas/shareatlas/spriteatlas/playerpreview.window
+        Dependency_1: assets/res/atlas/shareatlas/tutorialatlas.window
     Info_9:
-      Name: shaderlist.bundle
+      Name: shaderlist.window
       Dependencies: {}
     Info_10:
-      Name: assets/res/prefabs/imagebuildin.bundle
+      Name: assets/res/prefabs/imagebuildin.window
       Dependencies:
-        Dependency_0: assets/res/buildinresources/buildinmaterials.bundle
+        Dependency_0: assets/res/buildinresources/buildinmaterials.window
     Info_11:
-      Name: assets/res/buildinresources/buildinmaterials.bundle
+      Name: assets/res/buildinresources/buildinmaterials.window
       Dependencies:
-        Dependency_0: shaderlist.bundle
+        Dependency_0: shaderlist.window
     Info_12:
-      Name: assets/res/prefabs/pre_svccube.bundle
-      Dependencies: {}
-    Info_13:
-      Name: assets/res/prefabs/rawimagebuildin.bundle
+      Name: assets/res/prefabs/rawimagebuildin.window
       Dependencies:
-        Dependency_0: assets/res/buildinresources/buildinmaterials.bundle
-        Dependency_1: assets/res/buildinresources/buildintextures.bundle
+        Dependency_0: assets/res/buildinresources/buildinmaterials.window
+        Dependency_1: assets/res/buildinresources/buildintextures.window
+    Info_13:
+      Name: assets/res/buildinresources/buildintextures.window
+      Dependencies: {}
     Info_14:
-      Name: assets/res/buildinresources/buildintextures.bundle
+      Name: assets/res/prefabs/sfxtemplate.window
       Dependencies: {}
     Info_15:
-      Name: assets/res/prefabs/sfxtemplate.bundle
-      Dependencies: {}
+      Name: assets/res/sharematerials/sharebluematerial.window
+      Dependencies:
+        Dependency_0: shaderlist.window
     Info_16:
-      Name: assets/res/prefabs/testmd5comparison.bundle
+      Name: assets/res/sharematerials/sharematerial.window
       Dependencies:
-        Dependency_0: assets/res/buildinresources/buildinmaterials.bundle
+        Dependency_0: shaderlist.window
     Info_17:
-      Name: assets/res/prefabs/testmd5comparisonresourceupdate.bundle
+      Name: assets/res/sharematerials/shareredmaterial.window
       Dependencies:
-        Dependency_0: assets/res/buildinresources/buildinmaterials.bundle
+        Dependency_0: shaderlist.window
     Info_18:
-      Name: assets/res/sharematerials/sharebluematerial.bundle
+      Name: assets/res/actors/cube.window
       Dependencies:
-        Dependency_0: shaderlist.bundle
+        Dependency_0: assets/res/sharematerials/sharematerial.window
     Info_19:
-      Name: assets/res/sharematerials/sharematerial.bundle
+      Name: assets/res/actors/sphere.window
       Dependencies:
-        Dependency_0: shaderlist.bundle
+        Dependency_0: assets/res/sharematerials/sharematerial.window
     Info_20:
-      Name: assets/res/sharematerials/shareredmaterial.bundle
-      Dependencies:
-        Dependency_0: shaderlist.bundle
+      Name: assets/res/actors/testbyfileandsubfolder.window
+      Dependencies: {}
     Info_21:
-      Name: assets/res/actors/cube.bundle
+      Name: assets/res/actors/zombunny.window
       Dependencies:
-        Dependency_0: assets/res/sharematerials/sharematerial.bundle
+        Dependency_0: shaderlist.window
+        Dependency_1: assets/res/shaders/rim lit bumped specular.window
     Info_22:
-      Name: assets/res/actors/sphere.bundle
+      Name: assets/res/shaders/rim lit bumped specular.window
       Dependencies:
-        Dependency_0: assets/res/sharematerials/sharematerial.bundle
+        Dependency_0: shaderlist.window
     Info_23:
-      Name: assets/res/actors/zombunny/materials.bundle
-      Dependencies:
-        Dependency_0: shaderlist.bundle
-        Dependency_1: assets/res/actors/zombunny/textures.bundle
-        Dependency_2: assets/res/shaders/rim lit bumped specular.bundle
+      Name: assets/res/textures/chaichainingwang.window
+      Dependencies: {}
     Info_24:
-      Name: assets/res/actors/zombunny/textures.bundle
-      Dependencies: {}
+      Name: assets/res/scenes/newassetbundleframeworkscene.window
+      Dependencies:
+        Dependency_0: assets/res/textures/chaichainingwang.window
     Info_25:
-      Name: assets/res/shaders/rim lit bumped specular.bundle
+      Name: assets/res/scenes/sceneprefabs/testscene2prefab.window
       Dependencies:
-        Dependency_0: shaderlist.bundle
+        Dependency_0: assets/res/sharematerials/sharematerial.window
     Info_26:
-      Name: assets/res/actors/zombunny/zombunnyanimations.bundle
-      Dependencies: {}
+      Name: assets/res/scenes/sceneprefabs/testscene2prefab2.window
+      Dependencies:
+        Dependency_0: assets/res/sharematerials/sharematerial.window
     Info_27:
-      Name: assets/res/actors/zombunny.bundle
+      Name: assets/res/scenes/sceneprefabs/testscene3prefab.window
       Dependencies:
-        Dependency_0: assets/res/actors/zombunny/materials.bundle
-        Dependency_1: assets/res/actors/zombunny/zombunnyanimations.bundle
+        Dependency_0: assets/res/sharematerials/sharematerial.window
     Info_28:
-      Name: assets/res/scenes/assetbundleframeworkscene.bundle
-      Dependencies:
-        Dependency_0: assets/res/textures/chaichainingwang.bundle
+      Name: assets/res/scenes/shadervariantscollectscene.window
+      Dependencies: {}
     Info_29:
-      Name: assets/res/textures/chaichainingwang.bundle
-      Dependencies: {}
+      Name: assets/res/scenes/testscene2.window
+      Dependencies:
+        Dependency_0: assets/res/sharematerials/sharematerial.window
+        Dependency_1: assets/res/scenes/sceneprefabs/testscene2prefab.window
+        Dependency_2: assets/res/scenes/sceneprefabs/testscene2prefab2.window
     Info_30:
-      Name: assets/res/scenes/newassetbundleframeworkscene.bundle
+      Name: assets/res/scenes/testscene3.window
       Dependencies:
-        Dependency_0: assets/res/textures/chaichainingwang.bundle
+        Dependency_0: assets/res/sharematerials/sharematerial.window
+        Dependency_1: assets/res/scenes/sceneprefabs/testscene3prefab.window
     Info_31:
-      Name: assets/res/scenes/sceneprefabs/testscene2prefab.bundle
-      Dependencies:
-        Dependency_0: assets/res/sharematerials/sharematerial.bundle
-    Info_32:
-      Name: assets/res/scenes/sceneprefabs/testscene2prefab2.bundle
-      Dependencies:
-        Dependency_0: assets/res/sharematerials/sharematerial.bundle
-    Info_33:
-      Name: assets/res/scenes/sceneprefabs/testscene3prefab.bundle
-      Dependencies:
-        Dependency_0: assets/res/sharematerials/sharematerial.bundle
-    Info_34:
-      Name: assets/res/scenes/shadervariantscollectscene.bundle
+      Name: assets/res/textures/chaichaifengjing.window
       Dependencies: {}
-    Info_35:
-      Name: assets/res/scenes/testscene2.bundle
-      Dependencies:
-        Dependency_0: assets/res/sharematerials/sharematerial.bundle
-        Dependency_1: assets/res/scenes/sceneprefabs/testscene2prefab.bundle
-        Dependency_2: assets/res/scenes/sceneprefabs/testscene2prefab2.bundle
-    Info_36:
-      Name: assets/res/scenes/testscene3.bundle
-      Dependencies:
-        Dependency_0: assets/res/sharematerials/sharematerial.bundle
-        Dependency_1: assets/res/scenes/sceneprefabs/testscene3prefab.bundle
-    Info_37:
-      Name: assetbuildinfo.bundle
+    Info_32:
+      Name: assets/res/textures/chaichaishenqingzhushi.window
+      Dependencies: {}
+    Info_33:
+      Name: assetbuildinfowindow.window
       Dependencies: {}

@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2022/1/26 22:07:32
+构建时间：2022/1/28 21:05:48
 
 --配置信息--
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : ByFolderPath
@@ -25,37 +25,37 @@ DisableWriteTypeTree：False
 IgnoreTypeTreeChanges：False
 
 --构建清单--
-assetbuildinfo.bundle
-assets/res/actors/cube.bundle
-assets/res/actors/sphere.bundle
-assets/res/actors/testbyfileandsubfolder.bundle
-assets/res/actors/zombunny.bundle
-assets/res/atlas/shareatlas/spriteatlas/playerpreview.bundle
-assets/res/atlas/shareatlas/spriteatlas/playerpreview2.bundle
-assets/res/atlas/shareatlas/tutorialatlas.bundle
-assets/res/audios/music/backgroundmusic.bundle
-assets/res/audios/music/df_bg_music.bundle
-assets/res/audios/sfx/sfx1/coins.bundle
-assets/res/audios/sfx/sfx1/correct.bundle
-assets/res/audios/sfx/sfx1/explosion.bundle
-assets/res/buildinresources/buildinmaterials.bundle
-assets/res/buildinresources/buildintextures.bundle
-assets/res/prefabs/imagebuildin.bundle
-assets/res/prefabs/rawimagebuildin.bundle
-assets/res/prefabs/sfxtemplate.bundle
-assets/res/scenes/newassetbundleframeworkscene.bundle
-assets/res/scenes/sceneprefabs/testscene2prefab.bundle
-assets/res/scenes/sceneprefabs/testscene2prefab2.bundle
-assets/res/scenes/sceneprefabs/testscene3prefab.bundle
-assets/res/scenes/shadervariantscollectscene.bundle
-assets/res/scenes/testscene2.bundle
-assets/res/scenes/testscene3.bundle
-assets/res/shaders/rim lit bumped specular.bundle
-assets/res/sharematerials/sharebluematerial.bundle
-assets/res/sharematerials/sharematerial.bundle
-assets/res/sharematerials/shareredmaterial.bundle
-assets/res/textures/chaichaifengjing.bundle
-assets/res/textures/chaichainingwang.bundle
-assets/res/textures/chaichaishenqingzhushi.bundle
-assets/res/windows/mainwindow.bundle
-shaderlist.bundle
+assetbuildinfoandroid.android
+assets/res/actors/cube.android
+assets/res/actors/sphere.android
+assets/res/actors/testbyfileandsubfolder.android
+assets/res/actors/zombunny.android
+assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
+assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android
+assets/res/atlas/shareatlas/tutorialatlas.android
+assets/res/audios/music/backgroundmusic.android
+assets/res/audios/music/df_bg_music.android
+assets/res/audios/sfx/sfx1/coins.android
+assets/res/audios/sfx/sfx1/correct.android
+assets/res/audios/sfx/sfx1/explosion.android
+assets/res/buildinresources/buildinmaterials.android
+assets/res/buildinresources/buildintextures.android
+assets/res/prefabs/imagebuildin.android
+assets/res/prefabs/rawimagebuildin.android
+assets/res/prefabs/sfxtemplate.android
+assets/res/scenes/newassetbundleframeworkscene.android
+assets/res/scenes/sceneprefabs/testscene2prefab.android
+assets/res/scenes/sceneprefabs/testscene2prefab2.android
+assets/res/scenes/sceneprefabs/testscene3prefab.android
+assets/res/scenes/shadervariantscollectscene.android
+assets/res/scenes/testscene2.android
+assets/res/scenes/testscene3.android
+assets/res/shaders/rim lit bumped specular.android
+assets/res/sharematerials/sharebluematerial.android
+assets/res/sharematerials/sharematerial.android
+assets/res/sharematerials/shareredmaterial.android
+assets/res/textures/chaichaifengjing.android
+assets/res/textures/chaichainingwang.android
+assets/res/textures/chaichaishenqingzhushi.android
+assets/res/windows/mainwindow.android
+shaderlist.android

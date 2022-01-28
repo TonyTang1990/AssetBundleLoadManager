@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 1584509752
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8bffdada54fbac7d1f750e8b4de5b808
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/audios/sfx/sfx1/coins.wav
+Dependencies: []

@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 4230439916
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4d7a39c34abde9d453afceedb3446643
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/audios/sfx/sfx1/explosion.wav
+Dependencies: []

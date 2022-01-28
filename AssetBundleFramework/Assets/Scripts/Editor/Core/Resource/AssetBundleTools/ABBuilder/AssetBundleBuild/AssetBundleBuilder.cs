@@ -127,7 +127,7 @@ namespace MotionFramework.Editor
 			}
 
             // Asset打包信息输出目录不存在
-            var assetbuildinfofolderpath = Application.dataPath + ResourceConstData.AssetBuildInfoAssetRelativePath;
+            var assetbuildinfofolderpath = GetAssetBuildInfoFolderFullPath();
             Debug.Log($"Asset打包信息输出目录:{assetbuildinfofolderpath}");
             if (!Directory.Exists(assetbuildinfofolderpath))
             {
@@ -160,13 +160,12 @@ namespace MotionFramework.Editor
                 buildInfoList.Add(buildInfo);
             }
             // AssetBuildInfoAsset打包信息单独打包
-            var assetbuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBuildInfoAssetRelativePath}/{ResourceConstData.AssetBuildInfoAssetName}.asset";
+            var assetbuildinfoassetrelativepath = GetAssetBuildInfoFileRelativePath();
             var buildinfo = new AssetBundleBuild();
             buildinfo.assetBundleName = GetAssetBuildInfoAssetName();
 			buildinfo.assetBundleVariant = GetBuildAssetBundlePostFix();
 			buildinfo.assetNames = new string[] { assetbuildinfoassetrelativepath };
             buildInfoList.Add(buildinfo);
-            abbuildinfomap.Add(assetbuildinfoassetrelativepath, new AssetBundleBuildInfo(ResourceConstData.AssetBuildInfoAssetName.ToLower()));
 
             // 更新AB打包信息Asset(e.g.比如Asset打包信息)
             UpdateAssetBundleBuildInfoAsset(buildInfoList);
@@ -177,15 +176,6 @@ namespace MotionFramework.Editor
 			AssetBundleManifest unityManifest = BuildPipeline.BuildAssetBundles(OutputDirectory, buildInfoList.ToArray(), opt, BuildTarget);
 			if (unityManifest == null)
 				throw new Exception("[BuildPatch] 构建过程中发生错误！");
-
-			// 个人采用AssetBuildInfo.asset作为依赖加载信息文件，不再需要Unity自定义生成的依赖文件
-			// 这里采用删除Unity生成的依赖信息文件来避免热更不必要的文件
-			// 考虑到.manifest文件最终不会进包，这里保留对应平台的Editor依赖信息方便查看
-			var allDependenciesFileName = PathUtilities.GetFolderName(OutputDirectory);
-			var allDependenciesFilePath = Path.Combine(OutputDirectory, allDependenciesFileName);
-			//var allDependenciesManifestFilePath = Path.Combine(OutputDirectory, $"{allDependenciesFileName}{ResourceConstData.AssetBundleDefaultManifestPostfixWithPoint}");
-            File.Delete(allDependenciesFilePath);
-			//File.Delete(allDependenciesManifestFilePath);
 
 			// 单独生成包内的AssetBundle的MD5信息(用于热更新判定)
 			CreateAssetBundleMd5InfoFile();
@@ -214,7 +204,7 @@ namespace MotionFramework.Editor
         private void UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuild> buildinfolist)
         {
             // Note: AssetBundle打包信息统一存小写，确保和AB打包那方一致
-            var assetbundlebuildinfoassetrelativepath = $"Assets{ResourceConstData.AssetBuildInfoAssetRelativePath}/{ResourceConstData.AssetBuildInfoAssetName}.asset";
+            var assetbundlebuildinfoassetrelativepath = GetAssetBuildInfoFileRelativePath();
             var assetbundlebuildasset = AssetDatabase.LoadAssetAtPath<AssetBuildInfoAsset>(assetbundlebuildinfoassetrelativepath);
             if (assetbundlebuildasset == null)
             {
@@ -280,11 +270,29 @@ namespace MotionFramework.Editor
 			return $"{_outputRoot}/{BuildTarget}/";
 		}
 
-		#region 准备工作
-		/// <summary>
-		/// 准备工作
-		/// </summary>
-		private List<AssetInfo> GetBuildAssetInfoList()
+        /// <summary>
+        /// 获取Asset打包信息Asset所在目录全路径
+        /// </summary>
+        /// <returns></returns>
+        private string GetAssetBuildInfoFolderFullPath()
+        {
+            return $"{Application.dataPath}/{ResourceConstData.AssetBuildInfoAssetRelativePath}";
+        }
+
+        /// <summary>
+        /// 获取Asset打包信息文件相对路径
+        /// </summary>
+        /// <returns></returns>
+        private string GetAssetBuildInfoFileRelativePath()
+        {
+            return $"Assets/{ResourceConstData.AssetBuildInfoAssetRelativePath}/{GetAssetBuildInfoAssetName()}.asset";
+        }
+
+        #region 准备工作
+        /// <summary>
+        /// 准备工作
+        /// </summary>
+        private List<AssetInfo> GetBuildAssetInfoList()
 		{
 			int progressBarCount = 0;
 			Dictionary<string, AssetInfo> allAsset = new Dictionary<string, AssetInfo>();
