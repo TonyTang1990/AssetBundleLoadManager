@@ -34,6 +34,14 @@ namespace TUI
         /// </summary>
         SerializedProperty m_TextureName;
 
+        [UnityEditor.MenuItem("GameObject/UI/TUI/TRawImage", priority = 4)]
+        private static void AddTRawImage(MenuCommand command)
+        {
+            GameObject go = command.context as GameObject;
+            var trawimage = UIUtilitiesEditor.AddComponent<TRawImage>(go);
+            trawimage.name = "TRawImage";
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();

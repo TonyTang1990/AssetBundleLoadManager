@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -53,9 +53,6 @@
     <UnityVersion>2019.4.31f1c1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Scripts\Editor\BaseEditorWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildPreprocess.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildTool.cs" />
@@ -90,6 +87,7 @@
     <Compile Include="Assets\Scripts\Editor\Core\UI\TButtonEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TImageEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TRawImageEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\UI\UIUtilitiesEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\EditorUtilities.cs" />
     <Compile Include="Assets\Scripts\Editor\Helper\AssetRelativePathTool.cs" />
   </ItemGroup>

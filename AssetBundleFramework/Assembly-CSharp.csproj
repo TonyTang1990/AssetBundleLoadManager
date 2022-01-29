@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,9 +52,6 @@
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2019.4.31f1c1</UnityVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Core\Conf\ConfLoader.cs" />
     <Compile Include="Assets\Scripts\Core\Coroutine\CoroutineManager.cs" />
@@ -118,23 +115,23 @@
     <Compile Include="Assets\Scripts\DebugTools\TimeCounter.cs" />
     <Compile Include="Assets\Scripts\DebugTools\VisibleLogUtility.cs" />
     <Compile Include="Assets\Scripts\Extension\StringExtension.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Data\DataAccess.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Native\Android\AndroidNativeManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Native\IOS\IOSNativeManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Native\NativeManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Native\NativeMessageHandler.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Native\PC\PCNativeManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\AtlasManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\AudioManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\EffectManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\GameSceneManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\ModelManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\ResourceManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\ResourceUtility.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\SharedMaterialManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\SharedTextureManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Resource\WindowManager.cs" />
-    <Compile Include="Assets\Scripts\NewGameLauncher.cs" />
+    <Compile Include="Assets\Scripts\GameLauncher.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Data\DataAccess.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Native\Android\AndroidNativeManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Native\IOS\IOSNativeManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Native\NativeManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Native\NativeMessageHandler.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Native\PC\PCNativeManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\AtlasManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\EffectManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\GameSceneManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ModelManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ResourceManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ResourceUtility.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\SharedMaterialManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\SharedTextureManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\WindowManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\FileUtilities.cs" />
     <Compile Include="Assets\Scripts\Utilities\FolderUtilities.cs" />
     <Compile Include="Assets\Scripts\Utilities\PathUtilities.cs" />
@@ -244,7 +241,6 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\SpeedTreeBillboardCommon.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\SpatialMappingOcclusion.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Details\VertexLit.shader" />
-    <None Include="Assets\StreamingAssets\Android\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Lightmap-VertexLit.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-Glossy.shader" />
     <None Include="Assets\Resources\AssetBundleMd5.txt" />

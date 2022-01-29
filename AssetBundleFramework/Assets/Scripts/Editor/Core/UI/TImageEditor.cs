@@ -46,6 +46,14 @@ namespace TUI
         /// </summary>
         SerializedProperty m_SpritePath;
 
+        [UnityEditor.MenuItem("GameObject/UI/TUI/TImage", priority = 1)]
+        private static void AddTImage(MenuCommand command)
+        {
+            GameObject go = command.context as GameObject;
+            var timage = UIUtilitiesEditor.AddComponent<TImage>(go);
+            timage.name = "TImage";
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();

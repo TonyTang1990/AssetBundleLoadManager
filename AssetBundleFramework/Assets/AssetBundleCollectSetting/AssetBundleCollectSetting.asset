@@ -73,6 +73,14 @@ MonoBehaviour:
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+  - CollectFolderPath: Assets/Res/videos
+    CollectRule: 0
+    BuildRule: 5
+    ConstName: 
+  - CollectFolderPath: Assets/Res/rendertextures
+    CollectRule: 0
+    BuildRule: 1
+    ConstName: 
   BlackListInfo:
     PostFixBlackList:
     - .dll
