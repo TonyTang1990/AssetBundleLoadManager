@@ -250,6 +250,15 @@ MonoBehaviour:
   - AssetPath: assets/res/prefabs/sfxtemplate.prefab
     ABPath: assets/res/prefabs/sfxtemplate
     ABVariantPath: android
+  - AssetPath: assets/res/prefabs/videoplayerroot.prefab
+    ABPath: assets/res/prefabs/videoplayerroot
+    ABVariantPath: android
+  - AssetPath: assets/res/videos/xuezhihua.mp4
+    ABPath: assets/res/videos/xuezhihua
+    ABVariantPath: android
+  - AssetPath: assets/res/rendertextures/videorendertexture.rendertexture
+    ABPath: assets/res/rendertextures/videorendertexture
+    ABVariantPath: android
   - AssetPath: assets/res/buildinresources/buildinmaterials/default-material.mat
     ABPath: assets/res/buildinresources/buildinmaterials
     ABVariantPath: android

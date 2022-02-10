@@ -177,22 +177,14 @@ namespace MotionFramework.Editor
 			if (unityManifest == null)
 				throw new Exception("[BuildPatch] 构建过程中发生错误！");
 
-			// 单独生成包内的AssetBundle的MD5信息(用于热更新判定)
-			CreateAssetBundleMd5InfoFile();
-
+            // 1. 检测循环依赖
+            CheckCycleDepend(unityManifest);
+            // 3. 创建说明文件
+            CreateReadmeFile(unityManifest);
             // 视频单独打包
             PackVideo(buildAssetInfoList);
-			//// 加密资源文件
-			//List<string> encryptList = EncryptFiles(unityManifest);
-
-			// 1. 检测循环依赖
-			CheckCycleDepend(unityManifest);
-			// 2. 创建补丁文件
-			//CreatePatchManifestFile(unityManifest, buildMap, encryptList);
-			// 3. 创建说明文件
-			CreateReadmeFile(unityManifest);
-            //// 4. 复制更新文件
-            //CopyUpdateFiles();
+            // 单独生成包内的AssetBundle的MD5信息(用于热更新判定)
+            CreateAssetBundleMd5InfoFile();
 
             Log("构建完成！");
 		}
@@ -510,25 +502,22 @@ namespace MotionFramework.Editor
         #region 视频相关
         private void PackVideo(List<AssetInfo> buildAssetInfoList)
 		{
-			// 注意：在Unity2018.4截止的版本里，安卓还不支持压缩的视频Bundle
-			if (BuildTarget == BuildTarget.Android)
+			// 注意：视频统一不压缩，避免播放有问题
+			Log($"开始视频单独打包");
+			for (int i = 0; i < buildAssetInfoList.Count; i++)
 			{
-				Log($"开始视频单独打包（安卓平台）");
-				for (int i = 0; i < buildAssetInfoList.Count; i++)
+				AssetInfo assetInfo = buildAssetInfoList[i];
+				if (assetInfo.IsVideoAsset)
 				{
-					AssetInfo assetInfo = buildAssetInfoList[i];
-					if (assetInfo.IsVideoAsset)
-					{
-						BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
-						opt |= BuildAssetBundleOptions.DeterministicAssetBundle;
-						opt |= BuildAssetBundleOptions.StrictMode;
-						opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
-						var videoObj = AssetDatabase.LoadAssetAtPath<UnityEngine.Video.VideoClip>(assetInfo.AssetPath);
-						string outPath = OutputDirectory + "/" + assetInfo.AssetBundleLabel.ToLower();
-						bool result = BuildPipeline.BuildAssetBundle(videoObj, new[] { videoObj }, outPath, opt, BuildTarget);
-						if (result == false)
-							throw new Exception($"视频单独打包失败：{assetInfo.AssetPath}");
-					}
+					BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
+					opt |= BuildAssetBundleOptions.DeterministicAssetBundle;
+					opt |= BuildAssetBundleOptions.StrictMode;
+					opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
+					var videoObj = AssetDatabase.LoadAssetAtPath<UnityEngine.Video.VideoClip>(assetInfo.AssetPath);
+					string outPath = OutputDirectory + "/" + assetInfo.AssetBundleLabel.ToLower();
+					bool result = BuildPipeline.BuildAssetBundle(videoObj, new[] { videoObj }, outPath, opt, BuildTarget);
+					if (result == false)
+						throw new Exception($"视频单独打包失败：{assetInfo.AssetPath}");
 				}
 			}
 		}

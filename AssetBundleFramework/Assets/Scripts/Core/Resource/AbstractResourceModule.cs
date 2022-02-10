@@ -542,7 +542,7 @@ namespace TResource
             {
                 if (assetLoader.IsDone)
                 {
-                    completeHandler.Invoke(assetLoader, 0);
+                    completeHandler?.Invoke(assetLoader, 0);
                     return 0;
                 }
                 else

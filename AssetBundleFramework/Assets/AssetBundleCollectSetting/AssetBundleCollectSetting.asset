@@ -75,7 +75,7 @@ MonoBehaviour:
     ConstName: 
   - CollectFolderPath: Assets/Res/videos
     CollectRule: 0
-    BuildRule: 5
+    BuildRule: 1
     ConstName: 
   - CollectFolderPath: Assets/Res/rendertextures
     CollectRule: 0

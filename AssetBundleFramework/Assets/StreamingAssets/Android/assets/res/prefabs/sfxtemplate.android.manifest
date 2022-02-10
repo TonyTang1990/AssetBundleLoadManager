@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 4145990431
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d323d2d3adf1c3c0b227913bc76ed4bc
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 46a437df51d67a4121195c6bda354ac7
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/prefabs/SFXTemplate.prefab
+Dependencies: []
