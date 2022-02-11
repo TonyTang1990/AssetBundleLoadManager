@@ -169,6 +169,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityShadowLibrary.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Trees\BillboardTree.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Skybox.shader" />
+    <None Include="Assets\StreamingAssets\Android\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Skybox-Procedural.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-Bumped.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Font.shader" />
@@ -279,7 +280,6 @@
     <None Include="Assets\Res\shaders\Rim Lit Bumped Specular.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-VertexLit.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-Color.shader" />
-    <None Include="Assets\StreamingAssets\Android\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityCG.glslinc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\BlitTexArraySlice.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-ODSWorldTexture.shader" />
