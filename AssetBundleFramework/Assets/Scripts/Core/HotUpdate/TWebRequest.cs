@@ -84,7 +84,7 @@ public class TWebRequest {
         /// <param name="fileMD5">文件MD5(不传表示不校验)</param>
         /// <param name="callback"></param>
         /// <param name="timeout"></param>
-        public WebRequestTaskInfo(string url, string fileMD5, Action<string, string, DownloadHandler, WebTaskRequestStatus> callback, int timeout)
+        public WebRequestTaskInfo(string url, string fileMD5, Action<string, string, DownloadHandler, WebTaskRequestStatus> callback, int timeout = 300)
         {
             URL = url;
             FileMD5 = fileMD5;
@@ -158,7 +158,7 @@ public class TWebRequest {
     /// <param name="fileMD5">文件MD5</param>
     /// <param name="completecallback">完成回调</param>
     /// <param name="timeout">超时时间</param>
-    public void enqueue(string url, string fileMD5, Action<string, string, DownloadHandler, WebRequestTaskInfo.WebTaskRequestStatus> completecallback, int timeout = 5)
+    public void enqueue(string url, string fileMD5, Action<string, string, DownloadHandler, WebRequestTaskInfo.WebTaskRequestStatus> completecallback, int timeout = 300)
     {
         if(TWRequestStatus != TWebRequestStatus.TW_In_Progress)
         {
