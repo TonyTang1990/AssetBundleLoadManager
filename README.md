@@ -85,13 +85,13 @@ Manager统一管理：
 3. 有则加载依赖AB(增加依赖AB的引用计数)(依赖AB采用和自身AB相同的加载方式(ResourceLoadMethod),但依赖AB统一采用ResourceLoadType.NormalLoad加载类型)
 4. 自身AB和所有依赖AB加载完回调通知逻辑层可以开始加载Asset资源(AB绑定对象在这一步)
 5. 判定AB是否满足引用计数为0，绑定对象为空，且为NormalLoad加载方式则卸载该AB(并释放依赖AB的计数减一)(通知资源管理层AB卸载，重用AssetBundleInfo对象)
-6. 切场景，递归判定卸载PreloadLoad加载类型AB资源
+6. 切场景，递归判定卸载NormalLoad加载类型AB资源
 
 相关设计：
 
 1. 依赖AB与被依赖者采用同样的加载方式(ResourceLoadMethod)，但加载方式依赖AB统一采用ResourceLoadType.NormalLoad
 2. 依赖AB通过索引计数管理，只要原始AB不被卸载，依赖AB就不会被卸载
-3. 已加载的AB资源加载类型只允许从低往高变(NormalLoad -> Preload -> PermanentLoad)，不允许从高往低(PermanentLoad -> Preload -> NormalLoad)
+3. 已加载的AB资源加载类型不允许改变(直到加载后被卸载再次加载才能切换)
 
 #### Demo使用说明
 
