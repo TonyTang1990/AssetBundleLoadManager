@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TResource
@@ -313,21 +314,21 @@ namespace TResource
                 }
                 else
                 {
+                    var unCompleteAssetBundlePathList = mLoadUnCompleteAssetBundlePathMap.Keys.ToList();
                     // 有异步或者动态下载未加载完的AssetBundle
                     // 此时异步加载的需要转同步加载
-                    foreach (var loadUncomplated in mLoadUnCompleteAssetBundlePathMap)
+                    foreach (var uncompleteABPath in unCompleteAssetBundlePathList)
                     {
-                        ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{loadUncomplated.Key}异步或动态下载未加载完成，转同步加载!");
+                        ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{uncompleteABPath}异步或动态下载未加载完成，转同步加载!");
                         // 如果是当前资源的异步加载正在进行，我们需要取消异步加载完成回调，避免触发多次加载完成回调
-                        if (loadUncomplated.Key.Equals(ResourcePath))
+                        if (uncompleteABPath.Equals(ResourcePath))
                         {
-                            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}取消AssetBundle:{loadUncomplated.Key}的异步加载完成回调注册!");
-                            mAssetBundleAsyncRequest.completed -= onAssetBundleAsyncLoadComplete;
+                            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}取消AssetBundle:{uncompleteABPath}的异步加载完成回调注册!");
                             loadAssetBundleSync();
                         }
                         else
                         {
-                            mAssetBundlePathAndBundleLoaderMap[loadUncomplated.Key].loadImmediately();
+                            mAssetBundlePathAndBundleLoaderMap[uncompleteABPath].loadImmediately();
                         }
                     }
                 }
@@ -361,17 +362,32 @@ namespace TResource
         {
             var abpath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
             AssetBundle ab = null;
-            Debug.Log($"Frame:{AbstractResourceModule.Frame}开始同步加载AssetBundle:{ResourcePath}");
-#if UNITY_EDITOR
-            //因为资源不全，很多资源丢失，导致直接报错
-            //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
-            if (System.IO.File.Exists(abpath))
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始同步加载AssetBundle:{ResourcePath}");
+            // Note:
+            // 先异步LoadFromFileAsyn后同步LoadFromFile的情况下，LoadFromFile返回的ab为null，且Unity会提示***.AB已经被加载
+            // 要想同步加载时异步能正确返回，我们需要调用AssetBundleCreateRequeust.assetBundle触发同步加载
+            if(mAssetBundleAsyncRequest == null)
             {
-                ab = AssetBundle.LoadFromFile(abpath);
-            }
+                ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}同步加载AssetBundle:{ResourcePath}");
+#if UNITY_EDITOR
+                //因为资源不全，很多资源丢失，导致直接报错
+                //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
+                if (System.IO.File.Exists(abpath))
+                {
+                    ab = AssetBundle.LoadFromFile(abpath);
+                }
 #else
-            ab = AssetBundle.LoadFromFile(abpath);
+                ab = AssetBundle.LoadFromFile(abpath);
 #endif
+            }
+            else
+            {
+                ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}异步转同步加载AssetBundle:{ResourcePath}");
+                // 异步转同步时移除异步的回调监听，避免相同AB加载触发加载完成多次
+                mAssetBundleAsyncRequest.completed -= onAssetBundleAsyncLoadComplete;
+                // 异步加载时改成同步加载触发立刻加载完成
+                ab = mAssetBundleAsyncRequest.assetBundle;
+            }
             // 加载完成后无论都要设置setResource确保后续的正常使用
             AssetBundleInfo.setResource(ab);
             onAssetBundleLoadComplete(this);
@@ -383,7 +399,7 @@ namespace TResource
         protected virtual void loadAssetBundleAsync()
         {
             var abpath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
-            Debug.Log($"Frame:{AbstractResourceModule.Frame}开始异步加载AssetBundle:{ResourcePath}");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始异步加载AssetBundle:{ResourcePath}");
 #if UNITY_EDITOR
             //因为资源不全，很多资源丢失，导致直接报错
             //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
@@ -408,7 +424,7 @@ namespace TResource
                 Debug.LogError($"AssetBundle Path:{ResourcePath}异步加载被同步打断，理论上已经取消回调监听，不应该进入这里!");
                 return;
             }
-
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{ResourcePath}异步加载完成!");
             // 加载完成后无论都要设置setResource确保后续的正常使用
             AssetBundleInfo.setResource(mAssetBundleAsyncRequest.assetBundle);
             onAssetBundleLoadComplete(this);

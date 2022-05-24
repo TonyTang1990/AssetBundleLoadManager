@@ -177,12 +177,12 @@ namespace TResource
         {
             if(IsDone)
             {
-                Debug.LogError($"ResourcePath:{ResourcePath}已加载完成不应该触发立刻加载!");
+                Debug.Log($"ResourcePath:{ResourcePath}已加载完成,触发立刻加载无效!");
                 return;
             }
-            if(!IsWaiting && !IsCancel)
+            if(!IsWaiting && !IsCancel && !IsLoading)
             {
-                Debug.LogError($"ResourcePath:{ResourcePath}未处于等待加载和取消状态,不应该触发立刻加载!");
+                Debug.LogError($"ResourcePath:{ResourcePath}未处于等待加载,取消或加载中状态,不应该触发立刻加载!");
                 return;
             }
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}ResourcePath:{ResourcePath}触发立刻加载!");
@@ -200,8 +200,12 @@ namespace TResource
                 Debug.LogError($"ResourcePath:{ResourcePath}已加载完成不应该触发加载!");
                 return;
             }
+            // 已经触发加载的已经移除了加载任务，直接触发加载即可
+            if(!IsLoading)
+            {
+                LoaderManager.Singleton.removeLoadTask(this);
+            }
             LoadState = ResourceLoadState.Loading;
-            LoaderManager.Singleton.removeLoadTask(this);
             onLoad();
         }
 

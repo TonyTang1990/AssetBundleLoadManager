@@ -473,8 +473,102 @@ namespace TResource
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 }
             );
-            // 将异步转同步加载
+            // 未开始加载时将异步转同步加载
             assetLoader.loadImmediately();
+        }
+
+
+        /// <summary>
+        /// 测试异步转同步窗口加载2
+        /// </summary>
+        public void onAsynToSyncLoadWindow2()
+        {
+            DIYLog.Log("onAsynToSyncLoadWindow2()");
+            if (mMainWindow == null)
+            {
+                onDestroyWindowInstance();
+            }
+            AssetLoader assetLoader;
+            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+                "Assets/Res/windows/MainWindow.prefab",
+                out assetLoader,
+                (prefabInstance, requestUid) =>
+                {
+                    mMainWindow = prefabInstance;
+                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+                }
+            );
+            StartCoroutine(WaitLoadCoroutine(assetLoader));
+        }
+
+        /// <summary>
+        /// 等待加载携程
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator WaitLoadCoroutine(AssetLoader assetLoader)
+        {
+            yield return new WaitForEndOfFrame();
+            // 开始异步加载后转同步加载
+            assetLoader.loadImmediately();
+        }
+
+        /// <summary>
+        /// 测试异步转同步窗口加载3
+        /// </summary>
+        public void onAsynToSyncLoadWindow3()
+        {
+            DIYLog.Log("onAsynToSyncLoadWindow3()");
+            if (mMainWindow == null)
+            {
+                onDestroyWindowInstance();
+            }
+            AssetLoader assetLoader;
+            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+                "Assets/Res/windows/MainWindow.prefab",
+                out assetLoader,
+                (prefabInstance, requestUid) =>
+                {
+                    DIYLog.Log($"ResourceManager.Singleton.getPrefabInstanceAsync()");
+                    mMainWindow = prefabInstance;
+                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+                }
+            );
+            // 异步未开始时触发同步加载2
+            ResourceManager.Singleton.getPrefabInstance("Assets/Res/windows/MainWindow.prefab",
+                (instance, uid)=>
+                {
+                    DIYLog.Log($"ResourceManager.Singleton.getPrefabInstance()");
+                    mMainWindow = instance;
+                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
+                }
+            );
+        }
+
+
+        /// <summary>
+        /// 测试异步转同步加载
+        /// </summary>
+        public void onAsynToSyncLoad()
+        {
+            DIYLog.Log("onAsynToSyncLoad()");
+            var mainWindowABPath = Application.streamingAssetsPath + "/Android/assets/res/windows/mainwindow.android";
+            DIYLog.Log("onAsynToSyncLoad1");
+            var abAsyncRequest = AssetBundle.LoadFromFileAsync(mainWindowABPath);
+            abAsyncRequest.completed += OnABAsyncLoadComplete;
+            DIYLog.Log("onAsynToSyncLoad2");
+            // Note:
+            // 异步加载LoadFromFileAsyn完成前触发同步加载LoadFromFile，同步加载会返回null
+            var ab = AssetBundle.LoadFromFile(mainWindowABPath);
+            DIYLog.Log("onAsynToSyncLoad3");
+        }
+
+        /// <summary>
+        /// 异步加载完成
+        /// </summary>
+        /// <param name="asyncOperation"></param>
+        private void OnABAsyncLoadComplete(AsyncOperation asyncOperation)
+        {
+            DIYLog.Log("OnABAsyncLoadComplete()");
         }
 
         /// <summary>
