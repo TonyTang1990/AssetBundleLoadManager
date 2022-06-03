@@ -29,10 +29,13 @@ SpriteAtlas:
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 1
+    secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: e3c8575c651d84d4caf90ece1f76dc85, type: 3}
     bindAsDefault: 0
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: c1803b40c84600d49b69fe72296b7d6c, type: 3}
@@ -90,6 +93,7 @@ SpriteAtlas:
   - SDToyamaPreview
   - SDNiigataPreview
   - SDYamagataPreview
+  m_RenderDataMap: {}
   m_Tag: playerpreview2
   m_IsVariant: 0
   m_IsPlaceholder: 0

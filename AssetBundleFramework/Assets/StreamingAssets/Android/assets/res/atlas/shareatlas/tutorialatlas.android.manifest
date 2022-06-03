@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 825195580
+CRC: 1834289173
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6ab89daaf85e5b1f4e04850304abd0a0
+    Hash: 6e4505978b5b4745276d2a7c9b0302b2
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 46bbd9da48cff8d17f0c89eef78da528
+    Hash: 12da798fbf3a6c0c342cc56cb1a6efdf
 HashAppended: 0
 ClassTypes:
 - Class: 28
@@ -15,15 +15,15 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture.PNG
 - Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse.PNG
 - Assets/Res/atlas/shareatlas/TutorialAtlas/Light_Off.PNG
-- Assets/Res/atlas/shareatlas/TutorialAtlas/LoadingScreen.jpg
-- Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Instanced_Draw_Call.PNG
-- Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Draw_Call_Result_Picture.PNG
-- Assets/Res/atlas/shareatlas/TutorialAtlas/MultipleTexture.PNG
-- Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG
-- Assets/Res/atlas/shareatlas/TutorialAtlas/Light_On.PNG
 - Assets/Res/atlas/shareatlas/TutorialAtlas/MouseAndKeyboardStudy.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/LoadingScreen.jpg
+- Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Draw_Call_Result_Picture.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Instanced_Draw_Call.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/Light_On.PNG
+- Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture.PNG
 - Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet.png
+- Assets/Res/atlas/shareatlas/TutorialAtlas/MultipleTexture.PNG
 Dependencies: []

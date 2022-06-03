@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1970452476
+CRC: 371979458
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9f2a99ac1bedfb8040a2c2b7e14817d5
+    Hash: 7ec9e7a6b19dd8a076abeda3bf0e5665
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 0fb5783b163b8e186e495be8d54ae87b
+    Hash: e60b90a2f3a48869c254806659f2ff4e
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -27,7 +27,11 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 329
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
 - Assets/Res/prefabs/VideoPlayerRoot.prefab
 Dependencies:

@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2823637292
+CRC: 374284868
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -32,16 +32,16 @@ AssetBundleManifest:
         Dependency_0: assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
         Dependency_1: assets/res/atlas/shareatlas/tutorialatlas.android
     Info_9:
-      Name: shaderlist.android
-      Dependencies: {}
-    Info_10:
-      Name: assets/res/prefabs/imagebuildin.android
-      Dependencies:
-        Dependency_0: assets/res/buildinresources/buildinmaterials.android
-    Info_11:
       Name: assets/res/buildinresources/buildinmaterials.android
       Dependencies:
         Dependency_0: shaderlist.android
+    Info_10:
+      Name: shaderlist.android
+      Dependencies: {}
+    Info_11:
+      Name: assets/res/prefabs/imagebuildin.android
+      Dependencies:
+        Dependency_0: assets/res/buildinresources/buildinmaterials.android
     Info_12:
       Name: assets/res/prefabs/rawimagebuildin.android
       Dependencies:
@@ -54,16 +54,16 @@ AssetBundleManifest:
       Name: assets/res/prefabs/sfxtemplate.android
       Dependencies: {}
     Info_15:
-      Name: assets/res/prefabs/videoplayerroot.android
-      Dependencies:
-        Dependency_0: assets/res/videos/xuezhihua.android
-        Dependency_1: assets/res/rendertextures/videorendertexture.android
+      Name: assets/res/rendertextures/videorendertexture.android
+      Dependencies: {}
     Info_16:
       Name: assets/res/videos/xuezhihua.android
       Dependencies: {}
     Info_17:
-      Name: assets/res/rendertextures/videorendertexture.android
-      Dependencies: {}
+      Name: assets/res/prefabs/videoplayerroot.android
+      Dependencies:
+        Dependency_0: assets/res/rendertextures/videorendertexture.android
+        Dependency_1: assets/res/videos/xuezhihua.android
     Info_18:
       Name: assets/res/sharematerials/sharebluematerial.android
       Dependencies:
@@ -97,13 +97,13 @@ AssetBundleManifest:
       Dependencies:
         Dependency_0: shaderlist.android
     Info_26:
-      Name: assets/res/textures/chaichainingwang.android
-      Dependencies: {}
-    Info_27:
       Name: assets/res/scenes/newassetbundleframeworkscene.android
       Dependencies:
         Dependency_0: assets/res/prefabs/videoplayerroot.android
         Dependency_1: assets/res/textures/chaichainingwang.android
+    Info_27:
+      Name: assets/res/textures/chaichainingwang.android
+      Dependencies: {}
     Info_28:
       Name: assets/res/scenes/sceneprefabs/testscene2prefab.android
       Dependencies:

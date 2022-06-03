@@ -28,3 +28,37 @@ The following packages were updated:
   com.unity.textmeshpro from version 1.4.1 to 2.1.4
 The following packages were removed:
   com.unity.package-manager-ui@2.0.8
+
+=== Fri Jun  3 10:53:51 2022
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ide.rider from version 1.2.1 to 2.0.7
+  com.unity.ide.visualstudio from version 2.0.11 to 2.0.14
+  com.unity.ide.vscode from version 1.2.4 to 1.2.5
+  com.unity.test-framework from version 1.1.29 to 1.1.31
+  com.unity.textmeshpro from version 2.1.4 to 3.0.6
+  com.unity.timeline from version 1.2.18 to 1.4.8
+  com.unity.xr.legacyinputhelpers from version 2.1.8 to 2.1.9
+
+=== Fri Jun  3 20:55:25 2022
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ide.rider from version 2.0.7 to 3.0.14
+  com.unity.ide.visualstudio from version 2.0.14 to 2.0.15
+  com.unity.timeline from version 1.4.8 to 1.6.4
+The following packages were removed:
+  com.unity.multiplayer-hlapi@1.0.8
+
+=== Fri Jun  3 21:53:20 2022
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.timeline from version 1.6.4 to 1.7.1

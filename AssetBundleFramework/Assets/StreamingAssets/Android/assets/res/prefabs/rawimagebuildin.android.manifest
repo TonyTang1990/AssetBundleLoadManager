@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 250203254
+CRC: 557859623
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9fbd60bd79692294c8c2891640f209c3
+    Hash: b7b81ef72f3ee10780c60fd34394f4ea
   TypeTreeHash:
     serializedVersion: 2
-    Hash: d2aa0cec43a31e5199e24969ce9ff92b
+    Hash: 0c8baafb4efb2fddc3ff0fc4c7a5ec77
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,7 +23,11 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 224
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
 - Assets/Res/prefabs/rawimagebuildin.prefab
 Dependencies:

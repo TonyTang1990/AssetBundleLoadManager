@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2969153638
+CRC: 2205386842
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ebe198c55460effa6d0af67b0a7a5d13
+    Hash: 4a443942a2206dc65b71f5adc30e033a
   TypeTreeHash:
     serializedVersion: 2
     Hash: 90c188f996c5efc30286fe4785dcde93
@@ -13,7 +13,9 @@ ClassTypes:
   Script: {fileID: 11500000, guid: cf30ac501386e034b961fa0efc257509, type: 3}
 - Class: 115
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: AssetBuildInfo
 Assets:
 - Assets/Res/assetbuildinfo/AssetBuildInfoAndroid.asset
 Dependencies: []

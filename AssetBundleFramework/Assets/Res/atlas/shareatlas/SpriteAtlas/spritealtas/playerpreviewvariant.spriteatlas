@@ -29,9 +29,12 @@ SpriteAtlas:
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 1
+    secondaryTextureSettings: {}
     variantMultiplier: 0.5
     packables: []
     bindAsDefault: 0
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 4343727234628468602, guid: 9b0ae1b13bb488543a99b4cb21a31913,
     type: 2}
   m_PackedSprites:
@@ -92,6 +95,7 @@ SpriteAtlas:
   - SDAkitaPreview
   - SDChibaPreview
   - SDNaganoPreview
+  m_RenderDataMap: {}
   m_Tag: playerpreview
   m_IsVariant: 1
   m_IsPlaceholder: 0

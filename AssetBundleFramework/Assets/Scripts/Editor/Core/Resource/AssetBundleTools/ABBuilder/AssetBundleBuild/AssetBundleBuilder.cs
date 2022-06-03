@@ -72,8 +72,6 @@ namespace MotionFramework.Editor
 		/// AssetBuilder
 		/// </summary>
 		/// <param name="buildTarget">构建平台</param>
-		/// <param name="buildVersion">构建版本号</param>
-		/// <param name="resourceVersion">资源版本号</param>
 		public AssetBundleBuilder(BuildTarget buildTarget)
 		{
 			_outputRoot = AssetBundleBuilderHelper.GetDefaultOutputRootPath();
@@ -150,14 +148,44 @@ namespace MotionFramework.Editor
 				throw new Exception("[BuildPatch] 构建列表不能为空");
 
 			Log($"构建列表里总共有{buildAssetInfoList.Count}个资源需要构建");
+            // 问题: 
+            // 2020和2021版本传递多个相同assetBundleName的AssetBundleBuild信息会报错
+            // [BuildPipeline error is thrown when building Asset Bundles](https://issuetracker.unity3d.com/issues/buildpipeline-error-is-thrown-when-building-asset-bundles)
+            // 修复(2022/06/03):
+            // 基于基础的分析结论将同assetBundleName的Asset信息设置到同一个AssetBundleBuild里
+            // Note:
+            // 不支持变体功能，变体功能只用于区分不同平台的AB包后缀
+            // asset bundle信息Map<assetBundle名, <AssetBundle变体名, Asset信息列表>>
+            Dictionary<string, Dictionary<string, List<AssetInfo>>> assetBundleInfoMap = new Dictionary<string, Dictionary<string, List<AssetInfo>>>();
 			for (int i = 0; i < buildAssetInfoList.Count; i++)
 			{
-            	AssetInfo assetInfo = buildAssetInfoList[i];
-				AssetBundleBuild buildInfo = new AssetBundleBuild();
-                buildInfo.assetBundleName = assetInfo.AssetBundleLabel;
-                buildInfo.assetBundleVariant = assetInfo.AssetBundleVariant;
-                buildInfo.assetNames = new string[] { assetInfo.AssetPath };
-                buildInfoList.Add(buildInfo);
+				AssetInfo assetInfo = buildAssetInfoList[i];
+				if (!assetBundleInfoMap.ContainsKey(assetInfo.AssetBundleLabel))
+                {
+					assetBundleInfoMap[assetInfo.AssetBundleLabel] = new Dictionary<string, List<AssetInfo>>();
+				}
+                if(!assetBundleInfoMap[assetInfo.AssetBundleLabel].ContainsKey(assetInfo.AssetBundleVariant))
+                {
+                    assetBundleInfoMap[assetInfo.AssetBundleLabel][assetInfo.AssetBundleVariant] = new List<AssetInfo>();
+                }
+                assetBundleInfoMap[assetInfo.AssetBundleLabel][assetInfo.AssetBundleVariant].Add(assetInfo);
+			}
+			var assetNameList = new List<string>();
+			foreach(var assetBundleInfo in assetBundleInfoMap)
+            {
+                foreach (var assetBundleVariantInfo in assetBundleInfo.Value)
+                {
+                    AssetBundleBuild buildInfo = new AssetBundleBuild();
+                    buildInfo.assetBundleName = assetBundleInfo.Key;
+                    buildInfo.assetBundleVariant = assetBundleVariantInfo.Key;
+					assetNameList.Clear();
+					foreach(var assetInfoList in assetBundleVariantInfo.Value)
+                    {
+						assetNameList.Add(assetInfoList.AssetPath);
+					}
+					buildInfo.assetNames = assetNameList.ToArray();
+					buildInfoList.Add(buildInfo);
+                }
             }
             // AssetBuildInfoAsset打包信息单独打包
             var assetbuildinfoassetrelativepath = GetAssetBuildInfoFileRelativePath();
@@ -208,12 +236,15 @@ namespace MotionFramework.Editor
             // Asset打包信息构建
             foreach (var bi in buildinfolist)
             {
-                var abbi = new AssetBuildInfo();
-				// 不剔除后缀，确保AssetDatabase模式可以全路径(带后缀)加载
-				abbi.AssetPath = bi.assetNames[0].ToLower();//.Substring(0, bi.assetNames[0].Length - Path.GetExtension(bi.assetNames[0]).Length).ToLower();
-                abbi.ABPath = bi.assetBundleName.ToLower();
-                abbi.ABVariantPath = bi.assetBundleVariant != null ? bi.assetBundleVariant.ToLower() : null;
-                assetbundlebuildasset.AssetBuildInfoList.Add(abbi);
+				foreach(var assetName in bi.assetNames)
+                {
+                    var abbi = new AssetBuildInfo();
+                    // 不剔除后缀，确保AssetDatabase模式可以全路径(带后缀)加载
+                    abbi.AssetPath = assetName.ToLower();//.Substring(0, bi.assetNames[0].Length - Path.GetExtension(bi.assetNames[0]).Length).ToLower();
+                    abbi.ABPath = bi.assetBundleName.ToLower();
+                    abbi.ABVariantPath = bi.assetBundleVariant != null ? bi.assetBundleVariant.ToLower() : null;
+                    assetbundlebuildasset.AssetBuildInfoList.Add(abbi);
+                }
             }
 
             EditorUtility.SetDirty(assetbundlebuildasset);

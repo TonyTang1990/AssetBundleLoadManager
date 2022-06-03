@@ -1,3 +1,8 @@
+# 工具
+
+1. Unity版本(2019 4.31f1c1或2020.3.34f1c2)
+2. Visual Studio 2019
+
 # 功能模块
 
 ## 资源加载管理和打包模块
@@ -405,6 +410,10 @@ Tools->Assets->Asset相关处理
 5. Shader变体搜集工具(半成品，只是简单的把所有材质放到场景中用摄像机照射一次让Unity能搜集到变体，**可能会遗漏一些特殊情况下的变体**)
 
    ![ShaderVariantsCollection](./img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png) 
+
+# 重大问题修复
+
+1. **修复资源打包在2020和2021版本会报错(BuildPipeline error is thrown when building Asset Bundles](https://issuetracker.unity3d.com/issues/buildpipeline-error-is-thrown-when-building-asset-bundles))问题(2022/06/03)**
 
 # 待做事项
 

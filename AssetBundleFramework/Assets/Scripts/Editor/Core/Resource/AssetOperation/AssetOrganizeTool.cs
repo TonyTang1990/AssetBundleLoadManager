@@ -92,7 +92,7 @@ public class AssetOrganizeTool {
         {
             deleteDpMaterialAsset(assetpath);
             var modelassetomporter = ModelImporter.GetAtPath(assetpath) as ModelImporter;
-            modelassetomporter.importMaterials = false;
+            modelassetomporter.materialImportMode = ModelImporterMaterialImportMode.None;
             modelassetomporter.SaveAndReimport();
             AssetOrganizeHelper.moveFileAndMeta(assetpath, basefolderpath);
             return;
