@@ -191,14 +191,14 @@ namespace TResource
         {
             if (LoadMethod == ResourceLoadMethod.Sync)
             {
-                var asset = mMainBundleLoader != null ? mMainBundleLoader.obtainAssetBundle().LoadAsset(mAssetInfo.AssetName, mAssetInfo.AssetType) : null;
+                var asset = mMainBundleLoader != null ? mMainBundleLoader.obtainAssetBundle().LoadAsset(mAssetInfo.ResourcePath, mAssetInfo.AssetType) : null;
                 onAssetLoadComplete(asset);
             }
             else if (LoadMethod == ResourceLoadMethod.Async)
             {
                 if(mMainBundleLoader != null)
                 {
-                    mAssetAsyncRequest = mMainBundleLoader.obtainAssetBundle().LoadAssetAsync(mAssetInfo.AssetName, mAssetInfo.AssetType);
+                    mAssetAsyncRequest = mMainBundleLoader.obtainAssetBundle().LoadAssetAsync(mAssetInfo.ResourcePath, mAssetInfo.AssetType);
                     mAssetAsyncRequest.completed += onAssetAsyncLoadComplete;
                 }
                 else
