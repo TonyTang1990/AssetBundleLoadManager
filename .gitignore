@@ -7,3 +7,5 @@ AssetBundleFramework/.vs/
 AssetBundleFramework/Temp/
 # 过滤obj目录
 AssetBundleFramework/obj/
+# 过滤Log目录
+AssetBundleFramework/Logs/
