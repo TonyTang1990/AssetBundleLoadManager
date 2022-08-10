@@ -250,24 +250,24 @@ namespace TResource
             {
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
                 GUILayout.BeginVertical();
-                var alldepinfo = assetbundleresourcemodule.AssetBuildInfo.ABPathDepMap;
+                var allDepInfoMap = assetbundleresourcemodule.AssetBundleDependencyMap;
                 if (!mTextFilter.Equals(string.Empty))
                 {
                     if (mFilterTextChanged)
                     {
                         mValideDepABPathList.Clear();
-                        foreach (var depinfo in alldepinfo)
+                        foreach (var depInfo in allDepInfoMap)
                         {
-                            if (depinfo.Key.Contains(mTextFilter))
+                            if (depInfo.Key.Contains(mTextFilter))
                             {
-                                mValideDepABPathList.Add(depinfo.Key);
+                                mValideDepABPathList.Add(depInfo.Key);
                             }
                         }
                         if (mValideDepABPathList.Count > 0)
                         {
                             foreach (var assetBundlePath in mValideDepABPathList)
                             {
-                                displayOneAssetBundleDepInfoUI(assetBundlePath, alldepinfo[assetBundlePath]);
+                                displayOneAssetBundleDepInfoUI(assetBundlePath, allDepInfoMap[assetBundlePath]);
                             }
                         }
                         else
@@ -281,7 +281,7 @@ namespace TResource
                         {
                             foreach (var assetBundlePath in mValideDepABPathList)
                             {
-                                displayOneAssetBundleDepInfoUI(assetBundlePath, alldepinfo[assetBundlePath]);
+                                displayOneAssetBundleDepInfoUI(assetBundlePath, allDepInfoMap[assetBundlePath]);
                             }
                         }
                         else
@@ -293,7 +293,7 @@ namespace TResource
                 else
                 {
                     int num = 0;
-                    foreach (var depinfo in alldepinfo)
+                    foreach (var depinfo in allDepInfoMap)
                     {
                         num++;
                         if (num < MaxDepABInfoNumber)

@@ -74,10 +74,10 @@ public class AssetBuildInfoAsset : ScriptableObject
     public List<AssetBuildInfo> AssetBuildInfoList;
 
     /// <summary>
-    /// AB打包信息信息列表
+    /// AB打包信息信息列表(现有设计采用AB打包出来的Manifest文件访问依赖信息)
     /// </summary>
-    [Header("AB打包信息信息列表")]
-    public List<AssetBundleBuildInfo> AssetBundleBuildInfoList;
+    //[Header("AB打包信息信息列表")]
+    //public List<AssetBundleBuildInfo> AssetBundleBuildInfoList;
 
     /// <summary>
     /// Asset AB打包信息映射Map(Key为Asset路径，Value为对应Asset打包信息)
@@ -87,18 +87,18 @@ public class AssetBuildInfoAsset : ScriptableObject
     /// <summary>
     /// AB路径依赖信息映射Map(Key为AB路径，Value为对应AB路径对应的依赖信息)
     /// </summary>
-    public Dictionary<string, string[]> ABPathDepMap
-    {
-        get;
-        private set;
-    }
+    //public Dictionary<string, string[]> ABPathDepMap
+    //{
+    //    get;
+    //    private set;
+    //}
 
     public AssetBuildInfoAsset()
     {
         AssetBuildInfoList = new List<AssetBuildInfo>();
-        AssetBundleBuildInfoList = new List<AssetBundleBuildInfo>();
+        //AssetBundleBuildInfoList = new List<AssetBundleBuildInfo>();
         mAssetBuildInfoMap = new Dictionary<string, AssetBuildInfo>();
-        ABPathDepMap = new Dictionary<string, string[]>();
+        //ABPathDepMap = new Dictionary<string, string[]>();
     }
 
     /// <summary>
@@ -120,14 +120,14 @@ public class AssetBuildInfoAsset : ScriptableObject
                 Debug.LogWarning($"同目录下有同名文件:{AssetBuildInfoList[i].AssetPath},忽略同名文件避免重复Key问题!");
             }
         }
-        ABPathDepMap.Clear();
-        for (int i = 0, length = AssetBundleBuildInfoList.Count; i < length; i++)
-        {
-            if (!ABPathDepMap.ContainsKey(AssetBundleBuildInfoList[i].ABPath))
-            {
-                ABPathDepMap.Add(AssetBundleBuildInfoList[i].ABPath, AssetBundleBuildInfoList[i].DepABPathList.ToArray());
-            }
-        }
+        //ABPathDepMap.Clear();
+        //for (int i = 0, length = AssetBundleBuildInfoList.Count; i < length; i++)
+        //{
+        //    if (!ABPathDepMap.ContainsKey(AssetBundleBuildInfoList[i].ABPath))
+        //    {
+        //        ABPathDepMap.Add(AssetBundleBuildInfoList[i].ABPath, AssetBundleBuildInfoList[i].DepABPathList.ToArray());
+        //    }
+        //}
     }
 
     /// <summary>
@@ -168,32 +168,32 @@ public class AssetBuildInfoAsset : ScriptableObject
         }
     }
 
-    /// <summary>
-    /// 获取AB路径所依赖的AB路径信息数组
-    /// </summary>
-    /// <param name="abpath"></param>
-    /// <returns></returns>
-    public string[] getABPathDepPaths(string abpath)
-    {
-        string[] abdeppaths = null;
-        if (ABPathDepMap.TryGetValue(abpath, out abdeppaths))
-        {
-            return abdeppaths;
-        }
-        else
-        {
-            Debug.LogError($"找不到AB路径:{abpath}的AB依赖路径信息!");
-            return null;
-        }
-    }
+    ///// <summary>
+    ///// 获取AB路径所依赖的AB路径信息数组
+    ///// </summary>
+    ///// <param name="abpath"></param>
+    ///// <returns></returns>
+    //public string[] getABPathDepPaths(string abpath)
+    //{
+    //    string[] abdeppaths = null;
+    //    if (ABPathDepMap.TryGetValue(abpath, out abdeppaths))
+    //    {
+    //        return abdeppaths;
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError($"找不到AB路径:{abpath}的AB依赖路径信息!");
+    //        return null;
+    //    }
+    //}
 
-    /// <summary>
-    /// 指定路径是否是AB路径
-    /// </summary>
-    /// <param name="respath"></param>
-    /// <returns></returns>
-    public bool isABPath(string respath)
-    {
-        return ABPathDepMap.ContainsKey(respath);
-    }
+    ///// <summary>
+    ///// 指定路径是否是AB路径
+    ///// </summary>
+    ///// <param name="respath"></param>
+    ///// <returns></returns>
+    //public bool isABPath(string respath)
+    //{
+    //    return ABPathDepMap.ContainsKey(respath);
+    //}
 }
