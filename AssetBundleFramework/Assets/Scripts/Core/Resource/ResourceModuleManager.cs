@@ -94,6 +94,14 @@ namespace TResource
         }
 
         /// <summary>
+        /// 重新加载数据(针对热更流程后需要重新加载部分数据的情况)
+        /// </summary>
+        public void reloadData()
+        {
+            CurrentResourceModule.reloadData();
+        }
+
+        /// <summary>
         /// 同步请求Asset资源(为未来支持动态资源加载做准备)
         /// 同步Asset资源加载统一入口
         /// </summary>
@@ -156,6 +164,14 @@ namespace TResource
         public void unloadAllUnsedNormalLoadedResources()
         {
             CurrentResourceModule.unloadAllUnusedResources();
+        }
+
+        /// <summary>
+        /// 强制卸载所有资源(只在特定情况下用 e.g. 热更后卸载所有已加载资源后重新初始化加载AB资源)***慎用***
+        /// </summary>
+        public void forceUnloadAllResources()
+        {
+            CurrentResourceModule.forceUnloadAllResources();
         }
     }
 }

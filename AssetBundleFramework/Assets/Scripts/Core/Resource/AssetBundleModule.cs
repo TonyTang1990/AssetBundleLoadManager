@@ -48,7 +48,11 @@ namespace TResource
         /// </summary>
         private void loadAssetBuildManifest()
         {
-            AssetBundleDependencyMap = new Dictionary<string, string[]>();
+            if(AssetBundleDependencyMap == null)
+            {
+                AssetBundleDependencyMap = new Dictionary<string, string[]>();
+            }
+            AssetBundleDependencyMap.Clear();
             // Note:
             // 依赖AB不带后缀
             var abPath = AssetBundlePath.GetABLoadFullPathNoPostFix(AssetBundlePath.DependencyFileName);
@@ -195,6 +199,18 @@ namespace TResource
         }
 
         /// <summary>
+        /// 重新加载数据(针对热更流程后需要重新加载部分数据的情况)
+        /// </summary>
+        public override void reloadData()
+        {
+            base.reloadData();
+            // 重新加载AssetBundle依赖信息
+            loadAssetBuildManifest();
+            // 重新加载Asset打包信息
+            loadAssetBuildInfo();
+        }
+
+        /// <summary>
         /// 真正的请求Asset资源
         /// </summary>
         /// <param name="assetPath">Asset资源路径(带后缀)</param>
@@ -338,6 +354,25 @@ namespace TResource
             mUnsedAssetBundleInfoList.Clear();
         }
 
+        /// <summary>
+        /// 强制卸载所有资源(只在特定情况下用 e.g. 热更后卸载所有已加载资源后重新初始化加载AB资源)***慎用***
+        /// </summary>
+        public override void forceUnloadAllResources()
+        {
+            // 强制清除待卸载AssetBundleInfo信息，避免强制清除后依然触发清理报错
+            mUnsedAssetBundleInfoList.Clear();
+            var assetBundlePathList = new List<string>(mAllLoadedNormalAssetBundleInfoMap.Keys);
+            assetBundlePathList.AddRange(mAllLoadedPermanentAssetBundleInfoMap.Keys);
+            foreach(var assetBundlePath in assetBundlePathList)
+            {
+                if(mAllLoadedNormalAssetBundleInfoMap.ContainsKey(assetBundlePath) ||
+                    mAllLoadedPermanentAssetBundleInfoMap.ContainsKey(assetBundlePath))
+                {
+                    deleteAssetBundleInfo(assetBundlePath);
+                }
+            }
+        }
+
         #region 资源调试辅助功能
         /// <summary>
         /// 强制卸载指定AB(只支持NormalLoad的AB资源强制卸载)
@@ -351,7 +386,6 @@ namespace TResource
                 if (mAllLoadedNormalAssetBundleInfoMap.TryGetValue(assetBundelPath, out assetBundleInfo))
                 {
                     deleteAssetBundleInfo(assetBundelPath);
-                    assetBundleInfo.dispose();
                 }
                 else
                 {

@@ -163,5 +163,24 @@ namespace TResource
             }
             mUnsedAssetInfoList.Clear();
         }
+
+        /// <summary>
+        /// 强制卸载所有资源(只在特定情况下用 e.g. 热更后卸载所有已加载资源后重新初始化加载AB资源)***慎用***
+        /// </summary>
+        public override void forceUnloadAllResources()
+        {
+            // 强制清除待卸载AssetInfo信息，避免强制清除后依然触发清理报错
+            mUnsedAssetInfoList.Clear();
+            var assetPathList = new List<string>(mAllLoadedNormalAssetInfoMap.Keys);
+            assetPathList.AddRange(mAllLoadedPermanentAssetInfoMap.Keys);
+            foreach (var assetPath in assetPathList)
+            {
+                if (mAllLoadedNormalAssetInfoMap.ContainsKey(assetPath) ||
+                    mAllLoadedPermanentAssetInfoMap.ContainsKey(assetPath))
+                {
+                    deleteAssetInfo(assetPath);
+                }
+            }
+        }
     }
 }

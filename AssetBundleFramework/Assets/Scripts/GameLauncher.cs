@@ -1047,6 +1047,26 @@ namespace TResource
         }
 
         /// <summary>
+        /// 强制卸载所有资源
+        /// </summary>
+        public void onForceUnloadAllResources()
+        {
+            DIYLog.Log("onForceUnloadAllResources()");
+            var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule;
+            assetbundleresourcemodule.forceUnloadAllResources();
+        }
+
+        /// <summary>
+        /// 强制重新加载AB依赖信息
+        /// </summary>
+        public void onForceReloadABDepInfo()
+        {
+            DIYLog.Log("onForceReloadABDepInfo()");
+            var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule;
+            assetbundleresourcemodule.reloadData();
+        }
+
+        /// <summary>
         /// 播放指定Video
         /// </summary>
         public void onPlayVideo()

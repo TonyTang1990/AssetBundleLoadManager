@@ -87,7 +87,7 @@ namespace TResource
         {
             if (LoadType != ResourceLoadType.NormalLoad)
             {
-                Debug.Assert(LoadType == ResourceLoadType.NormalLoad, $"不应该触发非NormalLoad的AssetPath:{ResourcePath}卸载");
+                Debug.LogWarning($"正在卸载非NormalLoad的AssetPath:{ResourcePath}的AssetInfo信息!");
             }
             // AssetLoader和AssetInfo是一一对应，
             // 在AssetInfo回收时,AssetLoader也应该得到回收

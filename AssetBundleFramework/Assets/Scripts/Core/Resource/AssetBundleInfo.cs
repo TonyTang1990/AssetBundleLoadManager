@@ -115,13 +115,13 @@ namespace TResource
         {
             if(LoadType != ResourceLoadType.NormalLoad)
             {
-                Debug.LogWarning($"不应该触发非NormalLoad的AssetBundlePath:{ResourcePath}卸载");
+                Debug.LogWarning($"正在卸载非NormalLoad的AssetBundlePath:{ResourcePath}的AssetBundleInfo信息!");
             }
             // AB模式释放指定AB时，需要减少依赖AB信息的索引计数
             for (int i = 0, length = mDepAssetBundlePaths.Length; i < length; i++)
             {
                 var depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.getAssetBundleInfo(mDepAssetBundlePaths[i]);
-                depAssetBundleInfo.release();
+                depAssetBundleInfo?.release();
             }
             mDepAssetBundlePaths = null;
             // AssetBundleLoader和AssetBundleInfo是一一对应，

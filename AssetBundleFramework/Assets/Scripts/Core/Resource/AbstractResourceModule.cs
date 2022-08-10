@@ -79,6 +79,7 @@ namespace TResource
         /// </summary>
         protected Dictionary<string, AssetInfo> mAllLoadedPermanentAssetInfoMap;
 
+        #region 仅AB模式会有
         /// <summary>
         /// 普通加载方式所有已加载的资源的信息映射Map
         /// Key为AB路径，Value为AB路径已加载的资源信息映射Map(Key为AB路径，Value为AssetBundle资源加载信息)
@@ -90,6 +91,7 @@ namespace TResource
         /// Key为AB路径，Value为AB路径已加载的资源信息映射Map(Key为AB路径，Value为AssetBundle资源加载信息)
         /// </summary>
         protected Dictionary<string, AssetBundleInfo> mAllLoadedPermanentAssetBundleInfoMap;
+        #endregion
 
         /// <summary> 检测未使用资源时间间隔(在请求队列为空时才检测未使用资源) /// </summary>
         public float CheckUnsedResourceTimeInterval
@@ -201,6 +203,14 @@ namespace TResource
             mFPSUpdateInterval = 1.0f;
         }
 
+        /// <summary>
+        /// 重新加载数据(针对热更流程后需要重新加载部分数据的情况)
+        /// </summary>
+        public virtual void reloadData()
+        {
+
+        }
+
         #region 资源加载信息部分
         /// <summary>
         /// 获取或创建指定Asset路径的Asset信息
@@ -286,9 +296,7 @@ namespace TResource
         }
 
         /// <summary>
-        /// 删除指定Asset路径的Asset信息
-        /// Note:
-        /// 只支持删除NormalLoad方式的Asset信息
+        /// 删除指定Asset路径的Asset信息(任何加载方式)
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
@@ -302,9 +310,16 @@ namespace TResource
                 ObjectPool.Singleton.push<AssetInfo>(assetInfo);
                 return true;
             }
+            else if(mAllLoadedPermanentAssetInfoMap.TryGetValue(assetPath, out assetInfo))
+            {
+                mAllLoadedPermanentAssetInfoMap.Remove(assetPath);
+                assetInfo.dispose();
+                ObjectPool.Singleton.push<AssetInfo>(assetInfo);
+                return true;
+            }
             else
             {
-                Debug.LogError($"不存在NormalLoad的AssetPath信息,删除AssetPath:{assetPath}信息失败!");
+                Debug.LogError($"不存在Asset信息,删除AssetPath:{assetPath}信息失败!");
                 return false;
             }
         }
@@ -401,9 +416,7 @@ namespace TResource
         }
 
         /// <summary>
-        /// 删除指定AssetBundle路径的AssetBundle信息
-        /// Note:
-        /// 只支持删除NormalLoad方式的AB信息
+        /// 删除指定AssetBundle路径的AssetBundle信息(任何加载方式)
         /// </summary>
         /// <param name="assetBundlePath"></param>
         /// <returns></returns>
@@ -417,11 +430,18 @@ namespace TResource
                 ObjectPool.Singleton.push<AssetBundleInfo>(assetBundleInfo);
                 return true;
             }
+            else if(mAllLoadedPermanentAssetBundleInfoMap.TryGetValue(assetBundlePath, out assetBundleInfo))
+            {
+                mAllLoadedPermanentAssetBundleInfoMap.Remove(assetBundlePath);
+                assetBundleInfo.dispose();
+                ObjectPool.Singleton.push<AssetBundleInfo>(assetBundleInfo);
+                return true;
+            }
             else
             {
-                Debug.LogError($"不存在NormalLoad的AssetBundlePath信息,删除AssetBundlePath:{assetBundlePath}信息失败!");
-                return false;
-            }
+            Debug.LogError($"不存在AssetBundle信息,删除AssetBundlePath:{assetBundlePath}信息失败!");
+            return false;
+        }
         }
 
         /// <summary>
@@ -729,6 +749,10 @@ namespace TResource
         /// <param name="resourceloadtype">资源加载类型</param>
         protected abstract void doUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype);
 
+        /// <summary>
+        /// 强制卸载所有资源(只在特定情况下用 e.g. 热更后卸载所有已加载资源后重新初始化加载AB资源)***慎用***
+        /// </summary>
+        public abstract void forceUnloadAllResources();
         #region 调试开发工具
         /// <summary>
         /// 获取正常已加载不可用的Asset数量
