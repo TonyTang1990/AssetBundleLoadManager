@@ -439,9 +439,9 @@ namespace TResource
             }
             else
             {
-            Debug.LogError($"不存在AssetBundle信息,删除AssetBundlePath:{assetBundlePath}信息失败!");
-            return false;
-        }
+                Debug.LogError($"不存在AssetBundle信息,删除AssetBundlePath:{assetBundlePath}信息失败!");
+                return false;
+            }
         }
 
         /// <summary>
