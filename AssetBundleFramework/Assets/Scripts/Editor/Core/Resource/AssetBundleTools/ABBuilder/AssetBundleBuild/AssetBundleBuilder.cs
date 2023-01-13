@@ -357,6 +357,8 @@ namespace MotionFramework.Editor
 			EditorUtility.ClearProgressBar();
 			progressBarCount = 0;
 
+			/*
+			// 零依赖资源可能是纯动态加载的资源，是有可能用到的需要参与打包
 			// 移除零依赖的资源
 			List<string> removeList = new List<string>();
 			foreach (KeyValuePair<string, AssetInfo> pair in allAsset)
@@ -371,15 +373,17 @@ namespace MotionFramework.Editor
 				allAsset.Remove(removeList[i]);
                 Debug.Log($"移除零依赖资源:{removeList[i]}");
 			}
+			*/
 
 			// 设置资源标签
+			var totalAssetNum = allAsset.Count;
 			foreach (KeyValuePair<string, AssetInfo> pair in allAsset)
 			{
 				SetAssetBundleLabelAndVariant(pair.Value);
 
 				// 进度条
 				progressBarCount++;
-				EditorUtility.DisplayProgressBar("进度", $"设置资源标签：{progressBarCount}/{allAsset.Count}", (float)progressBarCount / allAsset.Count);
+				EditorUtility.DisplayProgressBar("进度", $"设置资源标签：{progressBarCount}/{totalAssetNum}", (float)progressBarCount / totalAssetNum);
 			}
 
             EditorUtility.ClearProgressBar();
