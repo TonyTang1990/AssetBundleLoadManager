@@ -229,24 +229,6 @@ MonoBehaviour:
   - AssetPath: assets/res/audios/sfx/sfx1/explosion.wav
     ABPath: assets/res/audios/sfx/sfx1/explosion
     ABVariantPath: android
-  - AssetPath: assets/res/windows/mainwindow.prefab
-    ABPath: assets/res/windows/mainwindow
-    ABVariantPath: android
-  - AssetPath: assets/res/buildinresources/buildinmaterials/sprites-default.mat
-    ABPath: assets/res/buildinresources/buildinmaterials
-    ABVariantPath: android
-  - AssetPath: assets/res/buildinresources/buildinmaterials/default-material.mat
-    ABPath: assets/res/buildinresources/buildinmaterials
-    ABVariantPath: android
-  - AssetPath: assets/res/buildinresources/buildinmaterials/default-particle.mat
-    ABPath: assets/res/buildinresources/buildinmaterials
-    ABVariantPath: android
-  - AssetPath: assets/res/buildinresources/buildinmaterials/default-particlesystem.mat
-    ABPath: assets/res/buildinresources/buildinmaterials
-    ABVariantPath: android
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/sprites-default.shader
-    ABPath: shaderlist
-    ABVariantPath: android
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/standard.shader
     ABPath: shaderlist
     ABVariantPath: android
@@ -261,7 +243,7 @@ MonoBehaviour:
       standard unlit.shader
     ABPath: shaderlist
     ABVariantPath: android
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-diffuse.shader
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/sprites-default.shader
     ABPath: shaderlist
     ABVariantPath: android
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresources/font.shader
@@ -481,6 +463,9 @@ MonoBehaviour:
     ABPath: shaderlist
     ABVariantPath: android
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-bumpspec.shader
+    ABPath: shaderlist
+    ABVariantPath: android
+  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-diffuse.shader
     ABPath: shaderlist
     ABVariantPath: android
   - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-lightmap-unlit.shader
@@ -820,14 +805,26 @@ MonoBehaviour:
   - AssetPath: assets/res/shadervariants/diyshadervariantscollection.shadervariants
     ABPath: shaderlist
     ABVariantPath: android
+  - AssetPath: assets/res/buildinresources/buildinmaterials/default-material.mat
+    ABPath: assets/res/buildinresources/buildinmaterials
+    ABVariantPath: android
+  - AssetPath: assets/res/buildinresources/buildinmaterials/default-particle.mat
+    ABPath: assets/res/buildinresources/buildinmaterials
+    ABVariantPath: android
+  - AssetPath: assets/res/buildinresources/buildinmaterials/default-particlesystem.mat
+    ABPath: assets/res/buildinresources/buildinmaterials
+    ABVariantPath: android
+  - AssetPath: assets/res/buildinresources/buildinmaterials/sprites-default.mat
+    ABPath: assets/res/buildinresources/buildinmaterials
+    ABVariantPath: android
+  - AssetPath: assets/res/buildinresources/buildintextures/inputfieldbackground.png
+    ABPath: assets/res/buildinresources/buildintextures
+    ABVariantPath: android
   - AssetPath: assets/res/prefabs/imagebuildin.prefab
     ABPath: assets/res/prefabs/imagebuildin
     ABVariantPath: android
   - AssetPath: assets/res/prefabs/rawimagebuildin.prefab
     ABPath: assets/res/prefabs/rawimagebuildin
-    ABVariantPath: android
-  - AssetPath: assets/res/buildinresources/buildintextures/inputfieldbackground.png
-    ABPath: assets/res/buildinresources/buildintextures
     ABVariantPath: android
   - AssetPath: assets/res/prefabs/sfxtemplate.prefab
     ABPath: assets/res/prefabs/sfxtemplate
@@ -841,54 +838,6 @@ MonoBehaviour:
   - AssetPath: assets/res/prefabs/videoplayerroot.prefab
     ABPath: assets/res/prefabs/videoplayerroot
     ABVariantPath: android
-  - AssetPath: assets/res/sharematerials/sharebluematerial.mat
-    ABPath: assets/res/sharematerials/sharebluematerial
-    ABVariantPath: android
-  - AssetPath: assets/res/sharematerials/sharematerial.mat
-    ABPath: assets/res/sharematerials/sharematerial
-    ABVariantPath: android
-  - AssetPath: assets/res/sharematerials/shareredmaterial.mat
-    ABPath: assets/res/sharematerials/shareredmaterial
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/cube/pre_cube.prefab
-    ABPath: assets/res/actors/cube
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/sphere/pre_sphere.prefab
-    ABPath: assets/res/actors/sphere
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/testbyfileandsubfolder.prefab
-    ABPath: assets/res/actors/testbyfileandsubfolder
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/zombunny/materials/eyesmaterial.mat
-    ABPath: assets/res/actors/zombunny
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/zombunny/materials/zombunnymaterial.mat
-    ABPath: assets/res/actors/zombunny
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/zombunny/textures/zombunnynormals.tif
-    ABPath: assets/res/actors/zombunny
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/zombunny/textures/zombunnydiffuse.tif
-    ABPath: assets/res/actors/zombunny
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/zombunny/zombunnyanimations/idle.anim
-    ABPath: assets/res/actors/zombunny
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/zombunny/zombunny.fbx
-    ABPath: assets/res/actors/zombunny
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/zombunny/pre_zombunny.prefab
-    ABPath: assets/res/actors/zombunny
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/zombunny/zombunnyanimations/death.anim
-    ABPath: assets/res/actors/zombunny
-    ABVariantPath: android
-  - AssetPath: assets/res/actors/zombunny/zombunnyanimations/move.anim
-    ABPath: assets/res/actors/zombunny
-    ABVariantPath: android
-  - AssetPath: assets/res/shaders/rim lit bumped specular.shader
-    ABPath: assets/res/shaders/rim lit bumped specular
-    ABVariantPath: android
   - AssetPath: assets/res/scenes/newassetbundleframeworkscene.unity
     ABPath: assets/res/scenes/newassetbundleframeworkscene
     ABVariantPath: android
@@ -897,6 +846,9 @@ MonoBehaviour:
     ABVariantPath: android
   - AssetPath: assets/res/scenes/sceneprefabs/testscene2prefab.prefab
     ABPath: assets/res/scenes/sceneprefabs/testscene2prefab
+    ABVariantPath: android
+  - AssetPath: assets/res/sharematerials/sharematerial.mat
+    ABPath: assets/res/sharematerials/sharematerial
     ABVariantPath: android
   - AssetPath: assets/res/scenes/sceneprefabs/testscene2prefab2.prefab
     ABPath: assets/res/scenes/sceneprefabs/testscene2prefab2
@@ -913,13 +865,21 @@ MonoBehaviour:
   - AssetPath: assets/res/scenes/testscene3.unity
     ABPath: assets/res/scenes/testscene3
     ABVariantPath: android
+  - AssetPath: assets/res/sharematerials/sharebluematerial.mat
+    ABPath: assets/res/sharematerials/sharebluematerial
+    ABVariantPath: android
+  - AssetPath: assets/res/sharematerials/shareredmaterial.mat
+    ABPath: assets/res/sharematerials/shareredmaterial
+    ABVariantPath: android
   - AssetPath: assets/res/textures/chaichaifengjing.jpg
     ABPath: assets/res/textures/chaichaifengjing
     ABVariantPath: android
   - AssetPath: assets/res/textures/chaichaishenqingzhushi.jpg
     ABPath: assets/res/textures/chaichaishenqingzhushi
     ABVariantPath: android
+  - AssetPath: assets/res/windows/mainwindow.prefab
+    ABPath: assets/res/windows/mainwindow
+    ABVariantPath: android
   - AssetPath: assets//res/assetbuildinfo/assetbuildinfoandroid.asset
     ABPath: assetbuildinfoandroid
     ABVariantPath: android
-  AssetBundleBuildInfoList: []

@@ -72,7 +72,6 @@ namespace MotionFramework.Editor
 			{
 				Debug.LogWarning($"Create new {nameof(AssetBundleCollectSetting)}.asset : {AssetBundleCollectSettingFileRelativePath}");
 				mSetting = ScriptableObject.CreateInstance<AssetBundleCollectSetting>();
-                mSetting.UpdateData();
                 var assetbundlecollectsettingfolderpath = Application.dataPath + AssetBundleCollectSettingSaveFolderRelativePath;
                 FolderUtilities.CheckAndCreateSpecificFolder(assetbundlecollectsettingfolderpath);
 				AssetDatabase.CreateAsset(Setting, AssetBundleCollectSettingFileRelativePath);
@@ -83,9 +82,10 @@ namespace MotionFramework.Editor
 			{
 				Debug.Log($"Load {nameof(AssetBundleCollectSetting)}.asset ok");
 			}
+            mSetting.UpdateData();
 
-			// 清空缓存集合
-			_cacheTypes.Clear();
+            // 清空缓存集合
+            _cacheTypes.Clear();
 			_cacheCollector.Clear();
 
             // 获取所有资源收集器类型
@@ -207,6 +207,7 @@ namespace MotionFramework.Editor
                 var relativefolderpath = PathUtilities.GetAssetsRelativeFolderPath(folderpath);
                 var collector = new Collector(relativefolderpath);
                 Setting.AssetBundleCollectors.Add(collector);
+                Setting.SortCollector();
                 SaveFile();
                 return true;
             }
@@ -226,25 +227,6 @@ namespace MotionFramework.Editor
             var result = Setting.AssetBundleCollectors.Remove(collector);
             SaveFile();
             return result;
-        }
-
-        /// <summary>
-        /// 是否收集该资源
-        /// </summary>
-        public static bool IsCollectAsset(string assetPath)
-        {
-            for (int i = 0; i < Setting.AssetBundleCollectors.Count; i++)
-            {
-                Collector wrapper = Setting.AssetBundleCollectors[i];
-                if (wrapper.CollectRule == EAssetBundleCollectRule.Collect)
-                {
-                    if (assetPath.StartsWith(wrapper.CollectFolderPath))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
         
 		/// <summary>
@@ -267,19 +249,18 @@ namespace MotionFramework.Editor
 		/// <summary>
 		/// 是否可收集资源
 		/// </summary>
-		public static bool IsCollectedAsset(string assetpath)
+		public static bool IsCollectAsset(string assetpath)
 		{
-			for (int i = 0; i < Setting.AssetBundleCollectors.Count; i++)
+            // AssetBundleCollectors那方是按字母排序的
+            // 所以反向匹配是由里往外遍历，匹配第一个就是最里层符合打包策略的设定
+            var assetFolderPath = Path.GetDirectoryName(assetpath);
+            var regularAssetFolderPath = PathUtilities.GetRegularPath(assetFolderPath);
+            for (int i = Setting.AssetBundleCollectors.Count - 1; i > 0; i--)
 			{
 				Collector wrapper = Setting.AssetBundleCollectors[i];
-				if (wrapper.CollectRule == EAssetBundleCollectRule.Ignore)
-				{
-                    var assetFolderPath = Path.GetDirectoryName(assetpath);
-                    var regularAssetFolderPath = PathUtilities.GetRegularPath(assetFolderPath);
-                    if (regularAssetFolderPath.StartsWith(wrapper.CollectFolderPath))
-                    {
-                        return true;
-                    }
+                if (regularAssetFolderPath.StartsWith(wrapper.CollectFolderPath))
+                {
+                    return wrapper.CollectRule == EAssetBundleCollectRule.Collect;
                 }
 			}
 			return false;

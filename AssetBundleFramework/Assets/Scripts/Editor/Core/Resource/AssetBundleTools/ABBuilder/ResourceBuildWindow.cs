@@ -353,8 +353,11 @@ public class ResourceBuildWindow : BaseEditorWindow
     /// </summary>
     private void DisplayResourceCollectArea()
     {
-        GUILayout.BeginVertical();
+        EditorGUILayout.BeginVertical();
         mFoldMap[EFoldType.BuildRule] = EditorGUILayout.Foldout(mFoldMap[EFoldType.BuildRule], "AB打包资源搜集");
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(AssetBundleBuildConstData.INDENTATION);
+        EditorGUILayout.BeginVertical();
         if (!mFoldMap[EFoldType.BuildRule])
         {
             if (AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count != 0)
@@ -374,12 +377,14 @@ public class ResourceBuildWindow : BaseEditorWindow
                     }
                 }
             }
+            else
+            {
+                EditorGUILayout.LabelField("无打包策略配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
+            }
         }
-        else
-        {
-            EditorGUILayout.LabelField("无打包策略配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
-        }
-        GUILayout.EndVertical();
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
     }
 
     /// <summary>
@@ -388,7 +393,7 @@ public class ResourceBuildWindow : BaseEditorWindow
     /// <param name="collector"></param>
     private void DisplayOneCollect(Collector collector)
     {
-        GUILayout.BeginHorizontal("Box");
+        EditorGUILayout.BeginHorizontal("Box");
         EditorGUILayout.LabelField(collector.CollectFolderPath, GUILayout.ExpandWidth(true), GUILayout.Height(20.0f));
         collector.CollectRule = (EAssetBundleCollectRule)EditorGUILayout.EnumPopup(collector.CollectRule, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
         collector.BuildRule = (EAssetBundleBuildRule)EditorGUILayout.EnumPopup(collector.BuildRule, GUILayout.Width(150f), GUILayout.Height(20.0f));
@@ -416,7 +421,7 @@ public class ResourceBuildWindow : BaseEditorWindow
                 Debug.LogError($"移除资源搜集目录:{collector.CollectFolderPath}失败!");
             }
         }
-        GUILayout.EndHorizontal();
+        EditorGUILayout.EndHorizontal();
     }
 
     /// <summary>
@@ -424,14 +429,14 @@ public class ResourceBuildWindow : BaseEditorWindow
     /// </summary>
     private void DisplayBlackListArea()
     {
-        GUILayout.BeginVertical("box");
-        mFoldMap[EFoldType.BlackList] = EditorGUILayout.Foldout(mFoldMap[EFoldType.BlackList], "AB打包资源搜集");
+        EditorGUILayout.BeginVertical();
+        mFoldMap[EFoldType.BlackList] = EditorGUILayout.Foldout(mFoldMap[EFoldType.BlackList], "AB打包黑名单");
         if (!mFoldMap[EFoldType.BlackList])
         {
             DisplayPostFixBlackListArea();
             DisplayFileNameBlackListArea();
         }
-        GUILayout.EndVertical();
+        EditorGUILayout.EndVertical();
     }
 
     /// <summary>
@@ -439,7 +444,9 @@ public class ResourceBuildWindow : BaseEditorWindow
     /// </summary>
     private void DisplayPostFixBlackListArea()
     {
-        GUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(AssetBundleBuildConstData.INDENTATION);
+        EditorGUILayout.BeginVertical();
         mFoldMap[EFoldType.PostFixBlackList] = EditorGUILayout.Foldout(mFoldMap[EFoldType.PostFixBlackList], "后缀名黑名单");
         if (!mFoldMap[EFoldType.PostFixBlackList])
         {
@@ -451,12 +458,12 @@ public class ResourceBuildWindow : BaseEditorWindow
                     mod = i % POST_FIX_NUM_PER_ROW;
                     if (mod == 0)
                     {
-                        GUILayout.BeginHorizontal("box");
+                        EditorGUILayout.BeginHorizontal("box");
                     }
                     DisplayOnePostFix(AssetBundleCollectSettingData.Setting.BlackListInfo.PostFixBlackList, i);
                     if (mod == (POST_FIX_NUM_PER_ROW - 1) || (i == AssetBundleCollectSettingData.Setting.BlackListInfo.PostFixBlackList.Count - 1))
                     {
-                        GUILayout.EndHorizontal();
+                        EditorGUILayout.EndHorizontal();
                     }
                 }
             }
@@ -470,7 +477,8 @@ public class ResourceBuildWindow : BaseEditorWindow
                 AssetBundleCollectSettingData.AddPostFixBlackList();
             }
         }
-        GUILayout.EndVertical();
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.EndHorizontal();
     }
 
     /// <summary>
@@ -508,7 +516,9 @@ public class ResourceBuildWindow : BaseEditorWindow
     /// </summary>
     private void DisplayFileNameBlackListArea()
     {
-        GUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(AssetBundleBuildConstData.INDENTATION);
+        EditorGUILayout.BeginVertical();
         mFoldMap[EFoldType.FileNameBlackList] = EditorGUILayout.Foldout(mFoldMap[EFoldType.FileNameBlackList], "文件名黑名单");
         if (!mFoldMap[EFoldType.FileNameBlackList])
         {
@@ -520,12 +530,12 @@ public class ResourceBuildWindow : BaseEditorWindow
                     mod = i % FILE_NAME_NUM_PER_ROW;
                     if (mod == 0)
                     {
-                        GUILayout.BeginHorizontal("box");
+                        EditorGUILayout.BeginHorizontal("box");
                     }
                     DisplayOneFileName(AssetBundleCollectSettingData.Setting.BlackListInfo.FileNameBlackList, i);
                     if (mod == (FILE_NAME_NUM_PER_ROW - 1) || (i == AssetBundleCollectSettingData.Setting.BlackListInfo.FileNameBlackList.Count - 1))
                     {
-                        GUILayout.EndHorizontal();
+                        EditorGUILayout.EndHorizontal();
                     }
                 }
             }
@@ -539,7 +549,8 @@ public class ResourceBuildWindow : BaseEditorWindow
                 AssetBundleCollectSettingData.AddFileNameBlackList();
             }
         }
-        GUILayout.EndVertical();
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.EndHorizontal();
     }
 
     /// <summary>
@@ -577,12 +588,12 @@ public class ResourceBuildWindow : BaseEditorWindow
     /// </summary>
     private void DisplayCommonArea()
     {
-        GUILayout.BeginVertical("box");
+        EditorGUILayout.BeginVertical();
         if (GUILayout.Button("保存", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
         {
             AssetBundleCollectSettingData.SaveFile();
         }
-        GUILayout.EndVertical();
+        EditorGUILayout.EndVertical();
     }
     #endregion
 }

@@ -137,7 +137,7 @@ public class BlackListInfo
             PostFixBlackMap.Add(postFixBlack, postFixBlack);
         }
         FileNameBlackMap.Clear();
-        foreach (var fileNameBlack in FileNameBlackMap)
+        foreach (var fileNameBlack in FileNameBlackList)
         {
             if (FileNameBlackMap.ContainsKey(fileNameBlack))
             {
@@ -197,5 +197,24 @@ public class AssetBundleCollectSetting : ScriptableObject
     public void UpdateData()
     {
         BlackListInfo.UpdateData();
+    }
+
+    /// <summary>
+    /// 触发搜集器排序
+    /// </summary>
+    public void SortCollector()
+    {
+        AssetBundleCollectors.Sort(SortAssetBundleCollector);
+    }
+
+    /// <summary>
+    /// 收集器排序
+    /// </summary>
+    /// <param name="collector1"></param>
+    /// <param name="colloect2"></param>
+    /// <returns></returns>
+    private int SortAssetBundleCollector(Collector collector1, Collector colloect2)
+    {
+        return collector1.CollectFolderPath.CompareTo(colloect2.CollectFolderPath);
     }
 }

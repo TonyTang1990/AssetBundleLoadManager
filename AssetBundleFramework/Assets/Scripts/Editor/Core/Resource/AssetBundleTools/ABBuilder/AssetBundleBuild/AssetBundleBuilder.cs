@@ -202,6 +202,12 @@ namespace MotionFramework.Editor
 
             // 更新AB打包信息Asset(e.g.比如Asset打包信息)
             UpdateAssetBundleBuildInfoAsset(buildInfoList);
+			buildInfoList.Sort((assetBundleBuild1, assetBundleBuild2) => {
+				return assetBundleBuild1.assetBundleName.CompareTo(assetBundleBuild2.assetBundleName);
+			});
+
+			// 创建Asset AB打包详细说明信息文件
+			CreateAssetBuildReadmeFile(buildInfoList);
 
             // 开始构建
             Log($"开始构建......");
@@ -391,7 +397,7 @@ namespace MotionFramework.Editor
 			// 零依赖资源可能是纯动态加载的资源，是有可能用到的需要参与打包
 			// 移除零依赖的资源
 			List<string> removeList = new List<string>();
-			foreach (KeyValuePair<string, AssetInfo> pair in allAsset)
+			foreach (KeyValuePair<string, AssetInfo> pair in AllAssetInfoMap)
 			{
 				if (pair.Value.IsCollectAsset)
 					continue;
@@ -405,8 +411,8 @@ namespace MotionFramework.Editor
 			}
 			*/
 
-			// 设置资源标签
-			var totalAssetNum = AllAssetInfoMap.Count;
+            // 设置资源标签
+            var totalAssetNum = AllAssetInfoMap.Count;
 			foreach (KeyValuePair<string, AssetInfo> pair in AllAssetInfoMap)
 			{
 				SetAssetBundleLabelAndVariant(pair.Value);
@@ -520,7 +526,7 @@ namespace MotionFramework.Editor
             {
                 return false;
             }
-			if(!AssetBundleCollectSettingData.IsCollectedAsset(assetPath))
+			if(!AssetBundleCollectSettingData.IsCollectAsset(assetPath))
             {
 				return false;
             }
@@ -595,17 +601,51 @@ namespace MotionFramework.Editor
 				}
 			}
 		}
-		#endregion
+        #endregion
 
-		#region 文件加密
-		
-		#endregion
+        #region 文件加密
 
-		#region 文件相关
-		/// <summary>
-		/// 1. 检测循环依赖
-		/// </summary>
-		private void CheckCycleDepend(AssetBundleManifest unityManifest)
+        #endregion
+
+        #region 文件相关
+
+        /// <summary>
+        /// 创建Asset AB打包详细Readme文件到输出目录
+        /// </summary>
+		/// <param name="assetBundleBuildList">Asset AB打包信息列表</param>
+        private void CreateAssetBuildReadmeFile(List<AssetBundleBuild> assetBundleBuildList)
+        {
+            // 删除旧文件
+            string filePath = $"{OutputDirectory}/{AssetBundleBuildConstData.AssetBuildReadmeFileName}";
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+
+            Log($"创建Asset AB打包详细说明文件：{filePath}");
+
+            StringBuilder content = new StringBuilder();
+            AppendData(content, $"构建平台：{BuildTarget}");
+            AppendData(content, $"构建时间：{DateTime.Now}");
+
+            AppendData(content, "");
+            AppendData(content, $"--Asset AB打包信息--");
+            for (int i = 0, length = assetBundleBuildList.Count; i < length; i++)
+            {
+                var assetBundleBuild = assetBundleBuildList[i];
+				AppendData(content, $"AssetBundleName:{assetBundleBuild.assetBundleName} AssetBundleVariant:{assetBundleBuild.assetBundleVariant}");
+				foreach(var assetPath in assetBundleBuild.assetNames)
+                {
+					AppendData(content, $"\tAssetPath: {assetPath}");
+                }
+                AppendData(content, "");
+            }
+            // 创建新文件
+            File.WriteAllText(filePath, content.ToString(), Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// 1. 检测循环依赖
+        /// </summary>
+        private void CheckCycleDepend(AssetBundleManifest unityManifest)
 		{
 			List<string> visited = new List<string>(100);
 			List<string> stack = new List<string>(100);
@@ -707,6 +747,7 @@ namespace MotionFramework.Editor
 			// 创建新文件
 			File.WriteAllText(filePath, content.ToString(), Encoding.UTF8);
 		}
+
 		private void AppendData(StringBuilder sb, string data)
 		{
 			sb.Append(data);

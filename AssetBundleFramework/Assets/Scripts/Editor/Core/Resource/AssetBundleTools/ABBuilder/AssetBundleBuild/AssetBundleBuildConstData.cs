@@ -23,4 +23,14 @@ public static class AssetBundleBuildConstData
     /// 构建输出的说明文件
     /// </summary>
     public const string ReadmeFileName = "readme.txt";
+
+    /// <summary>
+    /// Asset AB打包详细说明文件
+    /// </summary>
+    public const string AssetBuildReadmeFileName = "assetBuildReadme.txt";
+
+    /// <summary>
+    /// 缩进值
+    /// </summary>
+    public const float INDENTATION = 20f;
 }

@@ -356,6 +356,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityDeferredLibrary.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VideoDecodeAndroid.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\GIDebug\ShowLightMask.shader" />
+    <None Include="Assets\StreamingAssets\Android\assetBuildReadme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-DiffuseFast.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnitySprites.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardInput.cginc" />
