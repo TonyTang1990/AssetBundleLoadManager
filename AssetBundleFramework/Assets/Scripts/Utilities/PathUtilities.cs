@@ -20,7 +20,7 @@ public static class PathUtilities
     /// </summary>
     public static string GetRegularPath(string path)
     {
-        return path.Replace('\\', '/').Replace("\\", "/"); //替换为Linux路径格式
+        return path.Replace('\\', '/'); //替换为Linux路径格式
     }
 
     /// <summary>

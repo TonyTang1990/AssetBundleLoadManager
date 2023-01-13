@@ -72,6 +72,7 @@ namespace MotionFramework.Editor
 			{
 				Debug.LogWarning($"Create new {nameof(AssetBundleCollectSetting)}.asset : {AssetBundleCollectSettingFileRelativePath}");
 				mSetting = ScriptableObject.CreateInstance<AssetBundleCollectSetting>();
+                mSetting.UpdateData();
                 var assetbundlecollectsettingfolderpath = Application.dataPath + AssetBundleCollectSettingSaveFolderRelativePath;
                 FolderUtilities.CheckAndCreateSpecificFolder(assetbundlecollectsettingfolderpath);
 				AssetDatabase.CreateAsset(Setting, AssetBundleCollectSettingFileRelativePath);
@@ -264,18 +265,22 @@ namespace MotionFramework.Editor
 		}
         
 		/// <summary>
-		/// 是否忽略该资源
+		/// 是否可收集资源
 		/// </summary>
-		public static bool IsIgnoreAsset(string assetpath)
+		public static bool IsCollectedAsset(string assetpath)
 		{
 			for (int i = 0; i < Setting.AssetBundleCollectors.Count; i++)
 			{
 				Collector wrapper = Setting.AssetBundleCollectors[i];
 				if (wrapper.CollectRule == EAssetBundleCollectRule.Ignore)
 				{
-					if (assetpath.StartsWith(wrapper.CollectFolderPath))
-						return true;
-				}
+                    var assetFolderPath = Path.GetDirectoryName(assetpath);
+                    var regularAssetFolderPath = PathUtilities.GetRegularPath(assetFolderPath);
+                    if (regularAssetFolderPath.StartsWith(wrapper.CollectFolderPath))
+                    {
+                        return true;
+                    }
+                }
 			}
 			return false;
 		}

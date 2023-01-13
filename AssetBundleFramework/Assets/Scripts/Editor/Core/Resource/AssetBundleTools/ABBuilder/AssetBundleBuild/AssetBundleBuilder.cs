@@ -69,6 +69,11 @@ namespace MotionFramework.Editor
 		public bool IsIgnoreTypeTreeChanges = false;
 
 		/// <summary>
+		/// 所有Asset信息Map<Asset路径, Asset信息>(避免相同Asset重复New AssetInfo)
+		/// </summary>
+		private Dictionary<string, AssetInfo> AllAssetInfoMap = new Dictionary<string, AssetInfo>();
+
+		/// <summary>
 		/// AssetBuilder
 		/// </summary>
 		/// <param name="buildTarget">构建平台</param>
@@ -311,14 +316,53 @@ namespace MotionFramework.Editor
             return $"Assets/{ResourceConstData.AssetBuildInfoAssetRelativePath}/{GetAssetBuildInfoAssetName()}.asset";
         }
 
+		/// <summary>
+		/// 清理Asset信息
+		/// </summary>
+		private void ClearAssetInfos()
+        {
+			AllAssetInfoMap.Clear();
+		}
+
+		/// <summary>
+		/// 获取Asset信息
+		/// </summary>
+		/// <param name="assetPath"></param>
+		/// <returns></returns>
+		private AssetInfo GetAssetInfo(string assetPath)
+        {
+			AssetInfo assetInfo;
+			if(!AllAssetInfoMap.TryGetValue(assetPath, out assetInfo))
+            {
+				return null;
+            }
+			return assetInfo;
+        }
+
+		/// <summary>
+		/// 添加Asset信息
+		/// </summary>
+		/// <param name="assetInfo"></param>
+		/// <returns></returns>
+		private bool AddAssetInfo(AssetInfo assetInfo)
+        {
+			if(AllAssetInfoMap.ContainsKey(assetInfo.AssetPath))
+            {
+				Debug.LogError($"重复添加Asset路径:{assetInfo.AssetPath}的Asset信息，添加失败，请检查代码!");
+				return false;
+            }
+			AllAssetInfoMap.Add(assetInfo.AssetPath, assetInfo);
+			return true;
+		}
+
         #region 准备工作
         /// <summary>
         /// 准备工作
         /// </summary>
         private List<AssetInfo> GetBuildAssetInfoList()
 		{
+			ClearAssetInfos();
 			int progressBarCount = 0;
-			Dictionary<string, AssetInfo> allAsset = new Dictionary<string, AssetInfo>();
 
 			// 获取所有的收集路径
 			List<string> collectDirectorys = AssetBundleCollectSettingData.GetAllCollectDirectory();
@@ -330,26 +374,12 @@ namespace MotionFramework.Editor
 			foreach (string guid in guids)
 			{
 				string mainAssetPath = AssetDatabase.GUIDToAssetPath(guid);
-				if (AssetBundleCollectSettingData.IsIgnoreAsset(mainAssetPath))
+				string regularMainAssetPath = PathUtilities.GetRegularPath(mainAssetPath);
+				if (ValidateAsset(regularMainAssetPath) == false)
+                {
 					continue;
-				if (ValidateAsset(mainAssetPath) == false)
-					continue;
-
-
-				List<AssetInfo> depends = GetDependencies(mainAssetPath);
-				for (int i = 0; i < depends.Count; i++)
-				{
-					AssetInfo assetInfo = depends[i];
-					if (allAsset.ContainsKey(assetInfo.AssetPath))
-					{
-						allAsset[assetInfo.AssetPath].DependCount++;
-					}
-					else
-					{
-						allAsset.Add(assetInfo.AssetPath, assetInfo);
-					}
-				}
-
+                }
+				UpdateAssetAllAssetInfo(regularMainAssetPath);
 				// 进度条
 				progressBarCount++;
 				EditorUtility.DisplayProgressBar("进度", $"依赖文件分析：{progressBarCount}/{guids.Length}", (float)progressBarCount / guids.Length);
@@ -357,7 +387,7 @@ namespace MotionFramework.Editor
 			EditorUtility.ClearProgressBar();
 			progressBarCount = 0;
 
-			/*
+			/* 
 			// 零依赖资源可能是纯动态加载的资源，是有可能用到的需要参与打包
 			// 移除零依赖的资源
 			List<string> removeList = new List<string>();
@@ -376,8 +406,8 @@ namespace MotionFramework.Editor
 			*/
 
 			// 设置资源标签
-			var totalAssetNum = allAsset.Count;
-			foreach (KeyValuePair<string, AssetInfo> pair in allAsset)
+			var totalAssetNum = AllAssetInfoMap.Count;
+			foreach (KeyValuePair<string, AssetInfo> pair in AllAssetInfoMap)
 			{
 				SetAssetBundleLabelAndVariant(pair.Value);
 
@@ -389,26 +419,33 @@ namespace MotionFramework.Editor
             EditorUtility.ClearProgressBar();
 
 			// 返回结果
-			return allAsset.Values.ToList();
+			return AllAssetInfoMap.Values.ToList();
 		}
 
 		/// <summary>
-		/// 获取指定资源依赖的资源列表
-		/// 注意：返回列表里已经包括主资源自己
+		/// 更新指定资源的所有Asset信息
 		/// </summary>
-		private List<AssetInfo> GetDependencies(string assetPath)
+		private void UpdateAssetAllAssetInfo(string assetPath)
 		{
-			List<AssetInfo> depends = new List<AssetInfo>();
+			/// 注意：返回列表里已经包括主资源自己
 			string[] dependArray = AssetDatabase.GetDependencies(assetPath, true);
 			foreach (string dependPath in dependArray)
 			{
-				if (ValidateAsset(dependPath))
+				var regularDependendPath = PathUtilities.GetRegularPath(dependPath);
+				if (ValidateAsset(regularDependendPath))
 				{
-					AssetInfo assetInfo = new AssetInfo(dependPath);
-					depends.Add(assetInfo);
+					var assetInfo = GetAssetInfo(regularDependendPath);
+					if (assetInfo == null)
+					{
+						assetInfo = new AssetInfo(regularDependendPath);
+						AddAssetInfo(assetInfo);
+					}
+					else
+					{
+						AllAssetInfoMap[regularDependendPath].DependCount++;
+					}
 				}
 			}
-			return depends;
 		}
 
         /// <summary>
@@ -466,26 +503,28 @@ namespace MotionFramework.Editor
         private bool ValidateAsset(string assetPath)
 		{
 			if (!assetPath.StartsWith("Assets/"))
+            {
 				return false;
-
+			}
 			if (AssetDatabase.IsValidFolder(assetPath))
+            {
 				return false;
-
+			}
 			string ext = System.IO.Path.GetExtension(assetPath);
-            if (AssetBundleCollectSettingData.Setting.BlackListInfo.PostFixBlackList.Contains(ext))
+            if (AssetBundleCollectSettingData.Setting.BlackListInfo.IsBlackPostFix(ext))
             {
                 return false;
             }
-            //if (ext == "" || ext == ".dll" || ext == ".cs" || ext == ".js" || ext == ".boo" || ext == ".meta" || ext == ".tpsheet")
-            //	return false;
-
             string fileName = Path.GetFileName(assetPath);
-            if (AssetBundleCollectSettingData.Setting.BlackListInfo.FileNameBlackList.Contains(fileName))
+            if (AssetBundleCollectSettingData.Setting.BlackListInfo.IsBlackFileName(fileName))
             {
                 return false;
             }
-
-            return true;
+			if(!AssetBundleCollectSettingData.IsCollectedAsset(assetPath))
+            {
+				return false;
+            }
+			return true;
 		}
 
 		/// <summary>
