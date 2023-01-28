@@ -22,19 +22,22 @@ public class AssetBundleBuildInfoAssetEditor : Editor
     private GUIStyle mTextAreaStyle;
 
     /// <summary>
-    /// Asset打包信息列表成员属性
+    /// 打包Asset信息列表成员属性
     /// </summary>
-    private SerializedProperty AssetBuildInfoListProperty;
+    private SerializedProperty BuildAssetInfoListProperty;
 
     /// <summary>
-    /// AssetBundle打包信息列表成员属性
+    /// 打包AssetBundle信息列表成员属性
     /// </summary>
-    //private SerializedProperty AssetBuildBuildInfoListProperty;
+    //private SerializedProperty BuildAssetBuildInfoListProperty;
+
+    ///滚动位置
+    private Vector2 mScrollPos;
 
     void OnEnable()
     {
-        AssetBuildInfoListProperty = serializedObject.FindProperty("AssetBuildInfoList");
-        //AssetBuildBuildInfoListProperty = serializedObject.FindProperty("AssetBundleBuildInfoList");
+        BuildAssetInfoListProperty = serializedObject.FindProperty("BuildAssetInfoList");
+        //BuildAssetBuildInfoListProperty = serializedObject.FindProperty("AssetBundleBuildInfoList");
     }
 
     public override void OnInspectorGUI()
@@ -46,12 +49,13 @@ public class AssetBundleBuildInfoAssetEditor : Editor
         // Update the serializedProperty - always do this in the beginning of OnInspectorGUI.
         serializedObject.Update();
 
+        mScrollPos = EditorGUILayout.BeginScrollView(mScrollPos);
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Asset打包信息:", GUILayout.Width(150.0f), GUILayout.Height(20.0f));
-        for(int i = 0; i < AssetBuildInfoListProperty.arraySize; i++)
+        for(int i = 0; i < BuildAssetInfoListProperty.arraySize; i++)
         {
             EditorGUILayout.BeginHorizontal("box");
-            var assetbuildinfomemberproperty = AssetBuildInfoListProperty.GetArrayElementAtIndex(i);
+            var assetbuildinfomemberproperty = BuildAssetInfoListProperty.GetArrayElementAtIndex(i);
             var assetpathmemberproperty = assetbuildinfomemberproperty.FindPropertyRelative("AssetPath");
             var abnamememberproperty = assetbuildinfomemberproperty.FindPropertyRelative("ABPath");
             var abvariantnamememberproperty = assetbuildinfomemberproperty.FindPropertyRelative("ABVariantPath");
@@ -92,6 +96,8 @@ public class AssetBundleBuildInfoAssetEditor : Editor
         //    EditorGUILayout.EndVertical();
         //}
         //EditorGUILayout.EndVertical();
+
+        EditorGUILayout.EndScrollView();
 
         // Apply changes to the serializedProperty - always do this in the end of OnInspectorGUI.
         serializedObject.ApplyModifiedProperties();

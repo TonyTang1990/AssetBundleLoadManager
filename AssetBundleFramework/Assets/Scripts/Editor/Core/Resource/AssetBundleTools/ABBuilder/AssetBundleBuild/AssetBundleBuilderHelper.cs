@@ -1,15 +1,15 @@
-﻿//--------------------------------------------------
-// Motion Framework
-// Copyright©2018-2020 何冠峰
-// Licensed under the MIT license
-//--------------------------------------------------
+﻿/*
+ * Description:             AssetBundle打包辅助工具
+ * Author:                  TonyTang
+ * Create Date:             2023/01/23
+ */
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
 
-namespace MotionFramework.Editor
+namespace TResource
 {
 	public static class AssetBundleBuilderHelper
 	{
@@ -28,7 +28,7 @@ namespace MotionFramework.Editor
 		public static void ClearStreamingAssetsFolder()
 		{
 			string streamingPath = Application.dataPath + "/StreamingAssets";
-            EditorUtilities.ClearFolder(streamingPath);
+			EditorUtilities.ClearFolder(streamingPath);
 		}
 
 		/// <summary>

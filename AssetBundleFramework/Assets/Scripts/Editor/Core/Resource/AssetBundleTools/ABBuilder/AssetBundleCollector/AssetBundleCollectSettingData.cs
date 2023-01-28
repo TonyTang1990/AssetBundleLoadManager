@@ -1,16 +1,17 @@
-﻿//--------------------------------------------------
-// Motion Framework
-// Copyright©2019-2020 何冠峰
-// Licensed under the MIT license
-//--------------------------------------------------
+﻿/*
+ * Description:             AssetBundle搜集设置数据
+ * Author:                  TonyTang
+ * Create Date:             2023/01/23
+ */
 using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Text.RegularExpressions;
 
-namespace MotionFramework.Editor
+namespace TResource
 {
     /// <summary>
     /// AssetBundle搜集设置数据
@@ -31,16 +32,6 @@ namespace MotionFramework.Editor
         /// AB搜集设置信息文件存储相对路径
         /// </summary>
         public static string AssetBundleCollectSettingFileRelativePath = $"Assets{AssetBundleCollectSettingSaveFolderRelativePath}/{AssetBundleCollectSettingFileName}";
-
-        /// <summary>
-        /// 收集器类型集合
-        /// </summary>
-        private static readonly Dictionary<string, System.Type> _cacheTypes = new Dictionary<string, System.Type>();
-
-		/// <summary>
-		/// 收集器实例集合
-		/// </summary>
-		private static readonly Dictionary<string, IAssetCollector> _cacheCollector = new Dictionary<string, IAssetCollector>();
 
         /// <summary>
         /// AB搜集设置
@@ -84,26 +75,6 @@ namespace MotionFramework.Editor
 			}
             mSetting.UpdateData();
 
-            // 清空缓存集合
-            _cacheTypes.Clear();
-			_cacheCollector.Clear();
-
-            // 获取所有资源收集器类型
-            List<Type> types = new List<Type>();
-			types.Add(typeof(LabelNone));
-			types.Add(typeof(LabelByFilePath));
-            types.Add(typeof(LabelByFolderPath));
-            types.Add(typeof(LableByConstName));
-            types.Add(typeof(LabelByFileAndSubFolderPath));
-            for (int i = 0; i < types.Count; i++)
-            {
-                Type type = types[i];
-                if (_cacheTypes.ContainsKey(type.Name) == false)
-                {
-                    _cacheTypes.Add(type.Name, type);
-                }
-            }
-
             CheckCollectorSettingValidation();
         }
 
@@ -118,24 +89,8 @@ namespace MotionFramework.Editor
             {
                 Debug.LogError($"有无效的资源搜集设置!");
             }
-            return result;
+            return !result;
         }
-
-        /// <summary>
-        /// 获取所有收集器名称列表
-        /// </summary>
-        public static List<string> GetCollectorNames()
-		{
-			if (mSetting == null)
-				LoadSettingData();
-
-			List<string> names = new List<string>();
-			foreach (var pair in _cacheTypes)
-			{
-				names.Add(pair.Key);
-			}
-			return names;
-		}
 
 		/// <summary>
 		/// 存储文件
@@ -162,12 +117,15 @@ namespace MotionFramework.Editor
                 var collectfolderfullpath = fullfolderpathprefix + collector.CollectFolderPath;
                 if (!Directory.Exists(collectfolderfullpath))
                 {
-                    invalidecollectorlist.Add(collector);
+                    Debug.LogWarning($"收集路径目录:{collectfolderfullpath}已经不存在了！");
                 }
-            }
-            foreach (var invalidecollector in invalidecollectorlist)
-            {
-                Debug.Log($"无效的资源搜集路径:{invalidecollector.CollectFolderPath},请检查资源搜集设置!");
+                if(collector.CollectRule == AssetBundleCollectRule.Collect
+                    && collector.BuildRule == AssetBundleBuildRule.ByConstName
+                    && string.IsNullOrEmpty(collector.ConstName))
+                {
+                    invalidecollectorlist.Add(collector);
+                    Debug.LogError($"资源搜集路径:{collector.CollectFolderPath}设置固定名字搜集策略但未设置有效AB名！");
+                }
             }
             return invalidecollectorlist.Count > 0;
         }
@@ -238,7 +196,7 @@ namespace MotionFramework.Editor
 			for (int i = 0; i < Setting.AssetBundleCollectors.Count; i++)
 			{
 				Collector wrapper = Setting.AssetBundleCollectors[i];
-				if (wrapper.CollectRule == EAssetBundleCollectRule.Collect)
+				if (wrapper.CollectRule == AssetBundleCollectRule.Collect)
                 {
                     result.Add(wrapper.CollectFolderPath);
                 }
@@ -249,87 +207,111 @@ namespace MotionFramework.Editor
 		/// <summary>
 		/// 是否可收集资源
 		/// </summary>
-		public static bool IsCollectAsset(string assetpath)
+		public static bool IsCollectAsset(string assetPath)
 		{
-            // AssetBundleCollectors那方是按字母排序的
-            // 所以反向匹配是由里往外遍历，匹配第一个就是最里层符合打包策略的设定
-            var assetFolderPath = Path.GetDirectoryName(assetpath);
-            var regularAssetFolderPath = PathUtilities.GetRegularPath(assetFolderPath);
-            for (int i = Setting.AssetBundleCollectors.Count - 1; i > 0; i--)
-			{
-				Collector wrapper = Setting.AssetBundleCollectors[i];
-                if (regularAssetFolderPath.StartsWith(wrapper.CollectFolderPath))
-                {
-                    return wrapper.CollectRule == EAssetBundleCollectRule.Collect;
-                }
-			}
-			return false;
+            var collector = GetCollectorByAssetPath(assetPath);
+			return collector != null ? collector.CollectRule == AssetBundleCollectRule.Collect : false;
 		}
 
 		/// <summary>
-		/// 获取资源的打包标签
+		/// 获取资源的打包AB名
+        /// Note:
+        /// 1. 不满足参与打包的Asset返回空字符串
 		/// </summary>
-		public static string GetAssetBundleLabel(string assetpath)
+		public static string GetAssetBundleName(string assetPath)
 		{
-			// 注意：一个资源有可能被多个收集器覆盖
-			List<Collector> filterWrappers = new List<Collector>();
-			for (int i = 0; i < Setting.AssetBundleCollectors.Count; i++)
-			{
-				Collector wrapper = Setting.AssetBundleCollectors[i];
-				if (assetpath.StartsWith(wrapper.CollectFolderPath))
-				{
-					filterWrappers.Add(wrapper);
-				}
-			}
+            var assetBundleName = string.Empty;
+            var collector = GetCollectorByAssetPath(assetPath);
+            if(collector == null)
+            {
+                Debug.LogError($"找不到Asset:{assetPath}的收集器数据，获取AB名失败，请检查打包配置!");
+            }
+            if(collector.CollectRule == AssetBundleCollectRule.Ignore)
+            {
+                Debug.LogError($"Asset:{assetPath}设置了不参与打包收集，不应该进入这里，请检查代码!");
+            }
+            if(collector.BuildRule == AssetBundleBuildRule.ByFilePath)
+            {
+                // 以文件路径作为打包策略
+                // 例如："Assets/Config/test.txt"-- > "Assets/Config/test"
+                var extension = Path.GetExtension(assetPath);
+                assetBundleName = assetPath.Remove(assetPath.Length - extension.Length);
+            }
+            else if (collector.BuildRule == AssetBundleBuildRule.ByFolderPath)
+            {
+                // 以文件夹路径作为打包策略
+                // 例如："Assets/Config/test.txt" --> "Assets/Config"
+                assetBundleName = Path.GetDirectoryName(assetPath);
+            }
+            else if (collector.BuildRule == AssetBundleBuildRule.ByFileOrSubFolder)
+            {
+                // 同层以文件路径作为打包策略，其他以下层目录路径作为打包策略
+                var assetFolderPath = Path.GetDirectoryName(assetPath);
+                assetFolderPath = PathUtilities.GetRegularPath(assetFolderPath);
+                // 在同层目录的文件(假设目标目录是Assets/Conif)
+                if (assetFolderPath.Equals(collector.CollectFolderPath))
+                {
+                    // 例如："Assets/Config/test.txt" --> "Assets/Config/test"
+                    assetBundleName = assetPath.Remove(assetPath.LastIndexOf("."));
+                }
+                else
+                {
+                    // 例如："Assets/Config/Test/test1.txt" --> "Assets/Config/Test"
+                    // 例如："Assets/Config/Test/Test2/test2.txt" --> "Assets/Config/Test"
+                    var regulationContent = $"({collector.CollectFolderPath}/)([^/]*)";
+                    var regulation = new Regex(regulationContent);
+                    var match = regulation.Match(assetPath);
+                    var matchPath = match.Value;
+                    //Debug.Log($"AssetPath:{assetPath}的MatchPath:{matchPath}");
+                    assetBundleName = matchPath;
+                }
+            }
+            else if (collector.BuildRule == AssetBundleBuildRule.ByConstName)
+            {
+                // 以固定名字作为打包策略
+                // 例如："Assets/Config/test.txt" --> "ConstName"
+                assetBundleName = collector.ConstName;
+            }
+            else if (collector.BuildRule == AssetBundleBuildRule.Ignore)
+            {
+                Debug.LogError($"Asset:{assetPath}设置了不参与打包，不应该进入这里，请检查代码!");
+            }
+            else
+            {
+                Debug.LogError($"未支持的打包规则:{collector.BuildRule}，获取Asset:{assetPath}的AB名失败，请检查代码!");
+            }
+            // AssetBundle打包后都是输出小写路径
+            // 所以这里AssetBundle名统一转小写
+            return assetBundleName.ToLower();
 
-			// 我们使用路径最深层的收集器
-			Collector findWrapper = null;
-			for (int i = 0; i < filterWrappers.Count; i++)
-			{
-				Collector wrapper = filterWrappers[i];
-				if (findWrapper == null)
-				{
-					findWrapper = wrapper;
-					continue;
-				}
-				if (wrapper.CollectFolderPath.Length > findWrapper.CollectFolderPath.Length)
-					findWrapper = wrapper;
-			}
-
-			// 如果没有找到收集器
-			if (findWrapper == null)
-			{
-				IAssetCollector defaultCollector = new LabelByFilePath();
-				return defaultCollector.GetAssetBundleLabel(assetpath);
-			}
-
-			// 根据规则设置获取标签名称
-			IAssetCollector collector = GetCollectorInstance(findWrapper.GetCollectorClassName());
-			return collector.GetAssetBundleLabel(assetpath, findWrapper);
-		}
+        }
 
         /// <summary>
-        /// 获取收集器实例对象
+        /// 获取指定Asset路径的收集信息
         /// </summary>
-        /// <param name="classname"></param>
+        /// <param name="assetPath"></param>
         /// <returns></returns>
-		private static IAssetCollector GetCollectorInstance(string classname)
-		{
-			if (_cacheCollector.TryGetValue(classname, out IAssetCollector instance))
-				return instance;
-
-			// 如果不存在创建类的实例
-			if (_cacheTypes.TryGetValue(classname, out Type type))
-			{
-				instance = (IAssetCollector)Activator.CreateInstance(type);
-				_cacheCollector.Add(classname, instance);
-				return instance;
-			}
-			else
-			{
-				throw new Exception($"资源收集器类型无效：{classname}");
-			}
-		}
+        private static Collector GetCollectorByAssetPath(string assetPath)
+        {
+            if(string.IsNullOrEmpty(assetPath))
+            {
+                Debug.LogError($"传递了空Asset路径，获取AB名失败，请检查代码!");
+                return null;
+            }
+            // AssetBundleCollectors那方是按字母排序的
+            // 所以反向匹配是由里往外遍历，匹配第一个就是最里层符合打包策略的设定
+            var assetFolderPath = Path.GetDirectoryName(assetPath);
+            var regularAssetFolderPath = PathUtilities.GetRegularPath(assetFolderPath);
+            for (int i = Setting.AssetBundleCollectors.Count - 1; i > 0; i--)
+            {
+                Collector wrapper = Setting.AssetBundleCollectors[i];
+                if (regularAssetFolderPath.StartsWith(wrapper.CollectFolderPath))
+                {
+                    return wrapper;
+                }
+            }
+            return null;
+        }
 
         #region 黑名单部分
         /// <summary>

@@ -11,10 +11,10 @@ using System.IO;
 using UnityEngine;
 
 /// <summary>
-/// Asset打包信息
+/// 打包Asset信息
 /// </summary>
 [Serializable]
-public class AssetBuildInfo
+public class BuildAssetInfo
 {
     /// <summary>
     /// Asset路径(不含后缀)
@@ -30,13 +30,20 @@ public class AssetBuildInfo
     /// AB变体路径(暂未支持)
     /// </summary>
     public string ABVariantPath;
+
+    public BuildAssetInfo(string assetPath, string abPath, string abVariantPath)
+    {
+        AssetPath = assetPath;
+        ABPath = abPath;
+        ABVariantPath = abVariantPath;
+    }
 }
 
 /// <summary>
-/// AB打包信息
+/// 打包AssetBundle信息
 /// </summary>
 [Serializable]
-public class AssetBundleBuildInfo
+public class BuildAssetBundleInfo
 {
     /// <summary>
     /// AB路径信息
@@ -48,13 +55,13 @@ public class AssetBundleBuildInfo
     /// </summary>
     public List<string> DepABPathList;
 
-    public AssetBundleBuildInfo(string abpath)
+    public BuildAssetBundleInfo(string abpath)
     {
         ABPath = abpath;
         DepABPathList = new List<string>();
     }
 
-    public AssetBundleBuildInfo(string abpath, List<string> depabpathlist)
+    public BuildAssetBundleInfo(string abpath, List<string> depabpathlist)
     {
         ABPath = abpath;
         DepABPathList = depabpathlist;
@@ -68,13 +75,13 @@ public class AssetBundleBuildInfo
 public class AssetBuildInfoAsset : ScriptableObject
 {
     /// <summary>
-    /// Asset打包信息列表
+    /// 打包Asset信息列表
     /// </summary>
-    [Header("Asset打包信息列表")]
-    public List<AssetBuildInfo> AssetBuildInfoList;
+    [Header("打包Asset信息列表")]
+    public List<BuildAssetInfo> BuildAssetInfoList;
 
     /// <summary>
-    /// AB打包信息信息列表(现有设计采用AB打包出来的Manifest文件访问依赖信息)
+    /// 打包AssetBundle信息信息列表(现有设计采用AB打包出来的Manifest文件访问依赖信息)
     /// </summary>
     //[Header("AB打包信息信息列表")]
     //public List<AssetBundleBuildInfo> AssetBundleBuildInfoList;
@@ -82,7 +89,7 @@ public class AssetBuildInfoAsset : ScriptableObject
     /// <summary>
     /// Asset AB打包信息映射Map(Key为Asset路径，Value为对应Asset打包信息)
     /// </summary>
-    private Dictionary<string, AssetBuildInfo> mAssetBuildInfoMap;
+    private Dictionary<string, BuildAssetInfo> mBuildAssetInfoMap;
 
     /// <summary>
     /// AB路径依赖信息映射Map(Key为AB路径，Value为对应AB路径对应的依赖信息)
@@ -95,9 +102,9 @@ public class AssetBuildInfoAsset : ScriptableObject
 
     public AssetBuildInfoAsset()
     {
-        AssetBuildInfoList = new List<AssetBuildInfo>();
-        //AssetBundleBuildInfoList = new List<AssetBundleBuildInfo>();
-        mAssetBuildInfoMap = new Dictionary<string, AssetBuildInfo>();
+        BuildAssetInfoList = new List<BuildAssetInfo>();
+        //AssetBundleBuildInfoList = new List<BuildAssetBundleInfo>();
+        mBuildAssetInfoMap = new Dictionary<string, BuildAssetInfo>();
         //ABPathDepMap = new Dictionary<string, string[]>();
     }
 
@@ -106,18 +113,18 @@ public class AssetBuildInfoAsset : ScriptableObject
     /// </summary>
     public void init()
     {
-        mAssetBuildInfoMap.Clear();
-        for (int i = 0, length = AssetBuildInfoList.Count; i < length; i++)
+        mBuildAssetInfoMap.Clear();
+        for (int i = 0, length = BuildAssetInfoList.Count; i < length; i++)
         {
-            if(!mAssetBuildInfoMap.ContainsKey(AssetBuildInfoList[i].AssetPath))
+            if(!mBuildAssetInfoMap.ContainsKey(BuildAssetInfoList[i].AssetPath))
             {
-                mAssetBuildInfoMap.Add(AssetBuildInfoList[i].AssetPath, AssetBuildInfoList[i]);
+                mBuildAssetInfoMap.Add(BuildAssetInfoList[i].AssetPath, BuildAssetInfoList[i]);
             }
             else
             {
                 // 忽略重复AssetPath理论上没有关系，无论是LoadByFile还是LoadByFolder还是LoadByConstName
                 // 同目录同名文件理论上都在同一个AB里，最后通过泛型匹配加载即可
-                Debug.LogWarning($"同目录下有同名文件:{AssetBuildInfoList[i].AssetPath},忽略同名文件避免重复Key问题!");
+                Debug.LogWarning($"同目录下有同名文件:{BuildAssetInfoList[i].AssetPath},忽略同名文件避免重复Key问题!");
             }
         }
         //ABPathDepMap.Clear();
@@ -137,10 +144,10 @@ public class AssetBuildInfoAsset : ScriptableObject
     /// <returns></returns>
     public string getAssetABPath(string assetpath)
     {
-        AssetBuildInfo assetbuildinfo;
-        if(mAssetBuildInfoMap.TryGetValue(assetpath, out assetbuildinfo))
+        BuildAssetInfo buildAssetInfo;
+        if(mBuildAssetInfoMap.TryGetValue(assetpath, out buildAssetInfo))
         {
-            return assetbuildinfo.ABPath;
+            return buildAssetInfo.ABPath;
         }
         else
         {
@@ -156,10 +163,10 @@ public class AssetBuildInfoAsset : ScriptableObject
     /// <returns></returns>
     public string getAssetABVariantPath(string assetpath)
     {
-        AssetBuildInfo assetbuildinfo;
-        if (mAssetBuildInfoMap.TryGetValue(assetpath, out assetbuildinfo))
+        BuildAssetInfo buildAssetInfo;
+        if (mBuildAssetInfoMap.TryGetValue(assetpath, out buildAssetInfo))
         {
-            return assetbuildinfo.ABVariantPath;
+            return buildAssetInfo.ABVariantPath;
         }
         else
         {

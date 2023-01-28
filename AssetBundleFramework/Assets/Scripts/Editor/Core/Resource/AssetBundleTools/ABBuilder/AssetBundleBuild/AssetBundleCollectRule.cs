@@ -1,5 +1,5 @@
 ﻿/*
- * Description:             EAssetBundleCollectRule.cs
+ * Description:             AssetBundleCollectRule.cs
  * Author:                  TONYTANG
  * Create Date:             2021//04/11
  */
@@ -13,7 +13,7 @@ using UnityEngine;
 /// AB收集策略
 /// </summary>
 [Serializable]
-public enum EAssetBundleCollectRule
+public enum AssetBundleCollectRule
 {
     /// <summary>
     /// 收集该文件夹

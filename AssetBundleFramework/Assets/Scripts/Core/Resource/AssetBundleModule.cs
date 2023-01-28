@@ -80,7 +80,7 @@ namespace TResource
                     AssetBundleDependencyMap.Add(assetBundlePath, dependenciesPathes);
                 }
                 ab.Unload(true);
-                Debug.Log("AssetBundle依赖信息文件加载成功!");
+                Debug.Log($"AssetBundle依赖信息文件:{abPath}加载成功!");
             }
             else
             {

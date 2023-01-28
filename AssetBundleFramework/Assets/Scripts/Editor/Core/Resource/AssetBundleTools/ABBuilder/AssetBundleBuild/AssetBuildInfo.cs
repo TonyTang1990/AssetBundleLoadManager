@@ -1,33 +1,58 @@
-﻿//--------------------------------------------------
-// Motion Framework
-// Copyright©2018-2020 何冠峰
-// Licensed under the MIT license
-//--------------------------------------------------
+﻿/*
+ * Description:             AssetBuildInfo.cs
+ * Author:                  TONYTANG
+ * Create Date:             2023//01/23
+ */
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace MotionFramework.Editor
+namespace TResource
 {
 	/// <summary>
-	/// 资源信息类
+	/// Asset打包信息类
 	/// </summary>
-	public class AssetInfo
+	public class AssetBuildInfo
 	{
-		public string AssetPath { private set; get; }
-		public bool IsCollectAsset { private set; get; }
+		/// <summary>
+        /// Asset路径
+        /// </summary>
+		public string AssetPath
+		{
+			private set;
+			get;
+		}
+
+		/// <summary>
+        /// 是否是可收集Asset
+        /// </summary>
+		public bool IsCollectAsset
+		{
+			private set;
+			get;
+		}
 
         /// <summary>
         /// 是否是场景Asset
         /// </summary>
-		public bool IsSceneAsset { private set; get; }
+		public bool IsSceneAsset
+		{
+			private set;
+			get;
+		}
 
         /// <summary>
         /// 是否是视频Asset
         /// </summary>
-		public bool IsVideoAsset { private set; get; }
+		public bool IsVideoAsset
+		{
+			private set;
+			get;
+		}
 
 		/// <summary>
 		/// 被依赖次数
+        /// Note:
+        /// 1. 包含参与和未参与打包搜集的Asset依赖次数
 		/// </summary>
 		public int DependCount = 0;
 
@@ -41,7 +66,11 @@ namespace MotionFramework.Editor
 		/// </summary>
 		public string AssetBundleVariant = null;
 
-        public AssetInfo(string assetPath)
+		/// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="assetPath"></param>
+        public AssetBuildInfo(string assetPath)
 		{
 			AssetPath = assetPath;
 			IsCollectAsset = AssetBundleCollectSettingData.IsCollectAsset(assetPath);
