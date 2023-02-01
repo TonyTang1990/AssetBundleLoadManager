@@ -23,6 +23,15 @@ namespace TResource
 		}
 
 		/// <summary>
+		/// Asset在AB里的访问名
+		/// </summary>
+		public string AddresableName
+        {
+			private set;
+			get;
+        }
+
+		/// <summary>
         /// 是否是可收集Asset
         /// </summary>
 		public bool IsCollectAsset
@@ -50,13 +59,6 @@ namespace TResource
 		}
 
 		/// <summary>
-		/// 被依赖次数
-        /// Note:
-        /// 1. 包含参与和未参与打包搜集的Asset依赖次数
-		/// </summary>
-		public int DependCount = 0;
-
-		/// <summary>
 		/// AssetBundle标签
 		/// </summary>
 		public string AssetBundleLabel = null;
@@ -69,10 +71,12 @@ namespace TResource
 		/// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="assetPath"></param>
-        public AssetBuildInfo(string assetPath)
+        /// <param name="assetPath">Asset路径</param>
+		/// <param name="addresableName">Asset在AB里的访问名</param>
+        public AssetBuildInfo(string assetPath, string addresableName)
 		{
 			AssetPath = assetPath;
+			AddresableName = addresableName;
 			IsCollectAsset = AssetBundleCollectSettingData.IsCollectAsset(assetPath);
 			IsSceneAsset = AssetDatabase.GetMainAssetTypeAtPath(assetPath) == typeof(SceneAsset);
 			IsVideoAsset = AssetDatabase.GetMainAssetTypeAtPath(assetPath) == typeof(UnityEngine.Video.VideoClip);

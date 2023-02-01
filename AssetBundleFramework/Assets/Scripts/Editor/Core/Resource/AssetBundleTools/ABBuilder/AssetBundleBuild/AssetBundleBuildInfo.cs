@@ -75,19 +75,35 @@ namespace TResource
         }
 
         /// <summary>
-        /// 获取当前AB打包信息里的所有Asset打包Asset名
+        /// 获取当前AB打包信息里的所有Asset打包Asset路径列表
         /// </summary>
         /// <returns></returns>
-        public string[] GetAllAssetNames()
+        public string[] GetAllAssetPaths()
         {
-            string[] allAssetNames = new string[mAssetBuildInfoMap.Count];
+            string[] allAssetPaths = new string[mAssetBuildInfoMap.Count];
             var assetIndex = 0;
             foreach(var assetBuildInfo in mAssetBuildInfoMap)
             {
-                allAssetNames[assetIndex] = assetBuildInfo.Value.AssetPath;
+                allAssetPaths[assetIndex] = assetBuildInfo.Value.AssetPath;
                 assetIndex++;
             }
-            return allAssetNames;
+            return allAssetPaths;
+        }
+
+        /// <summary>
+        /// 获取当前AB打包信息里的所有Asset打包Asset在AB里的访问名列表
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetAllAddresableNames()
+        {
+            string[] allAddresableNames = new string[mAssetBuildInfoMap.Count];
+            var assetIndex = 0;
+            foreach (var assetBuildInfo in mAssetBuildInfoMap)
+            {
+                allAddresableNames[assetIndex] = assetBuildInfo.Value.AddresableName;
+                assetIndex++;
+            }
+            return allAddresableNames;
         }
     }
 }

@@ -9,19 +9,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// AB收集策略
-/// </summary>
-[Serializable]
-public enum AssetBundleCollectRule
+namespace TResource
 {
     /// <summary>
-    /// 收集该文件夹
+    /// AB收集策略
     /// </summary>
-    Collect,
+    [Serializable]
+    public enum AssetBundleCollectRule
+    {
+        /// <summary>
+        /// 收集该文件夹
+        /// </summary>
+        Collect,
 
-    /// <summary>
-    /// 忽略该文件夹
-    /// </summary>
-    Ignore,
+        /// <summary>
+        /// 忽略该文件夹
+        /// </summary>
+        Ignore,
+    }
 }

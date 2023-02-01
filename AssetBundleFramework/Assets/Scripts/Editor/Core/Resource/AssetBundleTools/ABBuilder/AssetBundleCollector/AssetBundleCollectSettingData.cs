@@ -55,7 +55,7 @@ namespace TResource
         /// <summary>
         /// 加载配置文件
         /// </summary>
-        private static void LoadSettingData()
+        public static void LoadSettingData()
 		{
 			// 加载配置文件
 			mSetting = AssetDatabase.LoadAssetAtPath<AssetBundleCollectSetting>(AssetBundleCollectSettingFileRelativePath);
@@ -118,11 +118,14 @@ namespace TResource
                 if (!Directory.Exists(collectfolderfullpath))
                 {
                     Debug.LogWarning($"收集路径目录:{collectfolderfullpath}已经不存在了！");
+                    continue;
                 }
-                if(collector.CollectRule == AssetBundleCollectRule.Collect
-                    && collector.BuildRule == AssetBundleBuildRule.ByConstName
-                    && string.IsNullOrEmpty(collector.ConstName))
+                if(collector.CollectRule == AssetBundleCollectRule.Collect)
                 {
+                    if(collector.BuildRule == AssetBundleBuildRule.ByConstName && string.IsNullOrEmpty(collector.ConstName))
+                    {
+                        continue;
+                    }
                     invalidecollectorlist.Add(collector);
                     Debug.LogError($"资源搜集路径:{collector.CollectFolderPath}设置固定名字搜集策略但未设置有效AB名！");
                 }
@@ -291,7 +294,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        private static Collector GetCollectorByAssetPath(string assetPath)
+        public static Collector GetCollectorByAssetPath(string assetPath)
         {
             if(string.IsNullOrEmpty(assetPath))
             {
