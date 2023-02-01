@@ -84,7 +84,7 @@ namespace TResource
         public static bool CheckCollectorSettingValidation()
         {
             // 检查是否有无效的资源搜集设定
-            var result = AssetBundleCollectSettingData.HasInvalideCollectFolderPath();
+            var result = HasInvalideCollectFolderPath();
             if (result)
             {
                 Debug.LogError($"有无效的资源搜集设置!");
@@ -120,12 +120,9 @@ namespace TResource
                     Debug.LogWarning($"收集路径目录:{collectfolderfullpath}已经不存在了！");
                     continue;
                 }
-                if(collector.CollectRule == AssetBundleCollectRule.Collect)
+                if(collector.CollectRule == AssetBundleCollectRule.Collect &&
+                    (collector.BuildRule == AssetBundleBuildRule.ByConstName && string.IsNullOrEmpty(collector.ConstName)))
                 {
-                    if(collector.BuildRule == AssetBundleBuildRule.ByConstName && string.IsNullOrEmpty(collector.ConstName))
-                    {
-                        continue;
-                    }
                     invalidecollectorlist.Add(collector);
                     Debug.LogError($"资源搜集路径:{collector.CollectFolderPath}设置固定名字搜集策略但未设置有效AB名！");
                 }

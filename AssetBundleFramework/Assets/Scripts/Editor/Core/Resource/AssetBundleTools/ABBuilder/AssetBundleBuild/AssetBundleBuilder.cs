@@ -583,11 +583,11 @@ namespace TResource
 			{
 				assetBuildInfoAssetName = AssetBundlePath.WindowAssetBuildInfoAssetName;
 			}
-			if (BuildTarget == BuildTarget.Android)
+			else if (BuildTarget == BuildTarget.Android)
 			{
 				assetBuildInfoAssetName = AssetBundlePath.AndroidAssetBuildInfoAssetName;
 			}
-			if (BuildTarget == BuildTarget.iOS)
+			else if (BuildTarget == BuildTarget.iOS)
 			{
 				assetBuildInfoAssetName = AssetBundlePath.IOSAssetBuildInfoAssetName;
 			}
