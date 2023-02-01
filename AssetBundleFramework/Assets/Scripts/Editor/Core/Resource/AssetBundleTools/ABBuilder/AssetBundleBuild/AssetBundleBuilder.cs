@@ -806,7 +806,7 @@ namespace TResource
             {
                 var assetBundleBuild = mAllAssetBundleBuildList[i];
 				var assetBundleBuildInfo = mAllAssetBundleBuildInfoList[i];
-				AppendData(content, $"AssetBundleName:{assetBundleBuild.assetBundleName} AssetBundleVariant:{assetBundleBuild.assetBundleVariant} BuildCompression:{assetBundleBuildInfo.com}");
+				AppendData(content, $"AssetBundleName:{assetBundleBuild.assetBundleName} AssetBundleVariant:{assetBundleBuild.assetBundleVariant} BuildCompression:{assetBundleBuildInfo.Compression.compression}");
                 foreach (var assetPath in assetBundleBuild.assetNames)
                 {
                     AppendData(content, $"\tAssetPath: {assetPath}");
