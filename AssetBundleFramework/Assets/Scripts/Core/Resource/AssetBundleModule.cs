@@ -62,7 +62,11 @@ namespace TResource
                 var assetBundlePostFix = AssetBundlePath.GetAssetBundlePostFix();
                 var hasAssetBundlePostFix = !string.IsNullOrEmpty(assetBundlePostFix);
                 assetBundlePostFix = hasAssetBundlePostFix ? $".{assetBundlePostFix}" : assetBundlePostFix;
+#if SCRIPTABLE_ASSET_BUILD_PIPELINE
+                var assetBundleManifest = ab.LoadAsset<CompatibilityAssetBundleManifest>(ResourceConstData.AssetBundleManifestAssetName);                
+#else
                 var assetBundleManifest = ab.LoadAsset<AssetBundleManifest>(ResourceConstData.AssetBundleManifestAssetName);
+#endif
                 var allAssetBundlePath = assetBundleManifest.GetAllAssetBundles();
                 for (int i = 0, length = allAssetBundlePath.Length; i < length; i++)
                 {
@@ -172,7 +176,7 @@ namespace TResource
                 }
             }
         }
-        #endregion
+#endregion
 
         /// <summary>
         /// 已加载AB里不再有有效引用的AB信息列表
@@ -373,7 +377,7 @@ namespace TResource
             }
         }
 
-        #region 资源调试辅助功能
+#region 资源调试辅助功能
         /// <summary>
         /// 强制卸载指定AB(只支持NormalLoad的AB资源强制卸载)
         /// </summary>
@@ -397,6 +401,6 @@ namespace TResource
                 ResourceLogger.logErr(string.Format("AssetBundle资源 : {0}未被加载，无法强制卸载!", assetBundelPath));
             }
         }
-        #endregion
+#endregion
     }
 }

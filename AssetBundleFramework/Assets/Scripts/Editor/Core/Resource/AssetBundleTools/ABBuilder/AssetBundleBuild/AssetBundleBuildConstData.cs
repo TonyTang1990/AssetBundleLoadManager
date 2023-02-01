@@ -17,11 +17,6 @@ namespace TResource
     public static class AssetBundleBuildConstData
     {
         /// <summary>
-        /// 构建输出的Unity清单文件名称
-        /// </summary>
-        public const string UnityManifestFileName = "UnityManifest";
-
-        /// <summary>
         /// 构建输出的说明文件
         /// </summary>
         public const string ReadmeFileName = "readme.txt";
