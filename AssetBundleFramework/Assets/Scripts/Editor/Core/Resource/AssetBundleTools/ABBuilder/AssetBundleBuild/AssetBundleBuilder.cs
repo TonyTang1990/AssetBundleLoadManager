@@ -270,7 +270,7 @@ namespace TResource
 				return false;
             }
             // 创建Asset AB打包详细说明信息文件
-			CreateAssetBuildReadmeFile(mAllAssetBundleBuildList);
+			CreateAssetBuildReadmeFile();
 			return true;
         }
 
@@ -330,7 +330,7 @@ namespace TResource
 		/// <returns></returns>
 		private string GetAssetBuildInfoFileRelativePath()
 		{
-			return $"Assets/{ResourceConstData.AssetBuildInfoAssetRelativePath}/{GetAssetBuildInfoAssetBundleName()}.asset";
+			return $"Assets/{ResourceConstData.AssetBuildInfoAssetRelativePath}/{GetAssetBuildBundleName()}.asset";
 		}
 
 		/// <summary>
@@ -452,8 +452,9 @@ namespace TResource
         {
             // AssetBuildInfoAsset打包信息单独打包
             var assetBuildInfoAssetRelativePath = GetAssetBuildInfoFileRelativePath();
-            var assetBundleName = GetAssetBuildInfoAssetBundleName();
-            var assetBundleVariant = GetBuildAssetBundlePostFix();
+            var assetBundleName = GetAssetBuildBundleName();
+            var assetBundleVariant = GetAssetBuildBundleVariant(assetBuildInfoAssetRelativePath);
+			var assetBuildCompression = GetAssetBuildCompression(assetBuildInfoAssetRelativePath);
             var assetBundleBuildInfo = new AssetBundleBuildInfo(assetBundleName, assetBundleVariant);
             var addresableName = GetAssetAddresableName(assetBuildInfoAssetRelativePath);
 			var assetBuildInfo = new AssetBuildInfo(assetBuildInfoAssetRelativePath, addresableName);
@@ -485,6 +486,7 @@ namespace TResource
 				// AssetBundle打包限制必须Asset全路径
 				assetBundleBuild.assetNames = assetBundleBuildInfo.GetAllAssetPaths();
 				assetBundleBuild.addressableNames = assetBundleBuildInfo.GetAllAddresableNames();
+				mAllAssetBundleBuildList.Add(assetBundleBuild);
 			}
         }
 
@@ -519,7 +521,7 @@ namespace TResource
                     AddAssetBuildInfo(assetInfo);
                 }
                 var assetBundleName = GetAssetBundleName(regularAssetPath);
-				var assetBundleVariant = GetAssetBundleVariant(regularAssetPath);
+				var assetBundleVariant = GetAssetBuildBundleVariant(regularAssetPath);
 				var assetBundleBuildInfo = GetAssetBundleBuildInfo(assetBundleName, assetBundleVariant);
 				if(assetBundleBuildInfo == null)
 				{
@@ -576,7 +578,7 @@ namespace TResource
 		/// <summary>
 		/// 获取Asset打包信息文件AB名
 		/// </summary>
-		private string GetAssetBuildInfoAssetBundleName()
+		private string GetAssetBuildBundleName()
 		{
 			var assetBuildInfoAssetName = string.Empty;
 			if (BuildTarget == BuildTarget.StandaloneWindows || BuildTarget == BuildTarget.StandaloneWindows64)
@@ -684,7 +686,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        private string GetAssetBundleVariant(string assetPath)
+        private string GetAssetBuildBundleVariant(string assetPath)
         {
 			string asestBundleVariantName;
 			if (mAllAssetBundleVariantNameCacheMap.TryGetValue(assetPath, out asestBundleVariantName))
@@ -695,13 +697,31 @@ namespace TResource
 			mAllAssetBundleVariantNameCacheMap.Add(assetPath, asestBundleVariantName);
 			return asestBundleVariantName;
         }
-#endregion
 
-#region AssetBundle资源热更新相关
-        /// <summary>
-        /// 创建AssetBundle的MD5信息文件
-        /// </summary>
-        private void CreateAssetBundleMd5InfoFile()
+		/// <summary>
+		/// 获取指定Asset路径的压缩格式
+		/// </summary>
+		/// <param name="assetPath"></param>
+		/// <returns></returns>
+		private BuildCompression GetAssetBuildCompression(string assetPath)
+        {
+			// TODO: 未来支持打包策略配置压缩格式
+			/*
+			var collector = AssetBundleCollectSettingData.GetCollectorByAssetPath(assetPath);
+			if(collector.BundleCompression == ?)
+            {
+				return ?;
+            }
+			*/
+			return GetConfigBuildCompression();
+		}
+		#endregion
+
+		#region AssetBundle资源热更新相关
+		/// <summary>
+		/// 创建AssetBundle的MD5信息文件
+		/// </summary>
+		private void CreateAssetBundleMd5InfoFile()
 		{
 			var assetBundleMd5FilePath = AssetBundlePath.GetInnerAssetBundleMd5FilePath();
 			// 确保创建最新的
@@ -767,7 +787,7 @@ namespace TResource
         /// 创建Asset AB打包详细Readme文件到输出目录
         /// </summary>
         /// <param name="assetBundleBuildList">Asset AB打包信息列表</param>
-        private void CreateAssetBuildReadmeFile(List<AssetBundleBuild> assetBundleBuildList)
+        private void CreateAssetBuildReadmeFile()
         {
             // 删除旧文件
             string filePath = $"{OutputDirectory}/{AssetBundleBuildConstData.AssetBuildReadmeFileName}";
@@ -782,10 +802,11 @@ namespace TResource
 
             AppendData(content, "");
             AppendData(content, $"--Asset AB打包信息--");
-            for (int i = 0, length = assetBundleBuildList.Count; i < length; i++)
+            for (int i = 0, length = mAllAssetBundleBuildList.Count; i < length; i++)
             {
-                var assetBundleBuild = assetBundleBuildList[i];
-                AppendData(content, $"AssetBundleName:{assetBundleBuild.assetBundleName} AssetBundleVariant:{assetBundleBuild.assetBundleVariant}");
+                var assetBundleBuild = mAllAssetBundleBuildList[i];
+				var assetBundleBuildInfo = mAllAssetBundleBuildInfoList[i];
+				AppendData(content, $"AssetBundleName:{assetBundleBuild.assetBundleName} AssetBundleVariant:{assetBundleBuild.assetBundleVariant} BuildCompression:{assetBundleBuildInfo.com}");
                 foreach (var assetPath in assetBundleBuild.assetNames)
                 {
                     AppendData(content, $"\tAssetPath: {assetPath}");
@@ -844,26 +865,35 @@ namespace TResource
         }
 
         #region 新版SBP打包相关
-        /// <summary>
-        /// 获取构建参数
-        /// </summary>
-        private BundleBuildParameters MakeBuildParameters()
+		/// <summary>
+		/// 获取配置的压缩格式
+		/// </summary>
+		/// <returns></returns>
+		private BuildCompression GetConfigBuildCompression()
+        {
+			if (CompressOption == ECompressOption.Uncompressed)
+			{
+				return BuildCompression.Uncompressed;
+			}
+			else if (CompressOption == ECompressOption.ChunkBasedCompressionLZ4)
+			{
+				return BuildCompression.LZ4;
+			}
+			else
+			{
+				return BuildCompression.LZMA;
+			}
+		}
+
+		/// <summary>
+		/// 获取构建参数
+		/// </summary>
+		private CustomBuildParameters MakeBuildParameters()
         {
 			CustomBuildParameters bundleBuildParameters = new CustomBuildParameters(BuildTarget, BuildTargetGroup, OutputDirectory);
 			//bundleBuildParameters.CacheServerHost = "";
 			//bundleBuildParameters.CacheServerPort = ;
-			if (CompressOption == ECompressOption.Uncompressed)
-            {
-                bundleBuildParameters.BundleCompression = UnityEngine.BuildCompression.Uncompressed;
-            }
-            else if (CompressOption == ECompressOption.ChunkBasedCompressionLZ4)
-            {
-                bundleBuildParameters.BundleCompression = UnityEngine.BuildCompression.LZ4;
-            }
-            else
-            {
-                bundleBuildParameters.BundleCompression = UnityEngine.BuildCompression.LZMA;
-            }
+            bundleBuildParameters.BundleCompression = GetConfigBuildCompression();
             if (IsForceRebuild)
             {
                 // 是否增量打包
@@ -883,6 +913,11 @@ namespace TResource
             {
                 // SBP不支持BuildAssetBundleOptions.IgnoreTypeTreeChanges
             }
+			// 添加自定义AB压缩格式设置
+			foreach(var assetBundleBuildInfo in mAllAssetBundleBuildInfoList)
+            {
+				bundleBuildParameters.AddAssetBundleCompression(assetBundleBuildInfo.AssetBundleName, assetBundleBuildInfo.Compression);
+			}
             return bundleBuildParameters;
         }
 
@@ -970,6 +1005,29 @@ namespace TResource
         #endregion
 
         #region 老版自定义打包相关
+		/// <summary>
+		/// 获取配置的AB压缩格式
+		/// </summary>
+		/// <returns></returns>
+		private BuildAssetBundleOptions GetConfigBuildCompressionOption()
+        {
+
+			if (CompressOption == ECompressOption.Uncompressed)
+			{
+				return BuildAssetBundleOptions.UncompressedAssetBundle;
+			}
+			else if (CompressOption == ECompressOption.ChunkBasedCompressionLZ4)
+			{
+				return BuildAssetBundleOptions.ChunkBasedCompression;
+			}
+            else
+            {
+				// 默认LZMA
+				return BuildAssetBundleOptions.None;
+
+			}
+		}
+
         /// <summary>
         /// 获取构建选项
         /// </summary>
@@ -979,18 +1037,10 @@ namespace TResource
             // 除非设置ForceRebuildAssetBundle标记，否则会进行增量打包
             BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
             opt |= BuildAssetBundleOptions.StrictMode; //Do not allow the build to succeed if any errors are reporting during it.
-
-            if (CompressOption == ECompressOption.Uncompressed)
-            {
-                opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
-            }
-            else if (CompressOption == ECompressOption.ChunkBasedCompressionLZ4)
-            {
-                opt |= BuildAssetBundleOptions.ChunkBasedCompression;
-            }
-            if (IsForceRebuild)
-            {
-                opt |= BuildAssetBundleOptions.ForceRebuildAssetBundle; //Force rebuild the asset bundles
+			opt |= GetConfigBuildCompressionOption();
+			if (IsForceRebuild)
+			{
+				opt |= BuildAssetBundleOptions.ForceRebuildAssetBundle; //Force rebuild the asset bundles
             }
             if (IsAppendHash)
             {

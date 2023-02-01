@@ -34,6 +34,15 @@ namespace TResource
         }
 
         /// <summary>
+        /// 压缩格式
+        /// </summary>
+        public BuildCompression Compression
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// 当前AB打包信息里所属的Asset打包信息Map<Asset路径，Asset打包信息>
         /// </summary>
         private Dictionary<string, AssetBuildInfo> mAssetBuildInfoMap;
@@ -43,10 +52,11 @@ namespace TResource
         /// </summary>
         /// <param name="assetBundleName"></param>
         /// <param name="assetBundleVariant"></param>
-        public AssetBundleBuildInfo(string assetBundleName, string assetBundleVariant)
+        public AssetBundleBuildInfo(string assetBundleName, string assetBundleVariant, BuildCompression compression)
         {
             AssetBundleName = assetBundleName;
             AssetBundleVariant = assetBundleVariant;
+            Compression = compression;
             mAssetBuildInfoMap = new Dictionary<string, AssetBuildInfo>();
         }
 
