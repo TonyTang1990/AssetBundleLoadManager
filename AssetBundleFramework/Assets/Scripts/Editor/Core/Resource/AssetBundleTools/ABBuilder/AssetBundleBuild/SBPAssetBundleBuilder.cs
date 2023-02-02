@@ -32,14 +32,14 @@ namespace TResource
         /// <param name="options">打包选项设置</param>
         /// <param name="allAssetBundleBuildList">AB打包列表</param>
         /// <param name="buildSuccess">打包是否成功</param>
+        /// <param name="results">打包结果</param>
         /// <returns></returns>
-        public static CompatibilityAssetBundleManifest DoSBPAssetBundleBuild(string outputDirectory, BuildTarget buildTarget, CustomBuildParameters buildParams, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess)
+        public static CompatibilityAssetBundleManifest DoSBPAssetBundleBuild(string outputDirectory, BuildTarget buildTarget, CustomBuildParameters buildParams, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess, out IBundleBuildResults results)
         {
             ScriptableBuildPipeline.slimWriteResults = true;
             ScriptableBuildPipeline.useDetailedBuildLog = false;
             ScriptableBuildPipeline.threadedArchiving = true;
             var buildContent = new BundleBuildContent(allAssetBundleBuildList);
-            IBundleBuildResults results;
             ReturnCode exitCode = ContentPipeline.BuildAssetBundles(buildParams, buildContent, out results);
             buildSuccess = exitCode >= ReturnCode.Success;
             if (exitCode < ReturnCode.Success)
@@ -49,8 +49,6 @@ namespace TResource
             }
             CompatibilityAssetBundleManifest unityManifest = CreateAndBuildAssetBundleManifest(outputDirectory, results, out buildSuccess);
             CheckCycleDependSBP(unityManifest);
-            // 创建说明文件
-            CreateSBPReadmeFile(outputDirectory, results);
             return unityManifest;
         }
 
@@ -72,37 +70,6 @@ namespace TResource
             // TODO: 添加Manifest创建和打包相关代码
             buildSuccess = true;
             return null;
-        }
-
-        /// <summary>
-        /// 创建ScriptableBuildPipeline Readme文件到输出目录
-        /// </summary>
-        /// <param name="outputDirectory">输出目录</param>
-        /// <param name="bundleBuildResults">打包结果</param>
-        private static void CreateSBPReadmeFile(string outputDirectory, IBundleBuildResults bundleBuildResults)
-        {
-            // 删除旧文件
-            string filePath = $"{outputDirectory}/{AssetBundleBuildConstData.ReadmeFileName}";
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-
-            Debug.Log($"创建说明文件：{filePath}");
-
-            StringBuilder content = new StringBuilder();
-            AssetBundleBuilder.AppendBuildTargetAndTimeContent(content);
-            AssetBundleBuilder.AppendCollectorContent(content);
-            AssetBundleBuilder.AppendBuildParametersContent(content);
-            AssetBundleBuilder.AppendData(content, $"--构建清单--");
-            foreach (var bundleBuildInfos in bundleBuildResults.BundleInfos)
-            {
-                var bundleBuildInfo = bundleBuildInfos.Value;
-                AssetBundleBuilder.AppendData(content, bundleBuildInfo.FileName);
-            }
-
-            // 创建新文件
-            File.WriteAllText(filePath, content.ToString(), Encoding.UTF8);
         }
 
         /// <summary>

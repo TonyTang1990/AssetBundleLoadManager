@@ -221,8 +221,10 @@ namespace TResource
 		private void DoSBPAssetBundleBuild(string outputDirectory, out bool buildSuccess)
         {
             var buildParams = MakeBuildParameters();
-			SBPAssetBundleBuilder.DoSBPAssetBundleBuild(outputDirectory, BuildTarget, buildParams, mAllAssetBundleBuildList, out buildSuccess);
-        }
+			IBundleResults results;
+			SBPAssetBundleBuilder.DoSBPAssetBundleBuild(outputDirectory, BuildTarget, buildParams, mAllAssetBundleBuildList, out buildSuccess, out results);
+			CreateSBPReadmeFile(outputDirectory, results);
+		}
 
         /// <summary>
         /// 执行老版自定义AB打包
@@ -233,12 +235,14 @@ namespace TResource
         {
 			BuildAssetBundleOptions options = MakeBuildOptions();
 			AssetBundleManifest unityManifest = OldAssetBundleBuilder.DoCustomAssetBundleBuild(outputDirectory, BuildTarget, options, mAllAssetBundleBuildList, out buildSuccess);
-        }
+			// 创建说明文件
+			CreateReadmeFile(outputDirectory, unityManifest);
+		}
 
-        /// <summary>
-        /// 执行AssetBundle打包准备工作
-        /// </summary>
-        private bool DoAssetBundleBuildPreparation()
+		/// <summary>
+		/// 执行AssetBundle打包准备工作
+		/// </summary>
+		private bool DoAssetBundleBuildPreparation()
         {
             ResetBuildDatas();
 			AssetBundleCollectSettingData.LoadSettingData();
@@ -794,7 +798,7 @@ namespace TResource
 		/// 添加打包平台和时间内容
 		/// </summary>
 		/// <param name="content"></param>
-		public static void AppendBuildTargetAndTimeContent(StringBuilder content)
+		private void AppendBuildTargetAndTimeContent(StringBuilder content)
         {
             AppendData(content, $"构建平台：{BuildTarget}");
             AppendData(content, $"构建时间：{DateTime.Now}");
@@ -805,7 +809,7 @@ namespace TResource
 		/// 添加收集器配置内容
 		/// </summary>
 		/// <param name="content"></param>
-		public static void AppendCollectorContent(StringBuilder content)
+		private void AppendCollectorContent(StringBuilder content)
         {
             AppendData(content, $"--配置信息--");
             for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
@@ -827,7 +831,7 @@ namespace TResource
 		/// 添加打包参数配置内容
 		/// </summary>
 		/// <param name="content"></param>
-		public static void AppendBuildParametersContent(StringBuilder content)
+		private void AppendBuildParametersContent(StringBuilder content)
         {
             AppendData(content, $"--构建参数--");
             AppendData(content, $"CompressOption：{CompressOption}");
@@ -836,14 +840,14 @@ namespace TResource
             AppendData(content, $"IgnoreTypeTreeChanges：{IsIgnoreTypeTreeChanges}");
             AppendData(content, "");
         }
-        #endregion
+		#endregion
 
-        #region 新版SBP打包相关
-        /// <summary>
-        /// 获取配置的压缩格式
-        /// </summary>
-        /// <returns></returns>
-        private UnityEngine.BuildCompression GetConfigBuildCompression()
+		#region 新版SBP打包相关
+		/// <summary>
+		/// 获取配置的压缩格式
+		/// </summary>
+		/// <returns></returns>
+		private UnityEngine.BuildCompression GetConfigBuildCompression()
         {
 			if (CompressOption == ECompressOption.Uncompressed)
 			{
@@ -894,9 +898,40 @@ namespace TResource
 			}
             return bundleBuildParameters;
         }
-        #endregion
 
-        #region 老版自定义打包相关
+		/// <summary>
+		/// 创建ScriptableBuildPipeline Readme文件到输出目录
+		/// </summary>
+		/// <param name="outputDirectory">输出目录</param>
+		/// <param name="bundleBuildResults">打包结果</param>
+		private void CreateSBPReadmeFile(string outputDirectory, IBundleBuildResults bundleBuildResults)
+		{
+			// 删除旧文件
+			string filePath = $"{outputDirectory}/{AssetBundleBuildConstData.ReadmeFileName}";
+			if (File.Exists(filePath))
+			{
+				File.Delete(filePath);
+			}
+
+			Debug.Log($"创建说明文件：{filePath}");
+
+			StringBuilder content = new StringBuilder();
+			AppendBuildTargetAndTimeContent(content);
+			AppendCollectorContent(content);
+			AppendBuildParametersContent(content);
+			AppendData(content, $"--构建清单--");
+			foreach (var bundleBuildInfos in bundleBuildResults.BundleInfos)
+			{
+				var bundleBuildInfo = bundleBuildInfos.Value;
+				AppendData(content, bundleBuildInfo.FileName);
+			}
+
+			// 创建新文件
+			File.WriteAllText(filePath, content.ToString(), Encoding.UTF8);
+		}
+		#endregion
+
+		#region 老版自定义打包相关
 		/// <summary>
 		/// 获取配置的AB压缩格式
 		/// </summary>
@@ -947,6 +982,35 @@ namespace TResource
             }
             return opt;
         }
+
+		/// <summary>
+		/// 创建Readme文件到输出目录
+		/// </summary>
+		/// <param name="outputDirectory">输出目录</param>
+		private void CreateReadmeFile(string outputDirecotry, AssetBundleManifest unityManifest)
+		{
+			string[] allAssetBundles = unityManifest.GetAllAssetBundles();
+
+			// 删除旧文件
+			string filePath = $"{outputDirecotry}/{AssetBundleBuildConstData.ReadmeFileName}";
+			if (File.Exists(filePath))
+				File.Delete(filePath);
+
+			Debug.Log($"创建说明文件：{filePath}");
+
+			StringBuilder content = new StringBuilder();
+			AppendBuildTargetAndTimeContent(content);
+			AppendCollectorContent(content);
+			AppendBuildParametersContent(content);
+			AppendData(content, $"--构建清单--");
+			for (int i = 0; i < allAssetBundles.Length; i++)
+			{
+				AppendData(content, allAssetBundles[i]);
+			}
+
+			// 创建新文件
+			File.WriteAllText(filePath, content.ToString(), Encoding.UTF8);
+		}
 		#endregion
 
 		/// <summary>
@@ -954,7 +1018,7 @@ namespace TResource
 		/// </summary>
 		/// <param name="sb"></param>
 		/// <param name="data"></param>
-		public static void AppendData(StringBuilder sb, string data)
+		private void AppendData(StringBuilder sb, string data)
 		{
 			sb.Append(data);
 			sb.Append("\r\n");

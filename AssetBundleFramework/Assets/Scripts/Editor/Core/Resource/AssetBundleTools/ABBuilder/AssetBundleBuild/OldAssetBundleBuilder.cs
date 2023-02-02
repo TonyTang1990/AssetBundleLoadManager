@@ -39,8 +39,6 @@ namespace TResource
             }
             // 检测循环依赖
             CheckCycleDepend(unityManifest);
-            // 创建说明文件
-            CreateReadmeFile(outputDirectory, unityManifest);
             return unityManifest;
         }
 
@@ -97,35 +95,6 @@ namespace TResource
 
             stack.Remove(element);
             return false;
-        }
-
-        /// <summary>
-        /// 创建Readme文件到输出目录
-        /// </summary>
-        /// <param name="outputDirectory">输出目录</param>
-        private static void CreateReadmeFile(string outputDirecotry, AssetBundleManifest unityManifest)
-        {
-            string[] allAssetBundles = unityManifest.GetAllAssetBundles();
-
-            // 删除旧文件
-            string filePath = $"{outputDirecotry}/{AssetBundleBuildConstData.ReadmeFileName}";
-            if (File.Exists(filePath))
-                File.Delete(filePath);
-
-            Debug.Log($"创建说明文件：{filePath}");
-
-            StringBuilder content = new StringBuilder();
-            AssetBundleBuilder.AppendBuildTargetAndTimeContent(content);
-            AssetBundleBuilder.AppendCollectorContent(content);
-            AssetBundleBuilder.AppendBuildParametersContent(content);
-            AssetBundleBuilder.AppendData(content, $"--构建清单--");
-            for (int i = 0; i < allAssetBundles.Length; i++)
-            {
-                AssetBundleBuilder.AppendData(content, allAssetBundles[i]);
-            }
-
-            // 创建新文件
-            File.WriteAllText(filePath, content.ToString(), Encoding.UTF8);
         }
     }
 }
