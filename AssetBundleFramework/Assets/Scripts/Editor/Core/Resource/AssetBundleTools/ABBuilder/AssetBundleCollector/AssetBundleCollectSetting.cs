@@ -38,17 +38,23 @@ namespace TResource
         /// </summary>
         public string ConstName;
 
+        /// <summary>
+        /// 压缩格式
+        /// </summary>
+        public CompressionType Compression;
+
         public Collector()
         {
 
         }
 
-        public Collector(string collectrelativefolderpath, AssetBundleCollectRule collectrule = AssetBundleCollectRule.Collect, AssetBundleBuildRule buildrule = AssetBundleBuildRule.ByFilePath)
+        public Collector(string collectrelativefolderpath, AssetBundleCollectRule collectrule = AssetBundleCollectRule.Collect, AssetBundleBuildRule buildrule = AssetBundleBuildRule.ByFilePath, CompressionType compression = CompressionType.Lz4)
         {
             CollectFolderPath = collectrelativefolderpath;
             CollectRule = collectrule;
             BuildRule = buildrule;
             ConstName = string.Empty;
+            Compression = compression;
         }
     }
 

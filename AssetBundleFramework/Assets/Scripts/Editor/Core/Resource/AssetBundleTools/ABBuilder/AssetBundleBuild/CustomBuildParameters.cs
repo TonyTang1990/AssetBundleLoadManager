@@ -15,7 +15,7 @@ namespace TResource
     /// <summary>
     /// CustomBuildParameters.cs
     /// </summary>
-    class CustomBuildParameters : BundleBuildParameters
+    public class CustomBuildParameters : BundleBuildParameters
     {
         /// <summary>
         /// 自定义AB名压缩格式Map<AB名, 压缩格式>

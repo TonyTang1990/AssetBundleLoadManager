@@ -133,25 +133,29 @@ namespace TResource
 
 			// 检测构建平台是否合法
 			if (BuildTarget == BuildTarget.NoTarget)
-				throw new Exception("[BuildPatch] 请选择目标平台");
+            {
+                throw new Exception("[BuildPatch] 请选择目标平台");
+            }
 
-			// 检测构建版本是否合法
-			//if (EditorUtilities.IsNumber(BuildVersion.ToString()) == false)
-			//	throw new Exception($"[BuildPatch] 版本号格式非法：{BuildVersion}");
-			//if (BuildVersion < 0)
-			//	throw new Exception("[BuildPatch] 请先设置版本号");
+            // 检测构建版本是否合法
+            //if (EditorUtilities.IsNumber(BuildVersion.ToString()) == false)
+            //	throw new Exception($"[BuildPatch] 版本号格式非法：{BuildVersion}");
+            //if (BuildVersion < 0)
+            //	throw new Exception("[BuildPatch] 请先设置版本号");
 
-			// 检测输出目录是否为空
-			if (string.IsNullOrEmpty(OutputDirectory))
-				throw new Exception("[BuildPatch] 输出目录不能为空");
+            // 检测输出目录是否为空
+            if (string.IsNullOrEmpty(OutputDirectory))
+            {
+                throw new Exception("[BuildPatch] 输出目录不能为空");
+            }
 
-			// 检测补丁包是否已经存在
-			//string packageDirectory = GetPackageDirectory();
-			//if (Directory.Exists(packageDirectory))
-			//	throw new Exception($"[BuildPatch] 补丁包已经存在：{packageDirectory}");
+            // 检测补丁包是否已经存在
+            //string packageDirectory = GetPackageDirectory();
+            //if (Directory.Exists(packageDirectory))
+            //	throw new Exception($"[BuildPatch] 补丁包已经存在：{packageDirectory}");
 
-			// 如果是强制重建
-			if (IsForceRebuild)
+            // 如果是强制重建
+            if (IsForceRebuild)
 			{
 				// 删除平台总目录
 				string platformDirectory = $"{_outputRoot}/{BuildTarget}";
@@ -216,21 +220,8 @@ namespace TResource
 		/// <param name="buildSuccess"></param>
 		private void DoSBPAssetBundleBuild(string outputDirectory, out bool buildSuccess)
         {
-			ScriptableBuildPipeline.slimWriteResults = true;
-			ScriptableBuildPipeline.useDetailedBuildLog = false;
-			ScriptableBuildPipeline.threadedArchiving = true;
-			var buildContent = new BundleBuildContent(mAllAssetBundleBuildList);
             var buildParams = MakeBuildParameters();
-            IBundleBuildResults results;
-            ReturnCode exitCode = ContentPipeline.BuildAssetBundles(buildParams, buildContent, out results);
-			buildSuccess = exitCode >= ReturnCode.Success;
-			if (exitCode < ReturnCode.Success)
-            {
-				Debug.LogError($"[BuildPatch] 构建过程中发生错误exitCode:{exitCode}！");
-                return;
-            }
-            // 创建说明文件
-            CreateSBPReadmeFile(results);
+			SBPAssetBundleBuilder.DoSBPAssetBundleBuild(outputDirectory, BuildTarget, buildParams, mAllAssetBundleBuildList, out buildSuccess);
         }
 
         /// <summary>
@@ -240,18 +231,8 @@ namespace TResource
         /// <param name="buildSuccess"></param>
         private void DoCustomAssetBundleBuild(string outputDirectory, out bool buildSuccess)
         {
-            BuildAssetBundleOptions opt = MakeBuildOptions();
-            AssetBundleManifest unityManifest = BuildPipeline.BuildAssetBundles(outputDirectory, mAllAssetBundleBuildList.ToArray(), opt, BuildTarget);
-			buildSuccess = unityManifest != null;
-			if (unityManifest == null)
-            {
-                Debug.LogError("[BuildPatch] 构建过程中发生错误！");
-                return;
-            }
-            // 检测循环依赖
-            CheckCycleDepend(unityManifest);
-            // 创建说明文件
-            CreateReadmeFile(unityManifest);
+			BuildAssetBundleOptions options = MakeBuildOptions();
+			AssetBundleManifest unityManifest = OldAssetBundleBuilder.DoCustomAssetBundleBuild(outputDirectory, BuildTarget, options, mAllAssetBundleBuildList, out buildSuccess);
         }
 
         /// <summary>
@@ -455,7 +436,7 @@ namespace TResource
             var assetBundleName = GetAssetBuildBundleName();
             var assetBundleVariant = GetAssetBuildBundleVariant(assetBuildInfoAssetRelativePath);
 			var assetBuildCompression = GetAssetBuildCompression(assetBuildInfoAssetRelativePath);
-            var assetBundleBuildInfo = new AssetBundleBuildInfo(assetBundleName, assetBundleVariant);
+            var assetBundleBuildInfo = new AssetBundleBuildInfo(assetBundleName, assetBundleVariant, assetBuildCompression);
             var addresableName = GetAssetAddresableName(assetBuildInfoAssetRelativePath);
 			var assetBuildInfo = new AssetBuildInfo(assetBuildInfoAssetRelativePath, addresableName);
 			AddAssetBuildInfo(assetBuildInfo);
@@ -525,7 +506,8 @@ namespace TResource
 				var assetBundleBuildInfo = GetAssetBundleBuildInfo(assetBundleName, assetBundleVariant);
 				if(assetBundleBuildInfo == null)
 				{
-					assetBundleBuildInfo = new AssetBundleBuildInfo(assetBundleName, assetBundleVariant);
+					var compression = GetAssetBuildCompression(regularAssetPath);
+					assetBundleBuildInfo = new AssetBundleBuildInfo(assetBundleName, assetBundleVariant, compression);
 					AddAssetBundleBuildInfo(assetBundleBuildInfo);
 				}
 				assetBundleBuildInfo.AddAssetBuildInfo(assetInfo);
@@ -645,9 +627,7 @@ namespace TResource
 			}
 			return true;
 		}
-#endregion
 
-#region AssetBundle打包策略获取AB名和变体名相关
 		/// <summary>
         /// 获取指定Asset路径的AB名
         /// </summary>
@@ -703,16 +683,26 @@ namespace TResource
 		/// </summary>
 		/// <param name="assetPath"></param>
 		/// <returns></returns>
-		private BuildCompression GetAssetBuildCompression(string assetPath)
+		private UnityEngine.BuildCompression GetAssetBuildCompression(string assetPath)
         {
-			// TODO: 未来支持打包策略配置压缩格式
-			/*
 			var collector = AssetBundleCollectSettingData.GetCollectorByAssetPath(assetPath);
-			if(collector.BundleCompression == ?)
+			if(collector.Compression == UnityEngine.CompressionType.Lz4 || collector.Compression == UnityEngine.CompressionType.Lz4HC)
             {
-				return ?;
+				return UnityEngine.BuildCompression.LZ4;
             }
-			*/
+			else if(collector.Compression == UnityEngine.CompressionType.Lzma)
+            {
+				return UnityEngine.BuildCompression.LZMA;
+            }
+			else if(collector.Compression == UnityEngine.CompressionType.None)
+            {
+				return UnityEngine.BuildCompression.Uncompressed;
+            }
+            else
+            {
+				Debug.LogError($"不支持的压缩格式设置:{collector.Compression}，返回默认LZ4压缩格式!");
+				return UnityEngine.BuildCompression.LZ4;
+			}
 			return GetConfigBuildCompression();
 		}
 		#endregion
@@ -757,24 +747,7 @@ namespace TResource
         /// <param name="assetBuildInfoList"></param>
 		private void PackVideo(List<AssetBuildInfo> assetBuildInfoList)
 		{
-			// 注意：视频统一不压缩，避免播放有问题
-			Log($"开始视频单独打包");
-			for (int i = 0; i < assetBuildInfoList.Count; i++)
-			{
-				AssetBuildInfo assetBuildInfo = assetBuildInfoList[i];
-				if (assetBuildInfo.IsCollectAsset && assetBuildInfo.IsVideoAsset)
-				{
-					BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
-					opt |= BuildAssetBundleOptions.DeterministicAssetBundle;
-					opt |= BuildAssetBundleOptions.StrictMode;
-					opt |= BuildAssetBundleOptions.UncompressedAssetBundle;
-					var videoObj = AssetDatabase.LoadAssetAtPath<UnityEngine.Video.VideoClip>(assetBuildInfo.AssetPath);
-					string outPath = OutputDirectory + "/" + assetBuildInfo.AssetBundleLabel.ToLower();
-					bool result = BuildPipeline.BuildAssetBundle(videoObj, new[] { videoObj }, outPath, opt, BuildTarget);
-					if (result == false)
-						throw new Exception($"视频单独打包失败：{assetBuildInfo.AssetPath}");
-				}
-			}
+			// 未来有单独打包视频需求再说
 		}
         #endregion
 
@@ -821,18 +794,18 @@ namespace TResource
 		/// 添加打包平台和时间内容
 		/// </summary>
 		/// <param name="content"></param>
-		private void AppendBuildTargetAndTimeContent(StringBuilder content)
+		public static void AppendBuildTargetAndTimeContent(StringBuilder content)
         {
             AppendData(content, $"构建平台：{BuildTarget}");
             AppendData(content, $"构建时间：{DateTime.Now}");
             AppendData(content, "");
         }
 
-        /// <summary>
-        /// 添加收集器配置内容
-        /// </summary>
-        /// <param name="content"></param>
-        private void AppendCollectorContent(StringBuilder content)
+		/// <summary>
+		/// 添加收集器配置内容
+		/// </summary>
+		/// <param name="content"></param>
+		public static void AppendCollectorContent(StringBuilder content)
         {
             AppendData(content, $"--配置信息--");
             for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
@@ -850,11 +823,11 @@ namespace TResource
             AppendData(content, "");
         }
 
-        /// <summary>
-        /// 添加打包参数配置内容
-        /// </summary>
-        /// <param name="content"></param>
-        private void AppendBuildParametersContent(StringBuilder content)
+		/// <summary>
+		/// 添加打包参数配置内容
+		/// </summary>
+		/// <param name="content"></param>
+		public static void AppendBuildParametersContent(StringBuilder content)
         {
             AppendData(content, $"--构建参数--");
             AppendData(content, $"CompressOption：{CompressOption}");
@@ -863,25 +836,26 @@ namespace TResource
             AppendData(content, $"IgnoreTypeTreeChanges：{IsIgnoreTypeTreeChanges}");
             AppendData(content, "");
         }
+        #endregion
 
         #region 新版SBP打包相关
-		/// <summary>
-		/// 获取配置的压缩格式
-		/// </summary>
-		/// <returns></returns>
-		private BuildCompression GetConfigBuildCompression()
+        /// <summary>
+        /// 获取配置的压缩格式
+        /// </summary>
+        /// <returns></returns>
+        private UnityEngine.BuildCompression GetConfigBuildCompression()
         {
 			if (CompressOption == ECompressOption.Uncompressed)
 			{
-				return BuildCompression.Uncompressed;
+				return UnityEngine.BuildCompression.Uncompressed;
 			}
 			else if (CompressOption == ECompressOption.ChunkBasedCompressionLZ4)
 			{
-				return BuildCompression.LZ4;
+				return UnityEngine.BuildCompression.LZ4;
 			}
 			else
 			{
-				return BuildCompression.LZMA;
+				return UnityEngine.BuildCompression.LZMA;
 			}
 		}
 
@@ -920,88 +894,6 @@ namespace TResource
 			}
             return bundleBuildParameters;
         }
-
-        /// <summary>
-        /// Scriptable Build Pipeline检测循环依赖
-        /// </summary>
-        private void CheckCycleDependSBP(AssetBundleManifest unityManifest)
-        {
-            List<string> visited = new List<string>(100);
-            List<string> stack = new List<string>(100);
-            string[] allAssetBundles = unityManifest.GetAllAssetBundles();
-            for (int i = 0; i < allAssetBundles.Length; i++)
-            {
-                var element = allAssetBundles[i];
-                visited.Clear();
-                stack.Clear();
-
-                // 深度优先搜索检测有向图有无环路算法
-                if (CheckCycleSBP(unityManifest, element, visited, stack))
-                {
-                    foreach (var ele in stack)
-                    {
-                        UnityEngine.Debug.LogWarning(ele);
-                    }
-                    throw new Exception($"Found cycle assetbundle : {element}");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Scriptable Build Pipeline检查循环依赖
-        /// </summary>
-        /// <param name="unityManifest"></param>
-        /// <param name="element"></param>
-        /// <param name="visited"></param>
-        /// <param name="stack"></param>
-        /// <returns></returns>
-        private bool CheckCycleSBP(AssetBundleManifest unityManifest, string element, List<string> visited, List<string> stack)
-        {
-            if (visited.Contains(element) == false)
-            {
-                visited.Add(element);
-                stack.Add(element);
-
-                string[] depends = unityManifest.GetDirectDependencies(element);
-                foreach (var dp in depends)
-                {
-                    if (visited.Contains(dp) == false && CheckCycle(unityManifest, dp, visited, stack))
-                        return true;
-                    else if (stack.Contains(dp))
-                        return true;
-                }
-            }
-
-            stack.Remove(element);
-            return false;
-        }
-
-        /// <summary>
-        /// 创建ScriptableBuildPipeline Readme文件到输出目录
-        /// </summary>
-        private void CreateSBPReadmeFile(IBundleBuildResults bundleBuildResults)
-		{
-			// 删除旧文件
-			string filePath = $"{OutputDirectory}/{AssetBundleBuildConstData.ReadmeFileName}";
-			if (File.Exists(filePath))
-				File.Delete(filePath);
-
-			Log($"创建说明文件：{filePath}");
-
-			StringBuilder content = new StringBuilder();
-			AppendBuildTargetAndTimeContent(content);
-			AppendCollectorContent(content);
-			AppendBuildParametersContent(content);
-			AppendData(content, $"--构建清单--");
-			foreach(var bundleBuildInfos in bundleBuildResults.BundleInfos)
-            {
-				var bundleBuildInfo = bundleBuildInfos.Value;
-				AppendData(content, bundleBuildInfo.FileName);
-			}
-
-			// 创建新文件
-			File.WriteAllText(filePath, content.ToString(), Encoding.UTF8);
-		}
         #endregion
 
         #region 老版自定义打包相关
@@ -1011,7 +903,6 @@ namespace TResource
 		/// <returns></returns>
 		private BuildAssetBundleOptions GetConfigBuildCompressionOption()
         {
-
 			if (CompressOption == ECompressOption.Uncompressed)
 			{
 				return BuildAssetBundleOptions.UncompressedAssetBundle;
@@ -1056,96 +947,17 @@ namespace TResource
             }
             return opt;
         }
-
-        /// <summary>
-        /// 检测循环依赖
-        /// </summary>
-        private void CheckCycleDepend(AssetBundleManifest unityManifest)
-		{
-			List<string> visited = new List<string>(100);
-			List<string> stack = new List<string>(100);
-			string[] allAssetBundles = unityManifest.GetAllAssetBundles();
-			for (int i = 0; i < allAssetBundles.Length; i++)
-			{
-				var element = allAssetBundles[i];
-				visited.Clear();
-				stack.Clear();
-
-				// 深度优先搜索检测有向图有无环路算法
-				if (CheckCycle(unityManifest, element, visited, stack))
-				{
-					foreach (var ele in stack)
-					{
-						UnityEngine.Debug.LogWarning(ele);
-					}
-					throw new Exception($"Found cycle assetbundle : {element}");
-				}
-			}
-		}
+		#endregion
 
 		/// <summary>
-		/// 检查循环依赖
+		/// 往StringBuilder添加数据
 		/// </summary>
-		/// <param name="unityManifest"></param>
-		/// <param name="element"></param>
-		/// <param name="visited"></param>
-		/// <param name="stack"></param>
-		/// <returns></returns>
-		private bool CheckCycle(AssetBundleManifest unityManifest, string element, List<string> visited, List<string> stack)
-		{
-			if (visited.Contains(element) == false)
-			{
-				visited.Add(element);
-				stack.Add(element);
-
-				string[] depends = unityManifest.GetDirectDependencies(element);
-				foreach (var dp in depends)
-				{
-					if (visited.Contains(dp) == false && CheckCycle(unityManifest, dp, visited, stack))
-						return true;
-					else if (stack.Contains(dp))
-						return true;
-				}
-			}
-
-			stack.Remove(element);
-			return false;
-		}
-
-		/// <summary>
-		/// 创建Readme文件到输出目录
-		/// </summary>
-		private void CreateReadmeFile(AssetBundleManifest unityManifest)
-		{
-			string[] allAssetBundles = unityManifest.GetAllAssetBundles();
-
-			// 删除旧文件
-			string filePath = $"{OutputDirectory}/{AssetBundleBuildConstData.ReadmeFileName}";
-			if (File.Exists(filePath))
-				File.Delete(filePath);
-
-			Log($"创建说明文件：{filePath}");
-
-			StringBuilder content = new StringBuilder();
-            AppendBuildTargetAndTimeContent(content);
-            AppendCollectorContent(content);
-            AppendBuildParametersContent(content);
-            AppendData(content, $"--构建清单--");
-			for (int i = 0; i < allAssetBundles.Length; i++)
-			{
-				AppendData(content, allAssetBundles[i]);
-			}
-
-			// 创建新文件
-			File.WriteAllText(filePath, content.ToString(), Encoding.UTF8);
-		}
-        #endregion
-
-        private void AppendData(StringBuilder sb, string data)
+		/// <param name="sb"></param>
+		/// <param name="data"></param>
+		public static void AppendData(StringBuilder sb, string data)
 		{
 			sb.Append(data);
 			sb.Append("\r\n");
 		}
-#endregion
 	}
 }
