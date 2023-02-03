@@ -23,12 +23,13 @@ namespace TResource
         /// <summary>
         /// 执行老版自定义AB打包
         /// </summary>
+        /// <param name="assetBundleBuilder">AB打包工具</param>
         /// <param name="outputDirectory">输出目录</param>
         /// <param name="buildTarget">打包平台</param>
         /// <param name="options">打包选项设置</param>
         /// <param name="allAssetBundleBuildList">AB打包列表</param>
         /// <returns></returns>
-        public static AssetBundleManifest BuildAllAssetBundles(string outputDirectory, BuildTarget buildTarget, BuildAssetBundleOptions options, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess)
+        public static AssetBundleManifest BuildAllAssetBundles(AssetBundleBuilder assetBundleBuilder, string outputDirectory, BuildTarget buildTarget, BuildAssetBundleOptions options, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess)
         {
             var unityManifest = BuildPipeline.BuildAssetBundles(outputDirectory, allAssetBundleBuildList.ToArray(), options, buildTarget);
             buildSuccess = unityManifest != null;

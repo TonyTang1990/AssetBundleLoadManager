@@ -20,6 +20,9 @@ using UnityEditor.Build.Content;
 
 namespace TResource
 {
+	/// <summary>
+	/// AB打包工具
+	/// </summary>
 	public class AssetBundleBuilder
 	{
 		/// <summary>
@@ -222,7 +225,7 @@ namespace TResource
         {
             var buildParams = MakeBuildParameters();
 			IBundleBuildResults results;
-			SBPAssetBundleBuilder.BuildAllAssetBundles(outputDirectory, BuildTarget, buildParams, mAllAssetBundleBuildList, out buildSuccess, out results);
+			SBPAssetBundleBuilder.BuildAllAssetBundles(this, outputDirectory, BuildTarget, buildParams, mAllAssetBundleBuildList, out buildSuccess, out results);
 			CreateSBPReadmeFile(outputDirectory, results);
 		}
 
@@ -234,7 +237,7 @@ namespace TResource
         private void DoCustomAssetBundleBuild(string outputDirectory, out bool buildSuccess)
         {
 			BuildAssetBundleOptions options = MakeBuildOptions();
-			AssetBundleManifest unityManifest = OldAssetBundleBuilder.BuildAllAssetBundles(outputDirectory, BuildTarget, options, mAllAssetBundleBuildList, out buildSuccess);
+			AssetBundleManifest unityManifest = OldAssetBundleBuilder.BuildAllAssetBundles(this, outputDirectory, BuildTarget, options, mAllAssetBundleBuildList, out buildSuccess);
 			// 创建说明文件
 			CreateReadmeFile(outputDirectory, unityManifest);
 		}
@@ -670,7 +673,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        private string GetAssetBuildBundleVariant(string assetPath)
+        public string GetAssetBuildBundleVariant(string assetPath)
         {
 			string asestBundleVariantName;
 			if (mAllAssetBundleVariantNameCacheMap.TryGetValue(assetPath, out asestBundleVariantName))

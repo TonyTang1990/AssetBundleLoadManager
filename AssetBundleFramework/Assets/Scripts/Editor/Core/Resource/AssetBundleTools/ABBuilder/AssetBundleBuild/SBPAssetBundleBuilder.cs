@@ -27,6 +27,7 @@ namespace TResource
         /// <summary>
         /// 执行新版Scriptable Build Pipeline自定义AB打包
         /// </summary>
+        /// <param name="assetBundleBuilder">AB打包工具</param>
         /// <param name="outputDirectory">输出目录</param>
         /// <param name="buildTarget">打包平台</param>
         /// <param name="options">打包选项设置</param>
@@ -34,7 +35,7 @@ namespace TResource
         /// <param name="buildSuccess">打包是否成功</param>
         /// <param name="results">打包结果</param>
         /// <returns></returns>
-        public static CompatibilityAssetBundleManifest BuildAllAssetBundles(string outputDirectory, BuildTarget buildTarget, CustomBuildParameters buildParams, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess, out IBundleBuildResults results)
+        public static CompatibilityAssetBundleManifest BuildAllAssetBundles(AssetBundleBuilder assetBundleBuilder, string outputDirectory, BuildTarget buildTarget, CustomBuildParameters buildParams, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess, out IBundleBuildResults results)
         {
             ScriptableBuildPipeline.slimWriteResults = true;
             ScriptableBuildPipeline.useDetailedBuildLog = false;
@@ -47,7 +48,7 @@ namespace TResource
                 Debug.LogError($"[BuildPatch] 构建过程中发生错误exitCode:{exitCode}！");
                 return null;
             }
-            CompatibilityAssetBundleManifest unityManifest = CreateAndBuildAssetBundleManifest(outputDirectory, results, out buildSuccess);
+            CompatibilityAssetBundleManifest unityManifest = CreateAndBuildAssetBundleManifest(assetBundleBuilder, outputDirectory, buildParams, results, out buildSuccess);
             CheckCycleDependSBP(unityManifest);
             return unityManifest;
         }
@@ -57,19 +58,51 @@ namespace TResource
         /// Note:
         /// 1. 新版Scriptable Build Pipeline打包没有AssetBundleManifest文件，需要自己创建并打包CompatibilityAssetBundleManifest兼容文件
         /// </summary>
+        /// <param name="assetBundleBuilder">AB打包工具</param>
         /// <param name="outputDirectory">输出目录</param>
+        /// <param name="buildParams">打包参数</param>
         /// <param name="results">打包结果</param>
         /// <param name="buildSuccess">打包是否成功</param>
         /// <returns></returns>
-        private static CompatibilityAssetBundleManifest CreateAndBuildAssetBundleManifest(string outputDirectory, IBundleBuildResults results, out bool buildSuccess)
+        private static CompatibilityAssetBundleManifest CreateAndBuildAssetBundleManifest(AssetBundleBuilder assetBundleBuilder, string outputDirectory, CustomBuildParameters buildParams, IBundleBuildResults results, out bool buildSuccess)
         {
             var outputDirectoryFullPath = Path.GetFullPath(outputDirectory);
             var outputDirectoryInfo = new DirectoryInfo(outputDirectoryFullPath);
-            var outputFolderName = outputDirectoryInfo.Name;
-            var unityManifestAssetRelativePath = Path.Combine(outputDirectory, outputFolderName);
-            // TODO: 添加Manifest创建和打包相关代码
-            buildSuccess = true;
-            return null;
+            var manifestName = outputDirectoryInfo.Name;
+            var manifest = ScriptableObject.CreateInstance<CompatibilityAssetBundleManifest>();
+            manifest.SetResults(results.BundleInfos);
+            var manifestPath = buildParams.GetOutputFilePathForIdentifier($"{manifestName}.manifest");
+            Debug.Log($"manifestPath:{manifestPath}");
+            var manifestAssetFolderPath = $"Asset/SBPBuildManifest/{buildParams.Target}";
+            if(!Directory.Exists(manifestAssetFolderPath))
+            {
+                Directory.CreateDirectory(manifestAssetFolderPath);
+            }
+            var manifestAssetFilePath = Path.Combine(manifestAssetFolderPath, $"{manifestName}.asset");
+            AssetDataBase.CreateAsset(manifest, manifestAssetFilePath);
+            AssetDataBase.SaveAssets();
+            AssetDataBase.Refresh();
+            var manifestBundleName = outputFolderName;
+            var buildContent = new BundleBuildContent(new[]
+            {
+                new AssetBundleBuild()
+                {
+                    AssetBundleName = assetBundleName,
+                    assetBundleVariant = assetBundleBuilder.GetAssetBuildBundleVariant(manifestAssetFilePath),
+                    assetNames = new[] { manifestAssetFilePath },
+                    // Manifest的Asset名强制用固定名字
+                    addressableNames = new[] { ResourceConstData.AssetBundleManifestAssetName },
+                }
+            });
+            var exitCode = ContentPipeline.BuildAssetBundles(buildParams, buildContent, out _);
+            buildSuccess = exitCode >= ReturnCode.Success;
+            if(exitCode < ReturnCode.Sucess)
+            {
+                Debug.LoError($"打包AssetBundleManifest失败！eixtCode:{exitCode}");
+                return null;
+            }
+            ResourceDebugWindow.Log($"AB的Manifest打包成功！");
+            return manifest;
         }
 
         /// <summary>
