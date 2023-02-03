@@ -28,7 +28,7 @@ namespace TResource
         /// <param name="options">打包选项设置</param>
         /// <param name="allAssetBundleBuildList">AB打包列表</param>
         /// <returns></returns>
-        public static AssetBundleManifest DoCustomAssetBundleBuild(string outputDirectory, BuildTarget buildTarget, BuildAssetBundleOptions options, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess)
+        public static AssetBundleManifest BuildAllAssetBundles(string outputDirectory, BuildTarget buildTarget, BuildAssetBundleOptions options, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess)
         {
             var unityManifest = BuildPipeline.BuildAssetBundles(outputDirectory, allAssetBundleBuildList.ToArray(), options, buildTarget);
             buildSuccess = unityManifest != null;

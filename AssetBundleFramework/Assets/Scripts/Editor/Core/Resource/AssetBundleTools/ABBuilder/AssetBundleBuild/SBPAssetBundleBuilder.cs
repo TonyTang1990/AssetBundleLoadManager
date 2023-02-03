@@ -34,7 +34,7 @@ namespace TResource
         /// <param name="buildSuccess">打包是否成功</param>
         /// <param name="results">打包结果</param>
         /// <returns></returns>
-        public static CompatibilityAssetBundleManifest DoSBPAssetBundleBuild(string outputDirectory, BuildTarget buildTarget, CustomBuildParameters buildParams, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess, out IBundleBuildResults results)
+        public static CompatibilityAssetBundleManifest BuildAllAssetBundles(string outputDirectory, BuildTarget buildTarget, CustomBuildParameters buildParams, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess, out IBundleBuildResults results)
         {
             ScriptableBuildPipeline.slimWriteResults = true;
             ScriptableBuildPipeline.useDetailedBuildLog = false;

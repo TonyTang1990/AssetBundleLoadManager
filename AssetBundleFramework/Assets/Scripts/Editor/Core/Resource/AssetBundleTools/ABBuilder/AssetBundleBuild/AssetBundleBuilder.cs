@@ -221,8 +221,8 @@ namespace TResource
 		private void DoSBPAssetBundleBuild(string outputDirectory, out bool buildSuccess)
         {
             var buildParams = MakeBuildParameters();
-			IBundleResults results;
-			SBPAssetBundleBuilder.DoSBPAssetBundleBuild(outputDirectory, BuildTarget, buildParams, mAllAssetBundleBuildList, out buildSuccess, out results);
+			IBundleBuildResults results;
+			SBPAssetBundleBuilder.BuildAllAssetBundles(outputDirectory, BuildTarget, buildParams, mAllAssetBundleBuildList, out buildSuccess, out results);
 			CreateSBPReadmeFile(outputDirectory, results);
 		}
 
@@ -234,7 +234,7 @@ namespace TResource
         private void DoCustomAssetBundleBuild(string outputDirectory, out bool buildSuccess)
         {
 			BuildAssetBundleOptions options = MakeBuildOptions();
-			AssetBundleManifest unityManifest = OldAssetBundleBuilder.DoCustomAssetBundleBuild(outputDirectory, BuildTarget, options, mAllAssetBundleBuildList, out buildSuccess);
+			AssetBundleManifest unityManifest = OldAssetBundleBuilder.BuildAllAssetBundles(outputDirectory, BuildTarget, options, mAllAssetBundleBuildList, out buildSuccess);
 			// 创建说明文件
 			CreateReadmeFile(outputDirectory, unityManifest);
 		}
