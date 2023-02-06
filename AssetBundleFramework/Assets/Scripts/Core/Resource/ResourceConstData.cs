@@ -29,7 +29,7 @@ namespace TResource
         /// <summary>
         /// Asset打包信息Asset相对存储目录
         /// </summary>
-        public const string AssetBuildInfoAssetRelativePath = "/Res/assetbuildinfo";
+        public const string AssetBuildInfoAssetRelativePath = "Res/assetbuildinfo";
 
         /// <summary>
         /// 依赖文件Manifest的Asset名

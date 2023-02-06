@@ -67,21 +67,16 @@ public static class PathUtilities
     }
 
     /// <summary>
-    /// 获取指定路径移除指定后缀名的路径
+    /// 获取指定路径移除缀名的路径
     /// </summary>
     /// <param name="path"></param>
-    /// <param name="postFix"></param>
     /// <returns></returns>
-    public static string GetPathWithoutPostFix(string path, string postFix)
+    public static string GetPathWithoutPostFix(string path)
     {
+        var postFix = Path.GetExtension(path);
         var hasPostFix = !string.IsNullOrEmpty(postFix);
         if (!hasPostFix)
         {
-            return path;
-        }
-        if (!path.EndsWith(postFix))
-        {
-            Debug.LogError($"Path:{path}没有以后缀:{postFix}结尾,移除失败!");
             return path;
         }
         var postFixIndex = path.LastIndexOf(postFix);

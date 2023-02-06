@@ -79,6 +79,17 @@ namespace TResource
         }
 
         /// <summary>
+        /// 转换Asset路径到AB路径(一般情况下用不上此方法，慎用)
+        /// </summary>
+        /// <param name="assetPath"></param>
+        /// <returns></returns>
+        public static string ChangeAssetPathToABPath(string assetPath)
+        {
+            var assetPathNoExtension = PathUtilities.GetPathWithoutPostFix(assetPath);
+            return GetABPathWithPostFix(assetPathNoExtension);
+        }
+
+        /// <summary>
         /// 获取AB带后缀加载路径
         /// </summary>
         /// <param name="abPath"></param>

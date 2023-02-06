@@ -59,9 +59,6 @@ namespace TResource
             AssetBundle ab = AssetBundle.LoadFromFile(abPath);
             if (ab != null)
             {
-                var assetBundlePostFix = AssetBundlePath.GetAssetBundlePostFix();
-                var hasAssetBundlePostFix = !string.IsNullOrEmpty(assetBundlePostFix);
-                assetBundlePostFix = hasAssetBundlePostFix ? $".{assetBundlePostFix}" : assetBundlePostFix;
 #if SCRIPTABLE_ASSET_BUILD_PIPELINE
                 var assetBundleManifest = ab.LoadAsset<CompatibilityAssetBundleManifest>(ResourceConstData.AssetBundleManifestAssetName);
 #else
@@ -72,15 +69,6 @@ namespace TResource
                 {
                     var assetBundlePath = allAssetBundlePath[i];
                     var dependenciesPathes = assetBundleManifest.GetAllDependencies(assetBundlePath);
-                    if (hasAssetBundlePostFix)
-                    {
-                        assetBundlePath = PathUtilities.GetPathWithoutPostFix(assetBundlePath, assetBundlePostFix);
-                        for (int j = 0, length2 = dependenciesPathes.Length; j < length2; j++)
-                        {
-                            var dependenciesPath = dependenciesPathes[j];
-                            dependenciesPathes[j] = PathUtilities.GetPathWithoutPostFix(dependenciesPath, assetBundlePostFix);
-                        }
-                    }
                     AssetBundleDependencyMap.Add(assetBundlePath, dependenciesPathes);
                 }
                 ab.Unload(true);
@@ -104,20 +92,21 @@ namespace TResource
                 mAssetBuildInfo = null;
             }
             // AssetBundle打包信息没有依赖信息，直接加载即可
-            var assetBuildInfoAssetName = AssetBundlePath.GetAssetBuildInfoAssetName();
-            var abpath = AssetBundlePath.GetABLoadFullPath(assetBuildInfoAssetName.ToLower());
+            var assetBuildInfoAssetRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
+            var assetBuildInfoABPath = AssetBundlePath.ChangeAssetPathToABPath(assetBuildInfoAssetRelativePath);
+            var abpath = AssetBundlePath.GetABLoadFullPath(assetBuildInfoABPath.ToLower());
             AssetBundle ab = null;
             ab = AssetBundle.LoadFromFile(abpath);
             if (ab != null)
             {
-                mAssetBuildInfo = ab.LoadAsset<AssetBuildInfoAsset>(assetBuildInfoAssetName);
+                mAssetBuildInfo = ab.LoadAsset<AssetBuildInfoAsset>(assetBuildInfoAssetRelativePath);
                 mAssetBuildInfo.init();
                 ab.Unload(false);
                 Debug.Log("Asset打包信息文件加载成功!");
             }
             else
             {
-                Debug.LogError($"找不到Asset打包信息文件:{assetBuildInfoAssetName}");
+                Debug.LogError($"找不到Asset打包信息文件:{assetBuildInfoAssetRelativePath}");
             }
         }
 
