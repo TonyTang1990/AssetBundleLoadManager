@@ -282,8 +282,7 @@ namespace TResource
             }
             // AssetBundle打包后都是输出小写路径
             // 所以这里AssetBundle名统一转小写
-            return assetBundleName.ToLower();
-
+            return PathUtilities.GetRegularPath(assetBundleName.ToLower());
         }
 
         /// <summary>

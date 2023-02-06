@@ -63,9 +63,9 @@ namespace TResource
                 var abvariantnamememberproperty = assetbuildinfomemberproperty.FindPropertyRelative("ABVariantPath");
                 EditorGUILayout.LabelField("Asset路径:", GUILayout.Width(70.0f), GUILayout.Height(20.0f));
                 EditorGUILayout.LabelField(assetpathmemberproperty.stringValue, mTextAreaStyle, GUILayout.Width(600.0f), GUILayout.Height(20.0f));
-                EditorGUILayout.LabelField("AB路径:", GUILayout.Width(70.0f), GUILayout.Height(20.0f));
+                EditorGUILayout.LabelField("AB名:", GUILayout.Width(70.0f), GUILayout.Height(20.0f));
                 EditorGUILayout.LabelField(abnamememberproperty.stringValue, mTextAreaStyle, GUILayout.Width(600.0f), GUILayout.Height(20.0f));
-                EditorGUILayout.LabelField("AB变体路径:", GUILayout.Width(70.0f), GUILayout.Height(20.0f));
+                EditorGUILayout.LabelField("AB变体名:", GUILayout.Width(70.0f), GUILayout.Height(20.0f));
                 EditorGUILayout.LabelField(abvariantnamememberproperty.stringValue, mTextAreaStyle, GUILayout.Width(150.0f), GUILayout.Height(20.0f));
                 EditorGUILayout.EndHorizontal();
             }

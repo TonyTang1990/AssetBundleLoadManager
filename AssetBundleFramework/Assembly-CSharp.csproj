@@ -148,7 +148,6 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Sprites-Default.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardParticleShadow.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-AddPass.shader" />
-    <None Include="Assets\StreamingAssets\StandaloneWindows64\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesRendertex.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VideoDecode.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Cubemaps\CubeBlur.shader" />

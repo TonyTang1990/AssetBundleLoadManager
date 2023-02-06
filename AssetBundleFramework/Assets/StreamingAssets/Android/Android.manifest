@@ -1,38 +1,38 @@
 ManifestFileVersion: 0
-CRC: 2034188671
+CRC: 3010103586
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: assetbuildinfoandroid.android
-      Dependencies: {}
-    Info_1:
       Name: assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
       Dependencies: {}
-    Info_2:
+    Info_1:
       Name: assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android
       Dependencies: {}
-    Info_3:
+    Info_2:
       Name: assets/res/atlas/shareatlas/tutorialatlas.android
       Dependencies: {}
-    Info_4:
+    Info_3:
       Name: assets/res/audios/music/backgroundmusic.android
       Dependencies: {}
-    Info_5:
+    Info_4:
       Name: assets/res/audios/music/df_bg_music.android
       Dependencies: {}
-    Info_6:
+    Info_5:
       Name: assets/res/audios/sfx/sfx1/coins.android
       Dependencies: {}
-    Info_7:
+    Info_6:
       Name: assets/res/audios/sfx/sfx1/correct.android
       Dependencies: {}
-    Info_8:
+    Info_7:
       Name: assets/res/audios/sfx/sfx1/explosion.android
       Dependencies: {}
-    Info_9:
+    Info_8:
       Name: assets/res/buildinresources/buildinmaterials.android
       Dependencies:
         Dependency_0: shaderlist.android
+    Info_9:
+      Name: shaderlist.android
+      Dependencies: {}
     Info_10:
       Name: assets/res/buildinresources/buildintextures.android
       Dependencies: {}
@@ -117,5 +117,5 @@ AssetBundleManifest:
         Dependency_0: assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
         Dependency_1: assets/res/atlas/shareatlas/tutorialatlas.android
     Info_31:
-      Name: shaderlist.android
+      Name: assets/res/assetbuildinfo/assetbuildinfoandroid.android
       Dependencies: {}

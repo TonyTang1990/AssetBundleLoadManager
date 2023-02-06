@@ -188,6 +188,24 @@ namespace TResource
         }
 
         /// <summary>
+        /// 获取Asset打包信息Asset所在目录全路径
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAssetBuildInfoFolderFullPath()
+        {
+            return $"{Application.dataPath}/{ResourceConstData.AssetBuildInfoAssetRelativePath}";
+        }
+
+        /// <summary>
+        /// 获取Asset打包信息文件相对路径
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAssetBuildInfoFileRelativePath()
+        {
+            return $"Assets/{ResourceConstData.AssetBuildInfoAssetRelativePath}/{GetAssetBuildInfoAssetName()}.asset";
+        }
+
+        /// <summary>
         /// 判定指定AB是否存在包外
         /// </summary>
         /// <param name="abname"></param>

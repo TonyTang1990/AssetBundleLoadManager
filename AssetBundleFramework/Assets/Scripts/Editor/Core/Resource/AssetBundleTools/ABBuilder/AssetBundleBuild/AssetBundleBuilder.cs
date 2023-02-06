@@ -177,7 +177,7 @@ namespace TResource
 			}
 
 			// Asset打包信息输出目录不存在
-			var assetbuildinfofolderpath = GetAssetBuildInfoFolderFullPath();
+			var assetbuildinfofolderpath = AssetBundlePath.GetAssetBuildInfoFolderFullPath();
 			Debug.Log($"Asset打包信息输出目录:{assetbuildinfofolderpath}");
 			if (!Directory.Exists(assetbuildinfofolderpath))
 			{
@@ -269,7 +269,7 @@ namespace TResource
 		private void UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuild> assetBundleBuildList)
 		{
 			// Note: AssetBundle打包信息统一存小写，确保和AB打包那方一致
-			var assetbundlebuildinfoassetrelativepath = GetAssetBuildInfoFileRelativePath();
+			var assetbundlebuildinfoassetrelativepath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
 			var assetbundlebuildasset = AssetDatabase.LoadAssetAtPath<AssetBuildInfoAsset>(assetbundlebuildinfoassetrelativepath);
 			if (assetbundlebuildasset == null)
 			{
@@ -301,24 +301,6 @@ namespace TResource
 		private string GetOutputDirectory()
 		{
 			return $"{_outputRoot}/{BuildTarget}/";
-		}
-
-		/// <summary>
-		/// 获取Asset打包信息Asset所在目录全路径
-		/// </summary>
-		/// <returns></returns>
-		private string GetAssetBuildInfoFolderFullPath()
-		{
-			return $"{Application.dataPath}/{ResourceConstData.AssetBuildInfoAssetRelativePath}";
-		}
-
-		/// <summary>
-		/// 获取Asset打包信息文件相对路径
-		/// </summary>
-		/// <returns></returns>
-		private string GetAssetBuildInfoFileRelativePath()
-		{
-			return $"Assets/{ResourceConstData.AssetBuildInfoAssetRelativePath}/{GetAssetBuildBundleName()}.asset";
 		}
 
 		/// <summary>
@@ -439,8 +421,8 @@ namespace TResource
 		private void UpdateAssetBundleBuildInfoAssetDatas()
         {
             // AssetBuildInfoAsset打包信息单独打包
-            var assetBuildInfoAssetRelativePath = GetAssetBuildInfoFileRelativePath();
-            var assetBundleName = GetAssetBuildBundleName();
+            var assetBuildInfoAssetRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
+            var assetBundleName = GetAssetBuildInfoAssetBundleName();
             var assetBundleVariant = GetAssetBuildBundleVariant(assetBuildInfoAssetRelativePath);
 			var assetBuildCompression = GetAssetBuildCompression(assetBuildInfoAssetRelativePath);
             var assetBundleBuildInfo = new AssetBundleBuildInfo(assetBundleName, assetBundleVariant, assetBuildCompression);
@@ -449,8 +431,6 @@ namespace TResource
 			AddAssetBuildInfo(assetBuildInfo);
 			assetBundleBuildInfo.AddAssetBuildInfo(assetBuildInfo);
 			AddAssetBundleBuildInfo(assetBundleBuildInfo);
-            // 更新AB打包信息Asset(e.g.比如Asset打包信息)
-            UpdateAssetBundleBuildInfoAsset(mAllAssetBundleBuildList);
         }
 
 		/// <summary>
@@ -476,12 +456,15 @@ namespace TResource
 				assetBundleBuild.addressableNames = assetBundleBuildInfo.GetAllAddresableNames();
 				mAllAssetBundleBuildList.Add(assetBundleBuild);
 			}
+
+            // 更新AB打包信息Asset(e.g.比如Asset打包信息)
+            UpdateAssetBundleBuildInfoAsset(mAllAssetBundleBuildList);
         }
 
-		/// <summary>
-		/// 重置打包数据
-		/// </summary>
-		private void ResetBuildDatas()
+        /// <summary>
+        /// 重置打包数据
+        /// </summary>
+        private void ResetBuildDatas()
         {
 			mAllAssetBundleNameCacheMap.Clear();
 			mAllAssetBundleVariantNameCacheMap.Clear();
@@ -567,28 +550,13 @@ namespace TResource
 		/// <summary>
 		/// 获取Asset打包信息文件AB名
 		/// </summary>
-		private string GetAssetBuildBundleName()
+		private string GetAssetBuildInfoAssetBundleName()
 		{
-			var assetBuildInfoAssetName = string.Empty;
-			if (BuildTarget == BuildTarget.StandaloneWindows || BuildTarget == BuildTarget.StandaloneWindows64)
-			{
-				assetBuildInfoAssetName = AssetBundlePath.WindowAssetBuildInfoAssetName;
-			}
-			else if (BuildTarget == BuildTarget.Android)
-			{
-				assetBuildInfoAssetName = AssetBundlePath.AndroidAssetBuildInfoAssetName;
-			}
-			else if (BuildTarget == BuildTarget.iOS)
-			{
-				assetBuildInfoAssetName = AssetBundlePath.IOSAssetBuildInfoAssetName;
-			}
-			else
-			{
-				Debug.LogError($"不支持的打包平台:{BuildTarget},获取Asset打包信息文件名失败!");
-			}
-			assetBuildInfoAssetName = assetBuildInfoAssetName.ToLower();
-			assetBuildInfoAssetName = AppendAssetBundlePostFix(assetBuildInfoAssetName);
-			return assetBuildInfoAssetName;
+			var assetBuildInfoRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
+            var extension = Path.GetExtension(assetBuildInfoRelativePath);
+            var assetBundleName = assetBuildInfoRelativePath.Remove(assetBuildInfoRelativePath.Length - extension.Length);
+			assetBundleName = AppendAssetBundlePostFix(assetBundleName);
+			return PathUtilities.GetRegularPath(assetBundleName.ToLower());
 		}
 
 		/// <summary>

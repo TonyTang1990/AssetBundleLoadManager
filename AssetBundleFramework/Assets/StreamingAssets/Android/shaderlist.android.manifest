@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1037312167
+CRC: 2660367464
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5d54bf19040240580f1d88e76656d1d5
+    Hash: 7cf9fb790feb887c98c191efa4aef4ee
   TypeTreeHash:
     serializedVersion: 2
     Hash: a259e3fd9e2e0887f8c097861c9df781
@@ -162,8 +162,8 @@ Assets:
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-VertexLit.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-DepthNormalsTexture.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/SpatialMappingOcclusion.shader
-- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-VertexLit.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Diffuse.shader
+- Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-VertexLit.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-DiffuseFast.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Diffuse.shader
 - Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/AddPass.shader

@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2023/1/14 0:00:23
+构建时间：2023/2/3 22:05:27
 
 --配置信息--
 Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : ByFileOrSubFolder
@@ -22,12 +22,12 @@ Directory : Assets/Res/windows || CollectRule : Collect || BuildRule : ByFilePat
 
 --构建参数--
 CompressOption：ChunkBasedCompressionLZ4
-ForceRebuild：True
+ForceRebuild：False
 DisableWriteTypeTree：False
 IgnoreTypeTreeChanges：False
 
 --构建清单--
-assetbuildinfoandroid.android
+assets/res/assetbuildinfo/assetbuildinfoandroid.android
 assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
 assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android
 assets/res/atlas/shareatlas/tutorialatlas.android

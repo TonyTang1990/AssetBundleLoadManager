@@ -79,15 +79,14 @@ namespace TResource
                 Directory.CreateDirectory(manifestAssetFolderPath);
             }
             var manifestAssetFilePath = Path.Combine(manifestAssetFolderPath, $"{manifestName}.asset");
-            AssetDataBase.CreateAsset(manifest, manifestAssetFilePath);
-            AssetDataBase.SaveAssets();
-            AssetDataBase.Refresh();
-            var manifestBundleName = outputFolderName;
+            AssetDatabase.CreateAsset(manifest, manifestAssetFilePath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
             var buildContent = new BundleBuildContent(new[]
             {
                 new AssetBundleBuild()
                 {
-                    AssetBundleName = assetBundleName,
+                    assetBundleName = manifestName,
                     assetBundleVariant = assetBundleBuilder.GetAssetBuildBundleVariant(manifestAssetFilePath),
                     assetNames = new[] { manifestAssetFilePath },
                     // Manifest的Asset名强制用固定名字
@@ -96,12 +95,12 @@ namespace TResource
             });
             var exitCode = ContentPipeline.BuildAssetBundles(buildParams, buildContent, out _);
             buildSuccess = exitCode >= ReturnCode.Success;
-            if(exitCode < ReturnCode.Sucess)
+            if(exitCode < ReturnCode.Success)
             {
-                Debug.LoError($"打包AssetBundleManifest失败！eixtCode:{exitCode}");
+                Debug.LogError($"打包AssetBundleManifest失败！eixtCode:{exitCode}");
                 return null;
             }
-            ResourceDebugWindow.Log($"AB的Manifest打包成功！");
+            Debug.Log($"AB的Manifest打包成功！");
             return manifest;
         }
 

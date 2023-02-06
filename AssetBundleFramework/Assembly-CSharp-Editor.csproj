@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PrefabUtilitiesExtension.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TImageEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\OldAssetBundleBuilder.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildRule.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildTool.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildInfoAssetEditor.cs" />
@@ -90,11 +91,10 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\FBXAnimationExtract.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceDebugWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleCollector\AssetBundleCollectSetting.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildTool.cs" />
-    <Compile Include="Assets\Scripts\Editor\Helper\AssetRelativePathTool.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\CustomBuildParameters.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\OldAssetBundleBuilder.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\SBPAssetBundleBuilder.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildTool.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\CustomBuildParameters.cs" />
+    <Compile Include="Assets\Scripts\Editor\Helper\AssetRelativePathTool.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />

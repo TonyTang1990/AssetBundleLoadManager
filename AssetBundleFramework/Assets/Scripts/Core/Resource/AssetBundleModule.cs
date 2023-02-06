@@ -63,7 +63,7 @@ namespace TResource
                 var hasAssetBundlePostFix = !string.IsNullOrEmpty(assetBundlePostFix);
                 assetBundlePostFix = hasAssetBundlePostFix ? $".{assetBundlePostFix}" : assetBundlePostFix;
 #if SCRIPTABLE_ASSET_BUILD_PIPELINE
-                var assetBundleManifest = ab.LoadAsset<CompatibilityAssetBundleManifest>(ResourceConstData.AssetBundleManifestAssetName);                
+                var assetBundleManifest = ab.LoadAsset<CompatibilityAssetBundleManifest>(ResourceConstData.AssetBundleManifestAssetName);
 #else
                 var assetBundleManifest = ab.LoadAsset<AssetBundleManifest>(ResourceConstData.AssetBundleManifestAssetName);
 #endif

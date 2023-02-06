@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2589189341
+CRC: 3162422967
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6da05cceab9eb8f76ff0f63ac6c32d77
+    Hash: 6afb73fd7fdb98a88003dec45d575c86
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7c2540343e88b2e84dfdbf2d12e7f16d
@@ -42,7 +42,7 @@ Assets:
 - Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewHokkaidoPreview.png
 - Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpaceCommandPreview.png
 - Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSagaPreview.png
-- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokushimaPreview.png
 - Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShimanePreview.png
+- Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokushimaPreview.png
 - Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpainMadridPreview.png
 Dependencies: []
