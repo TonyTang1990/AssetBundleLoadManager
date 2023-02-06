@@ -85,12 +85,13 @@ namespace TResource
         /// <returns></returns>
         public static string ChangeAssetPathToABPath(string assetPath)
         {
-            var assetPathNoExtension = PathUtilities.GetPathWithoutPostFix(assetPath);
-            return GetABPathWithPostFix(assetPathNoExtension);
+            return PathUtilities.GetPathWithoutPostFix(assetPath);
         }
 
         /// <summary>
         /// 获取AB带后缀加载路径
+        /// Note:
+		/// 1. 因为Scriptable Build Pipeline不支持变体功能，所以这里打算统一不采用变体名功能，改为AB名自带后缀的方式
         /// </summary>
         /// <param name="abPath"></param>
         /// <returns></returns>
@@ -122,11 +123,10 @@ namespace TResource
             //    返回包内资源路径
             //}
             var abPathWithPostFix = GetABPathWithPostFix(abPath);
-            var outterabfullpath = $"{ABHotUpdatePath}/{abPath}{abPathWithPostFix}";
-            if (IsABExitInOutterPath(abPath))
+            if (IsABExitInOutterPath(abPathWithPostFix))
             {
                 ResourceLogger.log(string.Format("使用包外资源 : {0}", abPathWithPostFix));
-                return outterabfullpath;
+                return $"{ABHotUpdatePath}{abPathWithPostFix}";
             }
             else
             {
@@ -151,11 +151,10 @@ namespace TResource
             //{ 
             //    返回包内资源路径
             //}
-            var outterabfullpath = $"{ABHotUpdatePath}/{abPath}";
             if (IsABExitInOutterPath(abPath))
             {
                 ResourceLogger.log(string.Format("使用包外资源 : {0}", abPath));
-                return outterabfullpath;
+                return $"{ABHotUpdatePath}{abPath}"; ;
             }
             else
             {
@@ -219,12 +218,12 @@ namespace TResource
         /// <summary>
         /// 判定指定AB是否存在包外
         /// </summary>
-        /// <param name="abname"></param>
+        /// <param name="abPath"></param>
         /// <returns></returns>
-        public static bool IsABExitInOutterPath(string abname)
+        public static bool IsABExitInOutterPath(string abPath)
         {
-            var outterabfullpath = ABHotUpdatePath + abname;
-            if (File.Exists(outterabfullpath))
+            var outterABFullPath = ABHotUpdatePath + abPath;
+            if (File.Exists(outterABFullPath))
             {
                 return true;
             }

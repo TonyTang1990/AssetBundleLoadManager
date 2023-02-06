@@ -116,6 +116,15 @@ namespace TResource
 		private List<AssetBundleBuildInfo> mAllAssetBundleBuildInfoList = new List<AssetBundleBuildInfo>();
 
 		/// <summary>
+		/// AB MD5的文件名黑名单
+		/// </summary>
+		private List<string> mAllMD5FileNameBlackList = new List<string>()
+		{
+			AssetBundleBuildConstData.ReadmeFileName,
+			AssetBundleBuildConstData.AssetBuildReadmeFileName,
+		};
+
+		/// <summary>
 		/// AssetBuilder
 		/// </summary>
 		/// <param name="buildTarget">构建平台</param>
@@ -285,7 +294,10 @@ namespace TResource
 				{
 					// 不剔除后缀，确保AssetDatabase模式可以全路径(带后缀)加载
 					var assetPath = assetName.ToLower();
-					var buildAssetInfo = new BuildAssetInfo(assetPath, bi.assetBundleName, bi.assetBundleVariant);
+					// Note:
+					// 1. 记录的Asset对应AB路径要不带AB后缀，AB后缀在运行加载时根据平台自动添加
+					var assetBundleNameNoPostFix = PathUtilities.GetPathWithoutPostFix(bi.assetBundleName);
+					var buildAssetInfo = new BuildAssetInfo(assetPath, assetBundleNameNoPostFix, bi.assetBundleVariant);
 					assetbundlebuildasset.BuildAssetInfoList.Add(buildAssetInfo);
 				}
 			}
@@ -553,10 +565,9 @@ namespace TResource
 		private string GetAssetBuildInfoAssetBundleName()
 		{
 			var assetBuildInfoRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
-            var extension = Path.GetExtension(assetBuildInfoRelativePath);
-            var assetBundleName = assetBuildInfoRelativePath.Remove(assetBuildInfoRelativePath.Length - extension.Length);
-			assetBundleName = AppendAssetBundlePostFix(assetBundleName);
-			return PathUtilities.GetRegularPath(assetBundleName.ToLower());
+			var assetBuildInfoABPath = AssetBundlePath.ChangeAssetPathToABPath(assetBuildInfoRelativePath);
+			assetBuildInfoABPath = AssetBundlePath.GetABPathWithPostFix(assetBuildInfoABPath);
+			return PathUtilities.GetRegularPath(assetBuildInfoABPath.ToLower());
 		}
 
 		/// <summary>
@@ -616,23 +627,10 @@ namespace TResource
 				return assetBundleName;
 			}
 			assetBundleName = AssetBundleCollectSettingData.GetAssetBundleName(assetPath);
-			assetBundleName = AppendAssetBundlePostFix(assetBundleName);
+			assetBundleName = AssetBundlePath.GetABPathWithPostFix(assetBundleName);
 			mAllAssetBundleNameCacheMap.Add(assetPath, assetBundleName);
 			return assetBundleName;
 		}
-
-        /// <summary>
-        /// 获取带后缀的AB名
-        /// Note:
-		/// 1. 因为Scriptable Build Pipeline不支持变体功能，所以这里打算统一不采用变体名功能，改为AB名自带后缀的方式
-        /// </summary>
-        /// <param name="assetBundleName"></param>
-        /// <returns></returns>
-        private string AppendAssetBundlePostFix(string assetBundleName)
-        {
-            var assetBundlePostFixName = GetBuildAssetBundlePostFix();
-            return $"{assetBundleName}.{assetBundlePostFixName}";
-        }
 
         /// <summary>
         /// 获取指定Asset路径的AB变体名
@@ -699,12 +697,16 @@ namespace TResource
 			using (var md5SW = new StreamWriter(assetBundleMd5FilePath, false, new UTF8Encoding(false)))
 			{
 				var abFilesFullPath = Directory.GetFiles(OutputDirectory, "*.*", SearchOption.AllDirectories).Where(f =>
-					!f.EndsWith(".meta") && !f.EndsWith(".manifest") && !f.EndsWith("readme.txt")
-				);
+					!f.EndsWith(".meta") && !f.EndsWith(".manifest"));
 				var md5hash = MD5.Create();
 				// 格式:AB全路径+":"+MD5值
 				foreach (var abFilePath in abFilesFullPath)
 				{
+					var abFileName = Path.GetFileName(abFilePath);
+					if(mAllMD5FileNameBlackList.Contains(abFileName))
+                    {
+						continue;
+                    }
 					var abRelativePath = abFilePath.Remove(0, OutputDirectory.Length);
 					abRelativePath = PathUtilities.GetRegularPath(abRelativePath);
 					var fileMd5 = FileUtilities.GetFileMD5(abFilePath, md5hash);

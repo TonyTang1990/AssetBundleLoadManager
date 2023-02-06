@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2023/2/3 22:05:27
+构建时间：2023/2/7 1:23:10
 
 --配置信息--
 Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : ByFileOrSubFolder
@@ -27,6 +27,10 @@ DisableWriteTypeTree：False
 IgnoreTypeTreeChanges：False
 
 --构建清单--
+assets/res/actors/cube.android
+assets/res/actors/sphere.android
+assets/res/actors/testbyfileandsubfolder.android
+assets/res/actors/zombunny.android
 assets/res/assetbuildinfo/assetbuildinfoandroid.android
 assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
 assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android

@@ -69,6 +69,12 @@ namespace TResource
                 {
                     var assetBundlePath = allAssetBundlePath[i];
                     var dependenciesPathes = assetBundleManifest.GetAllDependencies(assetBundlePath);
+                    assetBundlePath = PathUtilities.GetPathWithoutPostFix(assetBundlePath);
+                    for (int j = 0, length2 = dependenciesPathes.Length; j < length2; j++)
+                    {
+                        var dependenciesPath = dependenciesPathes[j];
+                        dependenciesPathes[j] = PathUtilities.GetPathWithoutPostFix(dependenciesPath);
+                    }
                     AssetBundleDependencyMap.Add(assetBundlePath, dependenciesPathes);
                 }
                 ab.Unload(true);
@@ -94,9 +100,9 @@ namespace TResource
             // AssetBundle打包信息没有依赖信息，直接加载即可
             var assetBuildInfoAssetRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
             var assetBuildInfoABPath = AssetBundlePath.ChangeAssetPathToABPath(assetBuildInfoAssetRelativePath);
-            var abpath = AssetBundlePath.GetABLoadFullPath(assetBuildInfoABPath.ToLower());
+            var abPath = AssetBundlePath.GetABLoadFullPath(assetBuildInfoABPath.ToLower());
             AssetBundle ab = null;
-            ab = AssetBundle.LoadFromFile(abpath);
+            ab = AssetBundle.LoadFromFile(abPath);
             if (ab != null)
             {
                 mAssetBuildInfo = ab.LoadAsset<AssetBuildInfoAsset>(assetBuildInfoAssetRelativePath);
@@ -113,21 +119,21 @@ namespace TResource
         /// <summary>
         /// 获取AssetBundle所依赖的AB信息
         /// </summary>
-        /// <param name="abpath"></param>
+        /// <param name="abPath"></param>
         /// <returns></returns>
-        private string[] getAssetBundleDpInfo(string abpath)
+        private string[] getAssetBundleDpInfo(string abPath)
         {
-            if (string.IsNullOrEmpty(abpath))
+            if (string.IsNullOrEmpty(abPath))
             {
                 return null;
             }
-            if (AssetBundleDependencyMap.ContainsKey(abpath))
+            if (AssetBundleDependencyMap.ContainsKey(abPath))
             {
-                return AssetBundleDependencyMap[abpath];
+                return AssetBundleDependencyMap[abPath];
             }
             else
             {
-                Debug.LogError($"找不到AssetBundle:{abpath}的AssetBundle依赖信息,请检查是否传递了正确的AssetBundle路径!");
+                Debug.LogError($"找不到AssetBundle:{abPath}的AssetBundle依赖信息,请检查是否传递了正确的AssetBundle路径!");
                 return null;
             }
         }

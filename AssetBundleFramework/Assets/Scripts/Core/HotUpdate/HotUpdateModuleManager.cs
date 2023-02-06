@@ -698,8 +698,10 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// <returns></returns>
     private bool isAssetBundleNeedHotUpdate(HotUpdateAssetBundleInfo hotUpdateAssetBundleInfo)
     {
-        if (!mLocalHotUpdateAssetBundleInfoMap.ContainsKey(hotUpdateAssetBundleInfo.AssetBundlePath)
-            || (mLocalHotUpdateAssetBundleInfoMap.ContainsKey(hotUpdateAssetBundleInfo.AssetBundlePath) && mLocalHotUpdateAssetBundleInfoMap[hotUpdateAssetBundleInfo.AssetBundlePath].AssetBundleMD5 != hotUpdateAssetBundleInfo.AssetBundleMD5))
+        var hotUpdateABPPath = hotUpdateAssetBundleInfo.AssetBundlePath;
+        var isLocalHotUpdateContainAB = mLocalHotUpdateAssetBundleInfoMap.ContainsKey(hotUpdateABPPath);
+        if (!isLocalHotUpdateContainAB|| 
+            (isLocalHotUpdateContainAB && mLocalHotUpdateAssetBundleInfoMap[hotUpdateABPPath].AssetBundleMD5 != hotUpdateAssetBundleInfo.AssetBundleMD5))
         {
             return true;
         }
@@ -757,7 +759,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     private void saveHotResourceUpdate(string resPath, string resMd5, byte[] data)
     {
         //检查包外是否存在同名资源，存在的话需要先删除再存储最新到包外
-        var resfullpath = AssetBundlePath.ABHotUpdatePath + resPath;
+        var resfullpath = $"{AssetBundlePath.ABHotUpdatePath}{resPath}";
         if (AssetBundlePath.IsABExitInOutterPath(resPath))
         {
             Debug.Log(string.Format("删除包外资源 : {0}", resPath));

@@ -47,11 +47,11 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="atlaspath">图集路径</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
-    public void loadAtlas(string atlaspath, Action<int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public void loadAtlas(string atlasPath, Action<int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.BundleLoader assetBundleLoader;
         TResource.ResourceModuleManager.Singleton.requstAssetBundleSync(
-            atlaspath,
+            atlasPath,
             out assetBundleLoader,
             (loader, requestUid) =>
             {

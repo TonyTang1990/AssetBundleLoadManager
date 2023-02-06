@@ -79,7 +79,6 @@ public static class PathUtilities
         {
             return path;
         }
-        var postFixIndex = path.LastIndexOf(postFix);
-        return path.Substring(0, postFixIndex);
+        return path.Substring(0, path.Length - postFix.Length);
     }
 }

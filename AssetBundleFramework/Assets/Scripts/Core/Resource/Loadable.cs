@@ -248,7 +248,7 @@ namespace TResource
         /// </summary>
         protected virtual void onFailed()
         {
-            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}资源:{ResourcePath}加载失败!");
+            ResourceLogger.logErr($"Frame:{AbstractResourceModule.Frame}资源:{ResourcePath}加载失败!");
         }
 
         /// <summary>

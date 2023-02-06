@@ -1,7 +1,27 @@
 ﻿构建平台：Android
-构建时间：2023/2/3 22:05:27
+构建时间：2023/2/7 1:23:06
 
 --Asset AB打包信息--
+AssetBundleName:assets/res/actors/cube.android AssetBundleVariant: BuildCompression:None
+	AssetPath: Assets/Res/actors/cube/pre_Cube.prefab
+
+AssetBundleName:assets/res/actors/sphere.android AssetBundleVariant: BuildCompression:None
+	AssetPath: Assets/Res/actors/sphere/pre_Sphere.prefab
+
+AssetBundleName:assets/res/actors/testbyfileandsubfolder.android AssetBundleVariant: BuildCompression:None
+	AssetPath: Assets/Res/actors/TestByFileAndSubFolder.prefab
+
+AssetBundleName:assets/res/actors/zombunny.android AssetBundleVariant: BuildCompression:None
+	AssetPath: Assets/Res/actors/zombunny/Materials/EyesMaterial.mat
+	AssetPath: Assets/Res/actors/zombunny/Materials/ZombunnyMaterial.mat
+	AssetPath: Assets/Res/actors/zombunny/pre_Zombunny.prefab
+	AssetPath: Assets/Res/actors/zombunny/Textures/ZomBunnyDiffuse.tif
+	AssetPath: Assets/Res/actors/zombunny/Textures/ZomBunnyNormals.tif
+	AssetPath: Assets/Res/actors/zombunny/Zombunny.fbx
+	AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Death.anim
+	AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Idle.anim
+	AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Move.anim
+
 AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview.android AssetBundleVariant: BuildCompression:None
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAichiPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAkitaPreview.png
@@ -349,6 +369,6 @@ AssetBundleName:assets/res/videos/xuezhihua.android AssetBundleVariant: BuildCom
 AssetBundleName:assets/res/windows/mainwindow.android AssetBundleVariant: BuildCompression:None
 	AssetPath: Assets/Res/windows/MainWindow.prefab
 
-AssetBundleName:assets//res/assetbuildinfo/assetbuildinfoandroid.android AssetBundleVariant: BuildCompression:None
-	AssetPath: Assets//Res/assetbuildinfo/AssetBuildInfoAndroid.asset
+AssetBundleName:assets/res/assetbuildinfo/assetbuildinfoandroid.android AssetBundleVariant: BuildCompression:None
+	AssetPath: Assets/Res/assetbuildinfo/AssetBuildInfoAndroid.asset
 

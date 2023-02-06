@@ -301,7 +301,7 @@ namespace TResource
             // 所以反向匹配是由里往外遍历，匹配第一个就是最里层符合打包策略的设定
             var assetFolderPath = Path.GetDirectoryName(assetPath);
             var regularAssetFolderPath = PathUtilities.GetRegularPath(assetFolderPath);
-            for (int i = Setting.AssetBundleCollectors.Count - 1; i > 0; i--)
+            for (int i = Setting.AssetBundleCollectors.Count - 1; i >= 0; i--)
             {
                 Collector wrapper = Setting.AssetBundleCollectors[i];
                 if (regularAssetFolderPath.StartsWith(wrapper.CollectFolderPath))

@@ -360,7 +360,7 @@ namespace TResource
         /// </summary>
         protected virtual void loadAssetBundleSync()
         {
-            var abpath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
+            var abPath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
             AssetBundle ab = null;
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始同步加载AssetBundle:{ResourcePath}");
             // Note:
@@ -372,12 +372,12 @@ namespace TResource
 #if UNITY_EDITOR
                 //因为资源不全，很多资源丢失，导致直接报错
                 //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
-                if (System.IO.File.Exists(abpath))
+                if (System.IO.File.Exists(abPath))
                 {
-                    ab = AssetBundle.LoadFromFile(abpath);
+                    ab = AssetBundle.LoadFromFile(abPath);
                 }
 #else
-                ab = AssetBundle.LoadFromFile(abpath);
+                ab = AssetBundle.LoadFromFile(abPath);
 #endif
             }
             else
@@ -398,17 +398,17 @@ namespace TResource
         /// </summary>
         protected virtual void loadAssetBundleAsync()
         {
-            var abpath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
+            var abPath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始异步加载AssetBundle:{ResourcePath}");
 #if UNITY_EDITOR
             //因为资源不全，很多资源丢失，导致直接报错
             //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
-            if (System.IO.File.Exists(abpath))
+            if (System.IO.File.Exists(abPath))
             {
-                mAssetBundleAsyncRequest = AssetBundle.LoadFromFileAsync(abpath);
+                mAssetBundleAsyncRequest = AssetBundle.LoadFromFileAsync(abPath);
             }
 #else
-            mAssetBundleAsyncRequest = AssetBundle.LoadFromFileAsync(abpath);
+            mAssetBundleAsyncRequest = AssetBundle.LoadFromFileAsync(abPath);
 #endif
             mAssetBundleAsyncRequest.completed += onAssetBundleAsyncLoadComplete;
         }
