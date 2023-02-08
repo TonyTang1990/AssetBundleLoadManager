@@ -7,7 +7,7 @@
 
 ## 资源加载管理和打包模块
 
-### 新版AssetBundle加载管理
+### AssetBundle加载管理
 
 基于索引计数+组件绑定的AssetBundle加载管理框架。(参考: tangzx/ABSystem思路)
 
