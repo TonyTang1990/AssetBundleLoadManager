@@ -73,7 +73,7 @@ namespace TResource
             manifest.SetResults(results.BundleInfos);
             var manifestPath = buildParams.GetOutputFilePathForIdentifier($"{manifestName}.manifest");
             Debug.Log($"manifestPath:{manifestPath}");
-            var manifestAssetFolderPath = $"Asset/SBPBuildManifest/{buildParams.Target}";
+            var manifestAssetFolderPath = $"Assets/SBPBuildManifest/{buildParams.Target}";
             if(!Directory.Exists(manifestAssetFolderPath))
             {
                 Directory.CreateDirectory(manifestAssetFolderPath);

@@ -555,8 +555,6 @@ namespace TResource
                 Debug.LogError($"不允许传空Asset路径!");
                 return 0;
             }
-            // 统一小写
-            assetPath = assetPath.ToLower();
             assetLoader = LoaderManager.Singleton.getAssetLoader(assetPath);
             if (assetLoader != null)
             {
@@ -613,7 +611,7 @@ namespace TResource
                 completeHandler?.Invoke(abLoader, 0);
                 return 0;
             }
-            // 统一小写
+            // AB统一小写
             abPath = abPath.ToLower();
             abLoader = LoaderManager.Singleton.getAssetBundleLoader(abPath);
             if (abLoader != null)
@@ -753,6 +751,7 @@ namespace TResource
         /// 强制卸载所有资源(只在特定情况下用 e.g. 热更后卸载所有已加载资源后重新初始化加载AB资源)***慎用***
         /// </summary>
         public abstract void forceUnloadAllResources();
+
         #region 调试开发工具
         /// <summary>
         /// 获取正常已加载不可用的Asset数量

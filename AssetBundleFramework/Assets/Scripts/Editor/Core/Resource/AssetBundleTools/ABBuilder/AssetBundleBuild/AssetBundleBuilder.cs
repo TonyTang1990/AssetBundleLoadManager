@@ -293,7 +293,7 @@ namespace TResource
 				foreach (var assetName in bi.assetNames)
 				{
 					// 不剔除后缀，确保AssetDatabase模式可以全路径(带后缀)加载
-					var assetPath = assetName.ToLower();
+					var assetPath = assetName;
 					// Note:
 					// 1. 记录的Asset对应AB路径要不带AB后缀，AB后缀在运行加载时根据平台自动添加
 					var assetBundleNameNoPostFix = PathUtilities.GetPathWithoutPostFix(bi.assetBundleName);

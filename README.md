@@ -11,25 +11,13 @@
 
 基于索引计数+组件绑定的AssetBundle加载管理框架。(参考: tangzx/ABSystem思路)
 
-为了弥补以前设计和实现上不足的地方，从而有了新版AssetBundle加载管理和打包的编写。
-
-老版的资源加载管理缺点：
-
-1. 面向AssetBundle级别，没有面向Asset级别的加载管理，无法做到Asset级别的加载异步以及Asset级别加载取消的。
-2. 老版AssetDatabase模式要求资源必须在设置AB名字后才能正确使用(因为依赖了AB名字作为加载参数而非资源全路径)，无法做到资源导入即可快速使用的迭代开发
-3. 资源加载类型分类(普通，预加载，常驻)设计过于面向切场景的游戏设计，不通用到所有游戏类型
-4. 老版AssetBundle异步加载采用了开携程的方式，代码流程看起来会比较混乱
-5. 老版异步加载没有考虑设计上支持逻辑层加载打断
-6. 老版代码没有涉及考虑动态AB下载的设计(边玩边下)
-7. 资源加载代码设计还比较混乱，不容易让人看懂看明白
-
-综合上面4个问题，新版资源加载管理将支持:
+资源加载管理设计:
 
 1. 面向Asset级别加载管理，支持Asset和AssetBundle级别的同步异步加载。
 2. 支持资源导入后AssetDatabase模式马上就能配置全路径加载
 3. 资源加载类型只提供普通和常驻两种(且不支持运行时切换相同Asset或AssetBundle的加载类型，意味着一旦第一次加载设定了类型，就再也不能改变，同时第一次因为加载Asset而加载某个AssetBundle的加载类型和Asset一致)，同时提供统一的加载管理策略，细节管理策略由上层自己设计(比如对象池，预加载)
-4. 新版异步加载准备采用监听回调的方式来实现，保证流程清晰易懂
-5. 新版设计请求UID的概念来支持加载打断设计(仅逻辑层面的打断，资源加载不会打断，当所有逻辑回调都取消时，加载完成时会返还索引计数确保资源正确卸载)
+4. 异步加载准备采用监听回调的方式来实现，保证流程清晰易懂
+5. 设计请求UID的概念来支持加载打断设计(仅逻辑层面的打断，资源加载不会打断，当所有逻辑回调都取消时，加载完成时会返还索引计数确保资源正确卸载)
 6. 设计上支持动态AB下载(未来填坑)
 7. 加载流程重新设计，让代码更清晰
 8. **保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)**
@@ -37,7 +25,7 @@
 
 Note:
 
-1. 一直以来设计上都是加载完成后才添加索引计数和对象绑定，这样对于异步加载以及异步打断的资源管理来说是有漏洞的，**新版资源加载管理准备设计成提前添加索引计数，等加载完成后再考虑是否返还计数的方式确保异步加载以及异步加载打断的正确资源管理**
+1. 一直以来设计上都是加载完成后才添加索引计数和对象绑定，这样对于异步加载以及异步打断的资源管理来说是有漏洞的，**资源加载管理准备设计成提前添加索引计数，等加载完成后再考虑是否返还计数的方式确保异步加载以及异步加载打断的正确资源管理**
 
 加载流程设计主要参考:
 
@@ -90,7 +78,7 @@ Manager统一管理：
 3. 有则加载依赖AB(增加依赖AB的引用计数)(依赖AB采用和自身AB相同的加载方式(ResourceLoadMethod),但依赖AB统一采用ResourceLoadType.NormalLoad加载类型)
 4. 自身AB和所有依赖AB加载完回调通知逻辑层可以开始加载Asset资源(AB绑定对象在这一步)
 5. 判定AB是否满足引用计数为0，绑定对象为空，且为NormalLoad加载方式则卸载该AB(并释放依赖AB的计数减一)(通知资源管理层AB卸载，重用AssetBundleInfo对象)
-6. 切场景，递归判定卸载NormalLoad加载类型AB资源
+6. 切场景，递归判定卸载NormalLoad加载类型AB资源(上层使用逻辑调用接口触发)
 
 相关设计：
 
@@ -204,32 +192,37 @@ public void onLoadPermanentShaderList()
 }
 ```
 
-### 新版AssetBundle打包
+### AssetBundle打包
 
-**新版AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路(所以拷贝了不少该作者的核心代码)，细节部分个人做了一些扩展。**
+**AB打包主要参考[MotionFramework](https://github.com/gmhevinci/MotionFramework)里的AB打包思路，细节部分个人做了一些改动和扩展。**
 
-**主要变动如下:**
+**AB打包设计:**
 
-**1. 打包AB的策略由抽象的目录打包策略设定决定**
+1. **打包AB的策略由抽象的目录打包策略设定决定**
 
-**2. 打包后的AB保留目录结构，确保AB模式和AssetDatabase模式加载都面向Asset路径保持一致性**
+2. **打包后的AB保留目录结构，确保AB模式和AssetDatabase模式加载都面向Asset路径保持一致性**
+
+3. **支持打包策略级别的AB压缩格式设置(Note: 仅限使用ScriptableBuildPipeline打包模式)。老版AB打包流程AB压缩格式默认由打包面板压缩格式设置决定。**
+
+4. **不支持AB变体功能(ScriptableBuildPipeline也不支持变体功能)，AB后缀名统一由打包和加载平台统一添加**
+
+5. **老版AB依赖信息采用原始打包输出的*Manifest文件。新版ScriptableBuildPipeline采用自定义输出打包的CompatibilityAssetBundleManifest文件。**
+
+4. **使用ScriptableBuildPipeline打包模式需添加宏:SCRIPTABLE_ASSET_BUILD_PIPELINE**
 
 #### 核心AB打包思想和流程
 
 1. 通过抽象纯虚拟的打包策略设置(即AB收集打包策略设置界面--设置指定目录的打包策略)，做到AB打包策略设置完全抽象AB名字设置无关化(这样一来无需设置AB或清除AB名字，自己完全掌控AB打包策略和打包结论)
-2. 打包时分析打包策略设置的所有有效资源信息，统计出所有有效资源的是否参与打包以及依赖相关等信息，然后结合所有的打包策略设置分析出所有有效Asset的AB打包名字(如果Asset满足多个打包策略设置，默认采用最里层的打包策略设置，找不到符合的采用默认收集打包规则)**(这一步是分析关键，下面细说一下详细步骤)**
+2. 打包时分析打包策略设置的所有有效资源信息，统计出所有有效资源的是否参与打包，然后结合所有的打包策略设置分析出所有有效Asset的AB打包名字(如果Asset满足多个打包策略设置，默认采用最里层的打包策略设置，找不到符合的采用默认收集打包规则)**(这一步是分析关键，下面细说一下详细步骤)**
    - 通过自定义设置的打包策略得到所有的有效参与打包路径列表
    - 通过AssetDatabase.FindAssets()结合打包路径列表得出所有需要分析的Asset
-   - 通过AssetDatabase.GetDependencies(***, true)遍历所有需要分析的Asset列表得出所有Asset的使用信息(是否有依赖使用，是否是需要参与打包的灯)
-   - 通过遍历得到的所有Asset使用信息的路径信息分析设置Asset的AB打包变体信息
-   - 通过遍历得到的所有Asset信息列表结合AssetDatabase.GetDependencies(***, false)接口排除依赖未设置参与打包的Asset资源并得出最终的打包信息列表List<AssetBundleBuildInfo>
-   - 在最后分析得出最后的打包结论之前，这里我个人将AB的依赖信息文件(AssetBuildInfo.asset)的生成和打包信息单独插入在这里，方便AB依赖信息可以跟AB资源一起构建参与热更
+   - 通过打包配置信息分析所有Asset是否参与打包以及相关打包信息，得出最终的打包信息列表List<AssetBundleBuildInfo>
+   - 在最后分析得出最后的打包结论之前，这里我个人将AB的依赖信息文件(AssetBuildInfo.asset--仅记录AssetPath和AB信息的映射，不含AB依赖信息)的生成和打包信息单独插入在这里，方便AB依赖信息可以跟AB资源一起构建参与热更
    - 最后根据分析得出的打包信息列表List<AssetBundleBuildInfo>构建真真的打包信息List<AssetBundleBuild>进行打包
-   - AB打包完成后进行一些后续的特殊资源处理(比如视频单独打包。AB打包的依赖文件删除(个人采用自定义生成的AssetBuildInfo.Asset作为依赖加载信息文件)。循环依赖检查。创建打包说明文件等。)
-3. 不同的打包规则通过反射创建每样一个来实现获取对应打包规则的打包AB名字结论获取(采用全路径AB名的方式，方便快速查看资源打包分布)
+   - AB打包完成后进行一些后续的特殊资源处理（循环依赖检查。创建打包说明文件等)
 4. 然后根据所有有效Asset的所有AB名字打包结论来分析得出自定义的打包结论(即哪些Asset打包到哪个AB名里)
-5. 接着根据Asset的AB打包结论来生成最新的AssetBuildInfo(Asset打包信息，可以理解成我们自己分析得出的Manifest文件，用于运行时加载作为资源加载的基础信息数来源)(手动将AssetBuildInfo添加到打包信息里打包成AB，方便热更新走统一流程)
-6. 最后采用BuildPipeline.BuildAssetBundles(输出目录, 打包信息列表, ......)的接口来手动指定打包结论的方式触发AB打包。
+5. 接着根据Asset的AB打包结论来生成最新的AssetBuildInfo(Asset打包信息，存储了Asset路径对应AB路径相关信息，用于运行时加载作为资源加载的基础信息数来源)(手动将AssetBuildInfo添加到打包信息里打包成AB，方便热更新走统一流程)
+6. 最后采用老版AB打包采用BuildPipeline.BuildAssetBundles(输出目录, 打包信息列表, ......)的接口来手动指定打包结论的方式触发AB打包。新版AB打包采用ScriptableBuildPipeline相关接口手动指定打包结论的方式触发AB打包。
 
 #### 打包策略支持
 
@@ -251,7 +244,7 @@ public void onLoadPermanentShaderList()
 
 ![AssetBundleBuildWindow](./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG)
 
-关于Asset路径与AB路径关联信息以及AB依赖信息最终都存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbuildinfo的AB里)，通过Asset路径如何加载到对应AB以及依赖AB的关键就在这里。(这里和MotionFramework自定义Manifest文件输出不一样，采用打包AB的方式，为了和热更新AB走一套机制)
+关于Asset路径与AB路径关联信息以及AB依赖信息最终都存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbuildinfo的AB里)，通过Asset路径如何加载到对应AB的关键就在这里。(这里和MotionFramework自定义Manifest文件输出不一样，assetbundlebuildinfo.asset只记录AssetPath和AB相关信息映射，不记录AB依赖信息，同时assetbundlebuildinfo.asset采用打包AB的方式，为了和热更新AB走一套机制)
 
 让我们先来看下大致数据信息结构:
 
@@ -262,6 +255,8 @@ public void onLoadPermanentShaderList()
 **2022/1/26支持了资源打包后缀名黑名单可视化配置+资源名黑名单可视化配置**
 
 ![PostFixBlackListAndAssetNameBlackList](./img/Unity/AssetBundle-Framework/PostFixBlackListAndAssetNameBlackList.PNG)
+
+**2023/2/8底层支持了新版ScriptableBuildPipeline打包工具打包，加快打包速度(需添加SCRIPTABLE_ASSET_BUILD_PIPELINE宏)**
 
 ## 热更新模块
 
@@ -323,6 +318,14 @@ public void onLoadPermanentShaderList()
 6. 根据得出的需要更新的资源列表下载对应资源地址下的资源并存储在包外(Application.persistentDataPath + "/Android/")，同时写入最新的资源MD5信息文件(本地AssetBundleMD5.txt)到本地
 
 7. 直到所有资源热更完成，退出重进游戏
+
+**问题:**
+
+1. **上述方案包外AssetBundleMD5.txt文件可能被篡改，其次热更下载的AB文件可能出现损坏但被记录到包外AssetBundleMD5.txt的情况，这会导致热更AB出现不可逆的热更问题。**
+
+**解决方案:**
+
+1. **包外资源采用实时计算MD5，然后结合包内AssetBundleMD5.txt数据与热更AssetBundleMD5.txt文件进行对比决定哪些资源需要热更。(TODO)**
 
 ### 流程图
 
@@ -417,9 +420,9 @@ Tools->Assets->Asset相关处理
 
 # 待做事项
 
-1. 支持真机代码热更(Lua + XLua)
-2. 热更新资源正确性校验(MD5校验)
-3. 支持AssetBundle变体概念
+**1. 支持真机代码热更(Lua + XLua)**
+
+**2. 热更新资源正确性校验(MD5校验)**
 
 # 个人博客
 

@@ -350,6 +350,41 @@ namespace TResource
         private const int FILE_NAME_NUM_PER_ROW = 5;
 
         /// <summary>
+        /// 单行显示高度
+        /// </summary>
+        private const float SINGLE_LINE_DISPLAY_HEIGHT = 20f;
+
+        /// <summary>
+        /// 收集目录路径显示宽度
+        /// </summary>
+        private const float COLLECT_FOLDER_PATH_DISPLAY_WIDTH = 800f;
+
+        /// <summary>
+        /// 收集规则显示宽度
+        /// </summary>
+        private const float COLLECT_RULE_DISPLAY_WIDTH = 120f;
+
+        /// <summary>
+        /// 打包规则显示宽度
+        /// </summary>
+        private const float BUILD_RULE_DISPLAY_WIDTH = 150f;
+
+        /// <summary>
+        /// 固定AB名字显示宽度
+        /// </summary>
+        private const float CONST_NAME_DISPLAY_WIDTH = 120f;
+
+        /// <summary>
+        /// 压缩格式显示宽度
+        /// </summary>
+        private const float COMPRESSION_TYPE_DISPLAY_WIDTH = 120f;
+
+        /// <summary>
+        /// 删除按钮显示宽度
+        /// </summary>
+        private const float DELETE_BUTTON_DISPLAY_WIDTH = 40f;
+
+        /// <summary>
         /// 显示资源搜集区域
         /// </summary>
         private void DisplayResourceCollectArea()
@@ -359,6 +394,14 @@ namespace TResource
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(AssetBundleBuildConstData.INDENTATION);
             EditorGUILayout.BeginVertical();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LableField("搜集目录路径", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COLLECT_FOLDER_PATH_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LableField("搜集策略", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COLLECT_RULE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LableField("打包策略", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(BUILD_RULE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LableField("固定AB名", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(CONST_NAME_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LableField("压缩格式", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COMPRESSION_TYPE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LableField("删除", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(DELETE_BUTTON_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.EndHorizontal();
             if (!mFoldMap[EFoldType.BuildRule])
             {
                 if (AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count != 0)
@@ -395,23 +438,25 @@ namespace TResource
         private void DisplayOneCollect(Collector collector)
         {
             EditorGUILayout.BeginHorizontal("Box");
-            EditorGUILayout.LabelField(collector.CollectFolderPath, GUILayout.ExpandWidth(true), GUILayout.Height(20.0f));
-            collector.CollectRule = (AssetBundleCollectRule)EditorGUILayout.EnumPopup(collector.CollectRule, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
-            collector.BuildRule = (AssetBundleBuildRule)EditorGUILayout.EnumPopup(collector.BuildRule, GUILayout.Width(150f), GUILayout.Height(20.0f));
+            EditorGUILayout.LabelField(collector.CollectFolderPath, GUILayout.Width(COLLECT_FOLDER_PATH_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            collector.CollectRule = (AssetBundleCollectRule)EditorGUILayout.EnumPopup(collector.CollectRule, GUILayout.Width(COLLECT_RULE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             // 强制Igore规则的目录打包规则为Ignore
             if (collector.CollectRule == AssetBundleCollectRule.Ignore)
             {
                 collector.BuildRule = AssetBundleBuildRule.Ignore;
             }
+            collector.BuildRule = (AssetBundleBuildRule)EditorGUILayout.EnumPopup(collector.BuildRule, GUILayout.Width(BUILD_RULE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             if (collector.BuildRule == AssetBundleBuildRule.ByConstName)
             {
-                collector.ConstName = EditorGUILayout.TextField(collector.ConstName, GUILayout.Width(120.0f), GUILayout.Height(20.0f));
+                collector.ConstName = EditorGUILayout.TextField(collector.ConstName, GUILayout.Width(CONST_NAME_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             }
             else
             {
                 collector.ConstName = string.Empty;
+                EditorGUILayout.TextField(collector.ConstName, GUILayout.Width(CONST_NAME_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             }
-            if (GUILayout.Button("-", GUILayout.Width(30.0f), GUILayout.Height(20.0f)))
+            collector.Compression = (CompressionType)EditorGUILayout.EnumPopup(collector.Compression, GUILayout.Width(COMPRESSION_TYPE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            if (GUILayout.Button("-", GUILayout.Width(DELETE_BUTTON_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT)))
             {
                 if (AssetBundleCollectSettingData.RemoveAssetBundleCollector(collector))
                 {
