@@ -208,8 +208,6 @@ public void onLoadPermanentShaderList()
 
 5. **老版AB依赖信息采用原始打包输出的*Manifest文件。新版ScriptableBuildPipeline采用自定义输出打包的CompatibilityAssetBundleManifest文件。**
 
-4. **使用ScriptableBuildPipeline打包模式需添加宏:SCRIPTABLE_ASSET_BUILD_PIPELINE**
-
 #### 核心AB打包思想和流程
 
 1. 通过抽象纯虚拟的打包策略设置(即AB收集打包策略设置界面--设置指定目录的打包策略)，做到AB打包策略设置完全抽象AB名字设置无关化(这样一来无需设置AB或清除AB名字，自己完全掌控AB打包策略和打包结论)
@@ -413,6 +411,10 @@ Tools->Assets->Asset相关处理
 5. Shader变体搜集工具(半成品，只是简单的把所有材质放到场景中用摄像机照射一次让Unity能搜集到变体，**可能会遗漏一些特殊情况下的变体**)
 
    ![ShaderVariantsCollection](./img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png) 
+
+# 注意事项
+
+1. **AB打包和加载使用ScriptableBuildPipeline模式需添加宏:SCRIPTABLE_ASSET_BUILD_PIPELINE**
 
 # 重大问题修复
 
