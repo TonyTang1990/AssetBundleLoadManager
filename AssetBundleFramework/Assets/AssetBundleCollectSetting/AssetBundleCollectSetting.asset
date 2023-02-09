@@ -17,70 +17,87 @@ MonoBehaviour:
     CollectRule: 0
     BuildRule: 4
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/assetbuildinfo
     CollectRule: 1
     BuildRule: 5
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/atlas
     CollectRule: 0
     BuildRule: 2
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas
     CollectRule: 1
     BuildRule: 5
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/audios
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/buildinresources/buildinmaterials
     CollectRule: 0
     BuildRule: 2
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/buildinresources/buildinshaders/DefaultResources
     CollectRule: 0
     BuildRule: 3
     ConstName: shaderlist
+    Compression: 2
   - CollectFolderPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra
     CollectRule: 0
     BuildRule: 3
     ConstName: shaderlist
+    Compression: 2
   - CollectFolderPath: Assets/Res/buildinresources/buildintextures
     CollectRule: 0
     BuildRule: 2
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/prefabs
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/rendertextures
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/scenes
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/shadervariants
     CollectRule: 0
     BuildRule: 3
     ConstName: shaderlist
+    Compression: 2
   - CollectFolderPath: Assets/Res/sharematerials
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/textures
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/videos
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+    Compression: 2
   - CollectFolderPath: Assets/Res/windows
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+    Compression: 2
   BlackListInfo:
     PostFixBlackList:
     - .dll

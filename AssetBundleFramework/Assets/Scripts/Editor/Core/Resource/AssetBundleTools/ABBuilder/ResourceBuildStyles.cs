@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Description:             ResourceBuildStyles.cs
  * Author:                  TONYTANG
  * Create Date:             2023/02/08
@@ -10,12 +10,12 @@ namespace TResource
 {
     /// <summary>
     /// ResourceBuildStyles.cs
-    /// ×ÊÔ´´ò°üStyles
+    /// ï¿½ï¿½Ô´ï¿½ï¿½ï¿½Styles
     /// </summary>
     public static class ResourceBuildStyles
     {
         /// <summary>
-        /// ¾ÓÖÐButton GUI Style
+        /// ï¿½ï¿½ï¿½ï¿½Button GUI Style
         /// </summary>
         public static GUIStyle ButtonMidStyle = new GUIStyle("ButtonMid");
     }

@@ -677,7 +677,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     1: NEW_RESOURCE
-    7: 
+    7: SCRIPTABLE_ASSET_BUILD_PIPELINE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

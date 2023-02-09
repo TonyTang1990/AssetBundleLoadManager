@@ -395,12 +395,12 @@ namespace TResource
             GUILayout.Space(AssetBundleBuildConstData.INDENTATION);
             EditorGUILayout.BeginVertical();
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LableField("搜集目录路径", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COLLECT_FOLDER_PATH_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
-            EditorGUILayout.LableField("搜集策略", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COLLECT_RULE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
-            EditorGUILayout.LableField("打包策略", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(BUILD_RULE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
-            EditorGUILayout.LableField("固定AB名", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(CONST_NAME_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
-            EditorGUILayout.LableField("压缩格式", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COMPRESSION_TYPE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
-            EditorGUILayout.LableField("删除", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(DELETE_BUTTON_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LabelField("搜集目录路径", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COLLECT_FOLDER_PATH_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LabelField("搜集策略", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COLLECT_RULE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LabelField("打包策略", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(BUILD_RULE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LabelField("固定AB名", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(CONST_NAME_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LabelField("压缩格式", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COMPRESSION_TYPE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LabelField("删除", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(DELETE_BUTTON_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             EditorGUILayout.EndHorizontal();
             if (!mFoldMap[EFoldType.BuildRule])
             {

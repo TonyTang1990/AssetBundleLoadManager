@@ -1,17 +1,17 @@
 ﻿构建平台：Android
-构建时间：2023/2/7 1:23:06
+构建时间：2023/2/9 8:55:58
 
 --Asset AB打包信息--
-AssetBundleName:assets/res/actors/cube.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/actors/cube.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/actors/cube/pre_Cube.prefab
 
-AssetBundleName:assets/res/actors/sphere.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/actors/sphere.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/actors/sphere/pre_Sphere.prefab
 
-AssetBundleName:assets/res/actors/testbyfileandsubfolder.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/actors/testbyfileandsubfolder.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/actors/TestByFileAndSubFolder.prefab
 
-AssetBundleName:assets/res/actors/zombunny.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/actors/zombunny.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/actors/zombunny/Materials/EyesMaterial.mat
 	AssetPath: Assets/Res/actors/zombunny/Materials/ZombunnyMaterial.mat
 	AssetPath: Assets/Res/actors/zombunny/pre_Zombunny.prefab
@@ -22,7 +22,7 @@ AssetBundleName:assets/res/actors/zombunny.android AssetBundleVariant: BuildComp
 	AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Idle.anim
 	AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Move.anim
 
-AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAichiPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAkitaPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAomoriPreview.png
@@ -52,7 +52,7 @@ AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview.android As
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyazakiPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDNaganoPreview.png
 
-AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/playerpreview2.spriteatlas
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNagasakiPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNaraPreview.png
@@ -82,7 +82,7 @@ AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android A
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamaguchiPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamanashiPreview.png
 
-AssetBundleName:assets/res/atlas/shareatlas/tutorialatlas.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/atlas/shareatlas/tutorialatlas.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG
 	AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture.PNG
 	AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse.PNG
@@ -95,28 +95,28 @@ AssetBundleName:assets/res/atlas/shareatlas/tutorialatlas.android AssetBundleVar
 	AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Instanced_Draw_Call.PNG
 	AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet.png
 
-AssetBundleName:assets/res/audios/music/backgroundmusic.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/audios/music/backgroundmusic.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/audios/music/backgroundmusic.mp3
 
-AssetBundleName:assets/res/audios/music/df_bg_music.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/audios/music/df_bg_music.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/audios/music/df_bg_music.mp3
 
-AssetBundleName:assets/res/audios/sfx/sfx1/coins.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/audios/sfx/sfx1/coins.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/audios/sfx/sfx1/coins.wav
 
-AssetBundleName:assets/res/audios/sfx/sfx1/correct.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/audios/sfx/sfx1/correct.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/audios/sfx/sfx1/correct.wav
 
-AssetBundleName:assets/res/audios/sfx/sfx1/explosion.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/audios/sfx/sfx1/explosion.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/audios/sfx/sfx1/explosion.wav
 
-AssetBundleName:assets/res/buildinresources/buildinmaterials.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/buildinresources/buildinmaterials.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/buildinresources/buildinmaterials/Default-Material.mat
 	AssetPath: Assets/Res/buildinresources/buildinmaterials/Default-Particle.mat
 	AssetPath: Assets/Res/buildinresources/buildinmaterials/Default-ParticleSystem.mat
 	AssetPath: Assets/Res/buildinresources/buildinmaterials/Sprites-Default.mat
 
-AssetBundleName:shaderlist.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:shaderlist.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Font.shader
 	AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-BlendShape.compute
 	AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-Clear.shader
@@ -306,69 +306,69 @@ AssetBundleName:shaderlist.android AssetBundleVariant: BuildCompression:None
 	AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/VideoBackground.shader
 	AssetPath: Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants
 
-AssetBundleName:assets/res/buildinresources/buildintextures.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/buildinresources/buildintextures.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/buildinresources/buildintextures/InputFieldBackground.png
 
-AssetBundleName:assets/res/prefabs/imagebuildin.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/prefabs/imagebuildin.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/prefabs/imagebuildin.prefab
 
-AssetBundleName:assets/res/prefabs/rawimagebuildin.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/prefabs/rawimagebuildin.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/prefabs/rawimagebuildin.prefab
 
-AssetBundleName:assets/res/prefabs/sfxtemplate.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/prefabs/sfxtemplate.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/prefabs/SFXTemplate.prefab
 
-AssetBundleName:assets/res/prefabs/videoplayerroot.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/prefabs/videoplayerroot.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/prefabs/VideoPlayerRoot.prefab
 
-AssetBundleName:assets/res/rendertextures/videorendertexture.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/rendertextures/videorendertexture.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/rendertextures/VideoRenderTexture.renderTexture
 
-AssetBundleName:assets/res/scenes/newassetbundleframeworkscene.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/scenes/newassetbundleframeworkscene.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/scenes/NewAssetBundleFrameWorkScene.unity
 
-AssetBundleName:assets/res/scenes/sceneprefabs/testscene2prefab.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/scenes/sceneprefabs/testscene2prefab.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/scenes/sceneprefabs/testscene2prefab.prefab
 
-AssetBundleName:assets/res/scenes/sceneprefabs/testscene2prefab2.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/scenes/sceneprefabs/testscene2prefab2.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/scenes/sceneprefabs/testscene2prefab2.prefab
 
-AssetBundleName:assets/res/scenes/sceneprefabs/testscene3prefab.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/scenes/sceneprefabs/testscene3prefab.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/scenes/sceneprefabs/testscene3prefab.prefab
 
-AssetBundleName:assets/res/scenes/shadervariantscollectscene.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/scenes/shadervariantscollectscene.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/scenes/ShaderVariantsCollectScene.unity
 
-AssetBundleName:assets/res/scenes/testscene2.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/scenes/testscene2.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/scenes/TestScene2.unity
 
-AssetBundleName:assets/res/scenes/testscene3.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/scenes/testscene3.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/scenes/TestScene3.unity
 
-AssetBundleName:assets/res/sharematerials/sharebluematerial.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/sharematerials/sharebluematerial.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/sharematerials/sharebluematerial.mat
 
-AssetBundleName:assets/res/sharematerials/sharematerial.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/sharematerials/sharematerial.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/sharematerials/sharematerial.mat
 
-AssetBundleName:assets/res/sharematerials/shareredmaterial.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/sharematerials/shareredmaterial.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/sharematerials/shareredmaterial.mat
 
-AssetBundleName:assets/res/textures/chaichaifengjing.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/textures/chaichaifengjing.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/textures/chaichaifengjing.jpg
 
-AssetBundleName:assets/res/textures/chaichainingwang.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/textures/chaichainingwang.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/textures/chaichainingwang.jpg
 
-AssetBundleName:assets/res/textures/chaichaishenqingzhushi.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/textures/chaichaishenqingzhushi.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/textures/chaichaishenqingzhushi.jpg
 
-AssetBundleName:assets/res/videos/xuezhihua.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/videos/xuezhihua.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/videos/XueZhiHua.mp4
 
-AssetBundleName:assets/res/windows/mainwindow.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/windows/mainwindow.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/windows/MainWindow.prefab
 
-AssetBundleName:assets/res/assetbuildinfo/assetbuildinfoandroid.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/assetbuildinfo/assetbuildinfoandroid.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/assetbuildinfo/AssetBuildInfoAndroid.asset
 

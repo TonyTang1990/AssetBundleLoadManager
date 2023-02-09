@@ -13,909 +13,909 @@ MonoBehaviour:
   m_Name: AssetBuildInfoAndroid
   m_EditorClassIdentifier: 
   BuildAssetInfoList:
-  - AssetPath: assets/res/actors/cube/pre_cube.prefab
+  - AssetPath: Assets/Res/actors/cube/pre_Cube.prefab
     ABPath: assets/res/actors/cube
     ABVariantPath: 
-  - AssetPath: assets/res/actors/sphere/pre_sphere.prefab
+  - AssetPath: Assets/Res/actors/sphere/pre_Sphere.prefab
     ABPath: assets/res/actors/sphere
     ABVariantPath: 
-  - AssetPath: assets/res/actors/testbyfileandsubfolder.prefab
+  - AssetPath: Assets/Res/actors/TestByFileAndSubFolder.prefab
     ABPath: assets/res/actors/testbyfileandsubfolder
     ABVariantPath: 
-  - AssetPath: assets/res/actors/zombunny/materials/eyesmaterial.mat
+  - AssetPath: Assets/Res/actors/zombunny/Materials/EyesMaterial.mat
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
-  - AssetPath: assets/res/actors/zombunny/materials/zombunnymaterial.mat
+  - AssetPath: Assets/Res/actors/zombunny/Materials/ZombunnyMaterial.mat
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
-  - AssetPath: assets/res/actors/zombunny/pre_zombunny.prefab
+  - AssetPath: Assets/Res/actors/zombunny/pre_Zombunny.prefab
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
-  - AssetPath: assets/res/actors/zombunny/textures/zombunnydiffuse.tif
+  - AssetPath: Assets/Res/actors/zombunny/Textures/ZomBunnyDiffuse.tif
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
-  - AssetPath: assets/res/actors/zombunny/textures/zombunnynormals.tif
+  - AssetPath: Assets/Res/actors/zombunny/Textures/ZomBunnyNormals.tif
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
-  - AssetPath: assets/res/actors/zombunny/zombunny.fbx
+  - AssetPath: Assets/Res/actors/zombunny/Zombunny.fbx
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
-  - AssetPath: assets/res/actors/zombunny/zombunnyanimations/death.anim
+  - AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Death.anim
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
-  - AssetPath: assets/res/actors/zombunny/zombunnyanimations/idle.anim
+  - AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Idle.anim
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
-  - AssetPath: assets/res/actors/zombunny/zombunnyanimations/move.anim
+  - AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Move.anim
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdaichipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAichiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdakitapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAkitaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdaomoripreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAomoriPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdblackpreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDBlackPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdchibapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDChibaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdehimepreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDEhimePreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdfukuipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukuiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdfukuokapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukuokaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdfukushimapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukushimaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdgifupreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDGifuPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdgunmapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDGunmaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdhiroshimapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDHiroshimaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdhokkaidopreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDHokkaidoPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdhyogopreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDHyogoPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdishikawapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDIshikawaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdivarakipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDIvarakiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdiwatepreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDIwatePreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdkagawapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKagawaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdkagoshimapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKagoshimaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdkanagawapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKanagawaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdkochipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKochiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdkumamotopreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKumamotoPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdkyotopreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKyotoPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdmiepreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiePreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdmikanbutoripreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMikanButoriPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdmiyagipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyagiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdmiyazakipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyazakiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview/sdnaganopreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDNaganoPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/playerpreview2.spriteatlas
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/playerpreview2.spriteatlas
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnagasakipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNagasakiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnarapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNaraPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnewfukuokapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewFukuokaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnewhokkaidopreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewHokkaidoPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdnewosakapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewOsakaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdniigatapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNiigataPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdokayamapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOkayamaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdokinawapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOkinawaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdooitapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOoitaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdosakapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOsakaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdpreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdsagapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSagaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdsaitamapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSaitamaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdshigapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShigaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdshimanepreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShimanePreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdshizuokapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShizuokaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdspacecommandpreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpaceCommandPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdspainmadridpreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpainMadridPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtochigipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTochigiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtokushimapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokushimaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtokyopreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokyoPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtottoripreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTottoriPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdtoyamapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDToyamaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdwakayamapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDWakayamaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdyamagatapreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamagataPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdyamaguchipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamaguchiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2/sdyamanashipreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamanashiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/ambient.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/basictexture.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/diffuse.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/light_off.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Light_Off.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/light_on.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Light_On.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/loadingscreen.jpg
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/LoadingScreen.jpg
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/mouseandkeyboardstudy.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/MouseAndKeyboardStudy.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/multipletexture.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/MultipleTexture.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/opengl_draw_call_result_picture.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Draw_Call_Result_Picture.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/opengl_instanced_draw_call.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Instanced_Draw_Call.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/atlas/shareatlas/tutorialatlas/tutorialcellspritesheet.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet.png
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
-  - AssetPath: assets/res/audios/music/backgroundmusic.mp3
+  - AssetPath: Assets/Res/audios/music/backgroundmusic.mp3
     ABPath: assets/res/audios/music/backgroundmusic
     ABVariantPath: 
-  - AssetPath: assets/res/audios/music/df_bg_music.mp3
+  - AssetPath: Assets/Res/audios/music/df_bg_music.mp3
     ABPath: assets/res/audios/music/df_bg_music
     ABVariantPath: 
-  - AssetPath: assets/res/audios/sfx/sfx1/coins.wav
+  - AssetPath: Assets/Res/audios/sfx/sfx1/coins.wav
     ABPath: assets/res/audios/sfx/sfx1/coins
     ABVariantPath: 
-  - AssetPath: assets/res/audios/sfx/sfx1/correct.wav
+  - AssetPath: Assets/Res/audios/sfx/sfx1/correct.wav
     ABPath: assets/res/audios/sfx/sfx1/correct
     ABVariantPath: 
-  - AssetPath: assets/res/audios/sfx/sfx1/explosion.wav
+  - AssetPath: Assets/Res/audios/sfx/sfx1/explosion.wav
     ABPath: assets/res/audios/sfx/sfx1/explosion
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinmaterials/default-material.mat
+  - AssetPath: Assets/Res/buildinresources/buildinmaterials/Default-Material.mat
     ABPath: assets/res/buildinresources/buildinmaterials
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinmaterials/default-particle.mat
+  - AssetPath: Assets/Res/buildinresources/buildinmaterials/Default-Particle.mat
     ABPath: assets/res/buildinresources/buildinmaterials
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinmaterials/default-particlesystem.mat
+  - AssetPath: Assets/Res/buildinresources/buildinmaterials/Default-ParticleSystem.mat
     ABPath: assets/res/buildinresources/buildinmaterials
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinmaterials/sprites-default.mat
+  - AssetPath: Assets/Res/buildinresources/buildinmaterials/Sprites-Default.mat
     ABPath: assets/res/buildinresources/buildinmaterials
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresources/font.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Font.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresources/internal-blendshape.compute
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-BlendShape.compute
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresources/internal-clear.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-Clear.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresources/internal-colored.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-Colored.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresources/internal-errorshader.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-ErrorShader.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresources/internal-skinning-util.cginc
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-Skinning-Util.cginc
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresources/internal-skinning.compute
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/Internal-Skinning.compute
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresources/performancetools/framedebuggerrendertargetdisplay.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResources/PerformanceTools/FrameDebuggerRenderTargetDisplay.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-bumped.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-Bumped.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-bumpspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-BumpSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-diffuse.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-Diffuse.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-glossy.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-Glossy.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-parallax.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-Parallax.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-parallaxspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-ParallaxSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alpha-vertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Alpha-VertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-bumped.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-Bumped.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-bumpspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-BumpSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-diffuse.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-Diffuse.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-glossy.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-Glossy.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-softedgeunlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-SoftEdgeUnlit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/alphatest-vertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AlphaTest-VertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ar/shaders/tangoarrender.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AR/Shaders/TangoARRender.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/autodeskinteractive.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/AutodeskInteractive.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/compositing.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Compositing.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/cubemaps/cubeblend.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Cubemaps/CubeBlend.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/cubemaps/cubeblur.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Cubemaps/CubeBlur.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/cubemaps/cubeblurodd.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Cubemaps/CubeBlurOdd.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/cubemaps/cubecopy.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Cubemaps/CubeCopy.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/decal.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Decal.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/flare.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Flare.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/gidebug/showlightmask.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/ShowLightMask.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/gidebug/textureuv.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/TextureUV.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/gidebug/uv1saspositions.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/UV1sAsPositions.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/gidebug/vertexcolors.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/GIDebug/VertexColors.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-bumped.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-Bumped.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-bumpspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-BumpSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-diffuse.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-Diffuse.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-glossy.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-Glossy.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-parallax.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-Parallax.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-parallaxspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-ParallaxSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/illumin-vertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Illumin-VertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-blitcopy.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitCopy.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-blitcopydepth.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitCopyDepth.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-blitcopywithdepth.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitCopyWithDepth.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-blittodepth.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitToDepth.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-blittodepth_msaa.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-BlitToDepth_MSAA.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-combinedepthnormals.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-CombineDepthNormals.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-converttexture.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-ConvertTexture.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-cubemaptoequirect.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-CubemapToEquirect.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-deferredreflections.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-DeferredReflections.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-deferredshading.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-DeferredShading.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-depthnormalstexture.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-DepthNormalsTexture.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-flare.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-Flare.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-guiroundedrect.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUIRoundedRect.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-guitexture.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUITexture.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-guitextureblit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUITextureBlit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-guitextureclip.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUITextureClip.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-guitexturecliptext.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-GUITextureClipText.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-halo.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-Halo.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-motionvectors.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-MotionVectors.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-odsworldtexture.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-ODSWorldTexture.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-prepasslighting.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-PrePassLighting.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-screenspaceshadows.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-ScreenSpaceShadows.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/internal-stencilwrite.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Internal-StencilWrite.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-bumped.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-Bumped.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-bumpspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-BumpSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-diffuse.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-Diffuse.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-glossy.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-Glossy.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/lightmap-vertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Lightmap-VertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-bumped.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Bumped.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-bumpspec-1directionallight.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-BumpSpec-1DirectionalLight.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-bumpspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-BumpSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-diffuse.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Diffuse.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-lightmap-unlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Lightmap-Unlit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-particle-add.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Particle-Add.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-particle-alpha-vertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Particle-Alpha-VertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-particle-alpha.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Particle-Alpha.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-particle-multiply.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Particle-Multiply.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-skybox.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-Skybox.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-vertexlit-onlydirectionallights.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-VertexLit-OnlyDirectionalLights.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/mobile/mobile-vertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Mobile/Mobile-VertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/softocclusion/treesoftocclusionbark.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SoftOcclusion/TreeSoftOcclusionBark.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/softocclusion/treesoftocclusionbarkrendertex.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SoftOcclusion/TreeSoftOcclusionBarkRendertex.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/softocclusion/treesoftocclusionleaves.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SoftOcclusion/TreeSoftOcclusionLeaves.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/softocclusion/treesoftocclusionleavesrendertex.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SoftOcclusion/TreeSoftOcclusionLeavesRendertex.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/speedtree.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SpeedTree.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/speedtree8.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SpeedTree8.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/speedtreebillboard.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/SpeedTreeBillboard.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatoralbedorendertex.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorAlbedoRenderTex.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorbark.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorBark.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorbarkoptimized.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorBarkOptimized.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorbarkrendertex.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorBarkRendertex.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorleaves.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeaves.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorleavesfast.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeavesFast.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorleavesfastoptimized.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeavesFastOptimized.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorleavesoptimized.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeavesOptimized.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatorleavesrendertex.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorLeavesRendertex.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/nature/treecreator/treecreatornormalrendertex.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Nature/TreeCreator/TreeCreatorNormalRendertex.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-bumped.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-Bumped.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-bumpspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-BumpSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-diffuse.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-Diffuse.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-diffusedetail.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-DiffuseDetail.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-diffusefast.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-DiffuseFast.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-glossy.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-Glossy.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-parallax.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-Parallax.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-parallaxspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-ParallaxSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/normal-vertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Normal-VertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      add.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      Add.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      addmultiply.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      AddMultiply.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      addsmooth.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      AddSmooth.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      alpha blend.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      Alpha Blend.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      anim alpha blend.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      Anim Alpha Blend.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      blend.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      Blend.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      multiply.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      Multiply.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      multiplydouble.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      MultiplyDouble.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      premultiply blend.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      Premultiply Blend.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      standard surface.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      Standard Surface.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      standard unlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      Standard Unlit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/particle
-      vertexlit blended.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Particle
+      VertexLit Blended.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/reflect-bumped.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-Bumped.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/reflect-bumpnolight.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-BumpNolight.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/reflect-bumpspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-BumpSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/reflect-bumpvertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-BumpVertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/reflect-diffuse.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-Diffuse.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/reflect-glossy.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-Glossy.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/reflect-parallax.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-Parallax.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/reflect-parallaxspec.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-ParallaxSpec.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/reflect-vertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Reflect-VertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/skybox-cubed.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Skybox-Cubed.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/skybox-panoramic.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Skybox-Panoramic.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/skybox-procedural.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Skybox-Procedural.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/skybox.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Skybox.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/sprites-default.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Default.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/sprites-diffuse.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Diffuse.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/sprites-mask.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Sprites-Mask.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/standard.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Standard.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/standardspecular.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/StandardSpecular.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/details/vertexlit.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Details/VertexLit.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/details/wavinggrass.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Details/WavingGrass.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/details/wavinggrassbillboard.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Details/WavingGrassBillboard.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/addpass.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/AddPass.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/diffusebase.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/DiffuseBase.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/diffusebasegen.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/DiffuseBaseGen.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/firstpass.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/FirstPass.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/specular-addpass.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Specular-AddPass.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/specular-base.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Specular-Base.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/specular-firstpass.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Specular-FirstPass.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/standard-addpass.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Standard-AddPass.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/standard-base.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Standard-Base.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/standard-basegen.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Standard-BaseGen.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/standard-firstpass.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Standard-FirstPass.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/splats/terrain-utilities.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Splats/Terrain-Utilities.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/trees/billboardtree.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Trees/BillboardTree.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/trees/camerafacingbillboardtree.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Trees/CameraFacingBillboardTree.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/utils/brushpreview.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Utils/BrushPreview.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/utils/gennormalmap.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Utils/GenNormalmap.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/utils/paintheight.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Utils/PaintHeight.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/terrainshaders/utils/terrainlayerutils.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/TerrainShaders/Utils/TerrainLayerUtils.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-compositeoverdraw.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-CompositeOverdraw.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-default.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Default.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-defaultetc1.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-DefaultETC1.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-defaultfont.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-DefaultFont.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-bumped.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-Bumped.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-detail.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-Detail.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-refraction.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-Refraction.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-refractiondetail.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-RefractionDetail.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-lit-transparent.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Lit-Transparent.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-overdraw.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Overdraw.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-unlit-detail.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Unlit-Detail.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-unlit-text.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Unlit-Text.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-unlit-textdetail.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Unlit-TextDetail.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/ui/ui-unlit-transparent.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/UI/UI-Unlit-Transparent.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/unlit/unlit-alpha.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Unlit/Unlit-Alpha.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/unlit/unlit-alphatest.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Unlit/Unlit-AlphaTest.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/unlit/unlit-color.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Unlit/Unlit-Color.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/unlit/unlit-normal.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/Unlit/Unlit-Normal.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/videodecode.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VideoDecode.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/videodecodeandroid.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VideoDecodeAndroid.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/videodecodeosx.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VideoDecodeOSX.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/vr/shaders/blittexarrayslice.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/BlitTexArraySlice.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/vr/shaders/blittexarrayslicetodepth.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/BlitTexArraySliceToDepth.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/vr/shaders/blittexarrayslicetodepth_msaa.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/BlitTexArraySliceToDepth_MSAA.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/vr/shaders/clippingmask.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/ClippingMask.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/vr/shaders/internal-vrdistortion.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/Internal-VRDistortion.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/vr/shaders/spatialmappingocclusion.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/SpatialMappingOcclusion.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/vr/shaders/spatialmappingwireframe.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/SpatialMappingWireframe.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildinshaders/defaultresourcesextra/vr/shaders/videobackground.shader
+  - AssetPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra/VR/Shaders/VideoBackground.shader
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/shadervariants/diyshadervariantscollection.shadervariants
+  - AssetPath: Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants
     ABPath: shaderlist
     ABVariantPath: 
-  - AssetPath: assets/res/buildinresources/buildintextures/inputfieldbackground.png
+  - AssetPath: Assets/Res/buildinresources/buildintextures/InputFieldBackground.png
     ABPath: assets/res/buildinresources/buildintextures
     ABVariantPath: 
-  - AssetPath: assets/res/prefabs/imagebuildin.prefab
+  - AssetPath: Assets/Res/prefabs/imagebuildin.prefab
     ABPath: assets/res/prefabs/imagebuildin
     ABVariantPath: 
-  - AssetPath: assets/res/prefabs/rawimagebuildin.prefab
+  - AssetPath: Assets/Res/prefabs/rawimagebuildin.prefab
     ABPath: assets/res/prefabs/rawimagebuildin
     ABVariantPath: 
-  - AssetPath: assets/res/prefabs/sfxtemplate.prefab
+  - AssetPath: Assets/Res/prefabs/SFXTemplate.prefab
     ABPath: assets/res/prefabs/sfxtemplate
     ABVariantPath: 
-  - AssetPath: assets/res/prefabs/videoplayerroot.prefab
+  - AssetPath: Assets/Res/prefabs/VideoPlayerRoot.prefab
     ABPath: assets/res/prefabs/videoplayerroot
     ABVariantPath: 
-  - AssetPath: assets/res/rendertextures/videorendertexture.rendertexture
+  - AssetPath: Assets/Res/rendertextures/VideoRenderTexture.renderTexture
     ABPath: assets/res/rendertextures/videorendertexture
     ABVariantPath: 
-  - AssetPath: assets/res/scenes/newassetbundleframeworkscene.unity
+  - AssetPath: Assets/Res/scenes/NewAssetBundleFrameWorkScene.unity
     ABPath: assets/res/scenes/newassetbundleframeworkscene
     ABVariantPath: 
-  - AssetPath: assets/res/scenes/sceneprefabs/testscene2prefab.prefab
+  - AssetPath: Assets/Res/scenes/sceneprefabs/testscene2prefab.prefab
     ABPath: assets/res/scenes/sceneprefabs/testscene2prefab
     ABVariantPath: 
-  - AssetPath: assets/res/scenes/sceneprefabs/testscene2prefab2.prefab
+  - AssetPath: Assets/Res/scenes/sceneprefabs/testscene2prefab2.prefab
     ABPath: assets/res/scenes/sceneprefabs/testscene2prefab2
     ABVariantPath: 
-  - AssetPath: assets/res/scenes/sceneprefabs/testscene3prefab.prefab
+  - AssetPath: Assets/Res/scenes/sceneprefabs/testscene3prefab.prefab
     ABPath: assets/res/scenes/sceneprefabs/testscene3prefab
     ABVariantPath: 
-  - AssetPath: assets/res/scenes/shadervariantscollectscene.unity
+  - AssetPath: Assets/Res/scenes/ShaderVariantsCollectScene.unity
     ABPath: assets/res/scenes/shadervariantscollectscene
     ABVariantPath: 
-  - AssetPath: assets/res/scenes/testscene2.unity
+  - AssetPath: Assets/Res/scenes/TestScene2.unity
     ABPath: assets/res/scenes/testscene2
     ABVariantPath: 
-  - AssetPath: assets/res/scenes/testscene3.unity
+  - AssetPath: Assets/Res/scenes/TestScene3.unity
     ABPath: assets/res/scenes/testscene3
     ABVariantPath: 
-  - AssetPath: assets/res/sharematerials/sharebluematerial.mat
+  - AssetPath: Assets/Res/sharematerials/sharebluematerial.mat
     ABPath: assets/res/sharematerials/sharebluematerial
     ABVariantPath: 
-  - AssetPath: assets/res/sharematerials/sharematerial.mat
+  - AssetPath: Assets/Res/sharematerials/sharematerial.mat
     ABPath: assets/res/sharematerials/sharematerial
     ABVariantPath: 
-  - AssetPath: assets/res/sharematerials/shareredmaterial.mat
+  - AssetPath: Assets/Res/sharematerials/shareredmaterial.mat
     ABPath: assets/res/sharematerials/shareredmaterial
     ABVariantPath: 
-  - AssetPath: assets/res/textures/chaichaifengjing.jpg
+  - AssetPath: Assets/Res/textures/chaichaifengjing.jpg
     ABPath: assets/res/textures/chaichaifengjing
     ABVariantPath: 
-  - AssetPath: assets/res/textures/chaichainingwang.jpg
+  - AssetPath: Assets/Res/textures/chaichainingwang.jpg
     ABPath: assets/res/textures/chaichainingwang
     ABVariantPath: 
-  - AssetPath: assets/res/textures/chaichaishenqingzhushi.jpg
+  - AssetPath: Assets/Res/textures/chaichaishenqingzhushi.jpg
     ABPath: assets/res/textures/chaichaishenqingzhushi
     ABVariantPath: 
-  - AssetPath: assets/res/videos/xuezhihua.mp4
+  - AssetPath: Assets/Res/videos/XueZhiHua.mp4
     ABPath: assets/res/videos/xuezhihua
     ABVariantPath: 
-  - AssetPath: assets/res/windows/mainwindow.prefab
+  - AssetPath: Assets/Res/windows/MainWindow.prefab
     ABPath: assets/res/windows/mainwindow
     ABVariantPath: 
-  - AssetPath: assets/res/assetbuildinfo/assetbuildinfoandroid.asset
+  - AssetPath: Assets/Res/assetbuildinfo/AssetBuildInfoAndroid.asset
     ABPath: assets/res/assetbuildinfo/assetbuildinfoandroid
     ABVariantPath: 
