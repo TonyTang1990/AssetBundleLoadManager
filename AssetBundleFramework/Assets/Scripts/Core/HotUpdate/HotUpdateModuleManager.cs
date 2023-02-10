@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using TResource;
 using UnityEngine;
@@ -32,6 +33,11 @@ using UnityEngine.Networking;
 // 15. 不需要资源热更
 // 16. 进入游戏
 
+/// 热更包外目录结构:
+/// PersistentAsset/HotUpdate/Platform(资源热更新目录)
+/// PersistentAsset/Config/VersionConfig.json(包外版本信息--用于进游戏前强更和热更判定)
+/// PersistentAsset/HotUpdate/Donwload/版本强更包
+
 /// <summary>
 /// HotUpdateModuleManager.cs
 /// 热更模块(含资源和版本更新)
@@ -44,6 +50,11 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 热更新资源目录名
     /// </summary>
     private const string HotUpdateFolderName = "HotUpdate";
+
+    /// <summary>
+    /// 版本强更目录名
+    /// </summary>
+    private const string ForceUpdateFolderName = "Download";
 
     /// <summary>
     /// 热更开关
@@ -108,6 +119,15 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// 资源热更地址
     /// </summary>
     private string mHotUpdateURL;
+
+    /// <summary>
+    /// 热更缓存目录
+    /// </summary>
+    public string VersionHotUpdateFolderPath
+    {
+        get;
+        private set;
+    }
 
     /// <summary>
     /// 版本强更缓存目录
@@ -223,12 +243,13 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     {
         HotUpdateSwitch = true;
 
-        mHotUpdateConfigFilePath = ConfigFolderPath + mVersionConfigFileName;
+        mHotUpdateConfigFilePath = Path.Combine(ConfigFolderPath, mVersionConfigFileName);
         mHotUpdateConfig = null;
         mHotUpdateURL = string.Empty;
 
         mHotUpdateResourceTotalNumber = 0;
-        VersionHotUpdateCacheFolderPath = Path.Combine(Application.persistentDataPath, HotUpdateFolderName);
+        VersionHotUpdateFolderPath = Path.Combine(Application.persistentDataPath, HotUpdateFolderName);
+        VersionHotUpdateCacheFolderPath = Path.Combine(VersionHotUpdateFolderPath, ForceUpdateFolderName);
         
         mVersionHotUpdateFileName = string.Empty;
         HotVersionUpdateRequest = new TWebRequest();
@@ -239,9 +260,9 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         mResourceUpdateListMap = new Dictionary<int, List<string>>();
         mLocalUpdatedResourceMap = new SortedDictionary<int, List<string>>();
         mLocalHotUpdateAssetBundleInfoMap = new Dictionary<string, HotUpdateAssetBundleInfo>();
-        LocalHotUpdateAssetBundleMD5FilFolderPath = VersionHotUpdateCacheFolderPath;
-        LocalHotUpdateAssetBundleMD5FilePath = Path.Combine(LocalHotUpdateAssetBundleMD5FilFolderPath, AssetBundleMD5FileName);
-        Debug.Log($"本地热更资源MD5信息文件:{LocalHotUpdateAssetBundleMD5FilePath}");
+        //LocalHotUpdateAssetBundleMD5FilFolderPath = VersionHotUpdateCacheFolderPath;
+        //LocalHotUpdateAssetBundleMD5FilePath = Path.Combine(LocalHotUpdateAssetBundleMD5FilFolderPath, AssetBundleMD5FileName);
+        //Debug.Log($"本地热更资源MD5信息文件:{LocalHotUpdateAssetBundleMD5FilePath}");
         mHotResourceUpdateRequest = new TWebRequest();
     }
 
@@ -251,7 +272,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     public void init()
     {
         initHotUpdateConfig();
-        initLocalAssetBundleMD5Info();
+        initLocalAssetBundleHotUpdateInfo();
     }
 
     /// <summary>
@@ -285,32 +306,70 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     }
 
     /// <summary>
-    /// 初始化本地以资源MD5信息
+    /// 初始化本地以资源热更信息
     /// </summary>
-    private void initLocalAssetBundleMD5Info()
+    private void initLocalAssetBundleHotUpdateInfo()
     {
         Debug.Log("初始化本地资源热更列表!");
         mLocalHotUpdateAssetBundleInfoMap.Clear();
         // 包内包外的AssetBundleMD5.txt都要读，但以包外为最终MD5信息
         // 所以我们先初始化包内MD5信息，然后初始化包外MD5信息
+        InitInnerAssetBundleHotUpdateInfo();
+        InitOuterAssetBundleHotUpdateInfo();
+    }
+
+    /// <summary>
+    /// 初始化包内AB的热更信息
+    /// </summary>
+    private void InitInnerAssetBundleHotUpdateInfo()
+    {
         string[] resourceupdateinfo = null;
         var innerAssetBundleMD5Asset = Resources.Load<TextAsset>(Path.GetFileNameWithoutExtension(AssetBundleMD5FileName));
         resourceupdateinfo = innerAssetBundleMD5Asset.text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
         DIYLog.Log($"包内AssetBundle MD5信息数量:{resourceupdateinfo.Length}");
-        InitAssetBundleMD5Info(resourceupdateinfo);
-        if (File.Exists(LocalHotUpdateAssetBundleMD5FilePath))
+        InitAssetBundleHotUpdateInfo(resourceupdateinfo);
+    }
+
+    /// <summary>
+    /// 初始化包外AB的热更信息
+    /// </summary>
+    private void InitOuterAssetBundleHotUpdateInfo()
+    {
+        //if (File.Exists(LocalHotUpdateAssetBundleMD5FilePath))
+        //{
+        //    resourceupdateinfo = File.ReadAllLines(LocalHotUpdateAssetBundleMD5FilePath);
+        //    DIYLog.Log($"包外AssetBundle MD5信息数量:{resourceupdateinfo.Length}");
+        //    InitAssetBundleMD5Info(resourceupdateinfo);
+        //}
+        // 包外采用实时获取计算所有AB的MD5的方式，确保MD5信息正确
+        // 通过下载记录的方式可能出现包外MD5信息被篡改或者下载AB文件损坏被记录等问题
+        // 所以不再需要读取包外MD5信息文件
+        if(!Directory.Exists(AssetBundlePath.ABHotUpdatePath))
         {
-            resourceupdateinfo = File.ReadAllLines(LocalHotUpdateAssetBundleMD5FilePath);
-            DIYLog.Log($"包外AssetBundle MD5信息数量:{resourceupdateinfo.Length}");
-            InitAssetBundleMD5Info(resourceupdateinfo);
+            return;
+        }
+        var md5Hash = MD5.Create();
+        var allHotupdateABFileFullPaths = Directory.GetFiles(AssetBundlePath.ABHotUpdatePath, "*.*", SearchOption.AllDirectories);
+        var persistentRegulerDataPath = PathUtilities.GetRegularPath(Application.persistentDataPath);
+        var regulerPersistentPathLength = persistentRegulerDataPath.Length;
+        foreach(var hotupdateABFileFullPath in allHotupdateABFileFullPaths)
+        {
+            if(string.IsNullOrEmpty(hotupdateABFileFullPath))
+            {
+                continue;
+            }
+            var hotupdateABFileRegulerFullPath = PathUtilities.GetRegularPath(hotupdateABFileFullPath);
+            var assetBundleRelativePath = hotupdateABFileRegulerFullPath.Remove(0, regulerPersistentPathLength);
+            var fileMD5 = FileUtilities.GetFileMD5(hotupdateABFileRegulerFullPath, md5Hash);
+            AddAssetBundleHotUpdateInfo(assetBundleRelativePath, fileMD5);
         }
     }
 
     /// <summary>
-    /// 初始化MD5信息
+    /// 初始化热更信息
     /// </summary>
     /// <param name="assetBundleMD5Info"></param>
-    private void InitAssetBundleMD5Info(string[] assetBundleMD5Info)
+    private void InitAssetBundleHotUpdateInfo(string[] assetBundleMD5Info)
     {
         foreach (var updatedresource in assetBundleMD5Info)
         {
@@ -322,27 +381,27 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
             var resourceinfo = updatedresource.Split(ResourceConstData.AssetBundlleInfoSeparater);
             var resPath = resourceinfo[0];
             var resMD5 = resourceinfo[1];
-            AddLocalHotUpdateAssetBundleInfo(resPath, resMD5);
+            AddAssetBundleHotUpdateInfo(resPath, resMD5);
         }
     }
 
     /// <summary>
-    /// 添加AssetBundle的热更新信息
+    /// 添加AssetBundle的热更信息
     /// Note:
     /// 后写入的同名Key的Value覆盖之前的值
     /// </summary>
-    /// <param name="assetPath"></param>
+    /// <param name="abRelativePath">AB相对路径</param>
     /// <param name="md5"></param>
-    private void AddLocalHotUpdateAssetBundleInfo(string resPath, string resMD5)
+    private void AddAssetBundleHotUpdateInfo(string abRelativePath, string resMD5)
     {
-        if (!mLocalHotUpdateAssetBundleInfoMap.ContainsKey(resPath))
+        if (!mLocalHotUpdateAssetBundleInfoMap.ContainsKey(abRelativePath))
         {
-            mLocalHotUpdateAssetBundleInfoMap.Add(resPath, new HotUpdateAssetBundleInfo(resPath, resMD5));
+            mLocalHotUpdateAssetBundleInfoMap.Add(abRelativePath, new HotUpdateAssetBundleInfo(abRelativePath, resMD5));
         }
         else
         {
             // 覆盖相同路径的MD5
-            mLocalHotUpdateAssetBundleInfoMap[resPath].AssetBundleMD5 = resMD5;
+            mLocalHotUpdateAssetBundleInfoMap[abRelativePath].AssetBundleMD5 = resMD5;
         }
     }
 
@@ -402,23 +461,22 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
             // 清空包外目录
             // 含如下几个目录:
             // 1. 包外资源热更存储目录(AssetBundlePath.ABHotUpdatePath)
-            // 2. 包外包外热更资源信息目录(LocalResourceUpdateListFilFolderPath)
-            // 3. 包外包外版本信息存储目录(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFolderPath)
-            // 4. 包外版本强更缓存目录(Application.persistentDataPath + "/download/")
+            // 2. 包外包外版本信息存储文件(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFolderPath)
+            // 3. 包外版本强更缓存目录(Application.persistentDataPath + "/download/")
             if (Directory.Exists(AssetBundlePath.ABHotUpdatePath))
             {
                 Directory.Delete(AssetBundlePath.ABHotUpdatePath, true);
                 Debug.Log(string.Format("删除包外资源热更存储目录 : {0}", AssetBundlePath.ABHotUpdatePath));
             }
-            if (Directory.Exists(LocalHotUpdateAssetBundleMD5FilFolderPath))
+            //if (Directory.Exists(LocalHotUpdateAssetBundleMD5FilFolderPath))
+            //{
+            //    Directory.Delete(LocalHotUpdateAssetBundleMD5FilFolderPath, true);
+            //    Debug.Log(string.Format("删除包外热更资源信息目录 : {0}", LocalHotUpdateAssetBundleMD5FilFolderPath));
+            //}
+            if (File.Exists(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFullPath))
             {
-                Directory.Delete(LocalHotUpdateAssetBundleMD5FilFolderPath, true);
-                Debug.Log(string.Format("删除包外热更资源信息目录 : {0}", LocalHotUpdateAssetBundleMD5FilFolderPath));
-            }
-            if (Directory.Exists(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFolderPath))
-            {
-                Directory.Delete(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFolderPath, true);
-                Debug.Log(string.Format("删除包外版本信息存储目录 : {0}", VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFolderPath));
+                File.Delete(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFullPath, true);
+                Debug.Log(string.Format("删除包外版本信息存储文件 : {0}", VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFullPath));
             }
             if (Directory.Exists(VersionHotUpdateCacheFolderPath))
             {
@@ -650,11 +708,11 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                     //检查资源热更目录，不存在就创建一个
                     AssetBundlePath.CheckAndCreateABOutterPathFolder();
                     //检查资源热更列表信息目录
-                    if (!Directory.Exists(LocalHotUpdateAssetBundleMD5FilFolderPath))
-                    {
-                        Directory.CreateDirectory(LocalHotUpdateAssetBundleMD5FilFolderPath);
-                        Debug.Log(string.Format("创建目录 : {0}", LocalHotUpdateAssetBundleMD5FilFolderPath));
-                    }
+                    //if (!Directory.Exists(LocalHotUpdateAssetBundleMD5FilFolderPath))
+                    //{
+                    //    Directory.CreateDirectory(LocalHotUpdateAssetBundleMD5FilFolderPath);
+                    //    Debug.Log(string.Format("创建目录 : {0}", LocalHotUpdateAssetBundleMD5FilFolderPath));
+                    //}
                     foreach (var resinfo in mNeedHotUpdateAssetBundleInfoMap)
                     {
                         //URL = 基础URL + 当前版本号 + "/" + 需要热更的资源版本号 + "/" + 需要热更的资源名
@@ -730,7 +788,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
             Debug.Log($"资源版本号:{hotUpdateResourceVersionCode}资源路径:{resPath}热更下载成功！");
             // 存储热更资源到包外并记录热更资源信息
             saveHotResourceUpdate(resPath, fileMd5, downloadhandler.data);
-            AddLocalHotUpdateAssetBundleInfo(resPath, fileMd5);
+            AddAssetBundleHotUpdateInfo(resPath, fileMd5);
             mNeedHotUpdateAssetBundleInfoMap.Remove(resPath);
             Debug.Log(string.Format("当前资源热更进度 : {0}", HotResourceUpdateProgress));
             if(mNeedHotUpdateAssetBundleInfoMap.Count == 0)
@@ -768,24 +826,28 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         var fileFolderPath = Path.GetDirectoryName(resfullpath);
         FolderUtilities.CheckAndCreateSpecificFolder(fileFolderPath);
         File.WriteAllBytes(resfullpath, data);
+        Debug.Log($"热更资源:{resfullpath}保存完毕！");
 
-        if(!File.Exists(LocalHotUpdateAssetBundleMD5FilePath))
-        {
-            Debug.Log(string.Format("创建文件 : {0}", LocalHotUpdateAssetBundleMD5FilePath));
-            using (var fs = File.Create(LocalHotUpdateAssetBundleMD5FilePath))
-            {
-                fs.Close();
-            }
-        }
-        // Note:
-        // 这里没有判定是否已经包含相同路径的MD5信息而是直接往后写入最新的AssetBundle MD5信息
-        // 读取的时候会从开头到结尾采取读取并覆盖的方式读取，也就是说后写入的AssetBundle MD5信息是最新最后覆盖读入的
-        using (var sw = File.AppendText(LocalHotUpdateAssetBundleMD5FilePath))
-        {
-            sw.WriteLine($"{resPath}{ResourceConstData.AssetBundlleInfoSeparater}{resMd5}");
-            sw.Close();
-        }
-        Debug.Log(string.Format("写入已更资源 : {0}", resfullpath));
+        // 包外采用实时获取计算所有AB的MD5的方式，确保MD5信息正确
+        // 通过下载记录的方式可能出现包外MD5信息被篡改或者下载AB文件损坏被记录等问题
+        // 所以这里无需再记录和创建包外MD5信息文件
+        //if(!File.Exists(LocalHotUpdateAssetBundleMD5FilePath))
+        //{
+        //    Debug.Log(string.Format("创建文件 : {0}", LocalHotUpdateAssetBundleMD5FilePath));
+        //    using (var fs = File.Create(LocalHotUpdateAssetBundleMD5FilePath))
+        //    {
+        //        fs.Close();
+        //    }
+        //}
+        //// Note:
+        //// 这里没有判定是否已经包含相同路径的MD5信息而是直接往后写入最新的AssetBundle MD5信息
+        //// 读取的时候会从开头到结尾采取读取并覆盖的方式读取，也就是说后写入的AssetBundle MD5信息是最新最后覆盖读入的
+        //using (var sw = File.AppendText(LocalHotUpdateAssetBundleMD5FilePath))
+        //{
+        //    sw.WriteLine($"{resPath}{ResourceConstData.AssetBundlleInfoSeparater}{resMd5}");
+        //    sw.Close();
+        //}
+        //Debug.Log(string.Format("写入已更资源 : {0}", resfullpath));
     }
 #endregion
 }

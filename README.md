@@ -215,12 +215,12 @@ public void onLoadPermanentShaderList()
    - 通过自定义设置的打包策略得到所有的有效参与打包路径列表
    - 通过AssetDatabase.FindAssets()结合打包路径列表得出所有需要分析的Asset
    - 通过打包配置信息分析所有Asset是否参与打包以及相关打包信息，得出最终的打包信息列表List<AssetBundleBuildInfo>
-   - 在最后分析得出最后的打包结论之前，这里我个人将AB的依赖信息文件(AssetBuildInfo.asset--仅记录AssetPath和AB信息的映射，不含AB依赖信息)的生成和打包信息单独插入在这里，方便AB依赖信息可以跟AB资源一起构建参与热更
+   - 在最后分析得出最后的打包结论之前，这里我个人将Asset打包信息文件(AssetBuildInfo.asset--仅记录AssetPath和AB信息的映射，不含AB依赖信息)的生成和打包信息单独插入在这里，方便AB依赖信息可以跟AB资源一起构建参与热更
    - 最后根据分析得出的打包信息列表List<AssetBundleBuildInfo>构建真真的打包信息List<AssetBundleBuild>进行打包
    - AB打包完成后进行一些后续的特殊资源处理（循环依赖检查。创建打包说明文件等)
-4. 然后根据所有有效Asset的所有AB名字打包结论来分析得出自定义的打包结论(即哪些Asset打包到哪个AB名里)
-5. 接着根据Asset的AB打包结论来生成最新的AssetBuildInfo(Asset打包信息，存储了Asset路径对应AB路径相关信息，用于运行时加载作为资源加载的基础信息数来源)(手动将AssetBuildInfo添加到打包信息里打包成AB，方便热更新走统一流程)
-6. 最后采用老版AB打包采用BuildPipeline.BuildAssetBundles(输出目录, 打包信息列表, ......)的接口来手动指定打包结论的方式触发AB打包。新版AB打包采用ScriptableBuildPipeline相关接口手动指定打包结论的方式触发AB打包。
+3. 然后根据所有有效Asset的所有AB名字打包结论来分析得出自定义的打包结论(即哪些Asset打包到哪个AB名里)
+4. 接着根据Asset的AB打包结论来生成最新的AssetBuildInfo(Asset打包信息，存储了Asset路径对应AB路径相关信息，用于运行时加载作为资源加载的基础信息数来源)(手动将AssetBuildInfo添加到打包信息里打包成AB，方便热更新走统一流程)
+5. 最后采用老版AB打包采用BuildPipeline.BuildAssetBundles(输出目录, 打包信息列表, ......)的接口来手动指定打包结论的方式触发AB打包。新版AB打包采用ScriptableBuildPipeline相关接口手动指定打包结论的方式触发AB打包。
 
 #### 打包策略支持
 
@@ -242,7 +242,7 @@ public void onLoadPermanentShaderList()
 
 ![AssetBundleBuildWindow](./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG)
 
-关于Asset路径与AB路径关联信息以及AB依赖信息最终都存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbuildinfo的AB里)，通过Asset路径如何加载到对应AB的关键就在这里。(这里和MotionFramework自定义Manifest文件输出不一样，assetbundlebuildinfo.asset只记录AssetPath和AB相关信息映射，不记录AB依赖信息，同时assetbundlebuildinfo.asset采用打包AB的方式，为了和热更新AB走一套机制)
+关于Asset路径与AB路径关联信息存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbuildinfo的AB里)，通过Asset路径如何加载到对应AB的关键就在这里。这里和MotionFramework自定义Manifest文件输出不一样，assetbundlebuildinfo.asset只记录AssetPath和AB相关信息映射，不记录AB依赖信息，依赖信息依然采用AB打包生成的*Manifest文件，同时assetbundlebuildinfo.asset采用打包AB的方式（方便和热更新AB走一套机制）
 
 让我们先来看下大致数据信息结构:
 
@@ -365,9 +365,9 @@ PersistentAsset -> HotUpdate -> Platform(资源热更新目录)
 
 PersistentAsset -> HotUpdate -> AssetBundleMd5.txt(记录热更新的AssetBundle路径和MD5信息--兼顾进游戏前资源热更和动态资源热更)(格式:热更AB路径:热更AB的MD5/n热更AB路径:热更AB的MD5******)
 
-PersistentAsset -> Config -> VersionConfig.json(包外版本信息--用于进游戏前强更和热更判定)
+PersistentAsset -> HotUpdate-> Config -> VersionConfig.json(包外版本信息--用于进游戏前强更和热更判定)
 
-PersistentAsset -> HotUpdate -> 版本强更包
+PersistentAsset -> HotUpdate -> Download -> 版本强更包
 
 ## 导表模块
 

@@ -35,13 +35,14 @@ public static class PathUtilities
     }
 
     /// <summary>
-    /// 获取资源Asset相对路径
+    /// 获取资源Asset相对路径(相对Application.dataPath)
     /// </summary>
     /// <param name="folderfullpath"></param>
     /// <returns></returns>
     public static string GetAssetsRelativeFolderPath(string folderfullpath)
     {
-        var projectpathprefix = Application.dataPath.Replace("Assets", string.Empty);
+        var assetsIndex = Application.dataPath.LastIndex("Asests");
+        var projectpathprefix = Application.dataPath.Remove(assetsIndex);
         if (folderfullpath.StartsWith(projectpathprefix))
         {
             var relativefolderpath = folderfullpath.Replace(projectpathprefix, string.Empty);
