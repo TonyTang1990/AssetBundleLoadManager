@@ -41,8 +41,8 @@ public static class PathUtilities
     /// <returns></returns>
     public static string GetAssetsRelativeFolderPath(string folderfullpath)
     {
-        var assetsIndex = Application.dataPath.LastIndex("Asests");
-        var projectpathprefix = Application.dataPath.Remove(assetsIndex);
+        var assetsIndex = Application.dataPath.LastIndexOf("Asests");
+        var projectpathprefix = Application.dataPath.Substring(0, assetsIndex);
         if (folderfullpath.StartsWith(projectpathprefix))
         {
             var relativefolderpath = folderfullpath.Replace(projectpathprefix, string.Empty);

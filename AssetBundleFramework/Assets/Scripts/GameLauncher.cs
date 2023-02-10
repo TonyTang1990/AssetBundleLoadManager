@@ -192,6 +192,12 @@ namespace TResource
             // 资源模块初始化
             mRMM.init();
 
+            //初始化游戏配置信息
+            GameConfigModuleManager.Singleton.initGameConfigData();
+
+            //初始化版本信息
+            VersionConfigModuleManager.Singleton.initVerisonConfigData();
+
             //热更模块初始化
             HotUpdateModuleManager.Singleton.init();
 
@@ -201,9 +207,6 @@ namespace TResource
 
             //},
             //ResourceLoadType.PermanentLoad);
-
-            //初始化版本信息
-            VersionConfigModuleManager.Singleton.initVerisonConfigData();
 
             //初始化表格数据读取
             GameDataManager.Singleton.loadAll();

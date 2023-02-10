@@ -40,6 +40,11 @@ public class BuildWindow : BaseEditorWindow
     private const string BuildDevelopmentKey = "BuildDevelopmentKey";
 
     /// <summary>
+    /// 开发模式Key
+    /// </summary>
+    private const string DevelopModeKey = "DevelopModeKey";
+
+    /// <summary>
     /// 打包输出路径存储Key
     /// </summary>
     private const string BuildOutputPathKey = "BuildOutputPathKey";
@@ -87,6 +92,15 @@ public class BuildWindow : BaseEditorWindow
     }
 
     /// <summary>
+    /// 游戏开发模式
+    /// </summary>
+    public GameDevelopMode DevelopMode
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
     /// 打包输出路径
     /// </summary>
     public string BuildOutputPath
@@ -107,6 +121,19 @@ public class BuildWindow : BaseEditorWindow
         buildwindow.Show();
     }
 
+    [MenuItem("Tools/DevelopMode/切换本地开发模式", false, 1)]
+    public static void changeToInnerDevelopMode()
+    {
+        BuildTool.ModifyInnerGameConfig(GameDevelopMode.InnerDevelop);
+    }
+
+
+    [MenuItem("Tools/DevelopMode/切换发布模式", false, 2)]
+    public static void changeToReleaseMode()
+    {
+        BuildTool.ModifyInnerGameConfig(GameDevelopMode.Release);
+    }
+
     /// <summary>
     /// 初始化窗口数据
     /// </summary>
@@ -114,16 +141,18 @@ public class BuildWindow : BaseEditorWindow
     {
         Debug.Log("BuildWindow:InitData()");
         mProjectPathHashValue = Application.dataPath.GetHashCode();
-        BuildVersion = PlayerPrefs.GetString($"{mProjectPathHashValue}_{BuildVersionKey}");
-        BuildResourceVersion = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{BuildResourceVersionKey}");
-        BuildTarget = (BuildTarget)PlayerPrefs.GetInt($"{mProjectPathHashValue}_{BuildTargetKey}");
-        IsDevelopment = PlayerPrefs.GetInt($"{mProjectPathHashValue}_{BuildDevelopmentKey}") != 0;
-        BuildOutputPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{BuildOutputPathKey}");
+        BuildVersion = PlayerPrefs.GetString(GetProjectBuildVersionKey());
+        BuildResourceVersion = PlayerPrefs.GetInt(GetProjectBuildResourceVersionKey());
+        BuildTarget = (BuildTarget)PlayerPrefs.GetInt(GetProjectBuildTargetKey());
+        IsDevelopment = PlayerPrefs.GetInt(GetProjectBuildDevelopmentKey()) != 0;
+        DevelopMode = (GameDevelopMode)PlayerPrefs.GetInt(GetProjectBuildDevelopModeKey(), (int)GameDevelopMode.Release);
+        BuildOutputPath = PlayerPrefs.GetString(GetProjectBuildOutputPathKey());
         Debug.Log($"打包窗口读取配置:");
         Debug.Log($"版本号设置:{BuildVersion}");
         Debug.Log($"资源版本号设置:{BuildResourceVersion}");
         Debug.Log($"打包平台:{Enum.GetName(typeof(BuildTarget), BuildTarget)}");
         Debug.Log($"打包开发版本:{IsDevelopment}");
+        Debug.Log($"游戏开发模式:{DevelopMode}");
         Debug.Log($"打包输出路径:{BuildOutputPath}");
         VersionConfigModuleManager.Singleton.initVerisonConfigData();
         Debug.Log($"包内版本号:{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode}");
@@ -136,17 +165,73 @@ public class BuildWindow : BaseEditorWindow
     protected override void SaveData()
     {
         Debug.Log("BuildWindow:SaveData()");
-        PlayerPrefs.SetString($"{mProjectPathHashValue}_{BuildVersionKey}", BuildVersion);
-        PlayerPrefs.SetInt($"{mProjectPathHashValue}_{BuildResourceVersionKey}", BuildResourceVersion);
-        PlayerPrefs.SetInt($"{mProjectPathHashValue}_{BuildTargetKey}", (int)BuildTarget);
-        PlayerPrefs.SetInt($"{mProjectPathHashValue}_{BuildDevelopmentKey}", IsDevelopment ? 1 : 0);
-        PlayerPrefs.SetString($"{mProjectPathHashValue}_{BuildOutputPathKey}", BuildOutputPath);
+        PlayerPrefs.SetString(GetProjectBuildVersionKey(), BuildVersion);
+        PlayerPrefs.SetInt(GetProjectBuildResourceVersionKey(), BuildResourceVersion);
+        PlayerPrefs.SetInt(GetProjectBuildTargetKey(), (int)BuildTarget);
+        PlayerPrefs.SetInt(GetProjectBuildDevelopmentKey(), IsDevelopment ? 1 : 0);
+        PlayerPrefs.SetInt(GetProjectBuildDevelopModeKey(), (int)DevelopMode);
+        PlayerPrefs.SetString(GetProjectBuildOutputPathKey(), BuildOutputPath);
         Debug.Log("打包窗口保存配置:");
         Debug.Log("版本号设置:" + BuildVersion);
         Debug.Log("资源版本号设置:" + BuildResourceVersion);
         Debug.Log("打包平台:" + Enum.GetName(typeof(BuildTarget), BuildTarget));
         Debug.Log($"打包开发版本:{IsDevelopment}");
+        Debug.Log($"游戏开发模式:{DevelopMode}");
         Debug.Log("打包输出路径:" + BuildOutputPath);
+    }
+
+    /// <summary>
+    /// 获取项目打包版本Key
+    /// </summary>
+    /// <returns></returns>
+    private string GetProjectBuildVersionKey()
+    {
+        return $"{mProjectPathHashValue}_{BuildVersionKey}";
+    }
+
+    /// <summary>
+    /// 获取项目打包资源版本Key
+    /// </summary>
+    /// <returns></returns>
+    private string GetProjectBuildResourceVersionKey()
+    {
+        return $"{mProjectPathHashValue}_{BuildResourceVersionKey}";
+    }
+
+    /// <summary>
+    /// 获取项目打包平台Key
+    /// </summary>
+    /// <returns></returns>
+    private string GetProjectBuildTargetKey()
+    {
+        return $"{mProjectPathHashValue}_{BuildTargetKey}";
+    }
+
+    /// <summary>
+    /// 获取项目打包开发版本Key
+    /// </summary>
+    /// <returns></returns>
+    private string GetProjectBuildDevelopmentKey()
+    {
+        return $"{mProjectPathHashValue}_{BuildDevelopmentKey}";
+    }
+
+    /// <summary>
+    /// 获取项目打包开发模式Key
+    /// </summary>
+    /// <returns></returns>
+    private string GetProjectBuildDevelopModeKey()
+    {
+        return $"{mProjectPathHashValue}_{DevelopModeKey}";
+    }
+
+    /// <summary>
+    /// 获取项目打包输出目录Key
+    /// </summary>
+    /// <returns></returns>
+    private string GetProjectBuildOutputPathKey()
+    {
+        return $"{mProjectPathHashValue}_{BuildOutputPathKey}";
     }
 
     public void OnGUI()
@@ -179,6 +264,8 @@ public class BuildWindow : BaseEditorWindow
         BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(BuildTarget, GUILayout.Width(100.0f));
         EditorGUILayout.LabelField($"开发版本:", GUILayout.Width(60f), GUILayout.Height(20f));
         IsDevelopment = EditorGUILayout.Toggle(IsDevelopment, GUILayout.Width(20f));
+        EditorGUILayout.LabelField($"开发模式:", GUILayout.Width(60f), GUILayout.Height(20f));
+        DevelopMode = (GameDevelopMode)EditorGUILayout.EnumPopup(DevelopMode, GUILayout.Width(100f));
         if (GUILayout.Button("修改包内版本信息", GUILayout.Width(120f), GUILayout.Height(20f)))
         {
             DoModifyInnerVersionConfig();
@@ -227,6 +314,20 @@ public class BuildWindow : BaseEditorWindow
             return;
         }
         BuildTool.ModifyInnerVersionConfig(buildVersion, BuildResourceVersion);
+    }
+
+
+    /// <summary>
+    /// 执行修改包内游戏配置信息
+    /// </summary>
+    private void DoModifyInnerGameConfig()
+    {
+        if (DevelopMode == GameDevelopMode.Invalide)
+        {
+            Debug.LogError($"不允许修改游戏开发模式到:{DevelopMode}，格式无效，修改失败!");
+            return;
+        }
+        BuildTool.ModifyInnerGameConfig(DevelopMode);
     }
 
     /// <summary>

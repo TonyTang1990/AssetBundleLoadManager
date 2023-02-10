@@ -20,6 +20,25 @@ using UnityEngine;
 public static class BuildTool 
 {
     /// <summary>
+    /// 修改包内游戏开发模式信息
+    /// </summary>
+    /// <param name="developMode">游戏开发模式</param>
+    public static bool ModifyInnerGameConfig(GameDevelopMode developMode)
+    {
+        if (developMode == GameDevelopMode.Invalide)
+        {
+            Debug.LogError($"不支持的游戏开发模式:{developMode},请传入输入有效游戏开发模式，修改游戏开发模式失败!");
+            return false;
+        }
+
+        GameConfigModuleManager.Singleton.initGameConfigData();
+        var gameDevelopMode = GameConfigModuleManager.Singleton.GetGameDevelopMode();
+        Debug.Log($"包内游戏开发模式从:{gameDevelopMode}修改成:{developMode}");
+        GameConfigModuleManager.Singleton.saveGameDevelopModel(developMode);
+        return true;
+    }
+
+    /// <summary>
     /// 修改包内版本信息
     /// </summary>
     /// <param name="versionCode">新的版本号</param>

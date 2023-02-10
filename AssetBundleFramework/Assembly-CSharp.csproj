@@ -139,6 +139,8 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetLoader.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Native\Android\AndroidNativeManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\LoaderManager.cs" />
+    <Compile Include="Assets\Scripts\Core\GameConfig\GameConfig.cs" />
+    <Compile Include="Assets\Scripts\Core\GameConfig\GameConfigModuleManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-BumpNolight.shader" />

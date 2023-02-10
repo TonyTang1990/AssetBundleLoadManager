@@ -217,19 +217,6 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     public const string AssetBundleMD5FileName = ResourceConstData.AssetBundleMd5InfoFileName;
 
     /// <summary>
-    /// 本地资源热更记录文件目录路径
-    /// </summary>
-    private string LocalHotUpdateAssetBundleMD5FilFolderPath;
-
-    /// <summary>
-    /// 本地资源热更记录文件路径
-    /// Note:
-    /// 所有资源热更完成后内容置空
-    /// 没有热更完的话会记录已经更到的资源列表
-    /// </summary>
-    private string LocalHotUpdateAssetBundleMD5FilePath;
-
-    /// <summary>
     /// 资源热更请求
     /// </summary>
     private TWebRequest mHotResourceUpdateRequest;
@@ -260,9 +247,6 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         mResourceUpdateListMap = new Dictionary<int, List<string>>();
         mLocalUpdatedResourceMap = new SortedDictionary<int, List<string>>();
         mLocalHotUpdateAssetBundleInfoMap = new Dictionary<string, HotUpdateAssetBundleInfo>();
-        //LocalHotUpdateAssetBundleMD5FilFolderPath = VersionHotUpdateCacheFolderPath;
-        //LocalHotUpdateAssetBundleMD5FilePath = Path.Combine(LocalHotUpdateAssetBundleMD5FilFolderPath, AssetBundleMD5FileName);
-        //Debug.Log($"本地热更资源MD5信息文件:{LocalHotUpdateAssetBundleMD5FilePath}");
         mHotResourceUpdateRequest = new TWebRequest();
     }
 
@@ -293,11 +277,14 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
             Debug.Log(string.Format("APKName : {0} HotUpdateLocalURL : {1} HotUpdateURL : {2}", mHotUpdateConfig.APKName, mHotUpdateConfig.HotUpdateLocalURL, mHotUpdateConfig.HotUpdateURL));
             mVersionHotUpdateFileName = mHotUpdateConfig.APKName;
             VersionHotUpdateCacheFilePath = VersionHotUpdateCacheFolderPath + mVersionHotUpdateFileName;
-#if DEVELOPMENT
-            mHotUpdateURL = mHotUpdateConfig.HotUpdateLocalURL;
-#else
-            mHotUpdateURL = mHotUpdateConfig.HotUpdateURL;
-#endif
+            if(GameConfigModuleManager.Singleton.IsInnerDevelopMode())
+            {
+                mHotUpdateURL = mHotUpdateConfig.HotUpdateLocalURL;
+            }
+            else if(GameConfigModuleManager.Singleton.IsReleaseMode())
+            {
+                mHotUpdateURL = mHotUpdateConfig.HotUpdateURL;
+            }
         }
         else
         {
@@ -468,14 +455,9 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                 Directory.Delete(AssetBundlePath.ABHotUpdatePath, true);
                 Debug.Log(string.Format("删除包外资源热更存储目录 : {0}", AssetBundlePath.ABHotUpdatePath));
             }
-            //if (Directory.Exists(LocalHotUpdateAssetBundleMD5FilFolderPath))
-            //{
-            //    Directory.Delete(LocalHotUpdateAssetBundleMD5FilFolderPath, true);
-            //    Debug.Log(string.Format("删除包外热更资源信息目录 : {0}", LocalHotUpdateAssetBundleMD5FilFolderPath));
-            //}
             if (File.Exists(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFullPath))
             {
-                File.Delete(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFullPath, true);
+                File.Delete(VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFullPath);
                 Debug.Log(string.Format("删除包外版本信息存储文件 : {0}", VersionConfigModuleManager.Singleton.OutterVersionConfigSaveFileFullPath));
             }
             if (Directory.Exists(VersionHotUpdateCacheFolderPath))
@@ -707,12 +689,6 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
                     //开始资源热更
                     //检查资源热更目录，不存在就创建一个
                     AssetBundlePath.CheckAndCreateABOutterPathFolder();
-                    //检查资源热更列表信息目录
-                    //if (!Directory.Exists(LocalHotUpdateAssetBundleMD5FilFolderPath))
-                    //{
-                    //    Directory.CreateDirectory(LocalHotUpdateAssetBundleMD5FilFolderPath);
-                    //    Debug.Log(string.Format("创建目录 : {0}", LocalHotUpdateAssetBundleMD5FilFolderPath));
-                    //}
                     foreach (var resinfo in mNeedHotUpdateAssetBundleInfoMap)
                     {
                         //URL = 基础URL + 当前版本号 + "/" + 需要热更的资源版本号 + "/" + 需要热更的资源名
