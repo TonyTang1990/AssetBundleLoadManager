@@ -52,15 +52,12 @@ public static class HotUpdateTool
     /// <returns></returns>
     public static bool DoHotUpdatePreparationTask(string assetBundleFolderPath, string hotupdateOutputFolderPath, BuildTarget buildTarget, string hotupdateVersion, int hotupdateResourceVersion)
     {
-        string buildTargetFolderName = string.Empty;
         if (!BuildTargetFolderNameMap.ContainsKey(buildTarget))
         {
             Debug.LogError($"不支持的热更新平台:{buildTarget.ToString()},执行热更新准备工作失败!");
             return false;
         }
-        buildTargetFolderName = BuildTargetFolderNameMap[buildTarget];
-
-        hotupdateOutputFolderPath = Path.Combine(hotupdateOutputFolderPath, BuildTargetFolderNameMap[buildTarget]);
+        string buildTargetFolderName = BuildTargetFolderNameMap[buildTarget];
         Debug.Log($"热更新输出目录:{hotupdateOutputFolderPath}");
         if (!Directory.Exists(hotupdateOutputFolderPath))
         {
@@ -95,10 +92,9 @@ public static class HotUpdateTool
             return false;
         }
 
-        var platformAssetBundlePath = Path.Combine(assetBundleFolderPath, buildTargetFolderName);
-        if(!Directory.Exists(platformAssetBundlePath))
+        if (!Directory.Exists(assetBundleFolderPath))
         {
-            Debug.LogError($"AssetBundle目录:{platformAssetBundlePath}不存在，请检查是否已经打包完成或传入正确的路径!");
+            Debug.LogError($"AssetBundle目录:{assetBundleFolderPath}不存在，请检查是否已经打包完成或传入正确的路径!");
             return false;
         }
 
@@ -116,7 +112,7 @@ public static class HotUpdateTool
         versionupdatefilefolderpath = Path.Combine(versionupdatefilefolderpath, hotupdateResourceVersion.ToString());
         // 确保热更新目录最新且存在
         FolderUtilities.RecreateSpecificFolder(versionupdatefilefolderpath);
-        FileUtilities.CopyFolderToFolder(platformAssetBundlePath, versionupdatefilefolderpath, HotUpdateFilePostFixBlackList);
+        FileUtilities.CopyFolderToFolder(assetBundleFolderPath, versionupdatefilefolderpath, HotUpdateFilePostFixBlackList);
 
         // 复制最新的包内AssetBundleMD5.txt文件到资源目录下
         var innerAssetBundleMd5FilePath = Path.Combine(Application.dataPath, "Resources");

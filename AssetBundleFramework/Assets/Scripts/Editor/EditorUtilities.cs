@@ -33,41 +33,6 @@ public static class EditorUtilities
         }
     }
 
-    #region 路径相关
-    /// <summary>
-    /// 获取项目工程路径
-    /// </summary>
-    public static string GetProjectPath()
-    {
-        string projectPath = Path.GetDirectoryName(Application.dataPath);
-        return PathUtilities.GetRegularPath(projectPath);
-    }
-
-    /// <summary>
-    /// 清空文件夹
-    /// </summary>
-    /// <param name="folderPath">要清理的文件夹路径</param>
-    public static void ClearFolder(string directoryPath)
-    {
-        if (Directory.Exists(directoryPath) == false)
-            return;
-
-        // 删除文件
-        string[] allFiles = Directory.GetFiles(directoryPath);
-        for (int i = 0; i < allFiles.Length; i++)
-        {
-            File.Delete(allFiles[i]);
-        }
-
-        // 删除文件夹
-        string[] allFolders = Directory.GetDirectories(directoryPath);
-        for (int i = 0; i < allFolders.Length; i++)
-        {
-            Directory.Delete(allFolders[i], true);
-        }
-    }
-    #endregion
-
     /// <summary>
     /// 清空控制台
     /// </summary>

@@ -65,7 +65,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b02beafd2170ffa4795c246a97897010, type: 3}
   - {fileID: 21300000, guid: d032ae9ebed06b141a464e511e5da537, type: 3}
   - {fileID: 21300000, guid: 5aa2f1ee4a2d83d4d863c9b2ba8a2351, type: 3}
-  - {fileID: 21300000, guid: 9f5cdcbfb6716544a8aaa4569d04480e, type: 3}
   m_PackedSpriteNamesToIndex:
   - SDFukuiPreview
   - SDGunmaPreview
@@ -94,7 +93,6 @@ SpriteAtlas:
   - SDAomoriPreview
   - SDAkitaPreview
   - SDChibaPreview
-  - SDNaganoPreview
   m_RenderDataMap: {}
   m_Tag: playerpreview
   m_IsVariant: 1

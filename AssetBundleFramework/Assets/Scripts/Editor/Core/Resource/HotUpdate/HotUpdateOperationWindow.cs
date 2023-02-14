@@ -16,27 +16,6 @@ namespace TResource
     /// </summary>
     public class HotUpdateOperationWindow : BaseEditorWindow
     {
-        #region 存储相关Key
-        /// <summary>
-        /// 热更新目录路径存储Key
-        /// </summary>
-        private const string HotUpdatePreparationPreferenceKey = "HotUpdatePreparationABListKey";
-        #endregion
-
-        /// <summary>
-        /// 项目路径Hash值(用于使得PlayerPrefs存储的Key值唯一)
-        /// </summary>
-        private int mProjectPathHashValue;
-
-        /// <summary>
-        /// 热更新目录路径
-        /// </summary>
-        public string HotUpdateOutputFolderPath
-        {
-            get;
-            private set;
-        }
-
         /// <summary>
         /// 整体UI滚动位置
         /// </summary>
@@ -86,10 +65,8 @@ namespace TResource
         /// </summary>
         protected override void InitData()
         {
-            mProjectPathHashValue = Application.dataPath.GetHashCode();
-            HotUpdateOutputFolderPath = PlayerPrefs.GetString($"{mProjectPathHashValue}_{HotUpdatePreparationPreferenceKey}");
+            base.InitData();
             Debug.Log("热更新操作窗口读取配置:");
-            Debug.Log("热更新输出目录:" + HotUpdateOutputFolderPath);
             VersionConfigModuleManager.Singleton.initVerisonConfigData();
             BuildTarget = EditorUserBuildSettings.activeBuildTarget;
             // 默认热更新版本信息就是包内版本信息
@@ -102,9 +79,8 @@ namespace TResource
         /// </summary>
         protected override void SaveData()
         {
-            PlayerPrefs.SetString($"{mProjectPathHashValue}_{HotUpdatePreparationPreferenceKey}", HotUpdateOutputFolderPath);
+            base.SaveData();
             Debug.Log("热更新操作窗口保存配置:");
-            Debug.Log("热更新输出目录:" + HotUpdateOutputFolderPath);
         }
 
         public void OnGUI()
@@ -141,14 +117,6 @@ namespace TResource
             EditorGUILayout.LabelField("打包平台:", GUILayout.Width(60.0f));
             BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(BuildTarget, GUILayout.Width(100.0f));
             GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("热更新目录:", GUILayout.Width(120f));
-            HotUpdateOutputFolderPath = EditorGUILayout.TextField("", HotUpdateOutputFolderPath);
-            if (GUILayout.Button("选择热更新目录", GUILayout.Width(200f)))
-            {
-                HotUpdateOutputFolderPath = EditorUtility.OpenFolderPanel("热更新目录", "请选择热更新目录!", "");
-            }
-            GUILayout.EndHorizontal();
             if (GUILayout.Button("执行热更新准备任务", GUILayout.ExpandWidth(true)))
             {
                 doHotUpdatePreparationTask();
@@ -164,8 +132,9 @@ namespace TResource
         /// </summary>
         private bool doHotUpdatePreparationTask()
         {
-            var assetBundleOutputPath = AssetBundleBuilderHelper.GetDefaultOutputRootPath();
-            if (HotUpdateTool.DoHotUpdatePreparationTask(assetBundleOutputPath, HotUpdateOutputFolderPath, BuildTarget, mHotUpdateVersion, mHotUpdateResourceVersion))
+            var assetBundleOutputPath = AssetBundleBuilderHelper.GetBuildTargetOutputRootPath(BuildTarget);
+            var hotUpdateOutputFolderPath = HotUpdateModuleManager.GetLocalHotUpdateFolderPath(BuildTarget);
+            if (HotUpdateTool.DoHotUpdatePreparationTask(assetBundleOutputPath, hotUpdateOutputFolderPath, BuildTarget, mHotUpdateVersion, mHotUpdateResourceVersion))
             {
                 mHotUpdatePreparationResult = $"资源热更新准备工作执行完成!";
                 return true;

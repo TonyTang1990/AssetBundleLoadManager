@@ -130,10 +130,10 @@ namespace TResource
 		/// <param name="buildTarget">构建平台</param>
 		public AssetBundleBuilder(BuildTarget buildTarget)
 		{
-			_outputRoot = AssetBundleBuilderHelper.GetDefaultOutputRootPath();
+			_outputRoot = AssetBundleBuilderHelper.GetOutputRootPath();
 			BuildTarget = buildTarget;
 			BuildTargetGroup = BuildPipeline.GetBuildTargetGroup(BuildTarget);
-			OutputDirectory = GetOutputDirectory();
+			OutputDirectory = AssetBundleBuilderHelper.GetBuildTargetOutputRootPath(BuildTarget);
 		}
 
 		/// <summary>
@@ -309,10 +309,6 @@ namespace TResource
 		private void Log(string log)
 		{
 			Debug.Log($"[BuildPatch] {log}");
-		}
-		private string GetOutputDirectory()
-		{
-			return $"{_outputRoot}/{BuildTarget}/";
 		}
 
 		/// <summary>

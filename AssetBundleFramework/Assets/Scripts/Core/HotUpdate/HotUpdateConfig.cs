@@ -22,11 +22,6 @@ public class HotUpdateConfig {
     public string APKName;
 
     /// <summary>
-    /// 热更新本地测试地址
-    /// </summary>
-    public string HotUpdateLocalURL;
-
-    /// <summary>
     /// 热更新正式地址
     /// </summary>
     public string HotUpdateURL;

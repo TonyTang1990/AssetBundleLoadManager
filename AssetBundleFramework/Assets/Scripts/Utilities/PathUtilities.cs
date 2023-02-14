@@ -56,15 +56,53 @@ public static class PathUtilities
     }
 
     /// <summary>
+    /// 获取项目工程路径(结尾不带/)
+    /// </summary>
+    public static string GetProjectPath()
+    {
+        string projectPath = Path.GetDirectoryName(Application.dataPath);
+        return PathUtilities.GetRegularPath(projectPath);
+    }
+
+    /// <summary>
+    /// 获取项目目录全路径(结尾带/)
+    /// </summary>
+    /// <returns></returns>
+    public static string GetProjectFullPath()
+    {
+        var dataPath = Application.dataPath;
+        return GetRegularPath(dataPath.Substring(0, dataPath.LastIndexOf("Assets")));
+    }
+
+    /// <summary>
+    /// 获取资源相对工程目录路径
+    /// </summary>
+    /// <param name="folderfullpath"></param>
+    /// <returns></returns>
+    public static string GetProjectRelativeFolderPath(string folderfullpath)
+    {
+        var projectpathprefix = GetProjectFullPath();
+        if (folderfullpath.StartsWith(projectpathprefix))
+        {
+            var relativefolderpath = folderfullpath.Replace(projectpathprefix, string.Empty);
+            return GetRegularPath(relativefolderpath);
+        }
+        else
+        {
+            Debug.LogError($"目录:{folderfullpath}不是项目有效路径,获取相对路径失败!");
+            return string.Empty;
+        }
+    }
+
+    /// <summary>
     /// 获取Asset的全路径
     /// </summary>
     /// <param name="assetpath">Asset相对路径</param>
     /// <returns></returns>
     public static string GetAssetFullPath(string assetpath)
     {
-        var index = Application.dataPath.LastIndexOf("Assets");
-        var assetfullpath = Application.dataPath.Substring(0, index) + assetpath;
-        return assetfullpath;
+        var projectFullPath = GetProjectFullPath();
+        return GetRegularPath($"{projectFullPath}{assetpath}");
     }
 
     /// <summary>
