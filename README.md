@@ -35,40 +35,6 @@ Note:
 
 [tangzx/ABSystem](https://github.com/tangzx/ABSystem)
 
-#### 类说明
-
-Manager统一管理：
-
-    - ModuleManager(单例类 Manager of Manager的管理类)
-    - ModuleInterface(模块接口类)
-
-资源加载类：
-
-    - ResourceLoadMethod(资源加载方式枚举类型 -- 同步 or 异步)
-    - ResourceLoadMode(资源加载模式 -- AssetBundle or AssetDatabase(**限Editor模式下可切换，支持同步和异步(异步是本地模拟延迟加载来实现的)加载方式**))
-    - ResourceLoadState(资源加载状态 -- 错误，等待加载， 加载中，完成，取消之类的)
-    - ResourceLoadType(资源加载类型 -- 正常加载，常驻加载)
-    - ResourceModuleManager(资源加载模块统一入口管理类)
-    - AbstractResourceModule(资源加载模块抽象)
-    - AssetBundleModule(AssetBundle模式下的实际加载管理模块)
-    - AssetDatabaseModule(AssetDatabase模式下的实际加载管理模块)
-    - AbstractResourceInfo(资源加载使用信息抽象)
-    - AssetBundleInfo(AssetBundle资源使用信息)
-    - AssetInfo(Asset资源使用信息)
-    - LoaderManager(加载器管理单例类)
-    - Loadable(资源加载器基类--抽象加载流程)
-    - AssetLoader(Asset加载器基类抽象)
-    - BundleAssetLoader(AssetBundle模式下的Asset加载器)
-    - AssetDatabaseLoader(AssetDatabase模式下的Asset加载器)
-    - BundleLoader(AssetBundle加载器基类抽象)
-    - AssetBundleLoader(本地AssetBundle加载器)
-    - DownloadAssetBundleLoader(动态资源AsserBundle加载器)
-    - AssetDatabaseAsyncRequest(AssetDatabase模式下异步加载模拟)
-    - AssetBundlePath(AB资源路径相关 -- 处理多平台以及热更资源加载路径问题)
-    - ResourceDebugWindow.cs(Editor运行模式下可视化查看资源加载(AssetBundle和AssetDatabase两种都支持)详细信息的辅助工具窗口)
-    - ResourceConstData(资源打包加载相关常量数据)
-    - ResourceLoadAnalyse(资源加载统计分析工具)
-
 #### AB加载管理方案
 
 加载管理方案：
@@ -208,20 +174,6 @@ public void onLoadPermanentShaderList()
 
 5. **老版AB依赖信息采用原始打包输出的*Manifest文件。新版ScriptableBuildPipeline采用自定义输出打包的CompatibilityAssetBundleManifest文件。**
 
-#### 核心AB打包思想和流程
-
-1. 通过抽象纯虚拟的打包策略设置(即AB收集打包策略设置界面--设置指定目录的打包策略)，做到AB打包策略设置完全抽象AB名字设置无关化(这样一来无需设置AB或清除AB名字，自己完全掌控AB打包策略和打包结论)
-2. 打包时分析打包策略设置的所有有效资源信息，统计出所有有效资源的是否参与打包，然后结合所有的打包策略设置分析出所有有效Asset的AB打包名字(如果Asset满足多个打包策略设置，默认采用最里层的打包策略设置，找不到符合的采用默认收集打包规则)**(这一步是分析关键，下面细说一下详细步骤)**
-   - 通过自定义设置的打包策略得到所有的有效参与打包路径列表
-   - 通过AssetDatabase.FindAssets()结合打包路径列表得出所有需要分析的Asset
-   - 通过打包配置信息分析所有Asset是否参与打包以及相关打包信息，得出最终的打包信息列表List<AssetBundleBuildInfo>
-   - 在最后分析得出最后的打包结论之前，这里我个人将Asset打包信息文件(AssetBuildInfo.asset--仅记录AssetPath和AB信息的映射，不含AB依赖信息)的生成和打包信息单独插入在这里，方便AB依赖信息可以跟AB资源一起构建参与热更
-   - 最后根据分析得出的打包信息列表List<AssetBundleBuildInfo>构建真真的打包信息List<AssetBundleBuild>进行打包
-   - AB打包完成后进行一些后续的特殊资源处理（循环依赖检查。创建打包说明文件等)
-3. 然后根据所有有效Asset的所有AB名字打包结论来分析得出自定义的打包结论(即哪些Asset打包到哪个AB名里)
-4. 接着根据Asset的AB打包结论来生成最新的AssetBuildInfo(Asset打包信息，存储了Asset路径对应AB路径相关信息，用于运行时加载作为资源加载的基础信息数来源)(手动将AssetBuildInfo添加到打包信息里打包成AB，方便热更新走统一流程)
-5. 最后采用老版AB打包采用BuildPipeline.BuildAssetBundles(输出目录, 打包信息列表, ......)的接口来手动指定打包结论的方式触发AB打包。新版AB打包采用ScriptableBuildPipeline相关接口手动指定打包结论的方式触发AB打包。
-
 #### 打包策略支持
 
 1. 按目录打包(打包策略递归子目录判定)
@@ -282,7 +234,7 @@ public void onLoadPermanentShaderList()
 
 ### 热更测试说明
 
-之前是使用的[HFS](http://www.rejetto.com/hfs/)快速搭建的一个资源本地资源服务器，后来使用阿里的ISS静态资源服务器做了一个网络端的资源服务器。
+使用阿里的ISS静态资源服务器做了一个网络端的资源服务器。
 
 版本强更流程：
 
@@ -369,14 +321,6 @@ PersistentAsset -> HotUpdate-> Config -> VersionConfig.json(包外版本信息--
 
 PersistentAsset -> HotUpdate -> Download -> 版本强更包
 
-## 导表模块
-
-集成导表工具[XbufferExcellToData](https://github.com/TonyTang1990/XbufferExcellToData)
-
-### 详情:
-
-[**XbufferExcellToData**](https://github.com/TonyTang1990/XbufferExcellToData)
-
 ## 辅助功能模块
 
 ### 资源处理分析
@@ -433,8 +377,6 @@ Tools->Assets->Asset相关处理
 [AssetBundle资源打包加载管理](http://tonytang1990.github.io/2018/10/24/AssetBundle%E8%B5%84%E6%BA%90%E6%89%93%E5%8C%85%E5%8A%A0%E8%BD%BD%E7%AE%A1%E7%90%86%E5%AD%A6%E4%B9%A0/)
 
 [热更新](http://tonytang1990.github.io/2019/05/03/%E7%83%AD%E6%9B%B4%E6%96%B0/)
-
-[导表工具](http://tonytang1990.github.io/2018/03/18/%E5%AF%BC%E8%A1%A8%E5%B7%A5%E5%85%B7/)
 
 # 鸣谢
 
