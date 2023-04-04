@@ -73,8 +73,8 @@ MonoBehaviour:
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
-    m_Crc: 1195991479
-    m_Hash: 1c56678706c647059405b2b3afc530f5
+    m_Crc: 1116186123
+    m_Hash: 1fb10d746b47acf8d0545bb7bc15d81e
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android
     m_Crc: 2599767245
@@ -218,12 +218,12 @@ MonoBehaviour:
     m_Hash: 0d6b624249126d4255532b9bfc906cad
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/windows/mainwindow.android
-    m_Crc: 3684527915
-    m_Hash: c47735f4aae56ec4a88683bd60a616bd
+    m_Crc: 2168426116
+    m_Hash: 0dfb48aba63d2d93f3364ad2f9ccb604
     m_Dependencies:
     - assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
     - assets/res/atlas/shareatlas/tutorialatlas.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/assetbuildinfo/assetbuildinfoandroid.android
-    m_Crc: 162832119
-    m_Hash: 60f4978f035a1f1a96c6f14b18743b0c
+    m_Crc: 2296111563
+    m_Hash: eaf75c7a7aeb4756390c2033a7323887
     m_Dependencies: []

@@ -14,6 +14,10 @@ using TResource;
 using UnityEngine;
 using UnityEngine.Networking;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 // 版本强更和资源热更流程：
 // 1. 重进游戏
 // 2. 初始化本地版本信息
@@ -265,21 +269,24 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     private void initHotUpdateConfig()
     {
         mHotUpdateConfig = null;
-        Debug.Log(string.Format("mHotUpdateConfigFilePath : {0}", mHotUpdateConfigFilePath));
+        Debug.Log($"mHotUpdateConfigFilePath:{mHotUpdateConfigFilePath}");
         //读取包内的热更信息
         var hotupdateconfigasset = Resources.Load<TextAsset>(mHotUpdateConfigFilePath);
         if (hotupdateconfigasset != null)
         {
             Debug.Log("热更新地址信息信息:");
             var content = mUTF8Encoding.GetString(hotupdateconfigasset.bytes);
-            Debug.Log(string.Format("content : {0}", content));
+            Debug.Log($"content:{content}");
             mHotUpdateConfig = JsonUtility.FromJson<HotUpdateConfig>(content);
-            Debug.Log(string.Format("APKName : {0} HotUpdateLocalURL : {1} HotUpdateURL : {2}", mHotUpdateConfig.APKName, mHotUpdateConfig.HotUpdateLocalURL, mHotUpdateConfig.HotUpdateURL));
+            Debug.Log($"APKName:{mHotUpdateConfig.APKName} HotUpdateURL:{mHotUpdateConfig.HotUpdateURL}");
             mVersionHotUpdateFileName = mHotUpdateConfig.APKName;
             VersionHotUpdateCacheFilePath = VersionHotUpdateCacheFolderPath + mVersionHotUpdateFileName;
             if(GameConfigModuleManager.Singleton.IsInnerDevelopMode())
             {
-                mHotUpdateURL = mHotUpdateConfig.HotUpdateLocalURL;
+#if UNITY_EDITOR
+                var localHotUpdateFolderPath = GetActiveBuildTargetLocalHotUpdateFolderPath();
+                mHotUpdateURL = $"file://{localHotUpdateFolderPath}/";
+#endif
             }
             else if(GameConfigModuleManager.Singleton.IsReleaseMode())
             {
@@ -310,9 +317,8 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
     /// </summary>
     private void InitInnerAssetBundleHotUpdateInfo()
     {
-        string[] resourceupdateinfo = null;
         var innerAssetBundleMD5Asset = Resources.Load<TextAsset>(Path.GetFileNameWithoutExtension(AssetBundleMD5FileName));
-        resourceupdateinfo = innerAssetBundleMD5Asset.text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+        string[] resourceupdateinfo = innerAssetBundleMD5Asset.text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
         DIYLog.Log($"包内AssetBundle MD5信息数量:{resourceupdateinfo.Length}");
         InitAssetBundleHotUpdateInfo(resourceupdateinfo);
     }
@@ -392,7 +398,7 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         }
     }
 
-    #region 服务器版本资源信息拉去部分
+#region 服务器版本资源信息拉去部分
     /// <summary>
     /// 执行获取服务器版本信息
     /// </summary>
@@ -432,9 +438,9 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
             mServerVersionConfigHotUpdateCompleteCB = null;
         }
     }
-    #endregion
+#endregion
 
-    #region 版本强更部分
+#region 版本强更部分
     /// <summary>
     /// 检查是否已经版本强更完成
     /// </summary>
@@ -826,4 +832,28 @@ public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
         //Debug.Log(string.Format("写入已更资源 : {0}", resfullpath));
     }
 #endregion
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 获取当前激活平台的热更新输出目录
+    /// </summary>
+    /// <param name="buildTareget"></param>
+    /// <returns></returns>
+    public static string GetActiveBuildTargetLocalHotUpdateFolderPath()
+    {
+        return GetLocalHotUpdateFolderPath(EditorUserBuildSettings.activeBuildTarget);
+    }
+
+    /// <summary>
+    /// 获取本地指定平台的热更新输出目录
+    /// </summary>
+    /// <param name="buildTareget"></param>
+    /// <returns></returns>
+    public static string GetLocalHotUpdateFolderPath(BuildTarget buildTareget)
+    {
+        var projectFolderPath = PathUtilities.GetProjectFullPath();
+        var localHotUpdateFolderPath = $"{projectFolderPath}../HotUpdate/Preparation/{buildTareget.ToString()}";
+        return PathUtilities.GetRegularPath(localHotUpdateFolderPath);
+    }
+#endif
 }

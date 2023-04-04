@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_b.cs" />
     <Compile Include="Assets\Scripts\Core\UI\TRawImage.cs" />
     <Compile Include="Assets\Scripts\Utilities\FileUtilities.cs" />
+    <Compile Include="Assets\Scripts\Core\GameConfig\GameConfigModuleManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Data\DataAccess.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleManager.cs" />
     <Compile Include="Assets\Scripts\DebugTools\FastUIEntry.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleLoader.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_sContainer.cs" />
     <Compile Include="Assets\Scripts\DebugTools\TimeCounter.cs" />
+    <Compile Include="Assets\Scripts\Core\GameConfig\GameConfig.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Core\UI\TButton.cs" />
     <Compile Include="Assets\Scripts\Core\Update\UpdateManager.cs" />
@@ -139,8 +141,6 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetLoader.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Native\Android\AndroidNativeManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\LoaderManager.cs" />
-    <Compile Include="Assets\Scripts\Core\GameConfig\GameConfig.cs" />
-    <Compile Include="Assets\Scripts\Core\GameConfig\GameConfigModuleManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-BumpNolight.shader" />

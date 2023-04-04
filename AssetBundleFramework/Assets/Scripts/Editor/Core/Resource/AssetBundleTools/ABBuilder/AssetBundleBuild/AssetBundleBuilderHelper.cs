@@ -16,19 +16,38 @@ namespace TResource
 		/// <summary>
 		/// 获取默认的导出根路径
 		/// </summary>
-		public static string GetDefaultOutputRootPath()
+		public static string GetOutputRootPath()
 		{
-			string projectPath = EditorUtilities.GetProjectPath();
-			return $"{projectPath}/Assets/StreamingAssets";
+			string projectPath = PathUtilities.GetProjectFullPath();
+			return $"{projectPath}Assets/StreamingAssets";
 		}
 
-		/// <summary>
-		/// 清空流文件夹
-		/// </summary>
-		public static void ClearStreamingAssetsFolder()
+        /// <summary>
+        /// 当前激活平台的获取默认的导出根路径
+        /// </summary>
+        public static string GetActiveBuildTargetOutputRootPath()
+        {
+			var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
+			var activeBuildTargetDefaultOutputRootPath = GetBuildTargetOutputRootPath(activeBuildTarget);
+			return activeBuildTargetDefaultOutputRootPath;
+        }
+
+        /// <summary>
+        /// 当前激活平台的获取默认的导出根路径
+        /// </summary>
+		/// <param name="buildTarget">平台</param>
+        public static string GetBuildTargetOutputRootPath(BuildTarget buildTarget)
+        {
+            return $"{GetOutputRootPath()}/{buildTarget}/";
+		}
+
+        /// <summary>
+        /// 清空流文件夹
+        /// </summary>
+        public static void ClearStreamingAssetsFolder()
 		{
 			string streamingPath = Application.dataPath + "/StreamingAssets";
-			EditorUtilities.ClearFolder(streamingPath);
+			FolderUtilities.ClearFolder(streamingPath);
 		}
 
 		/// <summary>

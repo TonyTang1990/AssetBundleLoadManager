@@ -130,9 +130,6 @@ MonoBehaviour:
   - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyazakiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDNaganoPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
   - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/playerpreview2.spriteatlas
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 

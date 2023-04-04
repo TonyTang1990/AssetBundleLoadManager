@@ -901,9 +901,11 @@ namespace TResource
             HotUpdateModuleManager.Singleton.checkHasVersionHotUpdate();
             //TODO:
             //拉去服务器列表信息(网络那一套待开发,暂时用本地默认数值测试)
-            if (HotUpdateModuleManager.Singleton.checkVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
-            {
-                HotUpdateModuleManager.Singleton.doNewVersionHotUpdate(
+            HotUpdateModuleManager.Singleton.doObtainServerVersionConfig((result)=> {
+                DIYLog.Log(string.Format("获取服务器版本结果 result : {0}", result));
+                if (HotUpdateModuleManager.Singleton.checkVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
+                {
+                    HotUpdateModuleManager.Singleton.doNewVersionHotUpdate(
                     HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode,
                     (versionhotupdateresult) =>
                     {
@@ -919,13 +921,13 @@ namespace TResource
                         {
                             resourceHotUpdate();
                         }
-                    }
-                );
-            }
-            else
-            {
-                resourceHotUpdate();
-            }
+                    });
+                }
+                else
+                {
+                    resourceHotUpdate();
+                }
+            });
         }
 
         private void resourceHotUpdate()
