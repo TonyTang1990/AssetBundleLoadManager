@@ -73,8 +73,8 @@ MonoBehaviour:
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
-    m_Crc: 1116186123
-    m_Hash: 1fb10d746b47acf8d0545bb7bc15d81e
+    m_Crc: 1693405073
+    m_Hash: 0173e3d8627f8c901820e2a9bd9ce2be
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android
     m_Crc: 2599767245
@@ -110,8 +110,8 @@ MonoBehaviour:
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//shaderlist.android
-    m_Crc: 1281367643
-    m_Hash: 777be55bd87f418e559cbaa1aa993b5c
+    m_Crc: 3226230215
+    m_Hash: d0aeccc84fb66cdff73c786f89261eaf
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/buildinresources/buildintextures.android
     m_Crc: 2222076502
@@ -214,8 +214,8 @@ MonoBehaviour:
     m_Hash: 4daf2a4d9cccb92b48b1da8cbe3f3c44
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/videos/xuezhihua.android
-    m_Crc: 3913356674
-    m_Hash: 0d6b624249126d4255532b9bfc906cad
+    m_Crc: 1883315042
+    m_Hash: 0d0b137f675b24dd6c86978738472537
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/windows/mainwindow.android
     m_Crc: 2168426116

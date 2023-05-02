@@ -100,6 +100,13 @@ namespace TResource
             }
             // AssetBundle打包信息没有依赖信息，直接加载即可
             var assetBuildInfoAssetRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
+#if !SCRIPTABLE_ASSET_BUILD_PIPELINE
+            // 老版BuildPipeline.BuildAssetBundles打包指定AssetBundleBuild.assetNames为含大写
+            // 但不知道为什么打包出来的AB里面的加载路径依然是全小写，这里老版AB统一成全小写加载
+            // Note:
+            // 1. 经测试打包时设置全小写，老版AB加载依然可以用大写路径加载
+            assetBuildInfoAssetRelativePath = assetBuildInfoAssetRelativePath.ToLower();
+#endif
             var assetBuildInfoABPath = AssetBundlePath.ChangeAssetPathToABPath(assetBuildInfoAssetRelativePath);
             var abPath = AssetBundlePath.GetABLoadFullPath(assetBuildInfoABPath.ToLower());
             AssetBundle ab = null;

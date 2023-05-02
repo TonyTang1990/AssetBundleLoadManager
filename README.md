@@ -359,6 +359,7 @@ Tools->Assets->Asset相关处理
 # 注意事项
 
 1. **AB打包和加载使用ScriptableBuildPipeline模式需添加宏:SCRIPTABLE_ASSET_BUILD_PIPELINE**
+2. **老版AB打包只支持AssetName小写全路径，所以针对老版AB打包和加载AssetName本人都统一成了小写处理**
 
 # 重大问题修复
 

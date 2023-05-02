@@ -519,15 +519,22 @@ namespace TResource
 		/// <returns></returns>
 		private string GetAssetAddresableName(string assetPath)
         {
-			// TODO: 未来支持不同策略Asset AB名策略配置
-			/*
+            // TODO: 未来支持不同策略Asset AB名策略配置
+            /*
             var assetCollector = AssetBundleCollectSettingData.GetCollectorByAssetPath(assetPath);
 			if(assetCollector.AddresableNameType == ?)
 			{
 				return ?;
 			}
 			*/
-			return assetPath;
+#if SCRIPTABLE_ASSET_BUILD_PIPELINE
+			// 新版支持准确的大小写AddreableName
+            return assetPath;
+#else
+            // 老版BuildPipeline.BuildAssetBundles打包指定AssetBundleBuild.assetNames为含大写
+            // 但不知道为什么打包出来的AB里面的加载路径依然是全小写,所以这里强制老版AB打包AddresableName全小写
+            return assetPath.ToLower();
+#endif
 		}
 
 		/// <summary>

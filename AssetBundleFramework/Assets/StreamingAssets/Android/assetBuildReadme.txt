@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2023/2/9 8:55:58
+构建时间：2023/5/2 19:18:55
 
 --Asset AB打包信息--
 AssetBundleName:assets/res/actors/cube.android AssetBundleVariant: BuildCompression:Lz4HC
@@ -50,7 +50,6 @@ AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview.android As
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMikanButoriPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyagiPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyazakiPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDNaganoPreview.png
 
 AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/playerpreview2.spriteatlas

@@ -1,13 +1,13 @@
-Android|57aa40ba72168d7e0a6a580b6f5bed2d
-buildlogtep.json|b2372e8ce3961b2f30296629b8af8cd9
-shaderlist.android|89f7611024524d86b13db845a1368bc6
+Android|9158a52448cebb0301d7a8ba62f23ef4
+buildlogtep.json|6a8432da97ba046675a982f75cd0bc85
+shaderlist.android|e1098b090247184119f536e524ddf5ba
 assets/res/actors/cube.android|2ea370230ef8db1f2bcef0053f1289b5
 assets/res/actors/sphere.android|7b247c742d3f8df6857a37c181a9f50c
 assets/res/actors/testbyfileandsubfolder.android|a4f29daae665750e8ddbba3a2867d32e
 assets/res/actors/zombunny.android|4b2f3be79ef28ff71e24b4a846f263d9
-assets/res/assetbuildinfo/assetbuildinfoandroid.android|be097bb49b08f1ac211e81d4c472082e
+assets/res/assetbuildinfo/assetbuildinfoandroid.android|fc8c24be852cc9464abea69811032490
 assets/res/atlas/shareatlas/tutorialatlas.android|ed02ee1f8eda69ef8d8cc2ae1653ecbf
-assets/res/atlas/shareatlas/spriteatlas/playerpreview.android|05c6d38a4d0b93283e43f7017ea86226
+assets/res/atlas/shareatlas/spriteatlas/playerpreview.android|bb4a948371a7e8d4e348770c20a1202a
 assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android|86986352388fbd06ee4812009222db2a
 assets/res/audios/music/backgroundmusic.android|2429b0446bdeb4a74e99ca6d15fdcef5
 assets/res/audios/music/df_bg_music.android|5c052805e0f6460cf5ac5c599f7bc777
@@ -34,5 +34,5 @@ assets/res/sharematerials/shareredmaterial.android|fc62b016ddf188aa722457b6465bf
 assets/res/textures/chaichaifengjing.android|228a4e0796b56ca665c11b17355aeb00
 assets/res/textures/chaichainingwang.android|72666a60ea030658cdaee7c3e3061552
 assets/res/textures/chaichaishenqingzhushi.android|b6dbcf5e80363fa5435ffda1644fa11d
-assets/res/videos/xuezhihua.android|ccf39a32b1fc5dec9d29867838e597f5
-assets/res/windows/mainwindow.android|229c7894b2dae45d7ed53d8bfa18c0f2
+assets/res/videos/xuezhihua.android|2c05c1328d576b6a11f67abb743c5056
+assets/res/windows/mainwindow.android|e5d2bc8edddaa2755ecbff360ae30a95
