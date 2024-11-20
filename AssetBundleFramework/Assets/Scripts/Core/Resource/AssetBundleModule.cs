@@ -231,7 +231,7 @@ namespace TResource
             var requestUID = LoaderManager.Singleton.GetNextRequestUID();
             var ownerAssetBundlePath = GetAssetPathBundleNameDelegate(assetPath);
             var depABPaths = GetAssetBundleDpInfoDelegate(ownerAssetBundlePath);
-            var bundleAssetLoader = LoaderManager.Singleton. createBundleAssetLoader<T>(assetPath, ownerAssetBundlePath, loadType, loadMethod) as BundleAssetLoader;
+            var bundleAssetLoader = LoaderManager.Singleton.createBundleAssetLoader<T>(assetPath, ownerAssetBundlePath, loadType, loadMethod) as BundleAssetLoader;
             bundleAssetLoader.initBundleInfo(ownerAssetBundlePath, depABPaths);
             bundleAssetLoader.addRequest(requestUID, completeHandler);
             assetLoader = bundleAssetLoader as AssetLoader;
