@@ -190,7 +190,7 @@ namespace TResource
             mRMM = TResource.ResourceModuleManager.Singleton;
 
             // 资源模块初始化
-            mRMM.init();
+            mRMM.Init();
 
             //初始化游戏配置信息
             GameConfigModuleManager.Singleton.initGameConfigData();
@@ -420,12 +420,12 @@ namespace TResource
             DIYLog.Log("onPreloadShaderVariants()");
             // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
             TResource.AssetLoader assetLoader;
-            TResource.ResourceModuleManager.Singleton.requstAssetSync<ShaderVariantCollection>(
+            TResource.ResourceModuleManager.Singleton.RequstAssetSync<ShaderVariantCollection>(
                 "Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants",
                 out assetLoader,
                 (loader, requestUid) =>
                 {
-                    var svc = loader.getAsset<ShaderVariantCollection>();
+                    var svc = loader.GetAsset<ShaderVariantCollection>();
                     // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
                     svc.WarmUp();
                 },
@@ -477,7 +477,7 @@ namespace TResource
                 }
             );
             // 未开始加载时将异步转同步加载
-            assetLoader.loadImmediately();
+            assetLoader.LoadImmediately();
         }
 
 
@@ -512,7 +512,7 @@ namespace TResource
         {
             yield return new WaitForEndOfFrame();
             // 开始异步加载后转同步加载
-            assetLoader.loadImmediately();
+            assetLoader.LoadImmediately();
         }
 
         /// <summary>
@@ -595,7 +595,7 @@ namespace TResource
                 }
             );
             // 取消异步加载请求
-            assetLoader.cancelRequest(requestUID);
+            assetLoader.CancelRequest(requestUID);
         }
 
         /// <summary>
@@ -651,7 +651,7 @@ namespace TResource
                 }
             );
             // 取消异步加载请求后同步加载窗口
-            assetLoader.cancelRequest(requestUID);
+            assetLoader.CancelRequest(requestUID);
             ResourceManager.Singleton.getPrefabInstance(
                 "Assets/Res/windows/MainWindow.prefab",
                 (prefabInstance, requestUid) =>
@@ -688,7 +688,7 @@ namespace TResource
             DIYLog.Log("onPrintABDepInfo()");
             if(mRMM.CurrentResourceModule is AssetBundleModule)
             {
-                (mRMM.CurrentResourceModule as AssetBundleModule).printAllResourceDpInfo();
+                (mRMM.CurrentResourceModule as AssetBundleModule).PrintAllResourceDpInfo();
             }
         }
 
@@ -698,7 +698,7 @@ namespace TResource
         public void onPrintLoadedResourceInfo()
         {
             DIYLog.Log("onPrintLoadedResourceInfo()");
-            mRMM.CurrentResourceModule.printAllLoadedResourceOwnersAndRefCount();
+            mRMM.CurrentResourceModule.PrintAllLoadedResourceOwnersAndRefCount();
         }
 
         /// <summary>
@@ -1042,7 +1042,7 @@ namespace TResource
                 var param1 = InputParam1.text;
                 DIYLog.Log("Param1 = " + param1);
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-                assetbundleresourcemodule.forceUnloadSpecificAssetBundle(param1);
+                assetbundleresourcemodule.ForceUnloadSpecificAssetBundle(param1);
 
             }
             else
@@ -1058,7 +1058,7 @@ namespace TResource
         {
             DIYLog.Log("onForceUnloadAllResources()");
             var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule;
-            assetbundleresourcemodule.forceUnloadAllResources();
+            assetbundleresourcemodule.ForceUnloadAllResources();
         }
 
         /// <summary>
@@ -1068,7 +1068,7 @@ namespace TResource
         {
             DIYLog.Log("onForceReloadABDepInfo()");
             var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule;
-            assetbundleresourcemodule.reloadData();
+            assetbundleresourcemodule.ReloadData();
         }
 
         /// <summary>

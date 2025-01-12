@@ -50,13 +50,13 @@ namespace TResource
                 RequestCallBack = requestCallBack;
             }
 
-            public void onCreate()
+            public void OnCreate()
             {
                 RequestUid = 0;
                 RequestCallBack = null;
             }
 
-            public void onDispose()
+            public void OnDispose()
             {
                 RequestUid = 0;
                 RequestCallBack = null;
@@ -112,9 +112,9 @@ namespace TResource
             mAssetAsyncRequest = null;
         }
 
-        public override void onCreate()
+        public override void OnCreate()
         {
-            base.onCreate();
+            base.OnCreate();
             AssetType = null;
             mAssetInfo = null;
             mRequestInfoList.Clear();
@@ -122,9 +122,9 @@ namespace TResource
             mAssetAsyncRequest = null;
         }
 
-        public override void onDispose()
+        public override void OnDispose()
         {
-            base.onDispose();
+            base.OnDispose();
             AssetType = null;
             mAssetInfo = null;
             mRequestInfoList.Clear();
@@ -140,7 +140,7 @@ namespace TResource
         /// <param name="assetInfo">Asset信息</param>
         /// <param name="loadType">加载类型</param>
         /// <param name="loadMethod">加载方法</param>
-        public void init(string assetPath, Type assetType, AssetInfo assetInfo, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        public void Init(string assetPath, Type assetType, AssetInfo assetInfo, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             ResourcePath = assetPath;
             AssetType = assetType;
@@ -149,7 +149,7 @@ namespace TResource
             LoadMethod = loadMethod;
             // 创建加载器时就添加相关Asset计数，确保资源加载管理正确
             // 后续加载取消时会返还对应计数
-            mAssetInfo.retain();
+            mAssetInfo.Retain();
         }
 
         /// <summary>
@@ -157,14 +157,14 @@ namespace TResource
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T getAsset<T>() where T : UnityEngine.Object
+        public T GetAsset<T>() where T : UnityEngine.Object
         {
             if (!IsDone)
             {
-                loadImmediately();
+                LoadImmediately();
             }
-            var asset = mAssetInfo.getResource<T>();
-            mAssetInfo.retain();
+            var asset = mAssetInfo.GetResource<T>();
+            mAssetInfo.Retain();
             return asset;
         }
 
@@ -173,13 +173,13 @@ namespace TResource
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T obtainAsset<T>() where T : UnityEngine.Object
+        public T ObtainAsset<T>() where T : UnityEngine.Object
         {
             if (!IsDone)
             {
-                loadImmediately();
+                LoadImmediately();
             }
-            var asset = mAssetInfo.getResource<T>();
+            var asset = mAssetInfo.GetResource<T>();
             return asset;
         }
 
@@ -190,23 +190,23 @@ namespace TResource
         /// <typeparam name="T"></typeparam>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public T bindAsset<T>(UnityEngine.Object owner) where T : UnityEngine.Object
+        public T BindAsset<T>(UnityEngine.Object owner) where T : UnityEngine.Object
         {
             if (!IsDone)
             {
-                loadImmediately();
+                LoadImmediately();
             }
-            T asset = mAssetInfo.getResource<T>();
-            mAssetInfo.retainOwner(owner);
+            T asset = mAssetInfo.GetResource<T>();
+            mAssetInfo.RetainOwner(owner);
             return asset;
         }
 
         /// <summary>
         /// 添加资源引用，引用计数+1(用于不需要获取指定Asset直接添加计数的情况)
         /// </summary>
-        public void retainAsset()
+        public void RetainAsset()
         {
-            mAssetInfo.retain();
+            mAssetInfo.Retain();
         }
 
         /// <summary>
@@ -216,9 +216,9 @@ namespace TResource
         /// <typeparam name="T"></typeparam>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public void releaseAsset()
+        public void ReleaseAsset()
         {
-            mAssetInfo.release();
+            mAssetInfo.Release();
         }
 
         /// <summary>
@@ -228,16 +228,16 @@ namespace TResource
         /// <typeparam name="T"></typeparam>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public bool releaseOwner(UnityEngine.Object owner)
+        public bool ReleaseOwner(UnityEngine.Object owner)
         {
-            return mAssetInfo.releaseOwner(owner);
+            return mAssetInfo.ReleaseOwner(owner);
         }
 
         /// <summary>
         /// 获取索引计数
         /// </summary>
         /// <returns></returns>
-        public int getReferenceCount()
+        public int GetReferenceCount()
         {
             return mAssetInfo != null ? mAssetInfo.RefCount : 0;
         }
@@ -246,7 +246,7 @@ namespace TResource
         /// 获取索引计数
         /// </summary>
         /// <returns></returns>
-        public int getOwnerNumber()
+        public int GetOwnerNumber()
         {
             return mAssetInfo != null ? mAssetInfo.ReferenceOwnerList.Count : 0;
         }
@@ -254,26 +254,26 @@ namespace TResource
         /// <summary>
         /// 响应资源加载
         /// </summary>
-        protected override void onLoad()
+        protected override void OnLoad()
         {
-            base.onLoad();
+            base.OnLoad();
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始加载Asset:{ResourcePath}!");
         }
 
         /// <summary>
         /// 响应资源加载取消(处理资源加载取消的情况)
         /// </summary>
-        protected override void onCancel()
+        protected override void OnCancel()
         {
-            base.onCancel();
+            base.OnCancel();
         }
 
         /// <summary>
         /// 响应加载完成
         /// </summary>
-        protected override void onComplete()
+        protected override void OnComplete()
         {
-            base.onComplete();
+            base.OnComplete();
             // 修改资源准备状态(表示资源准备完成，可以获取或者判定卸载)
             mAssetInfo.IsReady = true;
 
@@ -282,7 +282,7 @@ namespace TResource
             for(int i = 0; i < mRequestInfoList.Count; i++)
             {
                 mRequestInfoList[i].RequestCallBack?.Invoke(this, mRequestInfoList[i].RequestUid);
-                removeRequest(mRequestInfoList[i].RequestUid);
+                RemoveRequest(mRequestInfoList[i].RequestUid);
                 i--;
             }
             mRequestInfoList.Clear();
@@ -290,7 +290,7 @@ namespace TResource
 
             // 上层多个加载逻辑回调，在完成后根据调用getAsset或bindAsset情况去添加计数和绑定
             // 针对当前Asset的加载的基础计数已经在加载之前就完成计数的添加了，这里只需返回主Asset和主AB的提前计数即可
-            mAssetInfo.release();
+            mAssetInfo.Release();
         }
 
         /// <summary>
@@ -299,16 +299,16 @@ namespace TResource
         /// <param name="requestUID"></param>
         /// <param name="loadAssetCompleteCallBack"></param>
         /// <returns></returns>
-        public bool addRequest(int requestUID, Action<AssetLoader, int> loadAssetCompleteCallBack)
+        public bool AddRequest(int requestUID, Action<AssetLoader, int> loadAssetCompleteCallBack)
         {
             if (!mRequestUidAndInfoMap.ContainsKey(requestUID))
             {
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}绑定Asset:{ResourcePath}加载请求UID:{requestUID}成功!");
-                var assetRequestInfo = ObjectPool.Singleton.pop<AssetRequestInfo>();
+                var assetRequestInfo = ObjectPool.Singleton.Pop<AssetRequestInfo>();
                 assetRequestInfo.init(requestUID, loadAssetCompleteCallBack);
                 mRequestInfoList.Add(assetRequestInfo);
                 mRequestUidAndInfoMap.Add(requestUID, assetRequestInfo);
-                LoaderManager.Singleton.addAssetRequestUID(requestUID, ResourcePath);
+                LoaderManager.Singleton.AddAssetRequestUID(requestUID, ResourcePath);
                 return true;
             }
             else
@@ -323,16 +323,16 @@ namespace TResource
         /// </summary>
         /// <param name="requestUID"></param>
         /// <returns></returns>
-        public override bool cancelRequest(int requestUID)
+        public override bool CancelRequest(int requestUID)
         {
-            base.cancelRequest(requestUID);
-            if(removeRequest(requestUID))
+            base.CancelRequest(requestUID);
+            if(RemoveRequest(requestUID))
             {
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}取消请求UID:{requestUID}成功!");
                 // 所有请求都取消表示没人再请求此Asset了
                 if (mRequestUidAndInfoMap.Count == 0)
                 {
-                    cancel();
+                    Cancel();
                 }
                 return true;
             }
@@ -347,7 +347,7 @@ namespace TResource
         /// </summary>
         /// <param name="requestUID"></param>
         /// <returns></returns>
-        private bool removeRequest(int requestUID)
+        private bool RemoveRequest(int requestUID)
         {
             AssetRequestInfo assetRequestInfo;
             if (mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
@@ -355,8 +355,8 @@ namespace TResource
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}移除请求UID:{requestUID}成功!");
                 mRequestInfoList.Remove(assetRequestInfo);
                 mRequestUidAndInfoMap.Remove(requestUID);
-                LoaderManager.Singleton.removeAssetRequestUID(requestUID);
-                ObjectPool.Singleton.push<AssetRequestInfo>(assetRequestInfo);
+                LoaderManager.Singleton.RemoveAssetRequestUID(requestUID);
+                ObjectPool.Singleton.Push<AssetRequestInfo>(assetRequestInfo);
                 return true;
             }
             else

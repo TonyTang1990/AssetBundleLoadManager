@@ -44,20 +44,20 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         // 减掉场景计数后，切换场景完成后再强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
         if (mCurrentSceneAssetLoader != null)
         {
-            mCurrentSceneAssetLoader.releaseAssetBundle();
+            mCurrentSceneAssetLoader.ReleaseAssetBundle();
             mCurrentSceneAssetLoader = null;
         }
 
         var sceneAssetBundlePath = scenePath.Replace(".unity", string.Empty);
         TResource.BundleLoader bundleLoader;
         // 场景Asset比较特别，不是作为Asset加载，所以这里只加载所在AssetBundle
-        TResource.ResourceModuleManager.Singleton.requstAssetBundleSync(
+        TResource.ResourceModuleManager.Singleton.RequstAssetBundleSync(
         sceneAssetBundlePath,
         out bundleLoader,
         (loader, requestUid) =>
         {
             mCurrentSceneAssetLoader = loader;
-            mCurrentSceneAssetLoader?.retainAssetBundle();
+            mCurrentSceneAssetLoader?.RetainAssetBundle();
             var sceneName = Path.GetFileNameWithoutExtension(scenePath);
             SceneManager.LoadScene(sceneName);
         },
@@ -78,20 +78,20 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         // 减掉场景计数后，切换场景完成后再强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
         if (mCurrentSceneAssetLoader != null)
         {
-            mCurrentSceneAssetLoader.releaseAssetBundle();
+            mCurrentSceneAssetLoader.ReleaseAssetBundle();
             mCurrentSceneAssetLoader = null;
         }
 
         var sceneAssetBundlePath = Path.GetPathRoot(scenePath);
         TResource.BundleLoader bundleLoader;
         // 场景Asset比较特别，不是作为Asset加载，所以这里只加载所在AssetBundle
-        TResource.ResourceModuleManager.Singleton.requstAssetBundleAsync(
+        TResource.ResourceModuleManager.Singleton.RequstAssetBundleAsync(
         sceneAssetBundlePath,
         out bundleLoader,
         (loader, requestUid) =>
         {
             mCurrentSceneAssetLoader = loader;
-            mCurrentSceneAssetLoader.retainAssetBundle();
+            mCurrentSceneAssetLoader.RetainAssetBundle();
             var sceneName = Path.GetFileNameWithoutExtension(scenePath);
             SceneManager.LoadSceneAsync(sceneName);
         },
@@ -119,7 +119,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         }
 #endif
         // 在新场景加载后再回收资源是为了避免不同场景引用相同资源导致频繁加载卸载
-        TResource.ResourceModuleManager.Singleton.unloadAllUnsedNormalLoadedResources();
+        TResource.ResourceModuleManager.Singleton.UnloadAllUnsedNormalLoadedResources();
     }
 
     /// <summary>

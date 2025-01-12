@@ -394,8 +394,8 @@ namespace TResource
             GUILayout.Label($"AssetBundle资源回收FPS门槛 : {assetBundleResourceModule.ResourceRecycleFPSThreshold}", GUILayout.Width(200f), GUILayout.Height(20f));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
-            var normalLoadedAssetBundleInfoMap = assetBundleResourceModule.getSpecificLoadTypeAssetBundleInfoMap(ResourceLoadType.NormalLoad);
-            var permanentLoadedAssetBundleInfoMap = assetBundleResourceModule.getSpecificLoadTypeAssetBundleInfoMap(ResourceLoadType.PermanentLoad);
+            var normalLoadedAssetBundleInfoMap = assetBundleResourceModule.GetSpecificLoadTypeAssetBundleInfoMap(ResourceLoadType.NormalLoad);
+            var permanentLoadedAssetBundleInfoMap = assetBundleResourceModule.GetSpecificLoadTypeAssetBundleInfoMap(ResourceLoadType.PermanentLoad);
             if (!mTextFilter.Equals(string.Empty))
             {
                 if (mFilterTextChanged)
@@ -454,7 +454,7 @@ namespace TResource
                 GUILayout.Label(string.Format("正常已加载AssetBundle数量 : {0}", normalLoadedAssetBundleInfoMap.Count));
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(string.Format("可回收正常已加载非常驻AssetBundle数量 : {0}", assetBundleResourceModule.getNormalUnsedABNumber()));
+                GUILayout.Label(string.Format("可回收正常已加载非常驻AssetBundle数量 : {0}", assetBundleResourceModule.GetNormalUnsedABNumber()));
                 EditorGUILayout.EndHorizontal();
                 foreach (var loadedAssetBundleInfo in normalLoadedAssetBundleInfoMap)
                 {
@@ -578,13 +578,13 @@ namespace TResource
         private void displayAssetBundleLoaderInfoUI()
         {
             EditorGUILayout.BeginVertical();
-            LoaderManager.Singleton.getAllAssetBundleLoader(ref mAllAssetBundleLoader);
+            LoaderManager.Singleton.GetAllAssetBundleLoader(ref mAllAssetBundleLoader);
             GUILayout.Label(string.Format("AssetBundle加载器信息 : {0}", mAllAssetBundleLoader.Count == 0 ? "无" : string.Empty));
             foreach (var assetBundleLoader in mAllAssetBundleLoader)
             {
                 displayOneAssetBundleLoaderInfoUI(assetBundleLoader);
             }
-            LoaderManager.Singleton.getAllAssetLoader(ref mAllAssetLoader);
+            LoaderManager.Singleton.GetAllAssetLoader(ref mAllAssetLoader);
             GUILayout.Label(string.Format("Asset加载器信息 : {0}", mAllAssetLoader.Count == 0 ? "无" : string.Empty));
             foreach (var assetLoader in mAllAssetLoader)
             {
@@ -659,7 +659,7 @@ namespace TResource
         private void displayAssetDatabaseLoaderInfoUI()
         {
             EditorGUILayout.BeginVertical();
-            LoaderManager.Singleton.getAllAssetLoader(ref mAllAssetDatabaseLoader);
+            LoaderManager.Singleton.GetAllAssetLoader(ref mAllAssetDatabaseLoader);
             GUILayout.Label(string.Format("AssetDatabase加载器信息 : {0}", mAllAssetDatabaseLoader.Count == 0 ? "无" : string.Empty));
             foreach (var waitLoadedAssetLoader in mAllAssetDatabaseLoader)
             {
@@ -705,8 +705,8 @@ namespace TResource
         private void displayAssetDatabaseReferenceInfoUI()
         {
             var assetBundleResourceModule = ResourceModuleManager.Singleton.CurrentResourceModule;
-            var normalLoadedAssetInfoMap = assetBundleResourceModule.getSpecificLoadTypeAssetInfoMap(ResourceLoadType.NormalLoad);
-            var permanentLoadedAssetInfoMap = assetBundleResourceModule.getSpecificLoadTypeAssetInfoMap(ResourceLoadType.PermanentLoad);
+            var normalLoadedAssetInfoMap = assetBundleResourceModule.GetSpecificLoadTypeAssetInfoMap(ResourceLoadType.NormalLoad);
+            var permanentLoadedAssetInfoMap = assetBundleResourceModule.GetSpecificLoadTypeAssetInfoMap(ResourceLoadType.PermanentLoad);
             if (!mTextFilter.Equals(string.Empty))
             {
                 if (mFilterTextChanged)
@@ -765,7 +765,7 @@ namespace TResource
                 GUILayout.Label(string.Format("正常已加载Asset数量 : {0}", normalLoadedAssetInfoMap.Count));
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(string.Format("可回收正常已加载非常驻Asset数量 : {0}", assetBundleResourceModule.getNormalUnsedAssetNumber()));
+                GUILayout.Label(string.Format("可回收正常已加载非常驻Asset数量 : {0}", assetBundleResourceModule.GetNormalUnsedAssetNumber()));
                 EditorGUILayout.EndHorizontal();
                 foreach (var loadedAssetInfo in normalLoadedAssetInfoMap)
                 {
@@ -814,7 +814,7 @@ namespace TResource
             if (isAssetBundleModule())
             {
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-                assetbundleresourcemodule.forceUnloadSpecificAssetBundle(abnPath);
+                assetbundleresourcemodule.ForceUnloadSpecificAssetBundle(abnPath);
             }
             else
             {

@@ -1,5 +1,5 @@
 Android|9158a52448cebb0301d7a8ba62f23ef4
-buildlogtep.json|6a8432da97ba046675a982f75cd0bc85
+buildlogtep.json|cd8fe91d7fdf4a715a745b6189810421
 shaderlist.android|e1098b090247184119f536e524ddf5ba
 assets/res/actors/cube.android|2ea370230ef8db1f2bcef0053f1289b5
 assets/res/actors/sphere.android|7b247c742d3f8df6857a37c181a9f50c

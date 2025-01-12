@@ -25,9 +25,9 @@ namespace TResource
         /// <summary>
         /// 资源加载模块初始化
         /// </summary>
-        public override void init()
+        public override void Init()
         {
-            base.init();
+            base.Init();
 
             mUnsedAssetInfoList = new List<AssetInfo>();
             ResLoadMode = ResourceLoadMode.AssetDatabase;
@@ -42,13 +42,13 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected override int realRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        protected override int RealRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             var requestUID = LoaderManager.Singleton.GetNextRequestUID();
             var assetDatabaseLoader = LoaderManager.Singleton.createAssetDatabaseLoader<T>(assetPath, loadType, loadMethod) as AssetDatabaseLoader;
-            assetDatabaseLoader.addRequest(requestUID, completeHandler);
+            assetDatabaseLoader.AddRequest(requestUID, completeHandler);
             assetLoader = assetDatabaseLoader as AssetDatabaseLoader;
-            assetDatabaseLoader.load();
+            assetDatabaseLoader.Load();
             return requestUID;
         }
 
@@ -61,7 +61,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected override int realRequestAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        protected override int RealRequestAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             // AssetDatabase模式不支持AssetBundle加载，直接返回逻辑回调
             abLoader = null;
@@ -73,14 +73,14 @@ namespace TResource
         /// 真正执行资源卸载指定类型不再使用的资源接口
         /// </summary>
         /// <param name="resourceloadtype"></param>
-        protected override void doUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
+        protected override void DoUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
         {
             // 递归判定卸载所有不再可用的正常加载资源
             bool hasUnusedRes = true;
             while (hasUnusedRes)
             {
                 // 检查回收不再使用正常已加载的AB
-                checkUnusedResource();
+                CheckUnusedResource();
 
                 if (mUnsedAssetInfoList.Count == 0)
                 {
@@ -89,7 +89,7 @@ namespace TResource
                 }
                 else
                 {
-                    doUnloadAllUnusedResources();
+                    DoUnloadAllUnusedResources();
                 }
             }
 
@@ -101,17 +101,17 @@ namespace TResource
         /// <summary>
         /// 执行不再使用资源监察
         /// </summary>
-        protected override void doCheckUnusedResource()
+        protected override void DoCheckUnusedResource()
         {
-            base.doCheckUnusedResource();
-            checkUnsedAssetResources();
-            doUnloadUnsedAssetWithLimit(true);
+            base.DoCheckUnusedResource();
+            CheckUnsedAssetResources();
+            DoUnloadUnsedAssetWithLimit(true);
         }
 
         /// <summary>
         /// 检查未使用Asset
         /// </summary>
-        protected void checkUnsedAssetResources()
+        protected void CheckUnsedAssetResources()
         {
             mUnsedAssetInfoList.Clear();
             var time = Time.time;
@@ -148,13 +148,13 @@ namespace TResource
         /// 卸载未使用的Asset
         /// </summary>
         /// <param name="withLimitNumber">是否限制卸载数量</param>
-        protected void doUnloadUnsedAssetWithLimit(bool withLimitNumber = false)
+        protected void DoUnloadUnsedAssetWithLimit(bool withLimitNumber = false)
         {
             for (int i = 0; i < mUnsedAssetInfoList.Count; i++)
             {
                 if (withLimitNumber == false || (withLimitNumber && i < MaxUnloadABNumberPerFrame))
                 {
-                    deleteAssetInfo(mUnsedAssetInfoList[i].ResourcePath);
+                    DeleteAssetInfo(mUnsedAssetInfoList[i].ResourcePath);
                 }
                 else
                 {
@@ -167,7 +167,7 @@ namespace TResource
         /// <summary>
         /// 强制卸载所有资源(只在特定情况下用 e.g. 热更后卸载所有已加载资源后重新初始化加载AB资源)***慎用***
         /// </summary>
-        public override void forceUnloadAllResources()
+        public override void ForceUnloadAllResources()
         {
             // 强制清除待卸载AssetInfo信息，避免强制清除后依然触发清理报错
             mUnsedAssetInfoList.Clear();
@@ -178,7 +178,7 @@ namespace TResource
                 if (mAllLoadedNormalAssetInfoMap.ContainsKey(assetPath) ||
                     mAllLoadedPermanentAssetInfoMap.ContainsKey(assetPath))
                 {
-                    deleteAssetInfo(assetPath);
+                    DeleteAssetInfo(assetPath);
                 }
             }
         }

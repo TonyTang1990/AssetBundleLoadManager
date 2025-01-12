@@ -13,15 +13,15 @@ namespace TUI
 {
     /// <summary>
     /// TRawImage.cs
-    /// ÖØÐ´RawImage×é¼þ£¬·½±ã×ÊÔ´¹ÜÀíºÍ×Ô¶¨ÒåÒ»Ð©ÌØÐÔ
+    /// ï¿½ï¿½Ð´RawImageï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Ò»Ð©ï¿½ï¿½ï¿½ï¿½
     /// Note:
-    /// Ä¬ÈÏÔÚ±à¼­Æ÷¸³ÖµµÄÍ¨¹ýÒÀÀµ¼ÓÔØµÄ²»Ìá¹©×ÊÔ´ÐÅÏ¢½Ó¿Ú(ABI),
-    /// ±ÜÃâÒÀÀµµ±Ç°TRawImage×é¼þÐ¶ÔØÊ±·¢ÏÖ×ÊÔ´±»ÌáÇ°Ð¶ÔØ
+    /// Ä¬ï¿½ï¿½ï¿½Ú±à¼­ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ØµÄ²ï¿½ï¿½á¹©ï¿½ï¿½Ô´ï¿½ï¿½Ï¢ï¿½Ó¿ï¿½(ABI),
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°TRawImageï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½Ç°Ð¶ï¿½ï¿½
     /// </summary>
     public class TRawImage : RawImage
     {
         /// <summary>
-        /// Asset¼ÓÔØÆ÷
+        /// Assetï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         public TResource.AssetLoader Loader
         {
@@ -30,19 +30,19 @@ namespace TUI
         }
 
         /// <summary>
-        /// µ±Ç°Í¼Æ¬Ãû
+        /// ï¿½ï¿½Ç°Í¼Æ¬ï¿½ï¿½
         /// </summary>
         [HideInInspector]
         public string TextureName;
 
         /// <summary>
-        /// ´òÓ¡µ±Ç°TImageÍ¼¼¯Ê¹ÓÃÐÅÏ¢
+        /// ï¿½ï¿½Ó¡ï¿½ï¿½Ç°TImageÍ¼ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½Ï¢
         /// </summary>
         public void printTRawImageInfo()
         {
             DIYLog.Log($"TextureName = {TextureName}");
-            var refcount = Loader != null ? Loader.getReferenceCount().ToString() : "ÎÞ";
-            DIYLog.Log($"TextureNameÒýÓÃ¼ÆÊý = {refcount}");
+            var refcount = Loader != null ? Loader.GetReferenceCount().ToString() : "ï¿½ï¿½";
+            DIYLog.Log($"TextureNameï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ = {refcount}");
         }
     }
 }

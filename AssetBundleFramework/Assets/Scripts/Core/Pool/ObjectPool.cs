@@ -17,12 +17,12 @@ public interface IRecycle
     /// <summary>
     /// 创建时调用接口
     /// </summary>
-    void onCreate();
+    void OnCreate();
 
     /// <summary>
     /// 回收时调用接口
     /// </summary>
-    void onDispose();
+    void OnDispose();
 }
 
 /// <summary>
@@ -54,12 +54,12 @@ public class ObjectPool
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="number"></param>
-    public void initialize<T>(int number) where T : IRecycle
+    public void Initialize<T>(int number) where T : IRecycle
     {
         for(int i = 0; i < number; i++)
         {
             var obj = Activator.CreateInstance<T>();
-            push<T>(obj);
+            Push<T>(obj);
         }
         var hashcode = typeof(T).GetHashCode();
         //DIYLog.Log(string.Format("初始化类型:{0}的剩余数量:{1}", typeof(T).Name, ObjectPoolMap[hashcode].Count));
@@ -70,9 +70,9 @@ public class ObjectPool
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="obj"></param>
-    public void push<T>(T obj) where T : IRecycle
+    public void Push<T>(T obj) where T : IRecycle
     {
-        obj.onDispose();
+        obj.OnDispose();
         var hashcode = obj.GetType().GetHashCode();
         if (!ObjectPoolMap.ContainsKey(hashcode))
         {
@@ -88,18 +88,18 @@ public class ObjectPool
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public T pop<T>() where T : IRecycle
+    public T Pop<T>() where T : IRecycle
     {
         var hashcode = typeof(T).GetHashCode();
         if (ObjectPoolMap.ContainsKey(hashcode))
         {
             var instance = ObjectPoolMap[hashcode].Pop();
-            instance.onCreate();
+            instance.OnCreate();
             //DIYLog.Log(string.Format("类型:{0}出对象池!", typeof(T).Name));
             //DIYLog.Log(string.Format("池里类型:{0}的剩余数量:{1}", typeof(T).Name, ObjectPoolMap[hashcode].Count));
             if (ObjectPoolMap[hashcode].Count == 0)
             {
-                clear<T>();
+                Clear<T>();
             }
             return (T)instance;
         }
@@ -117,7 +117,7 @@ public class ObjectPool
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public bool clear<T>() where T : IRecycle
+    public bool Clear<T>() where T : IRecycle
     {
         var hashcode = typeof(T).GetHashCode();
         if(ObjectPoolMap.ContainsKey(hashcode))
@@ -135,7 +135,7 @@ public class ObjectPool
     /// <summary>
     /// 清除所有对象缓存
     /// </summary>
-    public void clearAll()
+    public void ClearAll()
     {
         ObjectPoolMap.Clear();
     }

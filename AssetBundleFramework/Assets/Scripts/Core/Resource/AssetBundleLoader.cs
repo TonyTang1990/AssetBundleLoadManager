@@ -22,14 +22,14 @@ namespace TResource
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public override AssetBundle getAssetBundle()
+        public override AssetBundle GetAssetBundle()
         {
             if (!IsDone)
             {
-                loadImmediately();
+                LoadImmediately();
             }
-            var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
-            AssetBundleInfo.retain();
+            var assetBundle = AssetBundleInfo.GetResource<AssetBundle>();
+            AssetBundleInfo.Retain();
             return assetBundle;
         }
 
@@ -38,13 +38,13 @@ namespace TResource
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public override AssetBundle obtainAssetBundle()
+        public override AssetBundle ObtainAssetBundle()
         {
             if (!IsDone)
             {
-                loadImmediately();
+                LoadImmediately();
             }
-            var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
+            var assetBundle = AssetBundleInfo.GetResource<AssetBundle>();
             return assetBundle;
         }
 
@@ -54,14 +54,14 @@ namespace TResource
         /// <typeparam name="T"></typeparam>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public override AssetBundle bindAssetBundle(UnityEngine.Object owner)
+        public override AssetBundle BindAssetBundle(UnityEngine.Object owner)
         {
             if (!IsDone)
             {
-                loadImmediately();
+                LoadImmediately();
             }
-            var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
-            AssetBundleInfo.retainOwner(owner);
+            var assetBundle = AssetBundleInfo.GetResource<AssetBundle>();
+            AssetBundleInfo.RetainOwner(owner);
             return assetBundle;
         }
     }

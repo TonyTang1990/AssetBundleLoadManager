@@ -80,7 +80,7 @@ public class TimerManager
     {
         var newtimeruid = getNewTimerUID();
         //DIYLog.Log(string.Format("添加UID定时器:{0}", newtimeruid));
-        var timer = ObjectPool.Singleton.pop<Timer>();
+        var timer = ObjectPool.Singleton.Pop<Timer>();
         timer.setData(newtimeruid, callback, delaytime, true, triggeercondition);
         mLaterAddedUpdateTimerMap.Add(newtimeruid, timer);
         return timer;
@@ -97,7 +97,7 @@ public class TimerManager
     {
         var newtimeruid = getNewTimerUID();
         //DIYLog.Log(string.Format("添加UID定时器:{0}", newtimeruid));
-        var timer = ObjectPool.Singleton.pop<Timer>();
+        var timer = ObjectPool.Singleton.Pop<Timer>();
         timer.setData(newtimeruid, callback, delaytime, false, triggeercondition);
         mLaterAddedFixedUpdateTimerMap.Add(newtimeruid, timer);
         return timer;
@@ -114,7 +114,7 @@ public class TimerManager
         {
             //DIYLog.Log(string.Format("移除UID定时器:{0}", uid));
             var timerdata = TimerMap[uid];
-            ObjectPool.Singleton.push<Timer>(timerdata);
+            ObjectPool.Singleton.Push<Timer>(timerdata);
             TimerMap.Remove(uid);
             return true;
         }

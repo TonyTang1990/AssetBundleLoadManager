@@ -57,7 +57,7 @@ namespace TResource
         /// </summary>
         public virtual bool IsUnsed
         {
-            get { return IsReady && RefCount <= 0 && updateOwnerReference() == 0 && LoadType == ResourceLoadType.NormalLoad; }
+            get { return IsReady && RefCount <= 0 && UpdateOwnerReference() == 0 && LoadType == ResourceLoadType.NormalLoad; }
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace TResource
             mReferenceOwnerList = new List<WeakReference>();
         }
 
-        public virtual void onCreate()
+        public virtual void OnCreate()
         {
             ResourcePath = null;
             LastUsedTime = 0f;
@@ -115,7 +115,7 @@ namespace TResource
             mReferenceOwnerList.Clear();
         }
 
-        public virtual void onDispose()
+        public virtual void OnDispose()
         {
             ResourcePath = null;
             LastUsedTime = 0f;
@@ -129,7 +129,7 @@ namespace TResource
         /// 设置资源
         /// </summary>
         /// <returns></returns>
-        public void setResource(UnityEngine.Object asset)
+        public void SetResource(UnityEngine.Object asset)
         {
             mResource = asset;
         }
@@ -138,16 +138,16 @@ namespace TResource
         /// 获取资源
         /// </summary>
         /// <returns></returns>
-        public T getResource<T>() where T : UnityEngine.Object
+        public T GetResource<T>() where T : UnityEngine.Object
         {
-            updateLastUsedTime();
+            UpdateLastUsedTime();
             return mResource as T;
         }
 
         /// <summary>
         /// 添加引用，引用计数+1
         /// </summary>
-        public virtual void retain()
+        public virtual void Retain()
         {
             RefCount++;
         }
@@ -155,7 +155,7 @@ namespace TResource
         /// <summary>
         /// 释放引用，引用计数-1
         /// </summary>
-        public virtual void release()
+        public virtual void Release()
         {
             var newRefCount = RefCount - 1;
             if(newRefCount < 0)
@@ -168,7 +168,7 @@ namespace TResource
         /// <summary>
         /// 更新最近使用时间
         /// </summary>
-        public void updateLastUsedTime()
+        public void UpdateLastUsedTime()
         {
             LastUsedTime = Time.time;
         }
@@ -178,7 +178,7 @@ namespace TResource
         /// 所有owner都销毁且所属ab引用计数归零可回收
         /// </summary>
         /// <param name="owner"></param>
-        public void retainOwner(UnityEngine.Object owner)
+        public void RetainOwner(UnityEngine.Object owner)
         {
             if (owner == null)
             {
@@ -204,7 +204,7 @@ namespace TResource
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public bool releaseOwner(UnityEngine.Object owner)
+        public bool ReleaseOwner(UnityEngine.Object owner)
         {
             if (owner == null)
             {
@@ -230,7 +230,7 @@ namespace TResource
         /// 更新Asset有效的绑定对象计数
         /// </summary>
         /// <returns></returns>
-        protected int updateOwnerReference()
+        protected int UpdateOwnerReference()
         {
             for (int i = 0; i < mReferenceOwnerList.Count; i++)
             {
@@ -247,7 +247,7 @@ namespace TResource
         /// <summary>
         /// 释放资源
         /// </summary>
-        public virtual void dispose()
+        public virtual void Dispose()
         {
             ResourcePath = null;
             LastUsedTime = 0f;
@@ -261,7 +261,7 @@ namespace TResource
         /// <summary>
         /// 打印当前AB所有使用者信息以及索引计数(开发用)
         /// </summary>
-        public void printAllOwnersNameAndRefCount()
+        public void PrintAllOwnersNameAndRefCount()
         {
             ResourceLogger.log(string.Format("Resource Path: {0}", ResourcePath));
             ResourceLogger.log(string.Format("Ref Count: {0}", RefCount));

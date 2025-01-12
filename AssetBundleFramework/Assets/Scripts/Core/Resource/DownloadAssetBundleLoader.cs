@@ -23,14 +23,14 @@ namespace TResource
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public override AssetBundle getAssetBundle()
+        public override AssetBundle GetAssetBundle()
         {
             if (!IsDone)
             {
                 Debug.LogError($"动态资源:{ResourcePath}不支持立即获取AssetBundle!");
                 return null;
             }
-            return AssetBundleInfo.getResource<AssetBundle>();
+            return AssetBundleInfo.GetResource<AssetBundle>();
         }
 
         /// <summary>
@@ -38,14 +38,14 @@ namespace TResource
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public override AssetBundle obtainAssetBundle()
+        public override AssetBundle ObtainAssetBundle()
         {
             if (!IsDone)
             {
                 Debug.LogError($"动态资源:{ResourcePath}不支持立即获取AssetBundle!");
                 return null;
             }
-            var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
+            var assetBundle = AssetBundleInfo.GetResource<AssetBundle>();
             return assetBundle;
         }
 
@@ -55,15 +55,15 @@ namespace TResource
         /// <typeparam name="T"></typeparam>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public override AssetBundle bindAssetBundle(UnityEngine.Object owner)
+        public override AssetBundle BindAssetBundle(UnityEngine.Object owner)
         {
             if (!IsDone)
             {
                 Debug.LogError($"动态资源:{ResourcePath}不支持立即获取AssetBundle并绑定对象!");
                 return null;
             }
-            var assetBundle = AssetBundleInfo.getResource<AssetBundle>();
-            AssetBundleInfo.retainOwner(owner);
+            var assetBundle = AssetBundleInfo.GetResource<AssetBundle>();
+            AssetBundleInfo.RetainOwner(owner);
             return assetBundle;
         }
     }

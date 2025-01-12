@@ -111,7 +111,7 @@ public class AssetBuildInfoAsset : ScriptableObject
     /// <summary>
     /// 初始化相关数据
     /// </summary>
-    public void init()
+    public void Init()
     {
         mBuildAssetInfoMap.Clear();
         for (int i = 0, length = BuildAssetInfoList.Count; i < length; i++)
@@ -142,7 +142,7 @@ public class AssetBuildInfoAsset : ScriptableObject
     /// </summary>
     /// <param name="assetpath"></param>
     /// <returns></returns>
-    public string getAssetABPath(string assetpath)
+    public string GetAssetABPath(string assetpath)
     {
         BuildAssetInfo buildAssetInfo;
         if(mBuildAssetInfoMap.TryGetValue(assetpath, out buildAssetInfo))

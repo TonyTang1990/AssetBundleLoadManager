@@ -135,7 +135,7 @@ namespace TResource
             LoadState = ResourceLoadState.None;
         }
 
-        public virtual void onCreate()
+        public virtual void OnCreate()
         {
             ResourcePath = null;
             LoadMethod = ResourceLoadMethod.Sync;
@@ -143,7 +143,7 @@ namespace TResource
             LoadState = ResourceLoadState.None;
         }
 
-        public virtual void onDispose()
+        public virtual void OnDispose()
         {
             ResourcePath = null;
             LoadMethod = ResourceLoadMethod.Sync;
@@ -154,7 +154,7 @@ namespace TResource
         /// <summary>
         /// 触发资源加载
         /// </summary>
-        public virtual void load()
+        public virtual void Load()
         {
             if (!IsNoneState)
             {
@@ -162,18 +162,18 @@ namespace TResource
                 return;
             }
             LoadState = ResourceLoadState.Waiting;
-            LoaderManager.Singleton.addLoadTask(this);
+            LoaderManager.Singleton.AddLoadTask(this);
             // 同步加载就立刻触发，异步加载等待排队
             if (LoadMethod == ResourceLoadMethod.Sync)
             {
-                doLoad();
+                DoLoad();
             }
         }
 
         /// <summary>
         /// 触发立刻加载资源完成
         /// </summary>
-        public virtual void loadImmediately()
+        public virtual void LoadImmediately()
         {
             if(IsDone)
             {
@@ -187,13 +187,13 @@ namespace TResource
             }
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}ResourcePath:{ResourcePath}触发立刻加载!");
             LoadMethod = ResourceLoadMethod.Sync;
-            doLoad();
+            DoLoad();
         }
 
         /// <summary>
         /// 执行资源加载
         /// </summary>
-        public void doLoad()
+        public void DoLoad()
         {
             if (IsDone)
             {
@@ -203,16 +203,16 @@ namespace TResource
             // 已经触发加载的已经移除了加载任务，直接触发加载即可
             if(!IsLoading)
             {
-                LoaderManager.Singleton.removeLoadTask(this);
+                LoaderManager.Singleton.RemoveLoadTask(this);
             }
             LoadState = ResourceLoadState.Loading;
-            onLoad();
+            OnLoad();
         }
 
         /// <summary>
         /// 响应资源加载
         /// </summary>
-        protected virtual void onLoad()
+        protected virtual void OnLoad()
         {
 
         }
@@ -222,7 +222,7 @@ namespace TResource
         /// </summary>
         /// <param name="requiestUid"></param>
         /// <returns></returns>
-        public virtual bool cancelRequest(int requiestUid)
+        public virtual bool CancelRequest(int requiestUid)
         {
             return true;
         }
@@ -230,7 +230,7 @@ namespace TResource
         /// <summary>
         /// 触发资源加载失败
         /// </summary>
-        protected virtual void failed()
+        protected virtual void Failed()
         {
             if(!IsLoading)
             {
@@ -238,15 +238,15 @@ namespace TResource
                 return;
             }
             LoadState = ResourceLoadState.Error;
-            onFailed();
+            OnFailed();
             // 加载失败要通知完成，确保上层逻辑走完
-            onComplete();
+            OnComplete();
         }
 
         /// <summary>
         /// 响应资源加载失败(处理加载失败的情况)
         /// </summary>
-        protected virtual void onFailed()
+        protected virtual void OnFailed()
         {
             ResourceLogger.logErr($"Frame:{AbstractResourceModule.Frame}资源:{ResourcePath}加载失败!");
         }
@@ -257,7 +257,7 @@ namespace TResource
         /// 取消仅代表逻辑层面的加载请求取消，不代表资源加载的取消
         /// 资源在加载完成后依然能进入完成流程，最后会因为不满足索引计数和对象绑定要求而被卸载
         /// </summary>
-        protected virtual void cancel()
+        protected virtual void Cancel()
         {
             if (IsDone)
             {
@@ -265,13 +265,13 @@ namespace TResource
                 return;
             }
             LoadState = ResourceLoadState.Cancel;
-            onCancel();
+            OnCancel();
         }
 
         /// <summary>
         /// 响应资源加载取消(处理资源加载取消的情况)
         /// </summary>
-        protected virtual void onCancel()
+        protected virtual void OnCancel()
         {
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}资源:{ResourcePath}加载请求取消!");
         }
@@ -279,17 +279,17 @@ namespace TResource
         /// <summary>
         /// 触发资源加载完成
         /// </summary>
-        protected virtual void complete()
+        protected virtual void Complete()
         {
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}加载资源:{ResourcePath}完成!");
             LoadState = ResourceLoadState.Complete;
-            onComplete();
+            OnComplete();
         }
 
         /// <summary>
         /// 响应资源加载完成(一些数据清理和逻辑层回调)
         /// </summary>
-        protected virtual void onComplete()
+        protected virtual void OnComplete()
         {
 
         }

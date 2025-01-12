@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2023/5/2 19:19:07
+构建时间：2023/5/2 19:47:54
 
 --配置信息--
 Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : ByFileOrSubFolder

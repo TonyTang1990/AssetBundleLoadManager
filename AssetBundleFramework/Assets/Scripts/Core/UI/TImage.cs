@@ -41,7 +41,7 @@ namespace TUI
         public void printTImageInfo()
         {
             DIYLog.Log($"SpritePath = {SpritePath}");
-            var refcount = Loader != null ? Loader.getReferenceCount().ToString() : "无";
+            var refcount = Loader != null ? Loader.GetReferenceCount().ToString() : "无";
             DIYLog.Log($"SpritePath引用计数 = {refcount}");
         }
     }

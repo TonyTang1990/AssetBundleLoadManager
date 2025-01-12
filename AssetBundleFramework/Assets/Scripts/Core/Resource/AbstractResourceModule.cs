@@ -185,7 +185,7 @@ namespace TResource
         /// <summary>
         /// 资源加载模块初始化
         /// </summary>
-        public virtual void init()
+        public virtual void Init()
         {
             ResLoadMode = ResourceLoadMode.Invalide;
             EnableResourceRecyclingUnloadUnsed = true;
@@ -206,7 +206,7 @@ namespace TResource
         /// <summary>
         /// 重新加载数据(针对热更流程后需要重新加载部分数据的情况)
         /// </summary>
-        public virtual void reloadData()
+        public virtual void ReloadData()
         {
 
         }
@@ -219,13 +219,13 @@ namespace TResource
         /// <param name="ownerAssetBundlePath">所属AB路径</param>
         /// <param name="loadType">加载类型</param>
         /// <returns></returns>
-        public AssetInfo getOrCreateAssetInfo<T>(string assetPath, string ownerAssetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
+        public AssetInfo GetOrCreateAssetInfo<T>(string assetPath, string ownerAssetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
         {
-            AssetInfo assetInfo = getAssetInfo(assetPath);
+            AssetInfo assetInfo = GetAssetInfo(assetPath);
             if (assetInfo == null)
             {
-                assetInfo = createAssetInfo<T>(assetPath, ownerAssetBundlePath, loadType);
-                addAssetInfo(assetInfo);
+                assetInfo = CreateAssetInfo<T>(assetPath, ownerAssetBundlePath, loadType);
+                AddAssetInfo(assetInfo);
             }
             return assetInfo;
         }
@@ -235,7 +235,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        public AssetInfo getAssetInfo(string assetPath)
+        public AssetInfo GetAssetInfo(string assetPath)
         {
             AssetInfo assetInfo;
             if (mAllLoadedNormalAssetInfoMap.TryGetValue(assetPath, out assetInfo))
@@ -256,10 +256,10 @@ namespace TResource
         /// <param name="ownerAssetBundlePath">所属AB路径</param>
         /// <param name="loadType">加载类型</param>
         /// <returns></returns>
-        protected AssetInfo createAssetInfo<T>(string assetPath, string ownerAssetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
+        protected AssetInfo CreateAssetInfo<T>(string assetPath, string ownerAssetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad) where T : UnityEngine.Object
         {
-            AssetInfo assetInfo = ObjectPool.Singleton.pop<AssetInfo>();
-            assetInfo.init(assetPath, typeof(T), ownerAssetBundlePath, loadType);
+            AssetInfo assetInfo = ObjectPool.Singleton.Pop<AssetInfo>();
+            assetInfo.Init(assetPath, typeof(T), ownerAssetBundlePath, loadType);
             return assetInfo;
         }
 
@@ -268,7 +268,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetInfo"></param>
         /// <returns></returns>
-        protected bool addAssetInfo(AssetInfo assetInfo)
+        protected bool AddAssetInfo(AssetInfo assetInfo)
         {
             if (!mAllLoadedNormalAssetInfoMap.ContainsKey(assetInfo.ResourcePath) && !mAllLoadedPermanentAssetInfoMap.ContainsKey(assetInfo.ResourcePath))
             {
@@ -300,21 +300,21 @@ namespace TResource
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        public bool deleteAssetInfo(string assetPath)
+        public bool DeleteAssetInfo(string assetPath)
         {
             AssetInfo assetInfo;
             if (mAllLoadedNormalAssetInfoMap.TryGetValue(assetPath, out assetInfo))
             {
                 mAllLoadedNormalAssetInfoMap.Remove(assetPath);
-                assetInfo.dispose();
-                ObjectPool.Singleton.push<AssetInfo>(assetInfo);
+                assetInfo.Dispose();
+                ObjectPool.Singleton.Push<AssetInfo>(assetInfo);
                 return true;
             }
             else if(mAllLoadedPermanentAssetInfoMap.TryGetValue(assetPath, out assetInfo))
             {
                 mAllLoadedPermanentAssetInfoMap.Remove(assetPath);
-                assetInfo.dispose();
-                ObjectPool.Singleton.push<AssetInfo>(assetInfo);
+                assetInfo.Dispose();
+                ObjectPool.Singleton.Push<AssetInfo>(assetInfo);
                 return true;
             }
             else
@@ -330,18 +330,18 @@ namespace TResource
         /// <param name="assetBundlePath">AB路径</param>
         /// <param name="loadType">加载类型</param>
         /// <returns></returns>
-        public AssetBundleInfo getOrCreateAssetBundleInfo(string assetBundlePath, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        public AssetBundleInfo GetOrCreateAssetBundleInfo(string assetBundlePath, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
             if(string.IsNullOrEmpty(assetBundlePath))
             {
                 return null;
             }
-            AssetBundleInfo assetBundleInfo = getAssetBundleInfo(assetBundlePath);
+            AssetBundleInfo assetBundleInfo = GetAssetBundleInfo(assetBundlePath);
             if (assetBundleInfo == null)
             {
                 var depAssetBundlePaths = GetAssetBundleDpInfoDelegate(assetBundlePath);
-                assetBundleInfo = createAssetBundleInfo(assetBundlePath, depAssetBundlePaths, loadType);
-                addAssetBundleInfo(assetBundleInfo);
+                assetBundleInfo = CreateAssetBundleInfo(assetBundlePath, depAssetBundlePaths, loadType);
+                AddAssetBundleInfo(assetBundleInfo);
             }
             return assetBundleInfo;
         }
@@ -351,7 +351,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetBundlePath"></param>
         /// <returns></returns>
-        public AssetBundleInfo getAssetBundleInfo(string assetBundlePath)
+        public AssetBundleInfo GetAssetBundleInfo(string assetBundlePath)
         {
             if(string.IsNullOrEmpty(assetBundlePath))
             {
@@ -376,10 +376,10 @@ namespace TResource
         /// <param name="depAssetBundlePaths">依赖AB路径列表</param>
         /// <param name="loadType">加载类型</param>
         /// <returns></returns>
-        protected AssetBundleInfo createAssetBundleInfo(string assetBundlePath, string[] depAssetBundlePaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        protected AssetBundleInfo CreateAssetBundleInfo(string assetBundlePath, string[] depAssetBundlePaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
-            AssetBundleInfo assetBundleInfo = ObjectPool.Singleton.pop<AssetBundleInfo>();
-            assetBundleInfo.init(assetBundlePath, depAssetBundlePaths, loadType);
+            AssetBundleInfo assetBundleInfo = ObjectPool.Singleton.Pop<AssetBundleInfo>();
+            assetBundleInfo.Init(assetBundlePath, depAssetBundlePaths, loadType);
             return assetBundleInfo;
         }
 
@@ -388,7 +388,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetBundleInfo"></param>
         /// <returns></returns>
-        protected bool addAssetBundleInfo(AssetBundleInfo assetBundleInfo)
+        protected bool AddAssetBundleInfo(AssetBundleInfo assetBundleInfo)
         {
             if (!mAllLoadedNormalAssetBundleInfoMap.ContainsKey(assetBundleInfo.ResourcePath) && !mAllLoadedPermanentAssetBundleInfoMap.ContainsKey(assetBundleInfo.ResourcePath))
             {
@@ -420,21 +420,21 @@ namespace TResource
         /// </summary>
         /// <param name="assetBundlePath"></param>
         /// <returns></returns>
-        public bool deleteAssetBundleInfo(string assetBundlePath)
+        public bool DeleteAssetBundleInfo(string assetBundlePath)
         {
             AssetBundleInfo assetBundleInfo;
             if (mAllLoadedNormalAssetBundleInfoMap.TryGetValue(assetBundlePath, out assetBundleInfo))
             {
                 mAllLoadedNormalAssetBundleInfoMap.Remove(assetBundlePath);
-                assetBundleInfo.dispose();
-                ObjectPool.Singleton.push<AssetBundleInfo>(assetBundleInfo);
+                assetBundleInfo.Dispose();
+                ObjectPool.Singleton.Push<AssetBundleInfo>(assetBundleInfo);
                 return true;
             }
             else if(mAllLoadedPermanentAssetBundleInfoMap.TryGetValue(assetBundlePath, out assetBundleInfo))
             {
                 mAllLoadedPermanentAssetBundleInfoMap.Remove(assetBundlePath);
-                assetBundleInfo.dispose();
-                ObjectPool.Singleton.push<AssetBundleInfo>(assetBundleInfo);
+                assetBundleInfo.Dispose();
+                ObjectPool.Singleton.Push<AssetBundleInfo>(assetBundleInfo);
                 return true;
             }
             else
@@ -449,7 +449,7 @@ namespace TResource
         /// </summary>
         /// <param name="loadtype"></param>
         /// <returns></returns>
-        public Dictionary<string, AssetInfo> getSpecificLoadTypeAssetInfoMap(ResourceLoadType loadtype)
+        public Dictionary<string, AssetInfo> GetSpecificLoadTypeAssetInfoMap(ResourceLoadType loadtype)
         {
             if (loadtype == ResourceLoadType.NormalLoad)
             {
@@ -470,7 +470,7 @@ namespace TResource
         /// </summary>
         /// <param name="loadtype"></param>
         /// <returns></returns>
-        public Dictionary<string, AssetBundleInfo> getSpecificLoadTypeAssetBundleInfoMap(ResourceLoadType loadtype)
+        public Dictionary<string, AssetBundleInfo> GetSpecificLoadTypeAssetBundleInfoMap(ResourceLoadType loadtype)
         {
             if (loadtype == ResourceLoadType.NormalLoad)
             {
@@ -491,10 +491,10 @@ namespace TResource
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public bool releaseAsset(string assetPath)
+        public bool ReleaseAsset(string assetPath)
         {
-            var assetInfo = getAssetInfo(assetPath);
-            assetInfo?.release();
+            var assetInfo = GetAssetInfo(assetPath);
+            assetInfo?.Release();
             return assetInfo != null;
         }
 
@@ -504,10 +504,10 @@ namespace TResource
         /// <param name="assetPath"></param>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public bool unbindAsset(string assetPath, UnityEngine.Object owner)
+        public bool UnbindAsset(string assetPath, UnityEngine.Object owner)
         {
-            var assetInfo = getAssetInfo(assetPath);
-            assetInfo?.releaseOwner(owner);
+            var assetInfo = GetAssetInfo(assetPath);
+            assetInfo?.ReleaseOwner(owner);
             return assetInfo != null;
         }
 
@@ -516,10 +516,10 @@ namespace TResource
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public bool releaseAssetBundle(string assetBundlePath)
+        public bool ReleaseAssetBundle(string assetBundlePath)
         {
-            var assetBundleInfo = getAssetBundleInfo(assetBundlePath);
-            assetBundleInfo?.release();
+            var assetBundleInfo = GetAssetBundleInfo(assetBundlePath);
+            assetBundleInfo?.Release();
             return assetBundleInfo != null;
         }
 
@@ -529,10 +529,10 @@ namespace TResource
         /// <param name="assetBundlePath"></param>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public bool unbindAssetBundle(string assetBundlePath, UnityEngine.Object owner)
+        public bool UnbindAssetBundle(string assetBundlePath, UnityEngine.Object owner)
         {
-            var assetBundleInfo = getAssetBundleInfo(assetBundlePath);
-            assetBundleInfo?.releaseOwner(owner);
+            var assetBundleInfo = GetAssetBundleInfo(assetBundlePath);
+            assetBundleInfo?.ReleaseOwner(owner);
             return assetBundleInfo != null;
         }
         #endregion
@@ -547,7 +547,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public int requstAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object
+        public int RequstAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object
         {
             if (string.IsNullOrEmpty(assetPath))
             {
@@ -560,7 +560,7 @@ namespace TResource
             // 但不知道为什么打包出来的AB里面的加载路径依然是全小写,所以这里强制老版AB加载全小写
             assetPath = assetPath.ToLower();
 #endif
-            assetLoader = LoaderManager.Singleton.getAssetLoader(assetPath);
+            assetLoader = LoaderManager.Singleton.GetAssetLoader(assetPath);
             if (assetLoader != null)
             {
                 if (assetLoader.IsDone)
@@ -571,18 +571,18 @@ namespace TResource
                 else
                 {
                     var requestUID = LoaderManager.Singleton.GetNextRequestUID();
-                    assetLoader.addRequest(requestUID, completeHandler);
+                    assetLoader.AddRequest(requestUID, completeHandler);
                     // 异步转同步加载的情况
                     if (loadMethod == ResourceLoadMethod.Sync)
                     {
-                        assetLoader.loadImmediately();
+                        assetLoader.LoadImmediately();
                     }
                     return requestUID;
                 }
             }
             else
             {
-                return realRequestAsset<T>(assetPath, out assetLoader, completeHandler, loadType, loadMethod);
+                return RealRequestAsset<T>(assetPath, out assetLoader, completeHandler, loadType, loadMethod);
             }
         }
 
@@ -595,7 +595,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected abstract int realRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object;
+        protected abstract int RealRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync) where T : UnityEngine.Object;
 
         /// <summary>
         /// 请求AssetBundle
@@ -607,7 +607,7 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public int requstAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        public int RequstAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             if (string.IsNullOrEmpty(abPath))
             {
@@ -618,7 +618,7 @@ namespace TResource
             }
             // AB统一小写
             abPath = abPath.ToLower();
-            abLoader = LoaderManager.Singleton.getAssetBundleLoader(abPath);
+            abLoader = LoaderManager.Singleton.GetAssetBundleLoader(abPath);
             if (abLoader != null)
             {
                 if (abLoader.IsDone)
@@ -629,18 +629,18 @@ namespace TResource
                 else
                 {
                     var requestUID = LoaderManager.Singleton.GetNextRequestUID();
-                    abLoader.addRequest(requestUID, completeHandler);
+                    abLoader.AddRequest(requestUID, completeHandler);
                     // 异步转同步加载的情况
                     if (loadMethod == ResourceLoadMethod.Sync)
                     {
-                        abLoader.loadImmediately();
+                        abLoader.LoadImmediately();
                     }
                     return requestUID;
                 }
             }
             else
             {
-                return realRequestAssetBundle(abPath, out abLoader, completeHandler, loadType, loadMethod);
+                return RealRequestAssetBundle(abPath, out abLoader, completeHandler, loadType, loadMethod);
             }
         }
 
@@ -653,16 +653,16 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected abstract int realRequestAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
+        protected abstract int RealRequestAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
 
         /// <summary>
         /// 更新入口
         /// </summary>
-        public virtual void update()
+        public virtual void Update()
         {
             Frame++;
             mFPSFrameCount++;
-            LoaderManager.Singleton.update();
+            LoaderManager.Singleton.Update();
             mTotalDeltaTime += Time.deltaTime;
             if (mTotalDeltaTime >= mFPSUpdateInterval)
             {
@@ -670,7 +670,7 @@ namespace TResource
                 mTotalDeltaTime = 0f;
                 mFPSFrameCount = 0;
             }
-            checkUnusedResource();
+            CheckUnusedResource();
         }
 
         /// <summary>
@@ -678,15 +678,15 @@ namespace TResource
         /// Note:
         /// 同步接口，回收数量会比较大，只建议切场景时场景卸载后调用一次
         /// </summary>
-        public void unloadAllUnusedResources()
+        public void UnloadAllUnusedResources()
         {
-            doUnloadAllUnusedResources();
+            DoUnloadAllUnusedResources();
         }
 
         /// <summary>
         /// 执行卸载所有不再使用的资源
         /// </summary>
-        protected virtual void doUnloadAllUnusedResources()
+        protected virtual void DoUnloadAllUnusedResources()
         {
 
         }
@@ -694,7 +694,7 @@ namespace TResource
         /// <summary>
         /// 队列里不再有资源需要加载时检查不再使用的资源
         /// </summary>
-        protected void checkUnusedResource()
+        protected void CheckUnusedResource()
         {
             if (!EnableResourceRecyclingUnloadUnsed)
             {
@@ -710,14 +710,14 @@ namespace TResource
                 // 所以只对AssetBundle进行卸载检测判定
                 // 而AssetBundle的卸载判定里包含了相关Asset使用计数信息为0和无有效绑定对象
                 mUnloadUnsedResourceTotalDeltaTime = 0f;
-                doCheckUnusedResource();
+                DoCheckUnusedResource();
             }
         }
 
         /// <summary>
         /// 执行不再使用资源监察
         /// </summary>
-        protected virtual void doCheckUnusedResource()
+        protected virtual void DoCheckUnusedResource()
         {
 
         }
@@ -727,41 +727,41 @@ namespace TResource
         /// Note:
         /// 同步接口，回收数量会比较大，只建议切场景时场景卸载后调用一次
         /// </summary>
-        public void unloadAllUnsedNormalLoadedResources()
+        public void UnloadAllUnsedNormalLoadedResources()
         {
-            unloadSpecificLoadTypeUnsedResource(ResourceLoadType.NormalLoad);
+            UnloadSpecificLoadTypeUnsedResource(ResourceLoadType.NormalLoad);
         }
 
         /// <summary>
         /// 卸载指定类型不再使用的资源(Note:不支持卸载常驻资源类型)
         /// </summary>
         /// <param name="resourceloadtype">资源加载类型</param>
-        protected void unloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
+        protected void UnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
         {
             if (resourceloadtype == ResourceLoadType.PermanentLoad)
             {
                 ResourceLogger.logErr("不允许卸载常驻AB资源!");
                 return;
             }
-            doUnloadSpecificLoadTypeUnsedResource(resourceloadtype);
+            DoUnloadSpecificLoadTypeUnsedResource(resourceloadtype);
         }
 
         /// <summary>
         /// 真正执行资源卸载指定类型不再使用的资源接口
         /// </summary>
         /// <param name="resourceloadtype">资源加载类型</param>
-        protected abstract void doUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype);
+        protected abstract void DoUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype);
 
         /// <summary>
         /// 强制卸载所有资源(只在特定情况下用 e.g. 热更后卸载所有已加载资源后重新初始化加载AB资源)***慎用***
         /// </summary>
-        public abstract void forceUnloadAllResources();
+        public abstract void ForceUnloadAllResources();
 
         #region 调试开发工具
         /// <summary>
         /// 获取正常已加载不可用的Asset数量
         /// </summary>
-        public int getNormalUnsedAssetNumber()
+        public int GetNormalUnsedAssetNumber()
         {
             var unsednumber = 0;
             // 检查回收不再使用的AB
@@ -778,7 +778,7 @@ namespace TResource
         /// <summary>
         /// 获取正常已加载不可用的Asset数量
         /// </summary>
-        public int getNormalUnsedABNumber()
+        public int GetNormalUnsedABNumber()
         {
             var unsednumber = 0;
             // 检查回收不再使用的AB
@@ -795,30 +795,30 @@ namespace TResource
         /// <summary>
         /// 打印当前资源所有使用者信息以及索引计数(开发用)
         /// </summary>
-        public void printAllLoadedResourceOwnersAndRefCount()
+        public void PrintAllLoadedResourceOwnersAndRefCount()
         {
             ResourceLogger.log("Normal Loaded AssetBundle Info:");
             foreach (var assetBundleInfo in mAllLoadedNormalAssetBundleInfoMap)
             {
-                assetBundleInfo.Value.printAllOwnersNameAndRefCount();
+                assetBundleInfo.Value.PrintAllOwnersNameAndRefCount();
             }
 
             ResourceLogger.log("Permanent Loaded AssetBundle Info:");
             foreach (var assetBundleInfo in mAllLoadedPermanentAssetBundleInfoMap)
             {
-                assetBundleInfo.Value.printAllOwnersNameAndRefCount();
+                assetBundleInfo.Value.PrintAllOwnersNameAndRefCount();
             }
 
             ResourceLogger.log("Normal Loaded Asset Info:");
             foreach (var assetBundleInfo in mAllLoadedNormalAssetInfoMap)
             {
-                assetBundleInfo.Value.printAllOwnersNameAndRefCount();
+                assetBundleInfo.Value.PrintAllOwnersNameAndRefCount();
             }
 
             ResourceLogger.log("Permanent Loaded Asset Info:");
             foreach (var assetBundleInfo in mAllLoadedPermanentAssetInfoMap)
             {
-                assetBundleInfo.Value.printAllOwnersNameAndRefCount();
+                assetBundleInfo.Value.PrintAllOwnersNameAndRefCount();
             }
         }
         #endregion

@@ -185,7 +185,7 @@ public class Timer : IRecycle
     /// <summary>
     /// 对象池弹出创建时
     /// </summary>
-    public void onCreate()
+    public void OnCreate()
     {
         UID = 0;
         mCallBack = null;
@@ -218,7 +218,7 @@ public class Timer : IRecycle
     /// <summary>
     /// 对象池回收时
     /// </summary>
-    public void onDispose()
+    public void OnDispose()
     {
         UID = 0;
         mCallBack = null;

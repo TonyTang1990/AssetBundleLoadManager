@@ -51,17 +51,17 @@ namespace TResource
             OwnerAsestBundlePath = null;
         }
 
-        public override void onCreate()
+        public override void OnCreate()
         {
-            base.onCreate();
+            base.OnCreate();
             AssetType = null;
             AssetName = null;
             OwnerAsestBundlePath = null;
         }
 
-        public override void onDispose()
+        public override void OnDispose()
         {
-            base.onDispose();
+            base.OnDispose();
             AssetType = null;
             AssetName = null;
             OwnerAsestBundlePath = null;
@@ -74,7 +74,7 @@ namespace TResource
         /// <param name="assetType">Asset类型</param>
         /// <param name="assetBundlePath">所属AB路径</param>
         /// <param name="loadType">加载类型</param>
-        public void init(string assetPath, Type assetType, string assetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        public void Init(string assetPath, Type assetType, string assetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
             ResourcePath = assetPath;
             AssetType = assetType;
@@ -83,7 +83,7 @@ namespace TResource
             LoadType = loadType;
         }
 
-        public override void dispose()
+        public override void Dispose()
         {
             if (LoadType != ResourceLoadType.NormalLoad)
             {
@@ -91,8 +91,8 @@ namespace TResource
             }
             // AssetLoader和AssetInfo是一一对应，
             // 在AssetInfo回收时,AssetLoader也应该得到回收
-            LoaderManager.Singleton.deleteLoaderByPath(ResourcePath);
-            base.dispose();
+            LoaderManager.Singleton.DeleteLoaderByPath(ResourcePath);
+            base.Dispose();
         }
     }
 }
