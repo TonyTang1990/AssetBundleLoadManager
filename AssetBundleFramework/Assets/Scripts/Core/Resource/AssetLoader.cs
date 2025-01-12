@@ -89,9 +89,12 @@ namespace TResource
         protected AssetInfo mAssetInfo;
 
         /// <summary>
-        /// Asset请求信息列表(为了确保逻辑层面的回调顺序一致性采用List)
+        /// Asset请求UID列表(为了确保逻辑层面的回调顺序一致性采用List)
+        /// Note:
+        /// 只添加不移除，是否有效看mRequestUidAndInfoMap里是否有对应请求信息
+        /// 避免在回调过程中取消删除出问题
         /// </summary>
-        protected List<AssetRequestInfo> mRequestInfoList;
+        protected List<int> mRequestUIDList;
 
         /// <summary>
         /// Asset资源请求UID和请求信息Map<请求UID,请求信息>
@@ -107,7 +110,7 @@ namespace TResource
         {
             AssetType = null;
             mAssetInfo = null;
-            mRequestInfoList = new List<AssetRequestInfo>();
+            mRequestUIDList = new List<int>();
             mRequestUidAndInfoMap = new Dictionary<int, AssetRequestInfo>();
             mAssetAsyncRequest = null;
         }
@@ -117,7 +120,7 @@ namespace TResource
             base.OnCreate();
             AssetType = null;
             mAssetInfo = null;
-            mRequestInfoList.Clear();
+            mRequestUIDList.Clear();
             mRequestUidAndInfoMap.Clear();
             mAssetAsyncRequest = null;
         }
@@ -127,7 +130,7 @@ namespace TResource
             base.OnDispose();
             AssetType = null;
             mAssetInfo = null;
-            mRequestInfoList.Clear();
+            mRequestUIDList.Clear();
             mRequestUidAndInfoMap.Clear();
             mAssetAsyncRequest = null;
         }
@@ -279,13 +282,17 @@ namespace TResource
 
             mAssetAsyncRequest = null;
             // 通知上层Asset加载完成
-            for(int i = 0; i < mRequestInfoList.Count; i++)
+            for(int i = 0; i < mRequestUIDList.Count; i++)
             {
-                mRequestInfoList[i].RequestCallBack?.Invoke(this, mRequestInfoList[i].RequestUid);
-                RemoveRequest(mRequestInfoList[i].RequestUid);
-                i--;
+                var requestUID = mRequestUIDList[i];
+                AssetRequestInfo assetRequestInfo;
+                if(mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
+                {
+                    assetRequestInfo.RequestCallBack?.Invoke(this, requestUID);
+                    removeRequest(requestUID);
+                }
             }
-            mRequestInfoList.Clear();
+            mRequestUIDList.Clear();
             mRequestUidAndInfoMap.Clear();
 
             // 上层多个加载逻辑回调，在完成后根据调用getAsset或bindAsset情况去添加计数和绑定
@@ -306,7 +313,7 @@ namespace TResource
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}绑定Asset:{ResourcePath}加载请求UID:{requestUID}成功!");
                 var assetRequestInfo = ObjectPool.Singleton.Pop<AssetRequestInfo>();
                 assetRequestInfo.init(requestUID, loadAssetCompleteCallBack);
-                mRequestInfoList.Add(assetRequestInfo);
+                mRequestUIDList.Add(requestUID);
                 mRequestUidAndInfoMap.Add(requestUID, assetRequestInfo);
                 LoaderManager.Singleton.AddAssetRequestUID(requestUID, ResourcePath);
                 return true;
@@ -353,7 +360,6 @@ namespace TResource
             if (mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
             {
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}移除请求UID:{requestUID}成功!");
-                mRequestInfoList.Remove(assetRequestInfo);
                 mRequestUidAndInfoMap.Remove(requestUID);
                 LoaderManager.Singleton.RemoveAssetRequestUID(requestUID);
                 ObjectPool.Singleton.Push<AssetRequestInfo>(assetRequestInfo);
