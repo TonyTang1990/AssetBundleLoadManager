@@ -67,84 +67,84 @@
     <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfig.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\BundleLoader.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ResourceUtility.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\AssetBundleModule.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_author_InfoBuffer.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\ResourceConstData.cs" />
-    <Compile Include="Assets\Scripts\Core\Coroutine\CoroutineManager.cs" />
-    <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfigModuleManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_bContainer.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_iContainer.cs" />
-    <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_language_cnContainer.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\DownloadAssetBundleLoader.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Native\NativeManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_language_cn.cs" />
-    <Compile Include="Assets\Scripts\Utilities\PathUtilities.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Native\IOS\IOSNativeManager.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceInfo.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_i.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseAsyncRequest.cs" />
     <Compile Include="Assets\Scripts\Core\Timer\Timer.cs" />
-    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateModuleManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_b.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\SharedMaterialManager.cs" />
     <Compile Include="Assets\Scripts\Core\UI\TRawImage.cs" />
     <Compile Include="Assets\Scripts\Utilities\FileUtilities.cs" />
     <Compile Include="Assets\Scripts\Core\GameConfig\GameConfigModuleManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Data\DataAccess.cs" />
-    <Compile Include="Assets\Scripts\Core\Timer\TimerManager.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\AssetBundlePath.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleManager.cs" />
-    <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_language_cnBuffer.cs" />
     <Compile Include="Assets\Scripts\DebugTools\FastUIEntry.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ResourceManager.cs" />
-    <Compile Include="Assets\Scripts\Core\Pool\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\TWebRequest.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\WindowManager.cs" />
-    <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_author_InfoContainer.cs" />
-    <Compile Include="Assets\Scripts\GameLauncher.cs" />
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonTemplate.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Native\PC\PCNativeManager.cs" />
+    <Compile Include="Assets\Scripts\DebugTools\MonoMemoryProfiler.cs" />
+    <Compile Include="Assets\Scripts\Core\UI\TImage.cs" />
+    <Compile Include="Assets\Scripts\DebugTools\VisibleLogUtility.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_global_sBuffer.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleEnum.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\ResourceLoadAnalyse.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\AssetBundleInfo.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_global_bBuffer.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\Loadable.cs" />
+    <Compile Include="Assets\Scripts\Core\Pool\ObjectFactory.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_author_Info.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ModelManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Native\NativeMessageHandler.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseLoader.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\EffectManager.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_s.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateConfig.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\AssetBundleModule.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\ResourceConstData.cs" />
+    <Compile Include="Assets\Scripts\Core\Coroutine\CoroutineManager.cs" />
+    <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfigModuleManager.cs" />
+    <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_language_cnContainer.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Native\NativeManager.cs" />
+    <Compile Include="Assets\Scripts\Utilities\PathUtilities.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Native\IOS\IOSNativeManager.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceInfo.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseAsyncRequest.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateModuleManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\SharedMaterialManager.cs" />
+    <Compile Include="Assets\Scripts\Core\Timer\TimerManager.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\AssetBundlePath.cs" />
+    <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_language_cnBuffer.cs" />
+    <Compile Include="Assets\Scripts\Core\Pool\ObjectPool.cs" />
+    <Compile Include="Assets\Scripts\GameLauncher.cs" />
+    <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_author_InfoContainer.cs" />
     <Compile Include="Assets\Scripts\Core\Pool\GameObjectPool.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\SharedTextureManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\FolderUtilities.cs" />
     <Compile Include="Assets\Scripts\Utilities\Utilities.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Native\PC\PCNativeManager.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateAssetBundleInfo.cs" />
-    <Compile Include="Assets\Scripts\DebugTools\MonoMemoryProfiler.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\GameSceneManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceLogger.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\AtlasManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\BundleAssetLoader.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseModule.cs" />
-    <Compile Include="Assets\Scripts\Core\UI\TImage.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetInfo.cs" />
-    <Compile Include="Assets\Scripts\DebugTools\VisibleLogUtility.cs" />
-    <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_global_sBuffer.cs" />
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonMonoBehaviourTemplate.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleEnum.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\ResourceLoadAnalyse.cs" />
     <Compile Include="Assets\Scripts\Extension\StringExtension.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceModule.cs" />
     <Compile Include="Assets\Scripts\Core\Conf\ConfLoader.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\AssetBundleInfo.cs" />
-    <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_global_bBuffer.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\Loadable.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleLoader.cs" />
-    <Compile Include="Assets\Scripts\Core\Pool\ObjectFactory.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_sContainer.cs" />
-    <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_author_Info.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ModelManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Native\NativeMessageHandler.cs" />
     <Compile Include="Assets\Scripts\DebugTools\TimeCounter.cs" />
     <Compile Include="Assets\Scripts\Core\GameConfig\GameConfig.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\AudioManager.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseLoader.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\EffectManager.cs" />
     <Compile Include="Assets\Scripts\Core\UI\TButton.cs" />
     <Compile Include="Assets\Scripts\Core\Update\UpdateManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBuildInfoAsset.cs" />
-    <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_s.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetLoader.cs" />
-    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateConfig.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Native\Android\AndroidNativeManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\LoaderManager.cs" />
   </ItemGroup>
@@ -1233,6 +1233,14 @@
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Timeline.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Timeline">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
       <Private>False</Private>
@@ -1271,14 +1279,6 @@
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Timeline">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

@@ -63,23 +63,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleDataSource\ABDataSourceProvider.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleBrowserMain.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleTree.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleDataSource\AssetDatabaseABDataSource.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\InspectTab\AssetBundleInspectTab.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\InspectTab\InspectTreeView.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetListTree.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleManageTab.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleModel\ABModelAssetInfo.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\InspectTab\InspectSingleBundle.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleModel\ABModel.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\InspectTab\AssetBundleRecord.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleBuildTab.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleBrowserMain.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\InspectTab\InspectTreeView.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleManageTab.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\BundleDetailList.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\MessageList.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\MessageSystem.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleModel\ABModel.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleModel\ABModelBundleInfo.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\InspectTab\AssetBundleRecord.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleDataSource\ABDataSource.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\AssetBundleBuildTab.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Scripts\Editor\Core\Resource\AssetBundlesBrowser\Unity.AssetBundleBrowser.Editor.asmdef" />

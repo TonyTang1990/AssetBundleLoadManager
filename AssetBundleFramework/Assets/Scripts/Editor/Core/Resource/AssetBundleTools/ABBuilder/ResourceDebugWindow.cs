@@ -128,7 +128,7 @@ namespace TResource
         #endregion
 
         [MenuItem("Tools/AssetBundle/Debug/资源调试工具", false, 103)]
-        public static void openResourceDebugWindow()
+        public static void OpenResourceDebugWindow()
         {
             ResourceDebugWindow window = EditorWindow.GetWindow<ResourceDebugWindow>(false, "资源调试工具");
             window.Show();
@@ -199,7 +199,7 @@ namespace TResource
                     EditorGUILayout.BeginHorizontal();
                     if (GUILayout.Button("强制卸载指定AB", GUILayout.MaxWidth(150.0f), GUILayout.MaxHeight(30.0f)))
                     {
-                        forceUnloadSpecificAB(mTextFilter);
+                        ForceUnloadSpecificAB(mTextFilter);
                     }
                     if (GUILayout.Button("开启资源加载统计", GUILayout.MaxWidth(150.0f), GUILayout.MaxHeight(30.0f)))
                     {
@@ -219,15 +219,15 @@ namespace TResource
                     {
                         if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_All_Dep)
                         {
-                            displayABAllDepInfoUI();
+                            DisplayABAllDepInfoUI();
                         }
                         else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_ReferenceInfo)
                         {
-                            displayReferenceInfoUI();
+                            DisplayReferenceInfoUI();
                         }
                         else if (mCurrentABDebugToolType == ABDebugToolType.AB_Display_Wait_Loaded_LoaderInfo)
                         {
-                            displayLoaderInfoUI();
+                            DisplayLoaderInfoUI();
                         }
                     }
                     GUILayout.EndScrollView();
@@ -244,9 +244,9 @@ namespace TResource
         /// <summary>
         /// 显示AB依赖信息UI
         /// </summary>
-        private void displayABAllDepInfoUI()
+        private void DisplayABAllDepInfoUI()
         {
-            if (isAssetBundleModule())
+            if (IsAssetBundleModule())
             {
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
                 GUILayout.BeginVertical();
@@ -267,7 +267,7 @@ namespace TResource
                         {
                             foreach (var assetBundlePath in mValideDepABPathList)
                             {
-                                displayOneAssetBundleDepInfoUI(assetBundlePath, allDepInfoMap[assetBundlePath]);
+                                DisplayOneAssetBundleDepInfoUI(assetBundlePath, allDepInfoMap[assetBundlePath]);
                             }
                         }
                         else
@@ -281,7 +281,7 @@ namespace TResource
                         {
                             foreach (var assetBundlePath in mValideDepABPathList)
                             {
-                                displayOneAssetBundleDepInfoUI(assetBundlePath, allDepInfoMap[assetBundlePath]);
+                                DisplayOneAssetBundleDepInfoUI(assetBundlePath, allDepInfoMap[assetBundlePath]);
                             }
                         }
                         else
@@ -299,7 +299,7 @@ namespace TResource
                         if (num < MaxDepABInfoNumber)
                         {
                             EditorGUILayout.BeginHorizontal();
-                            displayOneAssetBundleDepInfoUI(depinfo.Key, depinfo.Value);
+                            DisplayOneAssetBundleDepInfoUI(depinfo.Key, depinfo.Value);
                             EditorGUILayout.EndHorizontal();
                         }
                         else
@@ -325,14 +325,14 @@ namespace TResource
         /// </summary>
         /// <param name="assetBundlePath"></param>
         /// <param name="depAssetBundlePaths"></param>
-        private void displayOneAssetBundleDepInfoUI(string assetBundlePath, string[] depAssetBundlePaths)
+        private void DisplayOneAssetBundleDepInfoUI(string assetBundlePath, string[] depAssetBundlePaths)
         {
             EditorGUILayout.BeginHorizontal();
-            displayOneAssetBundleButton(assetBundlePath);
+            DisplayOneAssetBundleButton(assetBundlePath);
             EditorGUILayout.LabelField("-->", GUILayout.Width(20f), GUILayout.Height(20f));
             for (int i = 0, length = depAssetBundlePaths.Length; i < length; i++)
             {
-                displayOneAssetBundleButton(depAssetBundlePaths[i]);
+                DisplayOneAssetBundleButton(depAssetBundlePaths[i]);
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -341,7 +341,7 @@ namespace TResource
         /// 显示一个AssetBundle路径的按钮
         /// </summary>
         /// <param name="assetBundlePath"></param>
-        private void displayOneAssetBundleButton(string assetBundlePath)
+        private void DisplayOneAssetBundleButton(string assetBundlePath)
         {
             if (GUILayout.Button($"{assetBundlePath}", GUILayout.Width(400f), GUILayout.Height(20f)))
             {
@@ -353,7 +353,7 @@ namespace TResource
         /// <summary>
         /// 显示资源使用索引信息UI
         /// </summary>
-        private void displayReferenceInfoUI()
+        private void DisplayReferenceInfoUI()
         {
             var assetBundleResourceModule = ResourceModuleManager.Singleton.CurrentResourceModule;
             EditorGUILayout.BeginVertical();
@@ -366,13 +366,13 @@ namespace TResource
             GUILayout.Label($"资源回收检测时间间隔 : {assetBundleResourceModule.CheckUnsedResourceTimeInterval}s", GUILayout.Width(200f), GUILayout.Height(20f));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
-            if (isAssetBundleModule())
+            if (IsAssetBundleModule())
             {
-                displayAssetBundleReferenceInfoUI();
+                DisplayAssetBundleReferenceInfoUI();
             }
-            else if (isAssetDatabaseModule())
+            else if (IsAssetDatabaseModule())
             {
-                displayAssetDatabaseReferenceInfoUI();
+                DisplayAssetDatabaseReferenceInfoUI();
             }
             else
             {
@@ -384,7 +384,7 @@ namespace TResource
         /// <summary>
         /// 显示AssetBundle模式的索引信息UI
         /// </summary>
-        private void displayAssetBundleReferenceInfoUI()
+        private void DisplayAssetBundleReferenceInfoUI()
         {
             var assetBundleResourceModule = ResourceModuleManager.Singleton.CurrentResourceModule;
             EditorGUILayout.BeginVertical("box");
@@ -421,7 +421,7 @@ namespace TResource
                     {
                         foreach (var valideReferenceAssetBundleInfo in mValideReferenceABInfoList)
                         {
-                            displayOneAssetBundleInfoUI(valideReferenceAssetBundleInfo);
+                            DisplayOneAssetBundleInfoUI(valideReferenceAssetBundleInfo);
                         }
                     }
                     else
@@ -435,7 +435,7 @@ namespace TResource
                     {
                         foreach (var valideReferenceAssetBundleInfo in mValideReferenceABInfoList)
                         {
-                            displayOneAssetBundleInfoUI(valideReferenceAssetBundleInfo);
+                            DisplayOneAssetBundleInfoUI(valideReferenceAssetBundleInfo);
                         }
                     }
                     else
@@ -458,7 +458,7 @@ namespace TResource
                 EditorGUILayout.EndHorizontal();
                 foreach (var loadedAssetBundleInfo in normalLoadedAssetBundleInfoMap)
                 {
-                    displayOneAssetBundleInfoUI(loadedAssetBundleInfo.Value);
+                    DisplayOneAssetBundleInfoUI(loadedAssetBundleInfo.Value);
                 }
 
                 EditorGUILayout.Space();
@@ -470,7 +470,7 @@ namespace TResource
                 EditorGUILayout.EndHorizontal();
                 foreach (var permanentLoadedAssetBundleInfo in permanentLoadedAssetBundleInfoMap)
                 {
-                    displayOneAssetBundleInfoUI(permanentLoadedAssetBundleInfo.Value);
+                    DisplayOneAssetBundleInfoUI(permanentLoadedAssetBundleInfo.Value);
                 }
             }
         }
@@ -479,7 +479,7 @@ namespace TResource
         /// 显示一个AssetBundleInfo的信息
         /// </summary>
         /// <param name="assetBundleInfo"></param>
-        private void displayOneAssetBundleInfoUI(AssetBundleInfo assetBundleInfo)
+        private void DisplayOneAssetBundleInfoUI(AssetBundleInfo assetBundleInfo)
         {
             Color preColor = GUI.color;
             if (assetBundleInfo.IsUnsed)
@@ -516,7 +516,7 @@ namespace TResource
                     {
                         foreach (var assetInfo in assetBundleInfo.AllLoadedAssetInfoMap)
                         {
-                            displayOneAssetInfoUI(assetInfo.Value);
+                            DisplayOneAssetInfoUI(assetInfo.Value);
                         }
                     }
                 }
@@ -533,7 +533,7 @@ namespace TResource
         /// 显示一个AssetInfo的信息
         /// </summary>
         /// <param name="assetInfo"></param>
-        private void displayOneAssetInfoUI(AssetInfo assetInfo)
+        private void DisplayOneAssetInfoUI(AssetInfo assetInfo)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(string.Format("Asset路径 : {0}", assetInfo.ResourcePath), GUILayout.Width(600.0f));
@@ -554,15 +554,15 @@ namespace TResource
         /// <summary>
         /// 显示加载器信息UI
         /// </summary>
-        private void displayLoaderInfoUI()
+        private void DisplayLoaderInfoUI()
         {
-            if (isAssetBundleModule())
+            if (IsAssetBundleModule())
             {
-                displayAssetBundleLoaderInfoUI();
+                DisplayAssetBundleLoaderInfoUI();
             }
-            else if (isAssetDatabaseModule())
+            else if (IsAssetDatabaseModule())
             {
-                displayAssetDatabaseLoaderInfoUI();
+                DisplayAssetDatabaseLoaderInfoUI();
             }
             else
             {
@@ -575,20 +575,20 @@ namespace TResource
         /// <summary>
         /// 显示AssetBundle模式加载器信息UI
         /// </summary>
-        private void displayAssetBundleLoaderInfoUI()
+        private void DisplayAssetBundleLoaderInfoUI()
         {
             EditorGUILayout.BeginVertical();
             LoaderManager.Singleton.GetAllAssetBundleLoader(ref mAllAssetBundleLoader);
             GUILayout.Label(string.Format("AssetBundle加载器信息 : {0}", mAllAssetBundleLoader.Count == 0 ? "无" : string.Empty));
             foreach (var assetBundleLoader in mAllAssetBundleLoader)
             {
-                displayOneAssetBundleLoaderInfoUI(assetBundleLoader);
+                DisplayOneAssetBundleLoaderInfoUI(assetBundleLoader);
             }
             LoaderManager.Singleton.GetAllAssetLoader(ref mAllAssetLoader);
             GUILayout.Label(string.Format("Asset加载器信息 : {0}", mAllAssetLoader.Count == 0 ? "无" : string.Empty));
             foreach (var assetLoader in mAllAssetLoader)
             {
-                displayOneAssetLoaderInfoUI(assetLoader);
+                DisplayOneAssetLoaderInfoUI(assetLoader);
             }
             EditorGUILayout.EndVertical();
         }
@@ -597,7 +597,7 @@ namespace TResource
         /// 显示一个AssetBundleLoader的加载器信息
         /// </summary>
         /// <param name="abi"></param>
-        private void displayOneAssetBundleLoaderInfoUI(BundleLoader bundleLoader)
+        private void DisplayOneAssetBundleLoaderInfoUI(BundleLoader bundleLoader)
         {
             var preColor = GUI.color;
             if (bundleLoader.IsUnsed)
@@ -656,14 +656,14 @@ namespace TResource
         /// <summary>
         /// 显示AssetDatabase模式加载器信息UI
         /// </summary>
-        private void displayAssetDatabaseLoaderInfoUI()
+        private void DisplayAssetDatabaseLoaderInfoUI()
         {
             EditorGUILayout.BeginVertical();
             LoaderManager.Singleton.GetAllAssetLoader(ref mAllAssetDatabaseLoader);
             GUILayout.Label(string.Format("AssetDatabase加载器信息 : {0}", mAllAssetDatabaseLoader.Count == 0 ? "无" : string.Empty));
             foreach (var waitLoadedAssetLoader in mAllAssetDatabaseLoader)
             {
-                displayOneAssetLoaderInfoUI(waitLoadedAssetLoader);
+                DisplayOneAssetLoaderInfoUI(waitLoadedAssetLoader);
             }
             EditorGUILayout.EndVertical();
         }
@@ -672,7 +672,7 @@ namespace TResource
         /// 显示一个AssetLoader的加载器信息
         /// </summary>
         /// <param name="abi"></param>
-        private void displayOneAssetLoaderInfoUI(AssetLoader assetLoader)
+        private void DisplayOneAssetLoaderInfoUI(AssetLoader assetLoader)
         {
             var preColor = GUI.color;
             if(assetLoader.IsUnsed)
@@ -702,7 +702,7 @@ namespace TResource
         /// <summary>
         /// 显示AssetDatabase模式的索引信息UI
         /// </summary>
-        private void displayAssetDatabaseReferenceInfoUI()
+        private void DisplayAssetDatabaseReferenceInfoUI()
         {
             var assetBundleResourceModule = ResourceModuleManager.Singleton.CurrentResourceModule;
             var normalLoadedAssetInfoMap = assetBundleResourceModule.GetSpecificLoadTypeAssetInfoMap(ResourceLoadType.NormalLoad);
@@ -732,7 +732,7 @@ namespace TResource
                     {
                         foreach (var valideReferenceAssetInfo in mValideReferenceAssetInfoList)
                         {
-                            displayOneAssetInfoUI(valideReferenceAssetInfo);
+                            DisplayOneAssetInfoUI(valideReferenceAssetInfo);
                         }
                     }
                     else
@@ -746,7 +746,7 @@ namespace TResource
                     {
                         foreach (var valideReferenceAssetInfo in mValideReferenceAssetInfoList)
                         {
-                            displayOneAssetInfoUI(valideReferenceAssetInfo);
+                            DisplayOneAssetInfoUI(valideReferenceAssetInfo);
                         }
                     }
                     else
@@ -769,7 +769,7 @@ namespace TResource
                 EditorGUILayout.EndHorizontal();
                 foreach (var loadedAssetInfo in normalLoadedAssetInfoMap)
                 {
-                    displayOneAssetInfoUI(loadedAssetInfo.Value);
+                    DisplayOneAssetInfoUI(loadedAssetInfo.Value);
                 }
 
                 EditorGUILayout.Space();
@@ -781,7 +781,7 @@ namespace TResource
                 EditorGUILayout.EndHorizontal();
                 foreach (var ploadedAssetInfo in permanentLoadedAssetInfoMap)
                 {
-                    displayOneAssetInfoUI(ploadedAssetInfo.Value);
+                    DisplayOneAssetInfoUI(ploadedAssetInfo.Value);
                 }
             }
         }
@@ -791,7 +791,7 @@ namespace TResource
         /// </summary>
         /// <param name="deps"></param>
         /// <returns></returns>
-        private string getDepDes(string[] deps)
+        private string GetDepDes(string[] deps)
         {
             var depdes = string.Empty;
             for (int i = 0, length = deps.Length; i < length; i++)
@@ -809,9 +809,9 @@ namespace TResource
         /// 强制卸载指定AB
         /// </summary>
         /// <param name="abnPath"></param>
-        private void forceUnloadSpecificAB(string abnPath)
+        private void ForceUnloadSpecificAB(string abnPath)
         {
-            if (isAssetBundleModule())
+            if (IsAssetBundleModule())
             {
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
                 assetbundleresourcemodule.ForceUnloadSpecificAssetBundle(abnPath);
@@ -826,7 +826,7 @@ namespace TResource
         /// 是否是AssetBundle模式
         /// </summary>
         /// <returns></returns>
-        private bool isAssetBundleModule()
+        private bool IsAssetBundleModule()
         {
             return ResourceModuleManager.Singleton.CurrentResourceModule.ResLoadMode == ResourceLoadMode.AssetBundle;
         }
@@ -835,7 +835,7 @@ namespace TResource
         /// 是否是AssetDatabase模式
         /// </summary>
         /// <returns></returns>
-        private bool isAssetDatabaseModule()
+        private bool IsAssetDatabaseModule()
         {
             return ResourceModuleManager.Singleton.CurrentResourceModule.ResLoadMode == ResourceLoadMode.AssetDatabase;
         }

@@ -62,44 +62,44 @@
     <Analyzer Include="C:\Users\TonyTang\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.0.5\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleCollector\AssetBundleCollectSettingData.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuilderHelper.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\EditorResourceUtilities.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetBundleNameSetting.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildConstData.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\UI\UIUtilitiesEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\EditorUtilities.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuilder.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PrefabUtilitiesExtension.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\UI\TImageEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\OldAssetBundleBuilder.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildRule.cs" />
+    <Compile Include="Assets\Scripts\Editor\Build\BuildTool.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildInfoAssetEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\BaseEditorWindow.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleCollector\AssetBundleCollectSettingData.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\HotUpdate\HotUpdateOperationWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\ScriptAutomation\ScriptKeywordProcesser.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuilderHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleCollectRule.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\EditorResourceUtilities.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\SpriteDrawUtility.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildInfo.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetBundleNameSetting.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildConstData.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TButtonEditor.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\UI\UIUtilitiesEditor.cs" />
-    <Compile Include="Assets\Scripts\Editor\EditorUtilities.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\LightMap\LightMapDetailWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBuildInfo.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuilder.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TRawImageEditor.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\PrefabUtilitiesExtension.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildPreprocess.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetSelectionsOperationWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\HotUpdate\HotUpdateTool.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\UI\TImageEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeTool.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOperationWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\FBXAnimationExtract.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceDebugWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleCollector\AssetBundleCollectSetting.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\OldAssetBundleBuilder.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\SBPAssetBundleBuilder.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildTool.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\CustomBuildParameters.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildRule.cs" />
-    <Compile Include="Assets\Scripts\Editor\Build\BuildTool.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildStyles.cs" />
     <Compile Include="Assets\Scripts\Editor\Helper\AssetRelativePathTool.cs" />
   </ItemGroup>
@@ -1008,6 +1008,14 @@
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Timeline.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Timeline">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
       <Private>False</Private>
@@ -1046,14 +1054,6 @@
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Timeline">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
