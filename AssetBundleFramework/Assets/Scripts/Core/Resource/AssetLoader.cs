@@ -289,7 +289,7 @@ namespace TResource
                 if(mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
                 {
                     assetRequestInfo.RequestCallBack?.Invoke(this, requestUID);
-                    removeRequest(requestUID);
+                    RemoveRequest(requestUID);
                 }
             }
             mRequestUIDList.Clear();
