@@ -161,7 +161,7 @@ public class AssetBuildInfoAsset : ScriptableObject
     /// </summary>
     /// <param name="assetpath"></param>
     /// <returns></returns>
-    public string getAssetABVariantPath(string assetpath)
+    public string GetAssetABVariantPath(string assetpath)
     {
         BuildAssetInfo buildAssetInfo;
         if (mBuildAssetInfoMap.TryGetValue(assetpath, out buildAssetInfo))
