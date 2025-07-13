@@ -420,7 +420,7 @@ namespace TResource
                 }
                 if (AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count == 0)
                 {
-                EditorGUILayout.LabelField("无打包策略配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
+                    EditorGUILayout.LabelField("无打包策略配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
                 }
             }
             EditorGUILayout.EndVertical();
