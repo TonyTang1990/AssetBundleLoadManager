@@ -59,7 +59,7 @@
     <UnityVersion>2021.3.4f1c1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\TonyTang\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.0.5\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\TonyTang\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_global_iBuffer.cs" />

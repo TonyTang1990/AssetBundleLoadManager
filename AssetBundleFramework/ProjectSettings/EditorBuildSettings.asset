@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Res/scenes/NewAssetBundleFrameWorkScene.unity
+    path: Assets/Res/scenes/AssetBundleFrameWorkScene.unity
     guid: 2338d67ba49046c46bae2ad0efbf9755
   - enabled: 1
     path: Assets/Res/scenes/TestScene2.unity
