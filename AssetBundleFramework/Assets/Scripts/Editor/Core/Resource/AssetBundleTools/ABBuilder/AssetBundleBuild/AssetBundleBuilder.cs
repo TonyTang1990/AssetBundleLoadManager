@@ -257,6 +257,7 @@ namespace TResource
 		private bool DoAssetBundleBuildPreparation()
         {
             ResetBuildDatas();
+			AssetBundleCollectSettingData.ClearLoadSettingData();
 			AssetBundleCollectSettingData.LoadSettingData();
 			if (!AssetBundleCollectSettingData.CheckCollectorSettingValidation())
             {
@@ -499,7 +500,7 @@ namespace TResource
                     assetInfo = new AssetBuildInfo(regularAssetPath, assetAddreableName);
                     AddAssetBuildInfo(assetInfo);
                 }
-                var assetBundleName = GetAssetBundleName(regularAssetPath);
+                var assetBundleName = GetAssetBundleNameByCache(regularAssetPath);
 				var assetBundleVariant = GetAssetBuildBundleVariant(regularAssetPath);
 				var assetBundleBuildInfo = GetAssetBundleBuildInfo(assetBundleName, assetBundleVariant);
 				if(assetBundleBuildInfo == null)
@@ -618,15 +619,27 @@ namespace TResource
 		}
 
 		/// <summary>
-        /// 获取指定Asset路径的AB名
-        /// </summary>
-        /// <param name="assetPath"></param>
-        /// <returns></returns>
-		private string GetAssetBundleName(string assetPath)
-        {
+		/// 获取指定Asset路径的AB名(不带缓存)
+		/// </summary>
+		/// <param name="assetPath"></param>
+		/// <returns></returns>
+		public static string GetAssetBundleName(string assetPath)
+		{
+			string assetBundleName = AssetBundleCollectSettingData.GetAssetBundleName(assetPath);
+			assetBundleName = AssetBundlePath.GetABPathWithPostFix(assetBundleName);
+			return assetBundleName;
+		}
+
+		/// <summary>
+		/// 获取指定Asset路径的AB名(带缓存)
+		/// </summary>
+		/// <param name="assetPath"></param>
+		/// <returns></returns>
+		private string GetAssetBundleNameByCache(string assetPath)
+		{
 			string assetBundleName;
 			if (mAllAssetBundleNameCacheMap.TryGetValue(assetPath, out assetBundleName))
-            {
+			{
 				return assetBundleName;
 			}
 			assetBundleName = AssetBundleCollectSettingData.GetAssetBundleName(assetPath);

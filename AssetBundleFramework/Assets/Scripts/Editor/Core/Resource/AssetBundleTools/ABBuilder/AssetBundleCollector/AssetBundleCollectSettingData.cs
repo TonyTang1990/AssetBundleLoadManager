@@ -53,26 +53,34 @@ namespace TResource
 		private static AssetBundleCollectSetting mSetting = null;
 
         /// <summary>
+        /// 清除已加载的配置文件
+        /// </summary>
+        public static void ClearLoadSettingData()
+        {
+            mSetting = null;
+        }
+
+        /// <summary>
         /// 加载配置文件
         /// </summary>
         public static void LoadSettingData()
-		{
-			// 加载配置文件
-			mSetting = AssetDatabase.LoadAssetAtPath<AssetBundleCollectSetting>(AssetBundleCollectSettingFileRelativePath);
-			if (mSetting == null)
-			{
-				Debug.LogWarning($"Create new {nameof(AssetBundleCollectSetting)}.asset : {AssetBundleCollectSettingFileRelativePath}");
-				mSetting = ScriptableObject.CreateInstance<AssetBundleCollectSetting>();
+        {
+            // 加载配置文件
+            mSetting = AssetDatabase.LoadAssetAtPath<AssetBundleCollectSetting>(AssetBundleCollectSettingFileRelativePath);
+            if (mSetting == null)
+            {
+                Debug.LogWarning($"Create new {nameof(AssetBundleCollectSetting)}.asset : {AssetBundleCollectSettingFileRelativePath}");
+                mSetting = ScriptableObject.CreateInstance<AssetBundleCollectSetting>();
                 var assetbundlecollectsettingfolderpath = Application.dataPath + AssetBundleCollectSettingSaveFolderRelativePath;
                 FolderUtilities.CheckAndCreateSpecificFolder(assetbundlecollectsettingfolderpath);
-				AssetDatabase.CreateAsset(Setting, AssetBundleCollectSettingFileRelativePath);
-				AssetDatabase.SaveAssets();
-				AssetDatabase.Refresh();
-			}
-			else
-			{
-				Debug.Log($"Load {nameof(AssetBundleCollectSetting)}.asset ok");
-			}
+                AssetDatabase.CreateAsset(Setting, AssetBundleCollectSettingFileRelativePath);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+            else
+            {
+                Debug.Log($"Load {nameof(AssetBundleCollectSetting)}.asset ok");
+            }
             mSetting.UpdateData();
 
             CheckCollectorSettingValidation();
@@ -222,9 +230,10 @@ namespace TResource
 		{
             var assetBundleName = string.Empty;
             var collector = GetCollectorByAssetPath(assetPath);
-            if(collector == null)
+            if (collector == null)
             {
                 Debug.LogError($"找不到Asset:{assetPath}的收集器数据，获取AB名失败，请检查打包配置!");
+                return string.Empty;
             }
             if(collector.CollectRule == AssetBundleCollectRule.Ignore)
             {

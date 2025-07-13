@@ -404,26 +404,23 @@ namespace TResource
             EditorGUILayout.EndHorizontal();
             if (!mFoldMap[EFoldType.BuildRule])
             {
-                if (AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count != 0)
+                for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
                 {
-                    for (int i = 0; i < AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count; i++)
+                    DisplayOneCollect(AssetBundleCollectSettingData.Setting.AssetBundleCollectors[i]);
+                }
+                if (GUILayout.Button("+", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
+                {
+                    var chosenfolderpath = EditorUtility.OpenFolderPanel("选择搜集目录", LastOpenFolderPath, "");
+                    if (string.IsNullOrEmpty(chosenfolderpath) == false && AssetBundleCollectSettingData.AddAssetBundleCollector(chosenfolderpath))
                     {
-                        DisplayOneCollect(AssetBundleCollectSettingData.Setting.AssetBundleCollectors[i]);
-                    }
-                    if (GUILayout.Button("+", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
-                    {
-                        var chosenfolderpath = EditorUtility.OpenFolderPanel("选择搜集目录", LastOpenFolderPath, "");
-                        if (string.IsNullOrEmpty(chosenfolderpath) == false && AssetBundleCollectSettingData.AddAssetBundleCollector(chosenfolderpath))
-                        {
-                            var relativefolderpath = PathUtilities.GetAssetsRelativeFolderPath(chosenfolderpath);
-                            LastOpenFolderPath = relativefolderpath;
-                            Debug.Log($"添加资源搜集目录:{chosenfolderpath}成功!");
-                        }
+                        var relativefolderpath = PathUtilities.GetAssetsRelativeFolderPath(chosenfolderpath);
+                        LastOpenFolderPath = relativefolderpath;
+                        Debug.Log($"添加资源搜集目录:{chosenfolderpath}成功!");
                     }
                 }
-                else
+                if (AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count == 0)
                 {
-                    EditorGUILayout.LabelField("无打包策略配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
+                EditorGUILayout.LabelField("无打包策略配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
                 }
             }
             EditorGUILayout.EndVertical();
