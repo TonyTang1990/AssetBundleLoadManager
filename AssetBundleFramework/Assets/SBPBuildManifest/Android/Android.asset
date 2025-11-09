@@ -51,179 +51,178 @@ MonoBehaviour:
   - assets/res/assetbuildinfo/assetbuildinfoandroid.android
   m_Values:
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/actors/cube.android
-    m_Crc: 2370539741
-    m_Hash: 5e5dd3c5ddf6121e87c99c75db69d2b9
+    m_Crc: 3090887855
+    m_Hash: dc60e6a9be5d0dad0f6055d89ccf3ad4
     m_Dependencies:
     - assets/res/sharematerials/sharematerial.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/actors/sphere.android
-    m_Crc: 2484246463
-    m_Hash: 6b13b4ed016c28715885b01b59f2fa4d
+    m_Crc: 348604066
+    m_Hash: 2a51024db3f38efe473cb19ffb65323e
     m_Dependencies:
     - assets/res/sharematerials/sharematerial.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/actors/testbyfileandsubfolder.android
-    m_Crc: 2417872217
-    m_Hash: 8f24be7cab11d70fb75e5f911dd57ceb
+    m_Crc: 1390430810
+    m_Hash: fc72bff6f48898552e23b0fe8b8e7e3e
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/actors/zombunny.android
-    m_Crc: 2437314263
-    m_Hash: f6e8049e23a2074a74ae545dbbe3ea94
+    m_Crc: 2033908020
+    m_Hash: 9f52163417e185820acd49f83a8f5347
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
-    m_Crc: 1693405073
-    m_Hash: 0173e3d8627f8c901820e2a9bd9ce2be
+    m_Crc: 1652125693
+    m_Hash: c386832ff8d69660505db76be006af81
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android
-    m_Crc: 2599767245
-    m_Hash: e9320bd723641af27bb3585fc38ca208
+    m_Crc: 1415103560
+    m_Hash: 8a62f9b64ddd7e27be4b79eaca77af25
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/tutorialatlas.android
-    m_Crc: 4294096995
-    m_Hash: 1ae3e0e54efd2827a9eb37c0702ecdaa
+    m_Crc: 4094248052
+    m_Hash: 4e62799af310cf6a054251d0aecbb801
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/audios/music/backgroundmusic.android
-    m_Crc: 3124616582
-    m_Hash: caf0bb1c567cac86a019e431f8332ed0
+    m_Crc: 2839329112
+    m_Hash: 9a563656d9594aef3220824901cd8923
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/audios/music/df_bg_music.android
-    m_Crc: 2259858267
-    m_Hash: 1a42c44056a163f53482d067f6100e69
+    m_Crc: 2876532875
+    m_Hash: f45d165dfbff86721beacda9aa15567e
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/audios/sfx/sfx1/coins.android
-    m_Crc: 4006013971
-    m_Hash: 38981a4bd6589c4e3e136c900618b740
+    m_Crc: 3268098313
+    m_Hash: 4fdc1417aef358d6f0556fe3081cdd23
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/audios/sfx/sfx1/correct.android
-    m_Crc: 3178214963
-    m_Hash: 466ff72ea762604254dda62ec70fc204
+    m_Crc: 1254694809
+    m_Hash: 3e3aaf33daae272570104e9254decf39
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/audios/sfx/sfx1/explosion.android
-    m_Crc: 3088948102
-    m_Hash: b174a72a81d25f9542d4ea4992391537
+    m_Crc: 1782407548
+    m_Hash: fbdb48b801096a305d2514beacff3389
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/buildinresources/buildinmaterials.android
-    m_Crc: 1452713530
-    m_Hash: b9b234ed8eced893481483e5861a9958
+    m_Crc: 3391362001
+    m_Hash: ae552b5c1e2f9cac3649db1abf40bd75
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//shaderlist.android
-    m_Crc: 3226230215
-    m_Hash: d0aeccc84fb66cdff73c786f89261eaf
+    m_Crc: 559744633
+    m_Hash: 81c51342854f7c64ce40c06efda05d29
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/buildinresources/buildintextures.android
-    m_Crc: 2222076502
-    m_Hash: f3dcd2286c919797c2ccb6d771f1469d
+    m_Crc: 2212056937
+    m_Hash: 94c534eda33d6adf3071aa85f69d4228
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/prefabs/imagebuildin.android
-    m_Crc: 3787670180
-    m_Hash: c07c48d373ee1f9f989581f21cd8ef27
+    m_Crc: 3782438036
+    m_Hash: 329366a8344c9453914c576c37d524d9
     m_Dependencies:
     - assets/res/buildinresources/buildinmaterials.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/prefabs/rawimagebuildin.android
-    m_Crc: 1277212225
-    m_Hash: 6d9b8f72de4533c5de874f9a97ebb725
+    m_Crc: 1151420209
+    m_Hash: 80f42115a604adc950bf3c7a0daa9b8d
     m_Dependencies:
     - assets/res/buildinresources/buildinmaterials.android
     - assets/res/buildinresources/buildintextures.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/prefabs/sfxtemplate.android
-    m_Crc: 1368282109
-    m_Hash: e7ccccb3fe02dab49a0052f8e457662e
+    m_Crc: 2411290236
+    m_Hash: 2301c59981cf836c5aa7fdc2173541e4
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/prefabs/videoplayerroot.android
-    m_Crc: 2968598098
-    m_Hash: 1cdedee26ebb0143260003c517ea6eec
+    m_Crc: 1501780612
+    m_Hash: e4928a0a85657ff6982fdc583e4d89db
     m_Dependencies:
     - assets/res/rendertextures/videorendertexture.android
     - assets/res/videos/xuezhihua.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/rendertextures/videorendertexture.android
-    m_Crc: 3027082133
-    m_Hash: 830bcdb0c52405b3064bf6674f779c0d
+    m_Crc: 105644844
+    m_Hash: 7b196f36967d4ad9c99c9a401ba02f7e
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/newassetbundleframeworkscene.android
-    m_Crc: 1504059343
-    m_Hash: c9a9ddec1c42f7fa9dcc5613198aa666
+    m_Crc: 3046206547
+    m_Hash: 395a92e8e3091b2522bcc820b0fa3a72
     m_Dependencies:
     - assets/res/rendertextures/videorendertexture.android
     - assets/res/textures/chaichainingwang.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/sceneprefabs/testscene2prefab.android
-    m_Crc: 2874208729
-    m_Hash: 7c1ff3b1cdc662764e3023d8610eec3f
+    m_Crc: 2558687570
+    m_Hash: 2dbe26a7042fda5aa554c1664828f8bb
     m_Dependencies:
     - assets/res/sharematerials/sharematerial.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/sceneprefabs/testscene2prefab2.android
-    m_Crc: 674350407
-    m_Hash: d3901adec49a0cf0495d74a61a9e2216
+    m_Crc: 1903384235
+    m_Hash: f4a9f3001c71b285d024fd128c8b17d8
     m_Dependencies:
     - assets/res/sharematerials/sharematerial.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/sceneprefabs/testscene3prefab.android
-    m_Crc: 1456731548
-    m_Hash: 1f7f2923020f45ddad62fbea77e629e2
+    m_Crc: 923259186
+    m_Hash: 3356b284af1fe5adc061cda9e97c98d9
     m_Dependencies:
     - assets/res/sharematerials/sharematerial.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/shadervariantscollectscene.android
-    m_Crc: 1403284835
-    m_Hash: 352414de909293b809d1b9a03e151b77
-    m_Dependencies:
-    - shaderlist.android
+    m_Crc: 4205324431
+    m_Hash: 37cfec275db6ad8dde57fec53e6a393e
+    m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/testscene2.android
-    m_Crc: 2045783987
-    m_Hash: 6a300d729840d9a82d0259a008b81a20
+    m_Crc: 1550331299
+    m_Hash: e1108745aa2526cd186af7757b835f27
     m_Dependencies:
     - assets/res/sharematerials/sharematerial.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/testscene3.android
-    m_Crc: 1891949773
-    m_Hash: 9ce2dee8c1bb8733c3ec6f434f202ac5
+    m_Crc: 4231521674
+    m_Hash: fcc17db9da2cdd3dd1b80160d377c590
     m_Dependencies:
     - assets/res/sharematerials/sharematerial.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/sharematerials/sharebluematerial.android
-    m_Crc: 2090753584
-    m_Hash: 292b913b85067a186fbd3bf0794fd210
+    m_Crc: 2856513141
+    m_Hash: c002411d5a40e6595496bb3998700c2f
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/sharematerials/sharematerial.android
-    m_Crc: 2775433673
-    m_Hash: 434d124aea05ad4b04f8f0472dd2780e
+    m_Crc: 3968066340
+    m_Hash: 190e65d453376d78a4b559ef629b9fdb
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/sharematerials/shareredmaterial.android
-    m_Crc: 1025081903
-    m_Hash: ebb9df39d5f96c7ffaafaa150fd28380
+    m_Crc: 1884638445
+    m_Hash: 363f917ff39494412e5f06de77df9343
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/textures/chaichaifengjing.android
-    m_Crc: 1066915640
-    m_Hash: 0670c31aa13d015f1055b2ef06a5b722
+    m_Crc: 3982386673
+    m_Hash: 86430e321b35b1aa33340e6ae7b7bf13
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/textures/chaichainingwang.android
-    m_Crc: 541159737
-    m_Hash: 81d179b45b827c52432ba6ab63c9aa0b
+    m_Crc: 411670228
+    m_Hash: 522a9ed70e31d0f8a803e86edbdc3014
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/textures/chaichaishenqingzhushi.android
-    m_Crc: 57003440
-    m_Hash: 4daf2a4d9cccb92b48b1da8cbe3f3c44
+    m_Crc: 1671518888
+    m_Hash: 8fb94875822e10a5f6ee35192f4e989c
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/videos/xuezhihua.android
-    m_Crc: 1883315042
-    m_Hash: 0d0b137f675b24dd6c86978738472537
+    m_Crc: 3990058839
+    m_Hash: 44e495dc94f26e058ffa928044695151
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/windows/mainwindow.android
-    m_Crc: 2168426116
-    m_Hash: 0dfb48aba63d2d93f3364ad2f9ccb604
+    m_Crc: 1738564443
+    m_Hash: eb67829c4fb5237a6bfe49e08ebf202b
     m_Dependencies:
     - assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
     - assets/res/atlas/shareatlas/tutorialatlas.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/assetbuildinfo/assetbuildinfoandroid.android
-    m_Crc: 2296111563
-    m_Hash: eaf75c7a7aeb4756390c2033a7323887
+    m_Crc: 1973841903
+    m_Hash: 48b2a2be40ae10aeac26a26615eea2f1
     m_Dependencies: []
