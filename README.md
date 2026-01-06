@@ -208,6 +208,10 @@ public void onLoadPermanentShaderList()
 
 **2023/2/8底层支持了新版ScriptableBuildPipeline打包工具打包，加快打包速度(需添加SCRIPTABLE_ASSET_BUILD_PIPELINE宏)**
 
+Note:
+
+1. **注意将Assets/Res/assetbuildinfo目录设置成不参与打包的打包策略，此文件会在打包时独立设置打包。**
+
 ## 热更新模块
 
 ### 类说明

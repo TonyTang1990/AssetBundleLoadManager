@@ -408,6 +408,10 @@ namespace TResource
                 {
                     DisplayOneCollect(AssetBundleCollectSettingData.Setting.AssetBundleCollectors[i]);
                 }
+                if (AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count == 0)
+                {
+                    EditorGUILayout.LabelField("无打包策略配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
+                }
                 if (GUILayout.Button("+", GUILayout.ExpandWidth(true), GUILayout.Height(20.0f)))
                 {
                     var chosenfolderpath = EditorUtility.OpenFolderPanel("选择搜集目录", LastOpenFolderPath, "");
@@ -417,10 +421,6 @@ namespace TResource
                         LastOpenFolderPath = relativefolderpath;
                         Debug.Log($"添加资源搜集目录:{chosenfolderpath}成功!");
                     }
-                }
-                if (AssetBundleCollectSettingData.Setting.AssetBundleCollectors.Count == 0)
-                {
-                    EditorGUILayout.LabelField("无打包策略配置", GUILayout.ExpandWidth(true), GUILayout.Height(20f));
                 }
             }
             EditorGUILayout.EndVertical();

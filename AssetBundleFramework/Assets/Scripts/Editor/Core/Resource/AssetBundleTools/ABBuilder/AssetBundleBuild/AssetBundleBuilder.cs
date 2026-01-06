@@ -675,22 +675,25 @@ namespace TResource
 		private UnityEngine.BuildCompression GetAssetBuildCompression(string assetPath)
         {
 			var collector = AssetBundleCollectSettingData.GetCollectorByAssetPath(assetPath);
-			if(collector.Compression == UnityEngine.CompressionType.Lz4 || collector.Compression == UnityEngine.CompressionType.Lz4HC)
-            {
-				return UnityEngine.BuildCompression.LZ4;
-            }
-			else if(collector.Compression == UnityEngine.CompressionType.Lzma)
-            {
-				return UnityEngine.BuildCompression.LZMA;
-            }
-			else if(collector.Compression == UnityEngine.CompressionType.None)
-            {
-				return UnityEngine.BuildCompression.Uncompressed;
-            }
-            else
-            {
-				Debug.LogError($"不支持的压缩格式设置:{collector.Compression}，返回默认LZ4压缩格式!");
-				return UnityEngine.BuildCompression.LZ4;
+			if(collector.BuildRule != AssetBundleBuildRule.Ignore)
+			{
+				if(collector.Compression == UnityEngine.CompressionType.Lz4 || collector.Compression == UnityEngine.CompressionType.Lz4HC)
+	            {
+					return UnityEngine.BuildCompression.LZ4;
+	            }
+				else if(collector.Compression == UnityEngine.CompressionType.Lzma)
+	            {
+					return UnityEngine.BuildCompression.LZMA;
+	            }
+				else if(collector.Compression == UnityEngine.CompressionType.None)
+	            {
+					return UnityEngine.BuildCompression.Uncompressed;
+	            }
+	            else
+	            {
+					Debug.LogError($"不支持的压缩格式设置:{collector.Compression}，返回默认LZ4压缩格式!");
+					return UnityEngine.BuildCompression.LZ4;
+				}
 			}
 			return GetConfigBuildCompression();
 		}
