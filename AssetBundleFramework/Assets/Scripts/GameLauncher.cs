@@ -282,6 +282,18 @@ namespace TResource
             AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
         }
 
+        /// <summary>
+        /// 加载TImage Sub Sprite(MultipleSprite那种)
+        /// </summary>
+        public void onLoadTImageSubSprite()
+        {
+            DIYLog.Log("onLoadTImageSubSprite()");
+            var param1 = InputParam1.text;
+            DIYLog.Log("Param1 = " + param1);
+            var param2 = InputParam2.text;
+            DIYLog.Log("Param2 = " + param2);
+            AtlasManager.Singleton.setTImageSubSprite(TImgBG, param1, param2);
+        }
 
         /// <summary>
         /// 加载背景TImage Sprite Atlas

@@ -214,6 +214,9 @@ MonoBehaviour:
   - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamanashiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/playerpreview3.spriteatlas
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview3
+    ABVariantPath: 
   - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG
     ABPath: assets/res/atlas/shareatlas/tutorialatlas
     ABVariantPath: 
@@ -868,8 +871,8 @@ MonoBehaviour:
   - AssetPath: Assets/Res/rendertextures/VideoRenderTexture.renderTexture
     ABPath: assets/res/rendertextures/videorendertexture
     ABVariantPath: 
-  - AssetPath: Assets/Res/scenes/NewAssetBundleFrameWorkScene.unity
-    ABPath: assets/res/scenes/newassetbundleframeworkscene
+  - AssetPath: Assets/Res/scenes/AssetBundleFrameWorkScene.unity
+    ABPath: assets/res/scenes/assetbundleframeworkscene
     ABVariantPath: 
   - AssetPath: Assets/Res/scenes/sceneprefabs/testscene2prefab.prefab
     ABPath: assets/res/scenes/sceneprefabs/testscene2prefab

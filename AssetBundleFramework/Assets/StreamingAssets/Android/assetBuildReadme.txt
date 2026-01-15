@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2025/7/13 22:38:47
+构建时间：2026/1/15 18:18:49
 
 --Asset AB打包信息--
 AssetBundleName:assets/res/actors/cube.android AssetBundleVariant: BuildCompression:Lz4HC
@@ -80,6 +80,9 @@ AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android A
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamagataPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamaguchiPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamanashiPreview.png
+
+AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview3.android AssetBundleVariant: BuildCompression:Lz4HC
+	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/playerpreview3.spriteatlas
 
 AssetBundleName:assets/res/atlas/shareatlas/tutorialatlas.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG
@@ -323,8 +326,8 @@ AssetBundleName:assets/res/prefabs/videoplayerroot.android AssetBundleVariant: B
 AssetBundleName:assets/res/rendertextures/videorendertexture.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/rendertextures/VideoRenderTexture.renderTexture
 
-AssetBundleName:assets/res/scenes/newassetbundleframeworkscene.android AssetBundleVariant: BuildCompression:Lz4HC
-	AssetPath: Assets/Res/scenes/NewAssetBundleFrameWorkScene.unity
+AssetBundleName:assets/res/scenes/assetbundleframeworkscene.android AssetBundleVariant: BuildCompression:Lz4HC
+	AssetPath: Assets/Res/scenes/AssetBundleFrameWorkScene.unity
 
 AssetBundleName:assets/res/scenes/sceneprefabs/testscene2prefab.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/scenes/sceneprefabs/testscene2prefab.prefab

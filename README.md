@@ -364,6 +364,7 @@ Tools->Assets->Asset相关处理
 
 1. **AB打包和加载使用ScriptableBuildPipeline模式需添加宏:SCRIPTABLE_ASSET_BUILD_PIPELINE**
 2. **老版AB打包只支持AssetName小写全路径，所以针对老版AB打包和加载AssetName本人都统一成了小写处理**
+3. **SpriteAtlas的打包方式，在2022.3.62f3版本测试打包AB，只打包SpriteAtlas才能避免小图纹理打包冗余问题**
 
 # 重大问题修复
 
@@ -371,9 +372,13 @@ Tools->Assets->Asset相关处理
 
 # 待做事项
 
-**1. 支持真机代码热更(Lua + XLua)**
+**1. 支持类似Multiple Sprite这种SubAsset的加载(设计之初考虑的不够全面(无论是打包还是加载都是面向Asset路径级别的，导致SubAsset这种无论是打包还是加载都给不出有效Asset路径)，导致SubAsset这种资源无法主动加载到)⭐⭐⭐⭐⭐**
 
-**2. 热更新资源正确性校验(MD5校验)**
+​		大框架不改的前提下，目前想到的最快速的方案是AssetLoader和AssetInfo都支持获取SubAsset的相关**同步接口**，**将计数和对象绑定都绑在主Asset身上**
+
+**2. 支持真机代码热更(Lua + XLua)**
+
+**3. 热更新资源正确性校验(MD5校验)**
 
 # 个人博客
 

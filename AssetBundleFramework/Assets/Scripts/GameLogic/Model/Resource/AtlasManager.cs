@@ -285,72 +285,87 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// 设置TImage指定图片(通过Multiple Sprite加载Sprite的方式)
     /// </summary>
     /// <param name="timg">Image组件</param>
-    /// <param name="atlaspath">图集路径</param>
+    /// <param name="multipleSpritePath">MultipleSprite图路径</param>
     /// <param name="spritename">Sprite名</param>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int setTImageSubSprite(TImage timg, string atlaspath, string spritename, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int setTImageSubSprite(TImage timg, string multipleSpritePath, string spritename, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
-        DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
-        var spritePath = Path.Combine(atlaspath, spritename);
-        TResource.AssetLoader assetLoader;
-        return TResource.ResourceModuleManager.Singleton.RequstAssetSync<Sprite>(
-            spritePath,
-            out assetLoader,
-            (loader, requestUid) =>
-            {
-                DIYLog.Log($"加载Sprite:{spritePath} AB完成!");
-                // 清除老的资源引用
-                if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
-                {
-                    timg.Loader.ReleaseOwner(timg);
-                    timg.Loader = null;
-                }
-                var sprite = loader.BindAsset<Sprite>(timg);
-                timg.sprite = sprite;
-                timg.Loader = loader;
-                timg.SpritePath = spritePath;
-                callback?.Invoke(sprite, requestUid);
-            },
-            loadtype
-        );
+        // TODO:
+        // 改造成支持SubAsset的加载方式
+        // 目前设计思路是定义一个AssetLoadType区分是常规Asset加载还是SubAsset加载
+        // 底层AssetInfo里添加AssetLoadType和SubAssetName字段
+        // 上层统一封装AssetLoadType的传参
+        // 最后底层加载完成后根据AssetLaodType和SubAssetName决定是LoadAsset还是LoadSubAsset
+        DIYLog.LogError($"暂未支持SubAsset的加载方式，请勿设计SubAsset的资源直接使用!");
+        return -1;
+        // DIYLog.Assert(timg == null, "setTImageSubSprite不允许传空TImage!");
+        // TResource.AssetLoader assetLoader;
+        // return TResource.ResourceModuleManager.Singleton.RequstAssetSync<Sprite>(
+        //     multipleSpritePath,
+        //     out assetLoader,
+        //     (loader, requestUid) =>
+        //     {
+        //         DIYLog.Log($"加载MultipleSprite:{multipleSpritePath}完成!");
+        //         // 清除老的资源引用
+        //         if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
+        //         {
+        //             timg.Loader.ReleaseOwner(timg);
+        //             timg.Loader = null;
+        //         }
+        //         var sprite = loader.BindAsset<Sprite>(timg);
+        //         timg.sprite = sprite;
+        //         timg.Loader = loader;
+        //         timg.SpritePath = multipleSpritePath;
+        //         callback?.Invoke(sprite, requestUid);
+        //     },
+        //     loadtype
+        // );
     }
 
     /// <summary>
     /// 异步设置TImage指定图片(通过Multiple Sprite加载Sprite的方式)
     /// </summary>
     /// <param name="timg">Image组件</param>
-    /// <param name="atlaspath">图集路径</param>
+    /// <param name="multipleSpritePath">MultipleSprite图路径</param>
     /// <param name="spritename">Sprite名</param>
     /// <param name="assetLoader">Asset加载器</param>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int setTImageSubSpriteAsync(TImage timg, string atlaspath, string spritename, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int setTImageSubSpriteAsync(TImage timg, string multipleSpritePath, string spritename, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
-        DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
-        var spritePath = Path.Combine(atlaspath, spritename);
-        return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<Sprite>(
-            spritePath,
-            out assetLoader,
-            (loader, requestUid) =>
-            {
-                DIYLog.Log($"加载Sprite:{spritePath} AB完成!");
-                // 清除老的资源引用
-                if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
-                {
-                    timg.Loader.ReleaseOwner(timg);
-                    timg.Loader = null;
-                }
-                var sprite = loader.BindAsset<Sprite>(timg);
-                timg.sprite = sprite;
-                timg.Loader = loader;
-                timg.SpritePath = spritePath;
-                callback?.Invoke(sprite, requestUid);
-            },
-            loadtype
-        );
+        // TODO:
+        // 改造成支持SubAsset的加载方式
+        // 目前设计思路是定义一个AssetLoadType区分是常规Asset加载还是SubAsset加载
+        // 底层AssetInfo里添加AssetLoadType和SubAssetName字段
+        // 上层统一封装AssetLoadType的传参
+        // 最后底层加载完成后根据AssetLaodType和SubAssetName决定是LoadAsset还是LoadSubAsset
+        DIYLog.LogError($"暂未支持SubAsset的异步加载方式，请勿设计SubAsset的资源直接使用!");
+        assetLoader = null;
+        return -1;
+        // DIYLog.Assert(timg == null, "setTImageSubSpriteAsync不允许传空TImage!");
+        // return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<Sprite>(
+        //     multipleSpritePath,
+        //     out assetLoader,
+        //     (loader, requestUid) =>
+        //     {
+        //         DIYLog.Log($"加载MultipleSprite:{multipleSpritePath}完成!");
+        //         // 清除老的资源引用
+        //         if (timg.Loader != null && !string.IsNullOrEmpty(timg.SpritePath))
+        //         {
+        //             timg.Loader.ReleaseOwner(timg);
+        //             timg.Loader = null;
+        //         }
+        //         var sprite = loader.BindAsset<Sprite>(timg);
+        //         timg.sprite = sprite;
+        //         timg.Loader = loader;
+        //         timg.SpritePath = multipleSpritePath;
+        //         callback?.Invoke(sprite, requestUid);
+        //     },
+        //     loadtype
+        // );
     }
 
     /// <summary>

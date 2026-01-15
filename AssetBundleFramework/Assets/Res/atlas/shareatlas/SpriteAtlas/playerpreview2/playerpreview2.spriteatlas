@@ -7,7 +7,6 @@ SpriteAtlas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: playerpreview2
-  serializedVersion: 2
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -37,6 +36,34 @@ SpriteAtlas:
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - c1803b40c84600d49b69fe72296b7d6c: 21300000
+    - e1e03890298d1b5458fd3daba598135e: 21300000
+    - 9789323163a5cf8448667d735310cc0d: 21300000
+    - 787c2731caa9b6445b7119f089eadbee: 21300000
+    - c2729151f1b3e1f41b42d83b87ea50d0: 21300000
+    - c6af21914d342094c8761beaa19f7f15: 21300000
+    - 667b3591ef246064e9928af6a56c27c9: 21300000
+    - 47843462155fc4947ba1619d7188f2b5: 21300000
+    - 4564a39272438bd449a319d3aca78020: 21300000
+    - 96dc20c2f1f9a47429ea0e79f6301cff: 21300000
+    - 6c0f04c29ef8a2f4393326f93e96ed49: 21300000
+    - eca7f1d26bea0014fb9295297b6c0054: 21300000
+    - 7d537c335c267cf4fb35cc7de17ae45d: 21300000
+    - 06988b84001a8cb4a8a0b9aaaa236b61: 21300000
+    - 7032c694d965a454184c56e51893fd8e: 21300000
+    - be42fba44d35ba945890fa6af795e8c7: 21300000
+    - 3d58c0b40d60df34a8edae36f54c202a: 21300000
+    - 2669bb6582a801e47abfe35f86ab95ab: 21300000
+    - 5acdb2f5c0135614fb312d7ca281f1f4: 21300000
+    - f74c5247e930ec947a1dff086bd9b0a3: 21300000
+    - 56808308024e50d47ab83f842c8e2171: 21300000
+    - 4d90eaf81d4c9bb498f3f1d71522ae88: 21300000
+    - 7a2e8ebb3c83cca4e88c59bd24a10db1: 21300000
+    - 9ae2880e1366c4b428e2266fee4f6526: 21300000
+    - 2942d17ef033bb74090ab77a05a55318: 21300000
+    - ab3b759e590a2a74b92305fe97c7667c: 21300000
+    - af72f6ee7fa0b424ebebf3e3957d605b: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: c1803b40c84600d49b69fe72296b7d6c, type: 3}
@@ -97,4 +124,3 @@ SpriteAtlas:
   m_RenderDataMap: {}
   m_Tag: playerpreview2
   m_IsVariant: 0
-  m_IsPlaceholder: 0
