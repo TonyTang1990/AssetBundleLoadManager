@@ -1,7 +1,7 @@
 # 工具
 
-1. Unity版本(2019 4.31f1c1或2020.3.34f1c2)
-2. Visual Studio 2019
+1. Unity版本(202.3.62f3)
+2. Visual Studio 2022 或 Visual Studio Code
 
 # 功能模块
 
