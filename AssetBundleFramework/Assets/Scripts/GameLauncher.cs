@@ -19,7 +19,6 @@ namespace TResource
     /// </summary>
     public class GameLauncher : MonoBehaviour
     {
-
         /// <summary>
         /// UI挂在节点
         /// </summary>
@@ -433,7 +432,7 @@ namespace TResource
             // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
             TResource.AssetLoader assetLoader;
             TResource.ResourceModuleManager.Singleton.RequstAssetSync<ShaderVariantCollection>(
-                "Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants",
+                ResourceConstData.ShaderVariantsAssetRelativePath,
                 out assetLoader,
                 (loader, requestUid) =>
                 {

@@ -203,7 +203,7 @@ namespace TResource
         /// <returns></returns>
         public static string GetAssetBuildInfoFolderFullPath()
         {
-            return $"{Application.dataPath}/{ResourceConstData.AssetBuildInfoAssetRelativePath}";
+            return $"{Application.dataPath}/{ResourceConstData.AssetBuildInfoAssetRelativeFolderPath}";
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace TResource
         /// <returns></returns>
         public static string GetAssetBuildInfoFileRelativePath()
         {
-            return $"Assets/{ResourceConstData.AssetBuildInfoAssetRelativePath}/{GetAssetBuildInfoAssetName()}.asset";
+            return $"Assets/{ResourceConstData.AssetBuildInfoAssetRelativeFolderPath}/{GetAssetBuildInfoAssetName()}.asset";
         }
 
         /// <summary>

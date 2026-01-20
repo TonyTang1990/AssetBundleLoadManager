@@ -8,22 +8,26 @@ ShaderVariantCollection:
   m_PrefabAsset: {fileID: 0}
   m_Name: DIYShaderVariantsCollection
   m_Shaders:
-  - first: {fileID: 106, guid: 0000000000000000f000000000000000, type: 0}
+  - first: {fileID: 4800000, guid: 27c08787e310a604ebd9e2b9dd4c15c7, type: 3}
     second:
       variants:
-      - keywords: _SUNDISK_SIMPLE
-        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: SHADOWS_DEPTH
+        passType: 8
   - first: {fileID: 4800000, guid: 3b204f00b368bb847aa183ed5c36f944, type: 3}
     second:
       variants:
       - keywords: _ALPHABLEND_ON
         passType: 4
+      - keywords: PROCEDURAL_INSTANCING_ON _ALPHABLEND_ON
+        passType: 8
       - keywords: SHADOWS_DEPTH _ALPHABLEND_ON
         passType: 8
-  - first: {fileID: 4800000, guid: 41ad5ef6ea1a6e344aafe63b72df6d31, type: 3}
+  - first: {fileID: 4800000, guid: 428da4a80211ad74ca8eff3d220b46f6, type: 3}
     second:
       variants:
-      - keywords: 
+      - keywords: _SUNDISK_SIMPLE
         passType: 0
   - first: {fileID: 4800000, guid: 454baa29fe74dd443ba5deaf77b9385e, type: 3}
     second:
@@ -35,13 +39,27 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+  - first: {fileID: 4800000, guid: 799a72a7e5f5bec4ca234fd03e089e65, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
+        passType: 4
+  - first: {fileID: 4800000, guid: 7b5a0a119d847bf468c856007a7b2186, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: SHADOWS_DEPTH
+        passType: 8
   - first: {fileID: 4800000, guid: 7fd06687c3b6449449979c2e4d04c8e9, type: 3}
     second:
       variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH _EMISSION
+      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
         passType: 4
-      - keywords: DIRECTIONAL
-        passType: 5
+      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN _EMISSION
+        passType: 4
+      - keywords: 
+        passType: 8
       - keywords: SHADOWS_DEPTH
         passType: 8
   - first: {fileID: 4800000, guid: 80e46a0749a6daf44ad44a316009ddae, type: 3}
@@ -54,6 +72,11 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+  - first: {fileID: 4800000, guid: aa7328509854146409587a766f1ae94e, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
+        passType: 4
   - first: {fileID: 4800000, guid: b5e89177ebfc60542b6b21cffe43edcd, type: 3}
     second:
       variants:
@@ -77,7 +100,20 @@ ShaderVariantCollection:
   - first: {fileID: 4800000, guid: ea0ffaac7aab41e4e97cb6244787fa38, type: 3}
     second:
       variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH
+      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
         passType: 4
-      - keywords: SHADOWS_DEPTH
-        passType: 8
+  - first: {fileID: 9007, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9101, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9103, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0

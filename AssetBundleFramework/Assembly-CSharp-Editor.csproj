@@ -71,15 +71,19 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\SpriteDrawUtility.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\HotUpdate\HotUpdateOperationWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\UxmlLoader.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\EditorResourceUtilities.cs" />
     <Compile Include="Assets\Scripts\Editor\EditorUtilities.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\CollectAssetInfo.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleCollectRule.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\ScriptAutomation\ScriptKeywordProcesser.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TButtonEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildInfo.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\ShaderVariantCollectionHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuilder.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\ShaderVariantCollector.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\HotUpdate\HotUpdateTool.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleCollector\AssetBundleCollectSetting.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOperationWindow.cs" />
@@ -91,10 +95,13 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildStyles.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildConstData.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\SBPAssetBundleBuilder.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\ShaderVariantCollectorSetting.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeTool.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceDebugWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TImageEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\LightMap\LightMapDetailWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\ShaderVariantCollectorWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\ShaderVariantCollectionManifest.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\OldAssetBundleBuilder.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\CustomBuildParameters.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildPreprocess.cs" />
@@ -108,6 +115,7 @@
   <ItemGroup>
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
     <None Include="Assets\codeandweb.com\Editor\TexturePackerImporter.dll" />
+    <None Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\ShaderVariantCollectorWindow.uxml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

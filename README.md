@@ -356,8 +356,12 @@ Tools->Assets->Asset相关处理
 
     ![BuildInResourceExtraction](./img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png)
 
-5. Shader变体搜集工具(半成品，只是简单的把所有材质放到场景中用摄像机照射一次让Unity能搜集到变体，**可能会遗漏一些特殊情况下的变体**)
+5. Shader变体搜集工具(**接入YooAsset的变体搜集工具**)
 
+   **核心思想是搜集所有需要参与打包的材质球(含被动依赖不在打包策略内的)，然后通过单独的场景和摄像机去照射让ShaderVariantCollection去搜集**
+   
+   ![ShaderVariantsCollectionEntry](./img/Unity/AssetBundle-Framework/ShaderVariantsCollectionEntry.png)
+   
    ![ShaderVariantsCollection](./img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png) 
 
 # 注意事项

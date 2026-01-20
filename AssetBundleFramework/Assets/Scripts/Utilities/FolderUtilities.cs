@@ -45,6 +45,16 @@ public static class FolderUtilities
     }
 
     /// <summary>
+    /// 创建文件所在的目录
+    /// </summary>
+    /// <param name="filePath">文件路径</param>
+    public static void CreateFileDirectory(string filePath)
+    {
+        string destDirectory = Path.GetDirectoryName(filePath);
+        CheckAndCreateSpecificFolder(destDirectory);
+    }
+
+    /// <summary>
     /// 无论目录是否存在都删除所有文件重新创建一个目录
     /// </summary>
     public static void RecreateSpecificFolder(string folderpath)
