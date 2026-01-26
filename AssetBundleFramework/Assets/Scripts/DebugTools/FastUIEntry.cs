@@ -70,13 +70,6 @@ public class FastUIEntry : MonoBehaviour{
         GUILayout.Label("参数1:", mGUIDIY, GUILayout.Width(50.0f), GUILayout.MaxHeight(30.0f));
         m_TFInputParam1 = GUILayout.TextField(m_TFInputParam1, GUILayout.MaxWidth(90.0f), GUILayout.MaxHeight(30.0f));
         GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-        LogSwitch = GUILayout.Toggle(LogSwitch, "可视化Log总开关", GUILayout.Width(150.0f));
-        if (LogSwitch != VisibleLogUtility.getInstance().mVisibleLogSwitch)
-        {
-            VisibleLogUtility.getInstance().mVisibleLogSwitch = LogSwitch;
-        }
-        GUILayout.EndHorizontal();
         GUILayout.EndVertical();
         GUILayout.EndArea();
     }

@@ -1090,6 +1090,8 @@
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj" />
     <ProjectReference Include="Unity.AssetBundleBrowser.Editor.csproj" />
+    <ProjectReference Include="IngameDebugConsole.Editor.csproj" />
+    <ProjectReference Include="IngameDebugConsole.Runtime.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
