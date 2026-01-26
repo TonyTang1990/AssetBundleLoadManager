@@ -152,11 +152,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-BumpNolight.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-Diffuse.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-BlitCopyDepth.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-DepthNormalsTexture.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Sprites-Default.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardParticleShadow.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-AddPass.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorLeavesRendertex.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VideoDecode.shader" />
@@ -180,6 +182,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Lightmap-Bumped.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityShadowLibrary.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Trees\BillboardTree.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Skybox.shader" />
     <None Include="Assets\StreamingAssets\Android\readme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Skybox-Procedural.shader" />
@@ -211,11 +214,13 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityShaderUtilities.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityUI.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\BlitTexArraySliceToDepth_MSAA.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-BlitCopyWithDepth.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityMetaPass.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-Alpha.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AR\Shaders\TangoARRender.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Unlit-Transparent.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-VertexLit-OnlyDirectionalLights.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Lit-Detail.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityBuiltin3xTreeLibrary.cginc" />
@@ -234,6 +239,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-DefaultFont.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\SpatialMappingWireframe.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Add.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardUtils.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Premultiply Blend.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-Glossy.shader" />
@@ -275,17 +281,24 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-Parallax.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\AlphaTest-BumpSpec.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-ScreenSpaceShadows.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\SpeedTreeVertex.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Internal-BlendShape.compute" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-CombineDepthNormals.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-GUITextureBlit.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-ConvertTexture.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\SpeedTree8Common.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionLeavesRendertex.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\StandardSpecular.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorBark.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\GIDebug\UV1sAsPositions.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardCore.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionLeaves.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\Tessellation.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Internal-ErrorShader.shader" />
@@ -297,6 +310,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-ODSWorldTexture.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\TreeCreator\TreeCreatorBarkRendertex.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\GIDebug\TextureUV.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Illumin-Parallax.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityGBuffer.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-GUITextureClip.shader" />
@@ -319,6 +333,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-BumpSpec.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Mobile\Mobile-Diffuse.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Reflect-BumpSpec.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityPBSLighting.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\AddPass.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Standard Unlit.shader" />
@@ -343,6 +358,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Skybox-Panoramic.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityDeprecated.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Internal-GUIRoundedRect.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResources\Internal-Skinning-Util.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Alpha-Parallax.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SpeedTree.shader" />
@@ -358,20 +374,24 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\TerrainSplatmapCommon.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle AddMultiply.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\Lighting.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Lightmap-Glossy.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityCustomRenderTexture.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-Overdraw.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardParticleEditor.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityDeferredLibrary.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VideoDecodeAndroid.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\GIDebug\ShowLightMask.shader" />
     <None Include="Assets\StreamingAssets\Android\assetBuildReadme.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Normal-DiffuseFast.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnitySprites.cginc" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardInput.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Standard-FirstPass.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Trees\CameraFacingBillboardTree.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\VR\Shaders\Internal-VRDistortion.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle VertexLit Blended.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Particle Multiply.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\UI\UI-CompositeOverdraw.shader" />
@@ -386,6 +406,7 @@
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Nature\SoftOcclusion\TreeSoftOcclusionBark.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Standard.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityLightingCommon.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\Unlit\Unlit-AlphaTest.shader" />
     <None Include="Assets\Res\buildinresources\buildinshaders\CGIncludes\UnityStandardShadow.cginc" />
     <None Include="Assets\Res\buildinresources\buildinshaders\DefaultResourcesExtra\TerrainShaders\Splats\Specular-FirstPass.shader" />
@@ -1306,6 +1327,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Unity.AssetBundleBrowser.Editor.csproj" />
+    <ProjectReference Include="IngameDebugConsole.Editor.csproj" />
+    <ProjectReference Include="IngameDebugConsole.Runtime.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>

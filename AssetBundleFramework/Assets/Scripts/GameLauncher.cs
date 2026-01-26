@@ -142,7 +142,6 @@ namespace TResource
 
         private void OnDestroy()
         {
-            Application.logMessageReceived -= VisibleLogUtility.getInstance().HandleLog;
         }
 
         /// <summary>
@@ -160,11 +159,6 @@ namespace TResource
         /// </summary>
         private void addMonoComponents()
         {
-            VisibleLogUtility visiblelog = gameObject.AddComponent<VisibleLogUtility>();
-            visiblelog.setInstance(visiblelog);
-            VisibleLogUtility.getInstance().mVisibleLogSwitch = FastUIEntry.LogSwitch;
-            Application.logMessageReceived += VisibleLogUtility.getInstance().HandleLog;
-
             gameObject.AddComponent<FastUIEntry>();
 
             gameObject.AddComponent<CoroutineManager>();
