@@ -54,11 +54,18 @@ namespace TResource
 
             public void OnCreate()
             {
-                RequestUid = 0;
-                RequestCallBack = null;
+                ResetDatas();
             }
 
             public void OnDispose()
+            {
+                ResetDatas();
+            }
+
+            /// <summary>
+            /// 重置数据
+            /// </summary>
+            protected virtual void ResetDatas()
             {
                 RequestUid = 0;
                 RequestCallBack = null;
@@ -169,19 +176,19 @@ namespace TResource
         public override void OnCreate()
         {
             base.OnCreate();
-            DepABPaths = null;
-            AssetBundleInfo = null;
-            DepAssetBundleInfoList.Clear();
-            mAllRequiredAssetBundleNumber = 0;
-            mLoadUnCompleteAssetBundlePathMap.Clear();
-            mAssetBundlePathAndBundleLoaderMap.Clear();
-            mRequestInfoList.Clear();
-            mRequestUidAndInfoMap.Clear();
         }
 
         public override void OnDispose()
         {
             base.OnDispose();
+        }
+
+        /// <summary>
+        /// 重置数据
+        /// </summary>
+        protected override void ResetDatas()
+        {
+            base.ResetDatas();
             DepABPaths = null;
             AssetBundleInfo = null;
             DepAssetBundleInfoList.Clear();

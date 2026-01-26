@@ -107,15 +107,19 @@ namespace TResource
 
         public virtual void OnCreate()
         {
-            ResourcePath = null;
-            LastUsedTime = 0f;
-            IsReady = false;
-            RefCount = 0;
-            mResource = null;
-            mReferenceOwnerList.Clear();
+            ResetDatas();
         }
 
         public virtual void OnDispose()
+        {
+            ResetDatas();
+ 
+        }
+
+        /// <summary>
+        /// 重置数据
+        /// </summary>
+        protected virtual void ResetDatas()
         {
             ResourcePath = null;
             LastUsedTime = 0f;

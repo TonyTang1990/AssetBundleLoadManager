@@ -50,13 +50,20 @@ namespace TResource
                 RequestCallBack = requestCallBack;
             }
 
-            public void OnCreate()
+            public virtual void OnCreate()
             {
-                RequestUid = 0;
-                RequestCallBack = null;
+                ResetDatas();
             }
 
-            public void OnDispose()
+            public virtual void OnDispose()
+            {
+                ResetDatas();
+            }
+
+            /// <summary>
+            /// 重置数据
+            /// </summary>
+            protected virtual void ResetDatas()
             {
                 RequestUid = 0;
                 RequestCallBack = null;
@@ -118,16 +125,19 @@ namespace TResource
         public override void OnCreate()
         {
             base.OnCreate();
-            AssetType = null;
-            mAssetInfo = null;
-            mRequestUIDList.Clear();
-            mRequestUidAndInfoMap.Clear();
-            mAssetAsyncRequest = null;
         }
 
         public override void OnDispose()
         {
             base.OnDispose();
+        }
+
+        /// <summary>
+        /// 重置数据
+        /// </summary>
+        protected override void ResetDatas()
+        {
+            base.ResetDatas();
             AssetType = null;
             mAssetInfo = null;
             mRequestUIDList.Clear();

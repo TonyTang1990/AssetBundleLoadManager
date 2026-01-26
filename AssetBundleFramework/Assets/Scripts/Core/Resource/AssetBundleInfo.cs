@@ -67,12 +67,19 @@ namespace TResource
         public override void OnCreate()
         {
             base.OnCreate();
-            AllLoadedAssetInfoMap.Clear();
         }
 
         public override void OnDispose()
         {
             base.OnDispose();
+        }
+
+        /// <summary>
+        /// 重置数据
+        /// </summary>
+        protected override void ResetDatas()
+        {
+            base.ResetDatas();
             mDepAssetBundlePaths = null;
             AllLoadedAssetInfoMap.Clear();
         }

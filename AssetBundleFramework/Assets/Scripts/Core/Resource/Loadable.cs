@@ -137,13 +137,18 @@ namespace TResource
 
         public virtual void OnCreate()
         {
-            ResourcePath = null;
-            LoadMethod = ResourceLoadMethod.Sync;
-            LoadType = ResourceLoadType.NormalLoad;
-            LoadState = ResourceLoadState.None;
+            ResetDatas();
         }
 
         public virtual void OnDispose()
+        {
+            ResetDatas();
+        }
+
+        /// <summary>
+        /// 重置数据
+        /// </summary>
+        protected virtual void ResetDatas()
         {
             ResourcePath = null;
             LoadMethod = ResourceLoadMethod.Sync;

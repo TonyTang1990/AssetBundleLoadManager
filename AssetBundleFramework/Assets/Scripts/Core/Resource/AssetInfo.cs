@@ -54,14 +54,19 @@ namespace TResource
         public override void OnCreate()
         {
             base.OnCreate();
-            AssetType = null;
-            AssetName = null;
-            OwnerAsestBundlePath = null;
         }
 
         public override void OnDispose()
         {
             base.OnDispose();
+        }
+
+        /// <summary>
+        /// 重置数据
+        /// </summary>
+        protected override void ResetDatas()
+        {
+            base.ResetDatas();
             AssetType = null;
             AssetName = null;
             OwnerAsestBundlePath = null;
