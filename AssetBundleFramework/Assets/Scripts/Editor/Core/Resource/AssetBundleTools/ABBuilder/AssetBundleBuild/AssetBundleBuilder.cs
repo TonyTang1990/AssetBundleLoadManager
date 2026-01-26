@@ -206,6 +206,8 @@ namespace TResource
 			DoAssetBundleBuildPreparation();
 			// 开始构建
 			Log($"开始构建......");
+			// 避免SBP打包时场景未保存报错
+			EditorSceneManager.SaveOpenScenes();
 			bool buildSuccess;
 #if OLD_ASSET_BUILD_PIPELINE
 			DoCustomAssetBundleBuild(OutputDirectory, out buildSuccess);
@@ -264,7 +266,6 @@ namespace TResource
             {
                 return false;
             }
-			EditorSceneManager.SaveOpenScenes();
 			if(!DoAnalyseAssetBundleBuild())
             {
 				return false;
