@@ -366,7 +366,7 @@ Tools->Assets->Asset相关处理
 
 # 注意事项
 
-1. **AB打包和加载使用ScriptableBuildPipeline模式需添加宏:SCRIPTABLE_ASSET_BUILD_PIPELINE**
+1. **AB打包和加载默认使用SBP，修改成老版打包需添加OLD_ASSET_BUILD_PIPELINE宏**
 2. **老版AB打包只支持AssetName小写全路径，所以针对老版AB打包和加载AssetName本人都统一成了小写处理**
 3. **SpriteAtlas的打包方式，在2022.3.62f3版本测试打包AB，只打包SpriteAtlas才能避免小图纹理打包冗余问题**
 
