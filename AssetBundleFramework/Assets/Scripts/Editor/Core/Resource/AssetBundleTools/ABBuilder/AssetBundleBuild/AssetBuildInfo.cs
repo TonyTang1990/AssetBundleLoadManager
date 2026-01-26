@@ -75,7 +75,7 @@ namespace TResource
 		/// <param name="addresableName">Asset在AB里的访问名</param>
         public AssetBuildInfo(string assetPath, string addresableName)
 		{
-#if SCRIPTABLE_ASSET_BUILD_PIPELINE
+#if !OLD_ASSET_BUILD_PIPELINE
             // 新版的Scriptable Build Pipeline支持准确设置大小写AB Asset路径
 			AssetPath = assetPath;
 #else

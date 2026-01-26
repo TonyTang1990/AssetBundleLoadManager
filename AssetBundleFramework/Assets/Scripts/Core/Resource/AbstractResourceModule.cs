@@ -555,7 +555,7 @@ namespace TResource
                 Debug.LogError($"不允许传空Asset路径!");
                 return 0;
             }
-#if !SCRIPTABLE_ASSET_BUILD_PIPELINE
+#if OLD_ASSET_BUILD_PIPELINE
             // 老版BuildPipeline.BuildAssetBundles打包指定AssetBundleBuild.assetNames为含大写
             // 但不知道为什么打包出来的AB里面的加载路径依然是全小写,所以这里强制老版AB加载全小写
             assetPath = assetPath.ToLower();

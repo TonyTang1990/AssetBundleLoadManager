@@ -60,7 +60,7 @@ namespace TResource
             AssetBundle ab = AssetBundle.LoadFromFile(abPath);
             if (ab != null)
             {
-#if SCRIPTABLE_ASSET_BUILD_PIPELINE
+#if !OLD_ASSET_BUILD_PIPELINE
                 var assetBundleManifest = ab.LoadAsset<CompatibilityAssetBundleManifest>(ResourceConstData.AssetBundleManifestAssetName);
 #else
                 var assetBundleManifest = ab.LoadAsset<AssetBundleManifest>(ResourceConstData.AssetBundleManifestAssetName);
@@ -100,7 +100,7 @@ namespace TResource
             }
             // AssetBundle打包信息没有依赖信息，直接加载即可
             var assetBuildInfoAssetRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
-#if !SCRIPTABLE_ASSET_BUILD_PIPELINE
+#if OLD_ASSET_BUILD_PIPELINE
             // 老版BuildPipeline.BuildAssetBundles打包指定AssetBundleBuild.assetNames为含大写
             // 但不知道为什么打包出来的AB里面的加载路径依然是全小写，这里老版AB统一成全小写加载
             // Note:

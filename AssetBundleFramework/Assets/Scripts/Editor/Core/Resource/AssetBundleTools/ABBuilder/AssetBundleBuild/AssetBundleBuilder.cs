@@ -17,6 +17,7 @@ using UnityEditor.Build.Pipeline.Interfaces;
 using UnityEditor.Build.Pipeline;
 using UnityEditor.Build.Pipeline.Utilities;
 using UnityEditor.Build.Content;
+using UnityEditor.SceneManagement;
 
 namespace TResource
 {
@@ -263,6 +264,7 @@ namespace TResource
             {
                 return false;
             }
+			EditorSceneManager.SaveOpenScenes();
 			if(!DoAnalyseAssetBundleBuild())
             {
 				return false;
@@ -528,7 +530,7 @@ namespace TResource
 				return ?;
 			}
 			*/
-#if SCRIPTABLE_ASSET_BUILD_PIPELINE
+#if !OLD_ASSET_BUILD_PIPELINE
 			// 新版支持准确的大小写AddreableName
             return assetPath;
 #else
