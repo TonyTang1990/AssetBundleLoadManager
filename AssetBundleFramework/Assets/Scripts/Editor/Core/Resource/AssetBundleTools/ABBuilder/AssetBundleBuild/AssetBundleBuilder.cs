@@ -206,10 +206,10 @@ namespace TResource
 			// 开始构建
 			Log($"开始构建......");
 			bool buildSuccess;
-#if SCRIPTABLE_ASSET_BUILD_PIPELINE
-			DoSBPAssetBundleBuild(OutputDirectory, out buildSuccess);
-#else
+#if OLD_ASSET_BUILD_PIPELINE
 			DoCustomAssetBundleBuild(OutputDirectory, out buildSuccess);
+#else
+			DoSBPAssetBundleBuild(OutputDirectory, out buildSuccess);
 #endif
 			if(buildSuccess == false)
             {

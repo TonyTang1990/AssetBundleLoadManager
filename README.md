@@ -206,7 +206,7 @@ public void onLoadPermanentShaderList()
 
 ![PostFixBlackListAndAssetNameBlackList](./img/Unity/AssetBundle-Framework/PostFixBlackListAndAssetNameBlackList.PNG)
 
-**2023/2/8底层支持了新版ScriptableBuildPipeline打包工具打包，加快打包速度(需添加SCRIPTABLE_ASSET_BUILD_PIPELINE宏)**
+**2023/2/8底层支持了新版ScriptableBuildPipeline打包工具打包，加快打包速度(默认使用SBP，修改成老版打包需添加OLD_ASSET_BUILD_PIPELINE宏)**
 
 Note:
 
