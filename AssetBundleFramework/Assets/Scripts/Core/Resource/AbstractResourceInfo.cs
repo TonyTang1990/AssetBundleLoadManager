@@ -212,7 +212,14 @@ namespace TResource
                 return false;
             }
 
-            var ownerindex = mReferenceOwnerList.FindIndex((ow) => ow.Target.Equals(owner));
+            var ownerindex = mReferenceOwnerList.FindIndex((ow) =>
+            {
+                if(ow.Target == null)
+                {
+                    return false;
+                }
+                return ow.Target.Equals(owner);
+            });
             if (ownerindex != -1)
             {
                 ResourceLogger.log(string.Format("资源:{0}找到指定绑定对象:{1},解除绑定!", ResourcePath, owner));
