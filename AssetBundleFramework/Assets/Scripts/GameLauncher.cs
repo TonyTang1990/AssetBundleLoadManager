@@ -232,7 +232,11 @@ namespace TResource
         public void onDestroyWindowInstance()
         {
             DIYLog.Log("onDestroyWindowInstance()");
-            GameObject.Destroy(mMainWindow);
+            if(mMainWindow != null)
+            {
+                GameObject.Destroy(mMainWindow);
+                mMainWindow = null;
+            }
         }
 
         /// <summary>
@@ -399,7 +403,9 @@ namespace TResource
             DIYLog.Log("onPreloadAtlas()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            AtlasManager.Singleton.loadAtlas(param1, null, ResourceLoadType.PermanentLoad);
+            AssetLoader assetLoader;
+            AtlasManager.Singleton.loadAtlas(param1, out assetLoader, null, ResourceLoadType.PermanentLoad);
+            // 如果像释放计数，需要调用assetLoader.ReleaseAsset()
         }
 
 
@@ -537,6 +543,8 @@ namespace TResource
                 (prefabInstance, requestUid) =>
                 {
                     DIYLog.Log($"ResourceManager.Singleton.getPrefabInstanceAsync()");
+                    // 避免出现两个主界面窗口
+                    onDestroyWindowInstance();
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 }
@@ -546,6 +554,8 @@ namespace TResource
                 (instance, uid)=>
                 {
                     DIYLog.Log($"ResourceManager.Singleton.getPrefabInstance()");
+                    // 避免出现两个主界面窗口
+                    onDestroyWindowInstance();
                     mMainWindow = instance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 }
@@ -562,21 +572,22 @@ namespace TResource
             var mainWindowABPath = Application.streamingAssetsPath + "/Android/assets/res/windows/mainwindow.android";
             DIYLog.Log("onAsynToSyncLoad1");
             var abAsyncRequest = AssetBundle.LoadFromFileAsync(mainWindowABPath);
-            abAsyncRequest.completed += OnABAsyncLoadComplete;
+            abAsyncRequest.completed += (asyncOperation)=>{
+                if(abAsyncRequest.assetBundle != null)
+                {
+                    DIYLog.Log("abAsyncRequest.assetBundle != null");
+                }
+                DIYLog.Log("ndle.LoadFromFileAsync()完成！");
+            };
             DIYLog.Log("onAsynToSyncLoad2");
             // Note:
             // 异步加载LoadFromFileAsyn完成前触发同步加载LoadFromFile，同步加载会返回null
             var ab = AssetBundle.LoadFromFile(mainWindowABPath);
+            if(ab == null)
+            {
+                DIYLog.Log("ab == null");
+            }
             DIYLog.Log("onAsynToSyncLoad3");
-        }
-
-        /// <summary>
-        /// 异步加载完成
-        /// </summary>
-        /// <param name="asyncOperation"></param>
-        private void OnABAsyncLoadComplete(AsyncOperation asyncOperation)
-        {
-            DIYLog.Log("OnABAsyncLoadComplete()");
         }
 
         /// <summary>
@@ -1048,7 +1059,6 @@ namespace TResource
                 DIYLog.Log("Param1 = " + param1);
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
                 assetbundleresourcemodule.ForceUnloadSpecificAssetBundle(param1);
-
             }
             else
             {
@@ -1085,10 +1095,12 @@ namespace TResource
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
             // TOOD: 封装视频播放组件，关闭视频播放时释放资源
-            var videoClip = ResourceManager.Singleton.getVideoClip(
-                VideoPlayerComponent,
-                param1
-            );
+            var videoClip = ResourceManager.Singleton.getVideoClip(param1);
+            if(VideoPlayerComponent.targetTexture != null &&
+               !VideoPlayerComponent.targetTexture.IsCreated())
+            {
+                VideoPlayerComponent.targetTexture.Create();
+            }
             VideoPlayerComponent.clip = videoClip;
             VideoPlayerComponent.Play();
         }
@@ -1099,10 +1111,22 @@ namespace TResource
         public void onCloseVideo()
         {
             DIYLog.Log("onCloseVideo()");
+            var param1 = InputParam1.text;
+            DIYLog.Log("Param1 = " + param1);
             VideoPlayerComponent.Stop();
             VideoPlayerComponent.clip = null;
-            VideoPlayerComponent.targetTexture.Release();
-            VideoPlayerComponent.targetTexture.MarkRestoreExpected();
+            var videioRenderTexture = VideoPlayerComponent.targetTexture;
+            if(videioRenderTexture != null &&
+               videioRenderTexture.IsCreated())
+            {
+                var prev = RenderTexture.active;
+                RenderTexture.active = videioRenderTexture;
+                GL.Clear(true, true, new Color(0, 0, 0, 0)); // 透明
+                RenderTexture.active = prev;
+                videioRenderTexture.DiscardContents();
+            }
+            // 除了持有AssetLoader,我们还可以通过
+            ResourceModuleManager.Singleton.ReleaseAsset(param1);
         }
 
         /// <summary>
