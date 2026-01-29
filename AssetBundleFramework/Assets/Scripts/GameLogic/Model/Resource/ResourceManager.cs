@@ -232,12 +232,11 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <summary>
     /// 获取视频Clip
     /// </summary>
-    /// <param name="owner"></param>
     /// <param name="videoPath"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
     /// <returns></returns>
-    public VideoClip getVideoClip(UnityEngine.Object owner, string videoPath, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public VideoClip getVideoClip(string videoPath, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
         TResource.ResourceModuleManager.Singleton.RequstAssetSync<VideoClip>(
@@ -246,7 +245,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             null,
             loadtype
         );
-        var videoClip = assetLoader.BindAsset<VideoClip>(owner);
+        var videoClip = assetLoader.GetAsset<VideoClip>();
         return videoClip;
     }
 }
