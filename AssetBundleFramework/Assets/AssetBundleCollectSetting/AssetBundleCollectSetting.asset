@@ -38,26 +38,6 @@ MonoBehaviour:
     BuildRule: 1
     ConstName: 
     Compression: 2
-  - CollectFolderPath: Assets/Res/buildinresources/buildinmaterials
-    CollectRule: 0
-    BuildRule: 2
-    ConstName: 
-    Compression: 2
-  - CollectFolderPath: Assets/Res/buildinresources/buildinshaders/DefaultResources
-    CollectRule: 0
-    BuildRule: 3
-    ConstName: shaderlist
-    Compression: 2
-  - CollectFolderPath: Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra
-    CollectRule: 0
-    BuildRule: 3
-    ConstName: shaderlist
-    Compression: 2
-  - CollectFolderPath: Assets/Res/buildinresources/buildintextures
-    CollectRule: 0
-    BuildRule: 2
-    ConstName: 
-    Compression: 2
   - CollectFolderPath: Assets/Res/prefabs
     CollectRule: 0
     BuildRule: 1
@@ -72,6 +52,11 @@ MonoBehaviour:
     CollectRule: 0
     BuildRule: 1
     ConstName: 
+    Compression: 2
+  - CollectFolderPath: Assets/Res/shaders
+    CollectRule: 0
+    BuildRule: 3
+    ConstName: shaderlist
     Compression: 2
   - CollectFolderPath: Assets/Res/shadervariants
     CollectRule: 0
