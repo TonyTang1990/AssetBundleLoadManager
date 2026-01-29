@@ -45,18 +45,18 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// 一般用于加载常驻图集
     /// </summary>
     /// <param name="atlaspath">图集路径</param>
+    /// <param name="assetLoader">Asset加载器</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
-    public void loadAtlas(string atlasPath, Action<int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public void loadAtlas(string atlasPath, out TResource.AssetLoader assetLoader, Action<int, SpriteAtlas> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
-        TResource.BundleLoader assetBundleLoader;
-        TResource.ResourceModuleManager.Singleton.RequstAssetBundleSync(
+        TResource.ResourceModuleManager.Singleton.RequstAssetSync<SpriteAtlas>(
             atlasPath,
-            out assetBundleLoader,
+            out assetLoader,
             (loader, requestUid) =>
             {
-                var bundle = loader?.ObtainAssetBundle();
-                callback?.Invoke(requestUid);
+                var spriteAtlas = loader.GetAsset<SpriteAtlas>();
+                callback?.Invoke(requestUid, spriteAtlas);
             },
             loadtype
         );
@@ -69,18 +69,18 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// 一般用于加载常驻图集
     /// </summary>
     /// <param name="atlaspath">图集路径</param>
-    /// <param name="bundleLoader">bundle加载器</param>
+    /// <param name="assetLoader">Asset加载器</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
-    public int loadAtlasAsync(string atlaspath, out TResource.BundleLoader bundleLoader, Action<int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int loadAtlasAsync(string atlaspath, TResource.AssetLoader assetLoader, Action<int, SpriteAtlas> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
-        return TResource.ResourceModuleManager.Singleton.RequstAssetBundleAsync(
+        return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<SpriteAtlas>(
             atlaspath,
-            out bundleLoader,
+            out assetLoader,
             (loader, requestUid) =>
             {
-                var bundle = loader?.ObtainAssetBundle();
-                callback?.Invoke(requestUid);
+                var spriteAtlas = loader.GetAsset<SpriteAtlas>();
+                callback?.Invoke(requestUid, spriteAtlas);
             },
             loadtype
         );
