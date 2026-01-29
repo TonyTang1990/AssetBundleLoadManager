@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: sharematerial
-  m_Shader: {fileID: 4800000, guid: 7fd06687c3b6449449979c2e4d04c8e9, type: 3}
+  m_Name: UI-Default
+  m_Shader: {fileID: 4800000, guid: 41ad5ef6ea1a6e344aafe63b72df6d31, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -62,6 +62,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
+    - _ColorMask: 15
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -75,7 +76,13 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     - _UVSec: 0
+    - _UseUIAlphaClip: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
