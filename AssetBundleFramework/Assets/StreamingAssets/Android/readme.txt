@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2026/1/15 18:19:22
+构建时间：2026/1/30 1:00:53
 
 --配置信息--
 Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : ByFileOrSubFolder
@@ -7,13 +7,10 @@ Directory : Assets/Res/assetbuildinfo || CollectRule : Ignore || BuildRule : Ign
 Directory : Assets/Res/atlas || CollectRule : Collect || BuildRule : ByFolderPath
 Directory : Assets/Res/atlas/shareatlas/SpriteAtlas/spritealtas || CollectRule : Ignore || BuildRule : Ignore
 Directory : Assets/Res/audios || CollectRule : Collect || BuildRule : ByFilePath
-Directory : Assets/Res/buildinresources/buildinmaterials || CollectRule : Collect || BuildRule : ByFolderPath
-Directory : Assets/Res/buildinresources/buildinshaders/DefaultResources || CollectRule : Collect || BuildRule : ByConstName || ConstName : shaderlist
-Directory : Assets/Res/buildinresources/buildinshaders/DefaultResourcesExtra || CollectRule : Collect || BuildRule : ByConstName || ConstName : shaderlist
-Directory : Assets/Res/buildinresources/buildintextures || CollectRule : Collect || BuildRule : ByFolderPath
 Directory : Assets/Res/prefabs || CollectRule : Collect || BuildRule : ByFilePath
 Directory : Assets/Res/rendertextures || CollectRule : Collect || BuildRule : ByFilePath
 Directory : Assets/Res/scenes || CollectRule : Collect || BuildRule : ByFilePath
+Directory : Assets/Res/shaders || CollectRule : Collect || BuildRule : ByConstName || ConstName : shaderlist
 Directory : Assets/Res/shadervariants || CollectRule : Collect || BuildRule : ByConstName || ConstName : shaderlist
 Directory : Assets/Res/sharematerials || CollectRule : Collect || BuildRule : ByFilePath
 Directory : Assets/Res/textures || CollectRule : Collect || BuildRule : ByFilePath
@@ -40,9 +37,6 @@ G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBun
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/audios/sfx/sfx1/coins.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/audios/sfx/sfx1/correct.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/audios/sfx/sfx1/explosion.android
-G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/buildinresources/buildinmaterials.android
-G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//shaderlist.android
-G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/buildinresources/buildintextures.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/prefabs/imagebuildin.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/prefabs/rawimagebuildin.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/prefabs/sfxtemplate.android
@@ -52,12 +46,17 @@ G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBun
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/sceneprefabs/testscene2prefab.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/sceneprefabs/testscene2prefab2.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/sceneprefabs/testscene3prefab.android
-G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/shadervariantscollectscene.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/testscene2.android
+G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/testscene2settings.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/testscene3.android
+G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/testscene3settings.android
+G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//shaderlist.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/sharematerials/sharebluematerial.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/sharematerials/sharematerial.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/sharematerials/shareredmaterial.android
+G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/sharematerials/standlone/particle/default-particle.android
+G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/sharematerials/standlone/particle/default-particlesystem.android
+G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/sharematerials/ui/ui-default.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/textures/chaichaifengjing.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/textures/chaichainingwang.android
 G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/textures/chaichaishenqingzhushi.android
