@@ -151,6 +151,15 @@ namespace TResource
             return CurrentResourceModule.RequstAssetBundle(assetBundlePath, out assetBundleLoader, completeHandler, loadType, ResourceLoadMethod.Async);
         }
 
+        /// <summary>
+        /// 释放指定Asset路径资源(索引计数-1)
+        /// </summary>
+        /// <param name="assetPath"></param>
+        public void ReleaseAsset(string assetPath)
+        {
+            CurrentResourceModule.ReleaseAsset(assetPath);
+        }
+
         public void Update()
         {
             CurrentResourceModule.Update();
