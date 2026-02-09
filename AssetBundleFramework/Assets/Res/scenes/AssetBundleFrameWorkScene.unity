@@ -455,6 +455,9 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  EnableInvertMask: 0
+  EnableAlphaHitTestMinimusThreshold: 0
+  AlphaHitTestMinimumThreshold: 0.1
   SpritePath: 
 --- !u!222 &128198477
 CanvasRenderer:
@@ -829,6 +832,9 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  EnableInvertMask: 0
+  EnableAlphaHitTestMinimusThreshold: 0
+  AlphaHitTestMinimumThreshold: 0.1
   SpritePath: Resources/unity_builtin_extra
 --- !u!222 &203959511
 CanvasRenderer:
@@ -4667,7 +4673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000038146973
+      value: -0.00002670288
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5923,6 +5929,9 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  EnableInvertMask: 0
+  EnableAlphaHitTestMinimusThreshold: 0
+  AlphaHitTestMinimumThreshold: 0.1
   SpritePath: Resources/unity_builtin_extra
 --- !u!1 &1050984030
 GameObject:
@@ -7852,6 +7861,9 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  EnableInvertMask: 0
+  EnableAlphaHitTestMinimusThreshold: 0
+  AlphaHitTestMinimumThreshold: 0.1
   SpritePath: 
 --- !u!222 &1427595779
 CanvasRenderer:
@@ -8137,7 +8149,10 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
-  TextureName: chaichainingwang
+  EnableInvertMask: 0
+  EnableAlphaHitTestMinimusThreshold: 0
+  AlphaHitTestMinimumThreshold: 0
+  TexturePath: 
 --- !u!222 &1472222138
 CanvasRenderer:
   m_ObjectHideFlags: 0
