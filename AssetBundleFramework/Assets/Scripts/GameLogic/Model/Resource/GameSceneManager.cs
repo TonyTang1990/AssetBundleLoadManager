@@ -36,7 +36,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// 同步加载场景
     /// </summary>
     /// <param name="scenePath"></param>
-    public void loadSceneSync(string scenePath)
+    public void LoadSceneSync(string scenePath)
     {
         // 场景资源计数采用手动管理计数的方式
         // 切场景时手动计数减1
@@ -70,7 +70,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// 异步加载完成回调
     /// </summary>
     /// <param name="scenePath"></param>
-    public void loadSceneAsync(string scenePath)
+    public void LoadSceneAsync(string scenePath)
     {
         // 场景资源计数采用手动管理计数的方式
         // 切场景时手动计数减1

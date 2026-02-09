@@ -22,7 +22,7 @@ public class ModelManager : SingletonTemplate<ModelManager>
     /// <param name="respath"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
-    public int getModelInstance(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetModelInstance(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
         return TResource.ResourceModuleManager.Singleton.RequstAssetSync<GameObject>(
@@ -47,7 +47,7 @@ public class ModelManager : SingletonTemplate<ModelManager>
     /// <param name="respath"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
-    public int getModelInstanceAsync(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetModelInstanceAsync(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
         return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<GameObject>(

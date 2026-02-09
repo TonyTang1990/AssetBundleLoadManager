@@ -48,7 +48,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="assetLoader">Asset加载器</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
-    public void loadAtlas(string atlasPath, out TResource.AssetLoader assetLoader, Action<int, SpriteAtlas> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public void LoadAtlas(string atlasPath, out TResource.AssetLoader assetLoader, Action<int, SpriteAtlas> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.ResourceModuleManager.Singleton.RequstAssetSync<SpriteAtlas>(
             atlasPath,
@@ -72,7 +72,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="assetLoader">Asset加载器</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
-    public int loadAtlasAsync(string atlaspath, TResource.AssetLoader assetLoader, Action<int, SpriteAtlas> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int LoadAtlasAsync(string atlaspath, TResource.AssetLoader assetLoader, Action<int, SpriteAtlas> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<SpriteAtlas>(
             atlaspath,
@@ -94,7 +94,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public void setImageSingleSprite(Image img, string spritePath, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public void SetImageSingleSprite(Image img, string spritePath, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         DIYLog.Assert(img == null, "setImageSingleSprite不允许传空Image!");
         TResource.AssetLoader assetLoader;
@@ -120,7 +120,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int setImageSingleSpriteAsync(Image img, string spritePath, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int SetImageSingleSpriteAsync(Image img, string spritePath, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         DIYLog.Assert(img == null, "setImageSingleSprite不允许传空Image!");
         return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<Sprite>(
@@ -144,7 +144,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int setTImageSingleSprite(TImage timg, string spritepath, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int SetTImageSingleSprite(TImage timg, string spritepath, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         DIYLog.Assert(timg == null, "setTImageSingleSprite!");
         TResource.AssetLoader assetLoader;
@@ -177,7 +177,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="spritepath">Sprite路径</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int setTImageSingleSpriteAsync(TImage timg, string spritepath, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int SetTImageSingleSpriteAsync(TImage timg, string spritepath, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         DIYLog.Assert(timg == null, "setTImageSingleSprite!");
         return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<Sprite>(
@@ -210,7 +210,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int setTImageSpriteAtlas(TImage timg, string atlaspath, string spritename, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int SetTImageSpriteAtlas(TImage timg, string atlaspath, string spritename, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
         TResource.AssetLoader assetLoader;
@@ -251,7 +251,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="callback">回调</param>
     /// <param name="assetLoader">Asset加载器</param>
     /// <returns></returns>
-    public int setTImageSpriteAtlasAsync(TImage timg, string atlaspath, string spritename, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int SetTImageSpriteAtlasAsync(TImage timg, string atlaspath, string spritename, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
         return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<SpriteAtlas>(
@@ -290,7 +290,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int setTImageSubSprite(TImage timg, string multipleSpritePath, string spritename, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int SetTImageSubSprite(TImage timg, string multipleSpritePath, string spritename, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         // TODO:
         // 改造成支持SubAsset的加载方式
@@ -334,7 +334,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int setTImageSubSpriteAsync(TImage timg, string multipleSpritePath, string spritename, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int SetTImageSubSpriteAsync(TImage timg, string multipleSpritePath, string spritename, out TResource.AssetLoader assetLoader, Action<Sprite, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         // TODO:
         // 改造成支持SubAsset的加载方式
@@ -376,7 +376,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public void setRawImage(TRawImage trawimg, string texturepath, Action<Texture, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public void SetRawImage(TRawImage trawimg, string texturepath, Action<Texture, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         DIYLog.Assert(trawimg == null, "setRawImage不允许传空TRawImage!");
         TResource.AssetLoader assetLoader;
@@ -386,14 +386,14 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
             (loader, requestUid) =>
             {
                 // 清除老的资源引用
-                if (trawimg.Loader != null && !string.IsNullOrEmpty(trawimg.TextureName))
+                if (trawimg.Loader != null && !string.IsNullOrEmpty(trawimg.TexturePath))
                 {
                     trawimg.Loader.ReleaseOwner(trawimg);
                 }
                 var texture = loader.BindAsset<Texture>(trawimg);
                 trawimg.texture = texture;
                 trawimg.Loader = loader;
-                trawimg.TextureName = texturepath;
+                trawimg.TexturePath = texturepath;
                 callback?.Invoke(texture, requestUid);
             },
             loadtype
@@ -409,7 +409,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     /// <param name="callback">回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int setRawImageAsync(TRawImage trawimg, string texturepath, out TResource.AssetLoader assetLoader, Action<Texture, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int SetRawImageAsync(TRawImage trawimg, string texturepath, out TResource.AssetLoader assetLoader, Action<Texture, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         DIYLog.Assert(trawimg == null, "setRawImage不允许传空TRawImage!");
         return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<Texture>(
@@ -418,14 +418,14 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
             (loader, requestUid) =>
             {
                 // 清除老的资源引用
-                if (trawimg.Loader != null && !string.IsNullOrEmpty(trawimg.TextureName))
+                if (trawimg.Loader != null && !string.IsNullOrEmpty(trawimg.TexturePath))
                 {
                     trawimg.Loader.ReleaseOwner(trawimg);
                 }
                 var texture = loader.BindAsset<Texture>(trawimg);
                 trawimg.texture = texture;
                 trawimg.Loader = loader;
-                trawimg.TextureName = texturepath;
+                trawimg.TexturePath = texturepath;
                 callback?.Invoke(texture, requestUid);
             },
             loadtype

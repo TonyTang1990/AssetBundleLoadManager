@@ -216,7 +216,7 @@ namespace TResource
         public void onLoadWindowPrefab()
         {
             DIYLog.Log("onLoadWindowPrefab()");
-            ResourceManager.Singleton.getPrefabInstance(
+            ResourceManager.Singleton.GetPrefabInstance(
                 "Assets/Res/windows/MainWindow.prefab",
                 (prefabInstance, requestUid) =>
                 {
@@ -250,7 +250,7 @@ namespace TResource
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
             var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-            AtlasManager.Singleton.setImageSingleSprite(image, param1);
+            AtlasManager.Singleton.SetImageSingleSprite(image, param1);
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AtlasManager.Singleton.setTImageSingleSprite(TImgBG, param1);
+            AtlasManager.Singleton.SetTImageSingleSprite(TImgBG, param1);
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
+            AtlasManager.Singleton.SetTImageSpriteAtlas(TImgBG, param1, param2);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AtlasManager.Singleton.setTImageSubSprite(TImgBG, param1, param2);
+            AtlasManager.Singleton.SetTImageSubSprite(TImgBG, param1, param2);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AtlasManager.Singleton.setTImageSpriteAtlas(TImgBG, param1, param2);
+            AtlasManager.Singleton.SetTImageSpriteAtlas(TImgBG, param1, param2);
         }
 
         /// <summary>
@@ -313,9 +313,9 @@ namespace TResource
             DIYLog.Log("onLoadTRawImageSprite()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            TRawImgBG.printTRawImageInfo();
-            AtlasManager.Singleton.setRawImage(TRawImgBG, param1);
-            TRawImgBG.printTRawImageInfo();
+            TRawImgBG.PrintTRawImageInfo();
+            AtlasManager.Singleton.SetRawImage(TRawImgBG, param1);
+            TRawImgBG.PrintTRawImageInfo();
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace TResource
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
             TResource.AssetLoader assetLoader;
-            AudioManager.Singleton.playBGM(
+            AudioManager.Singleton.PlayBGM(
                 param1,
                 out assetLoader
             );
@@ -342,7 +342,7 @@ namespace TResource
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
             TResource.AssetLoader assetLoader;
-            AudioManager.Singleton.playSFXSound(
+            AudioManager.Singleton.PlaySFXSound(
                 param1,
                 out assetLoader
             );
@@ -359,7 +359,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
             var image = btnloadmat.GetComponent<Image>();
-            ResourceManager.Singleton.getMaterial(
+            ResourceManager.Singleton.GetMaterial(
                 image,
                 param1,
                 (material, requestUid) =>
@@ -376,7 +376,7 @@ namespace TResource
         public void onLoadActorPrefab()
         {
             DIYLog.Log("onLoadActorPrefab()");
-            ModelManager.Singleton.getModelInstance(
+            ModelManager.Singleton.GetModelInstance(
                 "Assets/Res/actors/zombunny/pre_Zombunny.prefab",
                 (instance, requestUid) =>
                 {
@@ -404,7 +404,7 @@ namespace TResource
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
             AssetLoader assetLoader;
-            AtlasManager.Singleton.loadAtlas(param1, out assetLoader, null, ResourceLoadType.PermanentLoad);
+            AtlasManager.Singleton.LoadAtlas(param1, out assetLoader, null, ResourceLoadType.PermanentLoad);
             // 如果像释放计数，需要调用assetLoader.ReleaseAsset()
         }
 
@@ -415,7 +415,7 @@ namespace TResource
         public void onLoadPermanentShaderList()
         {
             DIYLog.Log("onLoadPermanentShaderList()");
-            ResourceManager.Singleton.loadAllShader("shaderlist", () =>
+            ResourceManager.Singleton.LoadAllShader("shaderlist", () =>
             {
 
 
@@ -456,7 +456,7 @@ namespace TResource
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            ResourceManager.Singleton.getPrefabInstanceAsync(
+            ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "Assets/Res/windows/MainWindow.prefab",
                 out assetLoader,
                 (prefabInstance, requestUid) =>
@@ -478,7 +478,7 @@ namespace TResource
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "Assets/Res/windows/MainWindow.prefab",
                 out assetLoader,
                 (prefabInstance, requestUid) =>
@@ -503,7 +503,7 @@ namespace TResource
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "Assets/Res/windows/MainWindow.prefab",
                 out assetLoader,
                 (prefabInstance, requestUid) =>
@@ -537,7 +537,7 @@ namespace TResource
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "Assets/Res/windows/MainWindow.prefab",
                 out assetLoader,
                 (prefabInstance, requestUid) =>
@@ -550,7 +550,7 @@ namespace TResource
                 }
             );
             // 异步未开始时触发同步加载2
-            ResourceManager.Singleton.getPrefabInstance("Assets/Res/windows/MainWindow.prefab",
+            ResourceManager.Singleton.GetPrefabInstance("Assets/Res/windows/MainWindow.prefab",
                 (instance, uid)=>
                 {
                     DIYLog.Log($"ResourceManager.Singleton.getPrefabInstance()");
@@ -601,7 +601,7 @@ namespace TResource
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "Assets/Res/windows/MainWindow.prefab",
                 out assetLoader,
                 (prefabInstance, requestUid) =>
@@ -623,9 +623,9 @@ namespace TResource
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
             AssetLoader assetLoader1;
-            AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
             AssetLoader assetLoader2;
-            AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG2, param1, out assetLoader2);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param1, out assetLoader2);
         }
 
         /// <summary>
@@ -639,9 +639,9 @@ namespace TResource
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
             AssetLoader assetLoader1;
-            AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
             AssetLoader assetLoader2;
-            AtlasManager.Singleton.setTImageSingleSpriteAsync(TImgBG2, param2, out assetLoader2);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param2, out assetLoader2);
         }
 
 
@@ -656,7 +656,7 @@ namespace TResource
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "Assets/Res/windows/MainWindow.prefab",
                 out assetLoader,
                 (prefabInstance, requestUid) =>
@@ -668,7 +668,7 @@ namespace TResource
             );
             // 取消异步加载请求后同步加载窗口
             assetLoader.CancelRequest(requestUID);
-            ResourceManager.Singleton.getPrefabInstance(
+            ResourceManager.Singleton.GetPrefabInstance(
                 "Assets/Res/windows/MainWindow.prefab",
                 (prefabInstance, requestUid) =>
                 {
@@ -693,7 +693,7 @@ namespace TResource
             //切换场景前关闭所有打开窗口，测试切场景资源卸载功能
             onDestroyWindowInstance();
 
-            GameSceneManager.Singleton.loadSceneSync(param1);
+            GameSceneManager.Singleton.LoadSceneSync(param1);
         }
 
         /// <summary>
@@ -1095,7 +1095,7 @@ namespace TResource
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
             // TOOD: 封装视频播放组件，关闭视频播放时释放资源
-            var videoClip = ResourceManager.Singleton.getVideoClip(param1);
+            var videoClip = ResourceManager.Singleton.GetVideoClip(param1);
             if(VideoPlayerComponent.targetTexture != null &&
                !VideoPlayerComponent.targetTexture.IsCreated())
             {

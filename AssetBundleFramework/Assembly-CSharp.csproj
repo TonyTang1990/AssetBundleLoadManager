@@ -76,13 +76,11 @@
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceInfo.cs" />
     <Compile Include="Assets\Scripts\Utilities\FileUtilities.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleManager.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\WindowManager.cs" />
     <Compile Include="Assets\Scripts\Core\Pool\ObjectFactory.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\EffectManager.cs" />
     <Compile Include="Assets\Scripts\Core\GameConfig\GameConfigModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\Pool\GameObjectPool.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_iContainer.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\SharedMaterialManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\GameDataManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabaseAsyncRequest.cs" />
@@ -130,7 +128,6 @@
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_global_iBuffer.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleEnum.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundleModule.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\SharedTextureManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Native\Android\AndroidNativeManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_global_sBuffer.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Native\PC\PCNativeManager.cs" />

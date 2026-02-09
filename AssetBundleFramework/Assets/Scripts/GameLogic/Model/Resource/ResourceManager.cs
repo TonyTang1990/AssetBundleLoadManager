@@ -27,7 +27,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="respath">资源路径</param>
     /// <param name="callback">资源会动啊</param>
     /// <param name="loadtype">加载方式</param>
-    public int loadAllShader(string respath, Action callback, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.PermanentLoad)
+    public int LoadAllShader(string respath, Action callback, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.PermanentLoad)
     {
         TResource.BundleLoader bundleLoader;
         return TResource.ResourceModuleManager.Singleton.RequstAssetBundleSync(
@@ -81,7 +81,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int getPrefabInstance(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetPrefabInstance(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
         return TResource.ResourceModuleManager.Singleton.RequstAssetSync<GameObject>(
@@ -111,7 +111,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int getPrefabInstanceAsync(string respath, out TResource.AssetLoader assetLoader, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetPrefabInstanceAsync(string respath, out TResource.AssetLoader assetLoader, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<GameObject>(
             respath,
@@ -141,7 +141,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int getMaterial(UnityEngine.Object owner, string respath, Action<Material, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetMaterial(UnityEngine.Object owner, string respath, Action<Material, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
         return TResource.ResourceModuleManager.Singleton.RequstAssetSync<Material>(
@@ -168,7 +168,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int getMaterialAsync(UnityEngine.Object owner, string respath, out TResource.AssetLoader assetLoader, Action<Material, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetMaterialAsync(UnityEngine.Object owner, string respath, out TResource.AssetLoader assetLoader, Action<Material, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<Material>(
             respath,
@@ -192,7 +192,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="respath"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
-    public int getAudioClip(UnityEngine.Object owner, string respath, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetAudioClip(UnityEngine.Object owner, string respath, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
         return TResource.ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
@@ -215,7 +215,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="assetLoader"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
-    public int getAudioClipAsync(UnityEngine.Object owner, string respath, out TResource.AssetLoader assetLoader, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetAudioClipAsync(UnityEngine.Object owner, string respath, out TResource.AssetLoader assetLoader, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         return TResource.ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
             respath,
@@ -236,7 +236,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
     /// <returns></returns>
-    public VideoClip getVideoClip(string videoPath, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public VideoClip GetVideoClip(string videoPath, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
     {
         TResource.AssetLoader assetLoader;
         TResource.ResourceModuleManager.Singleton.RequstAssetSync<VideoClip>(
