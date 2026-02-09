@@ -70,6 +70,11 @@ namespace TResource
         public VideoPlayer VideoPlayerComponent;
 
         /// <summary>
+        /// 视频播放RawImage显示组件
+        /// </summary>
+        public TRawImage VideoRawImage;
+
+        /// <summary>
         /// 窗口实例对象
         /// </summary>
         private GameObject mMainWindow;
@@ -98,6 +103,11 @@ namespace TResource
         /// 背景音乐音效组件
         /// </summary>
         private AudioSource mBGMAudioSource;
+
+        /// <summary>
+        /// 当前播放视频路径
+        /// </summary>
+        private string mCurrentPlayVideoPath = null;
 
         private void Awake()
         {
@@ -1094,6 +1104,7 @@ namespace TResource
             DIYLog.Log("onPlayVideo()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
+            ReleasePlayedVideoRes();
             // TOOD: 封装视频播放组件，关闭视频播放时释放资源
             var videoClip = ResourceManager.Singleton.GetVideoClip(param1);
             if(VideoPlayerComponent.targetTexture != null &&
@@ -1102,7 +1113,12 @@ namespace TResource
                 VideoPlayerComponent.targetTexture.Create();
             }
             VideoPlayerComponent.clip = videoClip;
-            VideoPlayerComponent.Play();
+            if(videoClip != null)
+            {
+                VideoPlayerComponent.Play();
+                mCurrentPlayVideoPath = param1;
+            }
+            VideoRawImage.enabled = true;
         }
 
         /// <summary>
@@ -1111,10 +1127,31 @@ namespace TResource
         public void onCloseVideo()
         {
             DIYLog.Log("onCloseVideo()");
-            var param1 = InputParam1.text;
-            DIYLog.Log("Param1 = " + param1);
             VideoPlayerComponent.Stop();
             VideoPlayerComponent.clip = null;
+            ClearVideoTexture();
+            ReleasePlayedVideoRes();
+            VideoRawImage.enabled = false;
+        }
+
+        /// <summary>
+        /// 释放已播放的视频资源
+        /// </summary>
+        private void ReleasePlayedVideoRes()
+        {
+            if(string.IsNullOrEmpty(mCurrentPlayVideoPath))
+            {
+                return;
+            }
+            ResourceModuleManager.Singleton.ReleaseAsset(mCurrentPlayVideoPath);
+            mCurrentPlayVideoPath = null;
+        }
+
+        /// <summary>
+        /// 清理视频播放使用的纹理，避免残留图像导致场景Game显示不正确
+        /// </summary>
+        private void ClearVideoTexture()
+        {
             var videioRenderTexture = VideoPlayerComponent.targetTexture;
             if(videioRenderTexture != null &&
                videioRenderTexture.IsCreated())
@@ -1124,9 +1161,7 @@ namespace TResource
                 GL.Clear(true, true, new Color(0, 0, 0, 0)); // 透明
                 RenderTexture.active = prev;
                 videioRenderTexture.DiscardContents();
-            }
-            // 除了持有AssetLoader,我们还可以通过
-            ResourceModuleManager.Singleton.ReleaseAsset(param1);
+            }            
         }
 
         /// <summary>

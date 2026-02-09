@@ -4673,7 +4673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00002670288
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6624,6 +6624,7 @@ MonoBehaviour:
   TRawImgBG: {fileID: 1472222137}
   DIYButton: {fileID: 203959509}
   VideoPlayerComponent: {fileID: 8599563127171910138}
+  VideoRawImage: {fileID: 8599563127171910139}
 --- !u!82 &1230477528
 AudioSource:
   m_ObjectHideFlags: 0
@@ -12474,6 +12475,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8009744581029654870, guid: c0d2be21538899d49be26d981871b596,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8599563127740614217, guid: c0d2be21538899d49be26d981871b596,
         type: 3}
       propertyPath: m_Enabled
@@ -12615,6 +12621,18 @@ VideoPlayer:
     type: 3}
   m_PrefabInstance: {fileID: 8599563127171910137}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8599563127171910139 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8009744581029654870, guid: c0d2be21538899d49be26d981871b596,
+    type: 3}
+  m_PrefabInstance: {fileID: 8599563127171910137}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 290ec3a38cb13da44b326d814cb55d9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
