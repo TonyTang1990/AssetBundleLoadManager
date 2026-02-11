@@ -193,7 +193,7 @@ namespace TResource
             // Asset对象绑定的情况下无需添加所属AB的计数信息
             foreach (var referenceowner in mReferenceOwnerList)
             {
-                if (owner.Equals(referenceowner))
+                if (owner.Equals(referenceowner.Target))
                 {
                     return;
                 }

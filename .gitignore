@@ -9,3 +9,5 @@ AssetBundleFramework/Temp/
 AssetBundleFramework/obj/
 # 过滤Log目录
 AssetBundleFramework/Logs/
+# 过滤MemoryCaptures目录
+AssetBundleFramework/MemoryCaptures/

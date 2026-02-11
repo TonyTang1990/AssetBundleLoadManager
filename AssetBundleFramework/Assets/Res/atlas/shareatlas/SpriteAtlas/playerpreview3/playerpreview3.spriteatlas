@@ -32,32 +32,20 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 102900000, guid: c2bc5ab89c4830348a5b2f7ebfcfbf92, type: 3}
-    bindAsDefault: 0
+    - {fileID: 102900000, guid: 6dd0565107ae18143b31cd3c138dd13e, type: 3}
+    bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
-    - f3c52b912bf75fb42b69a12d050d0367: 21300000
     - 955ab33454ab56f42a9b6992dc6fde31: 21300000
-    - 766e4115647710a409ba28e4c96e4e76: 21300000
-    - cd5928bcf13ea4b4eb34e1b9e2aca207: 21300000
     - 4756ea8d0cdd77e469af265cce3f89f8: 21300000
-    - 904f88bdcd34a334ea1662548a06b1bd: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: f3c52b912bf75fb42b69a12d050d0367, type: 3}
   - {fileID: 21300000, guid: 955ab33454ab56f42a9b6992dc6fde31, type: 3}
-  - {fileID: 21300000, guid: 766e4115647710a409ba28e4c96e4e76, type: 3}
-  - {fileID: 21300000, guid: cd5928bcf13ea4b4eb34e1b9e2aca207, type: 3}
   - {fileID: 21300000, guid: 4756ea8d0cdd77e469af265cce3f89f8, type: 3}
-  - {fileID: 21300000, guid: 904f88bdcd34a334ea1662548a06b1bd, type: 3}
   m_PackedSpriteNamesToIndex:
-  - SDNewFukuokaPreview
   - SDNaraPreview
-  - SDNewHokkaidoPreview
-  - SDNiigataPreview
   - SDNagasakiPreview
-  - SDNewOsakaPreview
   m_RenderDataMap: {}
   m_Tag: playerpreview3
   m_IsVariant: 0

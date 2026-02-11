@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: playerpreview2
+  m_Name: playerpreviewvariant
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -30,22 +30,22 @@ SpriteAtlas:
       enableTightPacking: 1
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
-    variantMultiplier: 1
-    packables:
-    - {fileID: 102900000, guid: e3c8575c651d84d4caf90ece1f76dc85, type: 3}
-    bindAsDefault: 1
+    variantMultiplier: 0.5
+    packables: []
+    bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
-    - 145b40f50ff56864facffe01f43e114e: 21300000
-    - b02beafd2170ffa4795c246a97897010: 21300000
-  m_MasterAtlas: {fileID: 0}
+    - fa083a5d42ffc554ca02163ea18a200d: 21300000
+    - d032ae9ebed06b141a464e511e5da537: 21300000
+  m_MasterAtlas: {fileID: 4343727234628468602, guid: 9b0ae1b13bb488543a99b4cb21a31913,
+    type: 2}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 145b40f50ff56864facffe01f43e114e, type: 3}
-  - {fileID: 21300000, guid: b02beafd2170ffa4795c246a97897010, type: 3}
+  - {fileID: 21300000, guid: fa083a5d42ffc554ca02163ea18a200d, type: 3}
+  - {fileID: 21300000, guid: d032ae9ebed06b141a464e511e5da537, type: 3}
   m_PackedSpriteNamesToIndex:
-  - SDBlackPreview
-  - SDAomoriPreview
+  - SDAichiPreview
+  - SDAkitaPreview
   m_RenderDataMap: {}
-  m_Tag: playerpreview2
-  m_IsVariant: 0
+  m_Tag: playerpreview
+  m_IsVariant: 1

@@ -49,172 +49,34 @@ MonoBehaviour:
   - AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Move.anim
     ABPath: assets/res/actors/zombunny
     ABVariantPath: 
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/playerpreview.spriteatlas
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+    ABVariantPath: 
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/playerpreviewvariant.spriteatlas
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
+    ABVariantPath: 
   - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAichiPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
   - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAkitaPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
     ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAomoriPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDBlackPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDChibaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDEhimePreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukuiPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukuokaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukushimaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDGifuPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDGunmaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDHiroshimaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDHokkaidoPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDHyogoPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDIshikawaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDIvarakiPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDIwatePreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKagawaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKagoshimaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKanagawaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKochiPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKumamotoPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKyotoPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiePreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMikanButoriPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyagiPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyazakiPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview
-    ABVariantPath: 
   - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/playerpreview2.spriteatlas
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNagasakiPreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDAomoriPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNaraPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewFukuokaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewHokkaidoPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewOsakaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNiigataPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOkayamaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOkinawaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOoitaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOsakaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSagaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSaitamaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShigaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShimanePreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShizuokaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpaceCommandPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpainMadridPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTochigiPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokushimaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokyoPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTottoriPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDToyamaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDWakayamaPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamagataPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamaguchiPreview.png
-    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
-    ABVariantPath: 
-  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamanashiPreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDBlackPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview2
     ABVariantPath: 
   - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/playerpreview3.spriteatlas
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview3
+    ABVariantPath: 
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/SDNagasakiPreview.png
+    ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview3
+    ABVariantPath: 
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/SDNaraPreview.png
     ABPath: assets/res/atlas/shareatlas/spriteatlas/playerpreview3
     ABVariantPath: 
   - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG

@@ -75,16 +75,16 @@ MonoBehaviour:
     m_Dependencies:
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
-    m_Crc: 1841596155
-    m_Hash: 7ca2249f76d442801cbdde30b8c1e225
+    m_Crc: 302856974
+    m_Hash: d81f85f74c41ef28de209c61d1881fcb
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android
-    m_Crc: 424282471
-    m_Hash: 59352f971c09b99a1cf18f8f922a98b5
+    m_Crc: 49314406
+    m_Hash: 5ee829dd67a81d6114a79b7edd693be7
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/spriteatlas/playerpreview3.android
-    m_Crc: 4191813105
-    m_Hash: 69a41dc55fa0ffedc5b0c5d3200b1be0
+    m_Crc: 3662112014
+    m_Hash: 0756683c1e89dee61ac6d095f1ed3ad9
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/atlas/shareatlas/tutorialatlas.android
     m_Crc: 622392834
@@ -127,18 +127,18 @@ MonoBehaviour:
     m_Hash: 2301c59981cf836c5aa7fdc2173541e4
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/prefabs/videoplayerroot.android
-    m_Crc: 3261884259
-    m_Hash: 9d30843074c35e5ae3dc41578f7b2002
+    m_Crc: 829651558
+    m_Hash: d805be52686e7065123b7e4ca5b45360
     m_Dependencies:
     - assets/res/rendertextures/videorendertexture.android
     - assets/res/videos/xuezhihua.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/rendertextures/videorendertexture.android
-    m_Crc: 561429236
-    m_Hash: 7b196f36967d4ad9c99c9a401ba02f7e
+    m_Crc: 1530668129
+    m_Hash: 9f924bcfc2e08d6a4c1c6aee82cd2917
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/assetbundleframeworkscene.android
-    m_Crc: 515998440
-    m_Hash: a9f56cb6be3e801762374c600ff10c38
+    m_Crc: 327797045
+    m_Hash: d2eb0191bb4d059e23671858ac7d80a8
     m_Dependencies:
     - assets/res/rendertextures/videorendertexture.android
     - assets/res/textures/chaichainingwang.android
@@ -161,8 +161,8 @@ MonoBehaviour:
     - assets/res/sharematerials/sharematerial.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/testscene2.android
-    m_Crc: 2111444393
-    m_Hash: db31624e59039eaafea4a008c98b0deb
+    m_Crc: 4277450996
+    m_Hash: dd43d29a282d1ed68864d05b9c67a0bd
     m_Dependencies:
     - assets/res/scenes/testscene2settings.android
     - assets/res/sharematerials/sharematerial.android
@@ -233,14 +233,14 @@ MonoBehaviour:
     m_Hash: 277a82e3a0849937e7bf8ff1973321e5
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/windows/mainwindow.android
-    m_Crc: 1062501129
-    m_Hash: a194abc4d6764308d34179b8ffbee75e
+    m_Crc: 1250077351
+    m_Hash: 579debc106ad24d7930ca5833283d859
     m_Dependencies:
     - assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
     - assets/res/atlas/shareatlas/tutorialatlas.android
     - assets/res/sharematerials/ui/ui-default.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager2/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/assetbuildinfo/assetbuildinfoandroid.android
-    m_Crc: 2096045309
-    m_Hash: 185f7d4efa281567308977f62f960384
+    m_Crc: 1044395051
+    m_Hash: b601e6d620e0fcbb49b79cf591e9724f
     m_Dependencies: []

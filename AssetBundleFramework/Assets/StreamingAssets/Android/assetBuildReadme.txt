@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2026/1/30 1:00:39
+构建时间：2026/2/10 16:31:00
 
 --Asset AB打包信息--
 AssetBundleName:assets/res/actors/cube.android AssetBundleVariant: BuildCompression:Lz4HC
@@ -23,66 +23,20 @@ AssetBundleName:assets/res/actors/zombunny.android AssetBundleVariant: BuildComp
 	AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Move.anim
 
 AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview.android AssetBundleVariant: BuildCompression:Lz4HC
+	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/playerpreview.spriteatlas
+	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/playerpreviewvariant.spriteatlas
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAichiPreview.png
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAkitaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAomoriPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDBlackPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDChibaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDEhimePreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukuiPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukuokaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDFukushimaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDGifuPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDGunmaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDHiroshimaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDHokkaidoPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDHyogoPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDIshikawaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDIvarakiPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDIwatePreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKagawaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKagoshimaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKanagawaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKochiPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKumamotoPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDKyotoPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiePreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMikanButoriPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyagiPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDMiyazakiPreview.png
 
 AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/playerpreview2.spriteatlas
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNagasakiPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNaraPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewFukuokaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewHokkaidoPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNewOsakaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDNiigataPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOkayamaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOkinawaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOoitaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDOsakaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSagaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSaitamaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShigaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShimanePreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDShizuokaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpaceCommandPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDSpainMadridPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTochigiPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokushimaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTokyoPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDTottoriPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDToyamaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDWakayamaPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamagataPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamaguchiPreview.png
-	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDYamanashiPreview.png
+	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDAomoriPreview.png
+	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDBlackPreview.png
 
 AssetBundleName:assets/res/atlas/shareatlas/spriteatlas/playerpreview3.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/playerpreview3.spriteatlas
+	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/SDNagasakiPreview.png
+	AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/SDNaraPreview.png
 
 AssetBundleName:assets/res/atlas/shareatlas/tutorialatlas.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG
