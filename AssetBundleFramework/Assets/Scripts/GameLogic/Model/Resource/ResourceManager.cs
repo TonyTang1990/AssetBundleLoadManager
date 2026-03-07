@@ -23,18 +23,18 @@ using UnityEngine.Video;
 public class ResourceManager : SingletonTemplate<ResourceManager>
 {
     // Note:
-    // 取消异步加载有两种方式:
-    // 1. LoaderManager.Singleton.CancelAssetBundleRequest(requestUID)
+    // 取消Asset异步加载有两种方式:
+    // 1. LoaderManager.Singleton.CancelAssetRequest(requestUID)
     // 2. 返回给上层AssetLoader然后,AssetLoader.CancelRequest(requestUID)
 
     /// <summary>
-    /// 取消指定请求UID的AssetBundle加载
+    /// 取消指定请求UID的Asset加载
     /// </summary>
     /// <param name="requestUID"></param>
     /// <returns></returns>
-    public bool CancelAssetBundleRequest(int requestUID)
+    public bool CancelAssetRequest(int requestUID)
     {
-        return LoaderManager.Singleton.CancelAssetBundleRequest(requestUID);
+        return LoaderManager.Singleton.CancelAssetRequest(requestUID);
     }
 
     /// <summary>

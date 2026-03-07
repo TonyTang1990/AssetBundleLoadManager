@@ -396,7 +396,7 @@ namespace TResource
         /// </summary>
         /// <param name="requestUID"></param>
         /// <returns></returns>
-        public bool CancelAssetRequest<T>(int requestUID) where T : UnityEngine.Object
+        public bool CancelAssetRequest(int requestUID)
         {
             string assetPath = GetAssetByRequestUID(requestUID);
             if (string.IsNullOrEmpty(assetPath))
