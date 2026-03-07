@@ -377,7 +377,8 @@ namespace TResource
             }
             else
             {
-                Debug.LogError($"找不到请求UID:{requestUID}回调,移除Asset:{ResourcePath}请求失败!");
+                // 预加载完成上次尝试取消是可能多次进入的
+                //Debug.LogError($"找不到请求UID:{requestUID}回调,移除Asset:{ResourcePath}请求失败!");
                 return false;
             }
         }

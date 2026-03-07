@@ -6,6 +6,7 @@
 
 using System;
 using System.IO;
+using TResource;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -21,6 +22,21 @@ using UnityEngine.Video;
 /// </summary>
 public class ResourceManager : SingletonTemplate<ResourceManager>
 {
+    // Note:
+    // 取消异步加载有两种方式:
+    // 1. LoaderManager.Singleton.CancelAssetBundleRequest(requestUID)
+    // 2. 返回给上层AssetLoader然后,AssetLoader.CancelRequest(requestUID)
+
+    /// <summary>
+    /// 取消指定请求UID的AssetBundle加载
+    /// </summary>
+    /// <param name="requestUID"></param>
+    /// <returns></returns>
+    public bool CancelAssetBundleRequest(int requestUID)
+    {
+        return LoaderManager.Singleton.CancelAssetBundleRequest(requestUID);
+    }
+
     /// <summary>
     /// 加载所有Shader
     /// </summary>
