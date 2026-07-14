@@ -272,7 +272,7 @@ namespace TResource
         /// <summary>
         /// 打印当前AB所有使用者信息以及索引计数(开发用)
         /// </summary>
-        public void PrintAllOwnersNameAndRefCount()
+        public void PrintAllResourceInfo()
         {
             ResourceLogger.log(string.Format("Resource Path: {0}", ResourcePath));
             ResourceLogger.log(string.Format("Ref Count: {0}", RefCount));

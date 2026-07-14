@@ -108,16 +108,18 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// <summary>
     /// 播放音效
     /// </summary>
-    /// <param name="respath">资源路径</param>
+    /// <param name="resName">资源名(含后缀)</param>
     /// <param name="assetLoader">Asset加载器</param>
-    /// <param name="callback">回调</param>
+    /// <param name="callBack">回调</param>
     /// <param name="loadType">加载类型</param>
     /// <returns></returns>
-    public int PlaySFXSound(string respath, out TResource.AssetLoader assetLoader, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadType = TResource.ResourceLoadType.NormalLoad)
+    public int PlaySFXSound(string resName, out TResource.AssetLoader assetLoader,
+                            Action<AudioClip, int> callBack = null,
+                            TResource.ResourceLoadType loadType = TResource.ResourceLoadType.NormalLoad)
     {
         var sfxgo = mAudioGoPool.Pop(mSFXGoTemplate);
         return TResource.ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
-            respath,
+            resName,
             out assetLoader,
             (loader, requestUid) =>
             {
@@ -137,7 +139,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
                     mAudioGoPool.Push(mSFXInstanceID, sfxaudioinfo.SFXAudioGo);
                     ObjectPool.Singleton.Push<SFXAudioInfo>(sfxaudioinfo);
                 }, ac.length);
-                callback?.Invoke(ac, requestUid);
+                callBack?.Invoke(ac, requestUid);
             },
             loadType
         );
@@ -146,13 +148,15 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// <summary>
     /// 播放背景音乐
     /// </summary>
-    /// <param name="respath">资源路径</param>
+    /// <param name="resName">资源名(含后缀)</param>
     /// <param name="assetLoader">Asset加载器</param>
     /// <param name="loop">是否循环播放</param>
-    /// <param name="callback">回调</param>
+    /// <param name="callBack">回调</param>
     /// <param name="loadType">加载类型</param>
     /// <returns></returns>
-    public int PlayBGM(string respath, out TResource.AssetLoader assetLoader, bool loop = true, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadType = TResource.ResourceLoadType.NormalLoad)
+    public int PlayBGM(string resName, out TResource.AssetLoader assetLoader,
+                       bool loop = true, Action<AudioClip, int> callBack = null,
+                       TResource.ResourceLoadType loadType = TResource.ResourceLoadType.NormalLoad)
     {
         //背景音效是挂载DontDestroyOnLoad上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
         if (mCurrentBGMAssetLoader != null)
@@ -162,7 +166,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
         }
 
         return TResource.ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
-            respath,
+            resName,
             out assetLoader,
             (loader, requestUid) =>
             {
@@ -171,7 +175,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
                 mBGMAudioSource.clip = clip;
                 mBGMAudioSource.loop = loop;
                 mBGMAudioSource.Play();
-                callback?.Invoke(clip, requestUid);
+                callBack?.Invoke(clip, requestUid);
             },
             loadType
         );

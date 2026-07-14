@@ -221,6 +221,17 @@ namespace TResource
 			return collector != null ? collector.CollectRule == AssetBundleCollectRule.Collect : false;
 		}
 
+        /// <summary>
+        /// 是否允许从脚本加载
+        /// </summary>
+        /// <param name="assetPath"></param>
+        /// <returns></returns>
+        public static bool IsAllowLoadFromScript(string assetPath)
+        {
+            var collector = GetCollectorByAssetPath(assetPath);
+            return collector != null ? collector.AllowLoadFromScript : false;
+        }
+
 		/// <summary>
 		/// 获取资源的打包AB名
         /// Note:

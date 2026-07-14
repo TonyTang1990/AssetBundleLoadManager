@@ -40,6 +40,15 @@ namespace TResource
 			get;
 		}
 
+		/// <summary>
+		/// 是否允许从脚本加载
+		/// </summary>
+		public bool IsAllowLoadFromScript
+		{
+			private set;
+			get;
+		}
+
         /// <summary>
         /// 是否是场景Asset
         /// </summary>
@@ -58,15 +67,15 @@ namespace TResource
 			get;
 		}
 
-		/// <summary>
-		/// AssetBundle标签
-		/// </summary>
-		public string AssetBundleLabel = null;
+		// /// <summary>
+		// /// AssetBundle标签
+		// /// </summary>
+		// public string AssetBundleLabel = null;
 
-		/// <summary>
-		/// AssetBundle变体
-		/// </summary>
-		public string AssetBundleVariant = null;
+		// /// <summary>
+		// /// AssetBundle变体
+		// /// </summary>
+		// public string AssetBundleVariant = null;
 
 		/// <summary>
         /// 构造函数
@@ -85,6 +94,7 @@ namespace TResource
 #endif
             AddresableName = addresableName;
             IsCollectAsset = AssetBundleCollectSettingData.IsCollectAsset(assetPath);
+			IsAllowLoadFromScript = AssetBundleCollectSettingData.IsAllowLoadFromScript(assetPath);
 			IsSceneAsset = AssetDatabase.GetMainAssetTypeAtPath(assetPath) == typeof(SceneAsset);
 			IsVideoAsset = AssetDatabase.GetMainAssetTypeAtPath(assetPath) == typeof(UnityEngine.Video.VideoClip);
         }

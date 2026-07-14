@@ -4,7 +4,6 @@
  * Create Date:             2023//01/23
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,7 +44,11 @@ namespace TResource
         /// <summary>
         /// 当前AB打包信息里所属的Asset打包信息Map<Asset路径，Asset打包信息>
         /// </summary>
-        private Dictionary<string, AssetBuildInfo> mAssetBuildInfoMap;
+        public Dictionary<string, AssetBuildInfo> AssetBuildInfoMap
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// 构造函数
@@ -57,7 +60,7 @@ namespace TResource
             AssetBundleName = assetBundleName;
             AssetBundleVariant = assetBundleVariant;
             Compression = compression;
-            mAssetBuildInfoMap = new Dictionary<string, AssetBuildInfo>();
+            AssetBuildInfoMap = new Dictionary<string, AssetBuildInfo>();
         }
 
         /// <summary>
@@ -67,11 +70,11 @@ namespace TResource
         /// <returns></returns>
         public bool AddAssetBuildInfo(AssetBuildInfo assetBuildInfo)
         {
-            if(mAssetBuildInfoMap.ContainsKey(assetBuildInfo.AssetPath))
+            if(AssetBuildInfoMap.ContainsKey(assetBuildInfo.AssetPath))
             {
                 return false;
             }
-            mAssetBuildInfoMap.Add(assetBuildInfo.AssetPath, assetBuildInfo);
+            AssetBuildInfoMap.Add(assetBuildInfo.AssetPath, assetBuildInfo);
             return true;
         }
 
@@ -81,7 +84,7 @@ namespace TResource
         /// <returns></returns>
         public int GetTotalAssetBuildNum()
         {
-            return mAssetBuildInfoMap.Count;
+            return AssetBuildInfoMap.Count;
         }
 
         /// <summary>
@@ -90,9 +93,9 @@ namespace TResource
         /// <returns></returns>
         public string[] GetAllAssetPaths()
         {
-            string[] allAssetPaths = new string[mAssetBuildInfoMap.Count];
+            string[] allAssetPaths = new string[AssetBuildInfoMap.Count];
             var assetIndex = 0;
-            foreach(var assetBuildInfo in mAssetBuildInfoMap)
+            foreach(var assetBuildInfo in AssetBuildInfoMap)
             {
                 allAssetPaths[assetIndex] = assetBuildInfo.Value.AssetPath;
                 assetIndex++;
@@ -106,9 +109,9 @@ namespace TResource
         /// <returns></returns>
         public string[] GetAllAddresableNames()
         {
-            string[] allAddresableNames = new string[mAssetBuildInfoMap.Count];
+            string[] allAddresableNames = new string[AssetBuildInfoMap.Count];
             var assetIndex = 0;
-            foreach (var assetBuildInfo in mAssetBuildInfoMap)
+            foreach (var assetBuildInfo in AssetBuildInfoMap)
             {
                 allAddresableNames[assetIndex] = assetBuildInfo.Value.AddresableName;
                 assetIndex++;

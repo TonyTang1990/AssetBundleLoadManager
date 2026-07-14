@@ -40,28 +40,34 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <summary>
     /// 加载所有Shader
     /// </summary>
-    /// <param name="respath">资源路径</param>
     /// <param name="callback">资源会动啊</param>
     /// <param name="loadtype">加载方式</param>
-    public int LoadAllShader(string respath, Action callback, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.PermanentLoad)
+    public int LoadAllShader(Action callback, ResourceLoadType loadtype = ResourceLoadType.PermanentLoad)
     {
-        TResource.BundleLoader bundleLoader;
-        return TResource.ResourceModuleManager.Singleton.RequstAssetBundleSync(
-        respath,
+        BundleLoader bundleLoader;
+        return ResourceModuleManager.Singleton.RequstABSync(
+        ResourceConstData.ShaderABName,
         out bundleLoader,
         (loader, requestUid) =>
         {
+            // 非AB模式会返回null
+            if(loader == null)
+            {
+                callback?.Invoke();
+                return;
+            }
             var bundle = loader?.GetAssetBundle();
             var allAssetNames = bundle?.GetAllAssetNames();
             if(allAssetNames != null)
             {
-                TResource.AssetLoader assetLoader;
+                AssetLoader assetLoader;
                 for (int i = 0, length = allAssetNames.Length; i < length; i++)
                 {
-                    if (!allAssetNames[i].EndsWith(".shadervariants"))
+                    var assetName = Path.GetFileName(allAssetNames[i]);
+                    if (!assetName.EndsWith(".shadervariants"))
                     {
-                        TResource.ResourceModuleManager.Singleton.RequstAssetSync<Shader>(
-                        allAssetNames[i],
+                        ResourceModuleManager.Singleton.RequstAssetSync<Shader>(
+                        assetName,
                         out assetLoader,
                         (loader2, requestUid2) =>
                         {
@@ -72,8 +78,8 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                     }
                     else
                     {
-                        TResource.ResourceModuleManager.Singleton.RequstAssetSync<ShaderVariantCollection>(
-                        allAssetNames[i],
+                        ResourceModuleManager.Singleton.RequstAssetSync<ShaderVariantCollection>(
+                        assetName,
                         out assetLoader,
                         (loader3, requestUid3) =>
                         {
@@ -93,28 +99,29 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <summary>
     /// 获取一个实例资源对象
     /// </summary>
-    /// <param name="respath">资源路径</param>
+    /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int GetPrefabInstance(string respath, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetPrefabInstance(string resName, Action<GameObject, int> callback = null,
+                                 ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        TResource.AssetLoader assetLoader;
-        return TResource.ResourceModuleManager.Singleton.RequstAssetSync<GameObject>(
-            respath,
+        AssetLoader assetLoader;
+        return ResourceModuleManager.Singleton.RequstAssetSync<GameObject>(
+            resName,
             out assetLoader,
             (loader, requestUid) =>
             {
                 var prefab = loader.ObtainAsset<GameObject>();
-                var prefabinstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
+                var prefabInstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
                 //不修改实例化后的名字，避免上层逻辑名字对不上
                 //goinstance.name = goasset.name;
                 // 绑定owner对象，用于判定是否还有有效对象引用AB资源
-                loader.BindAsset<GameObject>(prefabinstance);
+                loader.BindAsset<GameObject>(prefabInstance);
     #if UNITY_EDITOR
-                ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
+                // ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
     #endif
-                callback?.Invoke(prefabinstance, requestUid);
+                callback?.Invoke(prefabInstance, requestUid);
             },
             loadtype
         );
@@ -123,27 +130,28 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <summary>
     /// 异步获取一个实例资源对象
     /// </summary>
-    /// <param name="respath">资源路径</param>
+    /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int GetPrefabInstanceAsync(string respath, out TResource.AssetLoader assetLoader, Action<GameObject, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetPrefabInstanceAsync(string resName, out AssetLoader assetLoader, Action<GameObject, int> callback = null,
+                                      ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<GameObject>(
-            respath,
+        return ResourceModuleManager.Singleton.RequstAssetAsync<GameObject>(
+            resName,
             out assetLoader,
             (loader, requestUid) =>
             {
                 var prefab = loader.ObtainAsset<GameObject>();
-                var prefabinstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
+                var prefabInstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
                 //不修改实例化后的名字，避免上层逻辑名字对不上
                 //goinstance.name = goasset.name;
                 // 绑定owner对象，用于判定是否还有有效对象引用AB资源
-                loader.BindAsset<GameObject>(prefabinstance);
+                loader.BindAsset<GameObject>(prefabInstance);
     #if UNITY_EDITOR
-                ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
+                // ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
     #endif
-                callback?.Invoke(prefabinstance, requestUid);
+                callback?.Invoke(prefabInstance, requestUid);
             },
             loadtype
         );
@@ -153,21 +161,22 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// 获取一个材质
     /// </summary>
     /// <param name="owner">资源绑定对象</param>
-    /// <param name="respath">资源路径</param>
+    /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int GetMaterial(UnityEngine.Object owner, string respath, Action<Material, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetMaterial(UnityEngine.Object owner, string resName, Action<Material, int> callback = null,
+                           ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        TResource.AssetLoader assetLoader;
-        return TResource.ResourceModuleManager.Singleton.RequstAssetSync<Material>(
-            respath,
+        AssetLoader assetLoader;
+        return ResourceModuleManager.Singleton.RequstAssetSync<Material>(
+            resName,
             out assetLoader,
             (loader, requestUid) =>
             {
                 var material = loader.BindAsset<Material>(owner);
     #if UNITY_EDITOR
-                ResourceUtility.FindMaterialShaderBack(material);
+                // ResourceUtility.FindMaterialShaderBack(material);
     #endif
                 callback?.Invoke(material, requestUid);
             },
@@ -179,21 +188,23 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// 异步获取一个材质
     /// </summary>
     /// <param name="owner">资源绑定对象</param>
-    /// <param name="respath">资源路径</param>
+    /// <param name="resName">资源名(含后缀)</param>
     /// <param name="assetLoader">Asset加载器</param>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public int GetMaterialAsync(UnityEngine.Object owner, string respath, out TResource.AssetLoader assetLoader, Action<Material, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetMaterialAsync(UnityEngine.Object owner, string resName, out AssetLoader assetLoader,
+                                Action<Material, int> callback = null,
+                                ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<Material>(
-            respath,
+        return ResourceModuleManager.Singleton.RequstAssetAsync<Material>(
+            resName,
             out assetLoader,
             (loader, requestUid) =>
             {
                 var material = loader.BindAsset<Material>(owner);
 #if UNITY_EDITOR
-                ResourceUtility.FindMaterialShaderBack(material);
+                // ResourceUtility.FindMaterialShaderBack(material);
 #endif
                 callback?.Invoke(material, requestUid);
             },
@@ -205,14 +216,15 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// 获取指定音效
     /// </summary>
     /// <param name="owner"></param>
-    /// <param name="respath"></param>
+    /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
-    public int GetAudioClip(UnityEngine.Object owner, string respath, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetAudioClip(UnityEngine.Object owner, string resName, Action<AudioClip, int> callback = null,
+                            ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        TResource.AssetLoader assetLoader;
-        return TResource.ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
-            respath,
+        AssetLoader assetLoader;
+        return ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+            resName,
             out assetLoader,
             (loader, requestUid) =>
             {
@@ -227,14 +239,15 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// 异步获取指定音效
     /// </summary>
     /// <param name="owner"></param>
-    /// <param name="respath"></param>
+    /// <param name="resName">资源名(含后缀)</param>
     /// <param name="assetLoader"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
-    public int GetAudioClipAsync(UnityEngine.Object owner, string respath, out TResource.AssetLoader assetLoader, Action<AudioClip, int> callback = null, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public int GetAudioClipAsync(UnityEngine.Object owner, string resName, out AssetLoader assetLoader,
+                                 Action<AudioClip, int> callback = null, ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        return TResource.ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
-            respath,
+        return ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+            resName,
             out assetLoader,
             (loader, requestUid) =>
             {
@@ -248,15 +261,15 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <summary>
     /// 获取视频Clip
     /// </summary>
-    /// <param name="videoPath"></param>
+    /// <param name="videoName"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
     /// <returns></returns>
-    public VideoClip GetVideoClip(string videoPath, TResource.ResourceLoadType loadtype = TResource.ResourceLoadType.NormalLoad)
+    public VideoClip GetVideoClip(string videoName, ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        TResource.AssetLoader assetLoader;
-        TResource.ResourceModuleManager.Singleton.RequstAssetSync<VideoClip>(
-            videoPath,
+        AssetLoader assetLoader;
+        ResourceModuleManager.Singleton.RequstAssetSync<VideoClip>(
+            videoName,
             out assetLoader,
             null,
             loadtype

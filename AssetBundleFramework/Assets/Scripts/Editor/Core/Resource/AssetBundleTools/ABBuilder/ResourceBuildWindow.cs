@@ -254,7 +254,7 @@ namespace TResource
                     mAssetBuilder.CompressOption = (AssetBundleBuilder.ECompressOption)EditorGUILayout.EnumPopup("Compression", mAssetBuilder.CompressOption);
                     mAssetBuilder.IsAppendHash = EditorGUILayout.ToggleLeft("Append Hash", mAssetBuilder.IsAppendHash, GUILayout.MaxWidth(120));
                     mAssetBuilder.IsDisableWriteTypeTree = EditorGUILayout.ToggleLeft("Disable Write Type Tree", mAssetBuilder.IsDisableWriteTypeTree, GUILayout.MaxWidth(200));
-                    mAssetBuilder.IsIgnoreTypeTreeChanges = EditorGUILayout.ToggleLeft("Ignore Type Tree Changes", mAssetBuilder.IsIgnoreTypeTreeChanges, GUILayout.MaxWidth(200));
+                    mAssetBuilder.IsIgnoreTypeTreeChanges = EditorGUILayout.ToggleLeft("Ignore Type Tree Changes(SBP不支持)", mAssetBuilder.IsIgnoreTypeTreeChanges, GUILayout.MaxWidth(200));
                     EditorGUI.indentLevel = indent;
                 }
             }
@@ -380,6 +380,11 @@ namespace TResource
         private const float COMPRESSION_TYPE_DISPLAY_WIDTH = 120f;
 
         /// <summary>
+        /// 是否允许从脚本加载宽度
+        /// </summary>
+        private const float ALLOW_LOAD_FROM_SCRIPT_WIDTH = 80f;
+
+        /// <summary>
         /// 删除按钮显示宽度
         /// </summary>
         private const float DELETE_BUTTON_DISPLAY_WIDTH = 40f;
@@ -400,6 +405,7 @@ namespace TResource
             EditorGUILayout.LabelField("打包策略", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(BUILD_RULE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             EditorGUILayout.LabelField("固定AB名", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(CONST_NAME_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             EditorGUILayout.LabelField("压缩格式", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(COMPRESSION_TYPE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            EditorGUILayout.LabelField("代码加载", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(ALLOW_LOAD_FROM_SCRIPT_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             EditorGUILayout.LabelField("删除", ResourceBuildStyles.ButtonMidStyle, GUILayout.Width(DELETE_BUTTON_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             EditorGUILayout.EndHorizontal();
             if (!mFoldMap[EFoldType.BuildRule])
@@ -453,6 +459,7 @@ namespace TResource
                 EditorGUILayout.TextField(collector.ConstName, GUILayout.Width(CONST_NAME_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             }
             collector.Compression = (CompressionType)EditorGUILayout.EnumPopup(collector.Compression, GUILayout.Width(COMPRESSION_TYPE_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
+            collector.AllowLoadFromScript = EditorGUILayout.Toggle(collector.AllowLoadFromScript, GUILayout.Width(ALLOW_LOAD_FROM_SCRIPT_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT));
             if (GUILayout.Button("-", GUILayout.Width(DELETE_BUTTON_DISPLAY_WIDTH), GUILayout.Height(SINGLE_LINE_DISPLAY_HEIGHT)))
             {
                 if (AssetBundleCollectSettingData.RemoveAssetBundleCollector(collector))

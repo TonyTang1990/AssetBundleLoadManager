@@ -29,7 +29,9 @@ namespace TResource
         /// <param name="options">打包选项设置</param>
         /// <param name="allAssetBundleBuildList">AB打包列表</param>
         /// <returns></returns>
-        public static AssetBundleManifest BuildAllAssetBundles(AssetBundleBuilder assetBundleBuilder, string outputDirectory, BuildTarget buildTarget, BuildAssetBundleOptions options, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess)
+        public static AssetBundleManifest BuildAllAssetBundles(AssetBundleBuilder assetBundleBuilder, string outputDirectory,
+                                                               BuildTarget buildTarget, BuildAssetBundleOptions options,
+                                                               List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess)
         {
             var unityManifest = BuildPipeline.BuildAssetBundles(outputDirectory, allAssetBundleBuildList.ToArray(), options, buildTarget);
             buildSuccess = unityManifest != null;
@@ -77,7 +79,8 @@ namespace TResource
         /// <param name="visited"></param>
         /// <param name="stack"></param>
         /// <returns></returns>
-        private static bool CheckCycle(AssetBundleManifest unityManifest, string element, List<string> visited, List<string> stack)
+        private static bool CheckCycle(AssetBundleManifest unityManifest, string element,
+                                       List<string> visited, List<string> stack)
         {
             if (visited.Contains(element) == false)
             {

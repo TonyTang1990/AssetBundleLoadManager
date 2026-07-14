@@ -43,18 +43,26 @@ namespace TResource
         /// </summary>
         public CompressionType Compression;
 
+        /// <summary>
+        /// 允许从脚本加载
+        /// </summary>
+        public bool AllowLoadFromScript;
+
         public Collector()
         {
 
         }
 
-        public Collector(string collectrelativefolderpath, AssetBundleCollectRule collectrule = AssetBundleCollectRule.Collect, AssetBundleBuildRule buildrule = AssetBundleBuildRule.ByFilePath, CompressionType compression = CompressionType.Lz4)
+        public Collector(string collectrelativefolderpath, AssetBundleCollectRule collectrule = AssetBundleCollectRule.Collect,
+                         AssetBundleBuildRule buildrule = AssetBundleBuildRule.ByFilePath,
+                         CompressionType compression = CompressionType.Lz4, bool allowLoadFromScript = false)
         {
             CollectFolderPath = collectrelativefolderpath;
             CollectRule = collectrule;
             BuildRule = buildrule;
             ConstName = string.Empty;
             Compression = compression;
+            AllowLoadFromScript = allowLoadFromScript;
         }
     }
 

@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace TResource
@@ -17,6 +18,18 @@ namespace TResource
     /// </summary>
     public class AssetDatabaseModule : AbstractResourceModule
     {
+        /// <summary>
+        /// Asset打包信息
+        /// </summary>
+        public EditorAssetInfoAsset EditorAssetInfoAsset
+        {
+            get
+            {
+                return mEditorAssetInfoAsset;
+            }
+        }
+        protected EditorAssetInfoAsset mEditorAssetInfoAsset;
+
         /// <summary>
         /// 已加载Asset里不再有有效引用的Asset信息列表
         /// </summary>
@@ -31,6 +44,39 @@ namespace TResource
 
             mUnsedAssetInfoList = new List<AssetInfo>();
             ResLoadMode = ResourceLoadMode.AssetDatabase;
+            LoadEditorAssetInfo();
+        }
+
+        /// <summary>
+        /// 加载EditorAssetInfoAsset信息
+        /// </summary>
+        private void LoadEditorAssetInfo()
+        {
+            // 确保之前加载的EditorAssetInfo信息卸载彻底
+            if (mEditorAssetInfoAsset != null)
+            {
+                Resources.UnloadAsset(mEditorAssetInfoAsset);
+                mEditorAssetInfoAsset = null;
+            }
+            // Note:
+            // 因为mEditorAssetInfoAsset还未正常加载，所以还不能使用RequestAsset接口
+            var editorAssetInfoAssetPath = EditorAssetInfoPath.GetEditorAssetInfoAssetFileRelativePath();
+            #if UNITY_EDITOR
+            mEditorAssetInfoAsset = AssetDatabase.LoadAssetAtPath<EditorAssetInfoAsset>(editorAssetInfoAssetPath);
+            mEditorAssetInfoAsset.Init();
+            #endif
+        }
+
+        /// <summary>
+        /// 获取Asset名(含后缀名)的Asset路径
+        /// Note:
+        /// 仅支持主动加载的Asset才能获取到有效Asset路径
+        /// </summary>
+        /// <param name="assetName"></param>
+        /// <returns></returns>
+        public override string GetAssetPath(string assetName)
+        {
+            return mEditorAssetInfoAsset?.GetAssetNamePath(assetName);
         }
 
         /// <summary>
@@ -45,7 +91,7 @@ namespace TResource
         protected override int RealRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             var requestUID = LoaderManager.Singleton.GetNextRequestUID();
-            var assetDatabaseLoader = LoaderManager.Singleton.createAssetDatabaseLoader<T>(assetPath, loadType, loadMethod) as AssetDatabaseLoader;
+            var assetDatabaseLoader = LoaderManager.Singleton.CreateAssetDatabaseLoader<T>(assetPath, loadType, loadMethod) as AssetDatabaseLoader;
             assetDatabaseLoader.AddRequest(requestUID, completeHandler);
             assetLoader = assetDatabaseLoader as AssetDatabaseLoader;
             assetDatabaseLoader.Load();
@@ -53,15 +99,39 @@ namespace TResource
         }
 
         /// <summary>
-        /// 真正的请求AssetBundle资源(由不同的资源模块去实现)
+        /// 请求指定Asset所在AssetBundle
+        /// 上层Asset所在AssetBundle加载统一入口
+        /// Note:
+        /// 仅AB模式下才会有AB加载器，非AB模式AB加载器为null且立刻回调null
         /// </summary>
-        /// <param name="abPath">AssetBundle资源路径</param>
+        /// <param name="assetName">Asset名(含后缀)</param>
         /// <param name="abLoader">AB资源加载器</param>
         /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected override int RealRequestAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        public override int RequstAssetAB(string assetName, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        {
+            // AssetDatabase模式不支持AssetBundle加载，直接返回逻辑回调
+            abLoader = null;
+            completeHandler?.Invoke(abLoader, 0);
+            return 0;
+        }
+
+        /// <summary>
+        /// 请求AssetBundle
+        /// 上层AssetBundle加载统一入口
+        /// Note:
+        /// 仅AB模式下才会有AB加载器，非AB模式AB加载器为null且立刻回调null
+        /// </summary>
+        /// <param name="abPath">AssetBundle资源路径</param>
+        /// <param name="assetName">Asset名(含后缀)</param>
+        /// <param name="abLoader">AB资源加载器</param>
+        /// <param name="completeHandler">加载完成上层回调</param>
+        /// <param name="loadType">资源加载类型</param>
+        /// <param name="loadMethod">资源加载方式</param>
+        /// <returns>请求UID</returns>
+        public override int RequstAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             // AssetDatabase模式不支持AssetBundle加载，直接返回逻辑回调
             abLoader = null;
@@ -73,7 +143,7 @@ namespace TResource
         /// 真正执行资源卸载指定类型不再使用的资源接口
         /// </summary>
         /// <param name="resourceloadtype"></param>
-        protected override void DoUnloadSpecificLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
+        protected override void DoUnloadLoadTypeUnsedResource(ResourceLoadType resourceloadtype)
         {
             // 递归判定卸载所有不再可用的正常加载资源
             bool hasUnusedRes = true;

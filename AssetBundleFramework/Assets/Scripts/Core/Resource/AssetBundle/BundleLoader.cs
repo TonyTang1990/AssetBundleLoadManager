@@ -117,37 +117,37 @@ namespace TResource
         {
             get
             {
-                return mLoadUnCompleteAssetBundlePathMap.Count == 0;
+                return mLoadUnCompleteABPathMap.Count == 0;
             }
         }
 
         /// <summary>
         /// 加载已完成数量
         /// </summary>
-        public int LoadCompletedAssetBundleNumer
+        public int LoadCompletedABNumer
         {
             get
             {
-                return mAllRequiredAssetBundleNumber - mLoadUnCompleteAssetBundlePathMap.Count;
+                return mAllRequiredABNumber - mLoadUnCompleteABPathMap.Count;
             }
         }
 
         /// <summary>
         /// 所有需要的AB总数量
         /// </summary>
-        protected int mAllRequiredAssetBundleNumber;
+        protected int mAllRequiredABNumber;
 
         /// <summary>
         /// 加载完成的AssetBundle路径Map(Key为加载完成AssetBundle路径,Value为true)
         /// Note:
         /// 同步加载的AssetBundle的加载器为null(因为加载在获取AssetBundle加载器之前就完成了)
         /// </summary>
-        protected Dictionary<string, bool> mLoadUnCompleteAssetBundlePathMap;
+        protected Dictionary<string, bool> mLoadUnCompleteABPathMap;
 
         /// <summary>
         /// AssetBundle路径和加载器Map(Key为加载完成AssetBundle路径,Value为请求AssetBundle加载器)
         /// </summary>
-        protected Dictionary<string, BundleLoader> mAssetBundlePathAndBundleLoaderMap;
+        protected Dictionary<string, BundleLoader> mABPathAndBundleLoaderMap;
 
         /// <summary>
         /// Bundle请求信息列表(为了确保逻辑层面的回调顺序一致性采用List)
@@ -162,13 +162,13 @@ namespace TResource
         /// <summary>
         /// AssetBundle异步请求
         /// </summary>
-        protected AssetBundleCreateRequest mAssetBundleAsyncRequest;
+        protected AssetBundleCreateRequest mABAsyncRequest;
 
         public BundleLoader() : base()
         {
             DepAssetBundleInfoList = new List<AssetBundleInfo>();
-            mLoadUnCompleteAssetBundlePathMap = new Dictionary<string, bool>();
-            mAssetBundlePathAndBundleLoaderMap = new Dictionary<string, BundleLoader>();
+            mLoadUnCompleteABPathMap = new Dictionary<string, bool>();
+            mABPathAndBundleLoaderMap = new Dictionary<string, BundleLoader>();
             mRequestInfoList = new List<BundleRequestInfo>();
             mRequestUidAndInfoMap = new Dictionary<int, BundleRequestInfo>();
         }
@@ -192,9 +192,9 @@ namespace TResource
             DepABPaths = null;
             AssetBundleInfo = null;
             DepAssetBundleInfoList.Clear();
-            mAllRequiredAssetBundleNumber = 0;
-            mLoadUnCompleteAssetBundlePathMap.Clear();
-            mAssetBundlePathAndBundleLoaderMap.Clear();
+            mAllRequiredABNumber = 0;
+            mLoadUnCompleteABPathMap.Clear();
+            mABPathAndBundleLoaderMap.Clear();
             mRequestInfoList.Clear();
             mRequestUidAndInfoMap.Clear();
         }
@@ -202,19 +202,21 @@ namespace TResource
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="assetBundlePath">AB路径</param>
+        /// <param name="abPath">AB路径</param>
         /// <param name="loadType">加载类型</param>
         /// <param name="depABPaths">依赖AB路径组</param>
         /// <param name="loadMethod">加载方法</param>
-        public void Init(string assetBundlePath, AssetBundleInfo assetBundleInfo, string[] depABPaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        public void Init(string abPath, AssetBundleInfo assetBundleInfo,
+                         string[] depABPaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                         ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
-            ResourcePath = assetBundlePath;
+            ResourcePath = abPath;
             AssetBundleInfo = assetBundleInfo;
             DepABPaths = depABPaths;
             LoadType = loadType;
             LoadMethod = loadMethod;
-            mLoadUnCompleteAssetBundlePathMap.Add(ResourcePath, true);
-            mAllRequiredAssetBundleNumber = DepABPaths != null ? DepABPaths.Length + 1 : 1;
+            mLoadUnCompleteABPathMap.Add(ResourcePath, true);
+            mAllRequiredABNumber = DepABPaths != null ? DepABPaths.Length + 1 : 1;
             // 创建加载器时就添加相关AssetBundle计数，确保资源加载管理正确
             // 后续加载取消时会返还对应计数
             AssetBundleInfo.Retain();
@@ -225,7 +227,7 @@ namespace TResource
             {
                 for (int i = 0, length = DepABPaths.Length; i < length; i++)
                 {
-                    mLoadUnCompleteAssetBundlePathMap.Add(DepABPaths[i], true);
+                    mLoadUnCompleteABPathMap.Add(DepABPaths[i], true);
                     depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetOrCreateAssetBundleInfo(DepABPaths[i], ResourceLoadType.NormalLoad);
                     DepAssetBundleInfoList.Add(depAssetBundleInfo);
                     depAssetBundleInfo.Retain();
@@ -304,9 +306,9 @@ namespace TResource
             // 依赖AB一律采取Normal加载方式
             if (LoadMethod == ResourceLoadMethod.Sync)
             {
-                if (mAssetBundlePathAndBundleLoaderMap.Count == 0)
+                if (mABPathAndBundleLoaderMap.Count == 0)
                 {
-                    LoadAssetBundleSync();
+                    LoadABSync();
                     BundleLoader assetBundleLoader;
                     int assetBundleLoadUID;
                     // 等于null的话意味着上层已经出问题了，这里只是避免阻断
@@ -314,14 +316,14 @@ namespace TResource
                     {
                         for (int i = 0, length = DepABPaths.Length; i < length; i++)
                         {
-                            assetBundleLoadUID = ResourceModuleManager.Singleton.RequstAssetBundleSync(DepABPaths[i], out assetBundleLoader, OnAssetBundleLoadComplete, ResourceLoadType.NormalLoad);
-                            mAssetBundlePathAndBundleLoaderMap.Add(DepABPaths[i], assetBundleLoader);
+                            assetBundleLoadUID = ResourceModuleManager.Singleton.RequstABSync(DepABPaths[i], out assetBundleLoader, OnAssetBundleLoadComplete, ResourceLoadType.NormalLoad);
+                            mABPathAndBundleLoaderMap.Add(DepABPaths[i], assetBundleLoader);
                         }
                     }
                 }
                 else
                 {
-                    var unCompleteAssetBundlePathList = mLoadUnCompleteAssetBundlePathMap.Keys.ToList();
+                    var unCompleteAssetBundlePathList = mLoadUnCompleteABPathMap.Keys.ToList();
                     // 有异步或者动态下载未加载完的AssetBundle
                     // 此时异步加载的需要转同步加载
                     foreach (var uncompleteABPath in unCompleteAssetBundlePathList)
@@ -331,18 +333,18 @@ namespace TResource
                         if (uncompleteABPath.Equals(ResourcePath))
                         {
                             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}取消AssetBundle:{uncompleteABPath}的异步加载完成回调注册!");
-                            LoadAssetBundleSync();
+                            LoadABSync();
                         }
                         else
                         {
-                            mAssetBundlePathAndBundleLoaderMap[uncompleteABPath].LoadImmediately();
+                            mABPathAndBundleLoaderMap[uncompleteABPath].LoadImmediately();
                         }
                     }
                 }
             }
             else if (LoadMethod == ResourceLoadMethod.Async)
             {
-                LoadAssetBundleAsync();
+                LoadABAsync();
                 BundleLoader assetBundleLoader;
                 int assetBundleLoadUID;
                 // 等于null的话意味着上层已经出问题了，这里只是避免阻断
@@ -350,8 +352,8 @@ namespace TResource
                 {
                     for (int i = 0, length = DepABPaths.Length; i < length; i++)
                     {
-                        assetBundleLoadUID = ResourceModuleManager.Singleton.RequstAssetBundleAsync(DepABPaths[i], out assetBundleLoader, OnAssetBundleLoadComplete, ResourceLoadType.NormalLoad);
-                        mAssetBundlePathAndBundleLoaderMap.Add(DepABPaths[i], assetBundleLoader);
+                        assetBundleLoadUID = ResourceModuleManager.Singleton.RequstABAsync(DepABPaths[i], out assetBundleLoader, OnAssetBundleLoadComplete, ResourceLoadType.NormalLoad);
+                        mABPathAndBundleLoaderMap.Add(DepABPaths[i], assetBundleLoader);
                     }
                 }
             }
@@ -365,7 +367,7 @@ namespace TResource
         /// <summary>
         /// 同步加载自身AB
         /// </summary>
-        protected virtual void LoadAssetBundleSync()
+        protected virtual void LoadABSync()
         {
             var abPath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
             AssetBundle ab = null;
@@ -373,7 +375,7 @@ namespace TResource
             // Note:
             // 先异步LoadFromFileAsyn后同步LoadFromFile的情况下，LoadFromFile返回的ab为null，且Unity会提示***.AB已经被加载
             // 要想同步加载时异步能正确返回，我们需要调用AssetBundleCreateRequeust.assetBundle触发同步加载
-            if(mAssetBundleAsyncRequest == null)
+            if(mABAsyncRequest == null)
             {
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}同步加载AssetBundle:{ResourcePath}");
 #if UNITY_EDITOR
@@ -391,9 +393,9 @@ namespace TResource
             {
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}异步转同步加载AssetBundle:{ResourcePath}");
                 // 异步转同步时移除异步的回调监听，避免相同AB加载触发加载完成多次
-                mAssetBundleAsyncRequest.completed -= OnAssetBundleAsyncLoadComplete;
+                mABAsyncRequest.completed -= OnABAsyncLoadComplete;
                 // 异步加载时改成同步加载触发立刻加载完成
-                ab = mAssetBundleAsyncRequest.assetBundle;
+                ab = mABAsyncRequest.assetBundle;
             }
             // 加载完成后无论都要设置setResource确保后续的正常使用
             AssetBundleInfo.SetResource(ab);
@@ -403,7 +405,7 @@ namespace TResource
         /// <summary>
         /// 异步加载自身AB
         /// </summary>
-        protected virtual void LoadAssetBundleAsync()
+        protected virtual void LoadABAsync()
         {
             var abPath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始异步加载AssetBundle:{ResourcePath}");
@@ -412,28 +414,28 @@ namespace TResource
             //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
             if (System.IO.File.Exists(abPath))
             {
-                mAssetBundleAsyncRequest = AssetBundle.LoadFromFileAsync(abPath);
+                mABAsyncRequest = AssetBundle.LoadFromFileAsync(abPath);
             }
 #else
-            mAssetBundleAsyncRequest = AssetBundle.LoadFromFileAsync(abPath);
+            mABAsyncRequest = AssetBundle.LoadFromFileAsync(abPath);
 #endif
-            mAssetBundleAsyncRequest.completed += OnAssetBundleAsyncLoadComplete;
+            mABAsyncRequest.completed += OnABAsyncLoadComplete;
         }
 
         /// <summary>
         /// AssetBundle异步加载完成
         /// </summary>
         /// <param name="asyncOperation"></param>
-        protected void OnAssetBundleAsyncLoadComplete(AsyncOperation asyncOperation)
+        protected void OnABAsyncLoadComplete(AsyncOperation asyncOperation)
         {
-            if (mAssetBundleAsyncRequest.assetBundle == null || IsDone)
+            if (mABAsyncRequest.assetBundle == null || IsDone)
             {
                 Debug.LogError($"AssetBundle Path:{ResourcePath}异步加载被同步打断，理论上已经取消回调监听，不应该进入这里!");
                 return;
             }
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{ResourcePath}异步加载完成!");
             // 加载完成后无论都要设置setResource确保后续的正常使用
-            AssetBundleInfo.SetResource(mAssetBundleAsyncRequest.assetBundle);
+            AssetBundleInfo.SetResource(mABAsyncRequest.assetBundle);
             OnAssetBundleLoadComplete(this);
         }
 
@@ -446,7 +448,7 @@ namespace TResource
         {
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{ResourcePath}的AssetBundle:{assetBundleLader.ResourcePath}加载完成!");
             assetBundleLader.AssetBundleInfo.UpdateLastUsedTime();
-            mLoadUnCompleteAssetBundlePathMap.Remove(assetBundleLader.ResourcePath);
+            mLoadUnCompleteABPathMap.Remove(assetBundleLader.ResourcePath);
 #if UNITY_EDITOR
             //AB加载数据统计
             if (ResourceLoadAnalyse.Singleton.ResourceLoadAnalyseSwitch)
@@ -465,7 +467,7 @@ namespace TResource
         /// </summary>
         protected void OnAllAssetBundleLoadComplete()
         {
-            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}的所有AB数量:{mAllRequiredAssetBundleNumber}全部加载完成!");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}的所有AB数量:{mAllRequiredABNumber}全部加载完成!");
             if(AssetBundleInfo.GetResource<AssetBundle>() != null)
             {
                 Complete();
@@ -493,7 +495,7 @@ namespace TResource
             // 标识资源已经准备完成可以使用和卸载
             AssetBundleInfo.IsReady = true;
 
-            mAssetBundleAsyncRequest = null;
+            mABAsyncRequest = null;
 
             // 通知上层ab加载完成
             for(int i = 0; i < mRequestInfoList.Count; i++)
@@ -524,7 +526,7 @@ namespace TResource
                 bundleRequestInfo.Init(requestUID, loadABCompleteCallBack);
                 mRequestInfoList.Add(bundleRequestInfo);
                 mRequestUidAndInfoMap.Add(requestUID, bundleRequestInfo);
-                LoaderManager.Singleton.AddAssetBundleRequestUID(requestUID, ResourcePath);
+                LoaderManager.Singleton.AddABRequestUID(requestUID, ResourcePath);
                 return true;
             }
             else
@@ -571,7 +573,7 @@ namespace TResource
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{ResourcePath}移除请求UID:{requestUID}成功!");
                 mRequestInfoList.Remove(bundleRequestInfo);
                 mRequestUidAndInfoMap.Remove(requestUID);
-                LoaderManager.Singleton.RemoveAssetBundleRequestUID(requestUID);
+                LoaderManager.Singleton.RemoveABRequestUID(requestUID);
                 ObjectPool.Singleton.Push<BundleRequestInfo>(bundleRequestInfo);
                 return true;
             }

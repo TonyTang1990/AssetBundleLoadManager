@@ -14,7 +14,7 @@ using UnityEngine;
 /// </summary>
 public class AssetRelativePathTool : MonoBehaviour
 {
-    [MenuItem("Assets/快速获取Asset相对路径/含后缀 &#q", false, 20000)]
+    [MenuItem("Assets/快速获取Asset信息/路径含后缀 &#q", false, 20000)]
     public static void GetAssetRelativePathWithPostfix()
     {
         var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
@@ -23,7 +23,7 @@ public class AssetRelativePathTool : MonoBehaviour
         EditorGUIUtility.systemCopyBuffer = allRelativePath;
     }
 
-    [MenuItem("Assets/快速获取Asset相对路径/无后缀 &#w", false, 20000)]
+    [MenuItem("Assets/快速获取Asset信息/路径无后缀 &#w", false, 20001)]
     public static void GetAssetRelativePathWithoutPostfix()
     {
         var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
@@ -33,24 +33,25 @@ public class AssetRelativePathTool : MonoBehaviour
         EditorGUIUtility.systemCopyBuffer = allRelativePath;
     }
 
-    //[MenuItem("Assets/快速获取Asset相对路径/小写含后缀 &#e", false, 20000)]
-    //public static void GetAssetRelativePathWithPostfix()
-    //{
-    //    var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
-    //    var allRelativePath = GetAllAssetRelativePath(assets, true, true);
-    //    Debug.Log($"{allRelativePath}");
-    //    EditorGUIUtility.systemCopyBuffer = allRelativePath;
-    //}
+    [MenuItem("Assets/快速获取Asset信息/名字含后缀 &#e", false, 10000)]
+    public static void GetAssetNameWithPostfix()
+    {
+        var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
+        Debug.Log($"当前选中Asset数量:{assets.Length}");
+        var allAssetNames = GetAllAssetName(assets, true);
+        Debug.Log($"{allAssetNames}");
+        EditorGUIUtility.systemCopyBuffer = allAssetNames;
+    }
 
-    //[MenuItem("Assets/快速获取Asset相对路径/小写无后缀 &#r", false, 20000)]
-    //public static void GetAssetRelativePathWithoutPostfix()
-    //{
-    //    var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
-    //    Debug.Log($"当前选中Asset数量:{assets.Length}");
-    //    var allRelativePath = GetAllAssetRelativePath(assets, false, true);
-    //    Debug.Log($"{allRelativePath}");
-    //    EditorGUIUtility.systemCopyBuffer = allRelativePath;
-    //}
+    [MenuItem("Assets/快速获取Asset信息/名字无后缀 &#R", false, 10001)]
+    public static void GetAssetNameWithoutPostfix()
+    {
+        var assets = Selection.GetFiltered<UnityEngine.Object>(SelectionMode.Assets | SelectionMode.TopLevel);
+        Debug.Log($"当前选中Asset数量:{assets.Length}");
+        var allAssetNames = GetAllAssetName(assets, false);
+        Debug.Log($"{allAssetNames}");
+        EditorGUIUtility.systemCopyBuffer = allAssetNames;
+    }
 
     /// <summary>
     /// 获取Asset的相对路径
@@ -93,5 +94,44 @@ public class AssetRelativePathTool : MonoBehaviour
             assetRelativePath = assetRelativePath.Substring(0, assetRelativePath.Length - extension.Length);
         }
         return assetRelativePath;
+    }
+    
+    /// <summary>
+    /// 获取Asset的名字
+    /// </summary>
+    /// <param name="asset"></param>
+    /// <param name="withPostfix">是否包含后缀名</param>
+    /// <param name="toLowerPath">是否全小写路径</param>
+    private static string GetAllAssetName(UnityEngine.Object[] assets, bool withPostfix = false, bool toLowerPath = false)
+    {
+        if (assets == null)
+        {
+            Debug.LogError($"传递空Assets，获取名字失败!");
+            return string.Empty;
+        }
+        var allAssetNames = string.Empty;
+        for (int i = 0, length = assets.Length; i < length; i++)
+        {
+            var assetName = GetAssetName(assets[i], withPostfix);
+            if (i != (length - 1))
+            {
+                assetName = assetName + Environment.NewLine;
+            }
+            allAssetNames += assetName;
+        }
+        return !toLowerPath ? allAssetNames : allAssetNames.ToLower();
+    }
+
+    /// <summary>
+    /// 获取Asset的名字
+    /// </summary>
+    /// <param name="asset"></param>
+    /// <param name="withPostfix">是否包含后缀名</param>
+    private static string GetAssetName(UnityEngine.Object asset, bool withPostfix = false)
+    {
+        Debug.Assert(asset != null, "不允许传空Asset,获取Asset相对路径失败!");
+        var assetRelativePath = AssetDatabase.GetAssetPath(asset);
+        var assetName = withPostfix ? Path.GetFileName(assetRelativePath) : Path.GetFileNameWithoutExtension(assetRelativePath);
+        return assetName;
     }
 }

@@ -4474,7 +4474,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1230477527}
         m_TargetAssemblyTypeName: TResource.GameLauncher, Assembly-CSharp
-        m_MethodName: onForceUnloadAllAB
+        m_MethodName: onForceUnloadAllResources
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4673,7 +4673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4956,7 +4956,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 109254, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
@@ -6944,6 +6945,7 @@ GameObject:
   - component: {fileID: 1263506498}
   - component: {fileID: 1263506497}
   - component: {fileID: 1263506496}
+  - component: {fileID: 1263506499}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -7001,6 +7003,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 846597153}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1263506499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263506495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1511ccae7919cfc46b603b9b337fdc94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1275265247
 GameObject:
   m_ObjectHideFlags: 0
@@ -8578,8 +8592,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1230477527}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: onUnloadUnsedAssets
+        m_TargetAssemblyTypeName: TResource.GameLauncher, Assembly-CSharp
+        m_MethodName: onForceUnloadAllResources
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

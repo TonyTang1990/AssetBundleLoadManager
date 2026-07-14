@@ -3,6 +3,7 @@
  * Author:                  TonyTang
  * Create Date:             2023/01/23
  */
+
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -12,10 +13,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using System.Security.Cryptography;
-using TResource;
 using UnityEditor.Build.Pipeline.Interfaces;
-using UnityEditor.Build.Pipeline;
-using UnityEditor.Build.Pipeline.Utilities;
 using UnityEditor.Build.Content;
 using UnityEditor.SceneManagement;
 
@@ -203,7 +201,12 @@ namespace TResource
 		{
 			Debug.Log("------------------------------OnPostAssetBuild------------------------------");
 			// 准备工作
-			DoAssetBundleBuildPreparation();
+			var result = DoAssetBundleBuildPreparation();
+			if(!result)
+			{
+				Debug.LogError($"AB打包准备工作失败，打包终止!");
+				return;
+			}
 			// 开始构建
 			Log($"开始构建......");
 			// 避免SBP打包时场景未保存报错
@@ -278,36 +281,59 @@ namespace TResource
 		/// <summary>
 		/// 更新AssetBundle打包编译信息Asset
 		/// </summary>
-		/// <param name="assetBundleBuildList"></param>
-		private void UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuild> assetBundleBuildList)
+		/// <param name="assetBundleBuildInfoList"></param>
+		private bool UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuildInfo> assetBundleBuildInfoList)
 		{
 			// Note: AssetBundle打包信息统一存小写，确保和AB打包那方一致
-			var assetbundlebuildinfoassetrelativepath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
-			var assetbundlebuildasset = AssetDatabase.LoadAssetAtPath<AssetBuildInfoAsset>(assetbundlebuildinfoassetrelativepath);
-			if (assetbundlebuildasset == null)
+			var assetBundleBuildInfoAssetRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
+			var assetBundleBuildAsset = AssetDatabase.LoadAssetAtPath<AssetBuildInfoAsset>(assetBundleBuildInfoAssetRelativePath);
+			if (assetBundleBuildAsset == null)
 			{
-				assetbundlebuildasset = new AssetBuildInfoAsset();
-				AssetDatabase.CreateAsset(assetbundlebuildasset, assetbundlebuildinfoassetrelativepath);
+				assetBundleBuildAsset = ScriptableObject.CreateInstance<AssetBuildInfoAsset>();
+				AssetDatabase.CreateAsset(assetBundleBuildAsset, assetBundleBuildInfoAssetRelativePath);
 			}
-			assetbundlebuildasset.BuildAssetInfoList.Clear();
+			assetBundleBuildAsset.BuildAssetInfoList.Clear();
+
+			// 重复Asset名字打包检测
+			var dumplicatedAssetNameMap = new Dictionary<string, string>();
 
 			// Asset打包信息构建
-			foreach (var bi in assetBundleBuildList)
+			foreach (var assetBundleBuildInfo in assetBundleBuildInfoList)
 			{
-				foreach (var assetName in bi.assetNames)
+				if(assetBundleBuildInfo.AssetBuildInfoMap == null)
 				{
+					continue;
+				}
+				var assetBundleName = assetBundleBuildInfo.AssetBundleName;
+				// Note:
+				// 1. 记录的Asset对应AB路径要不带AB后缀，AB后缀在运行加载时根据平台自动添加
+				var assetBundleNameNoPostFix = PathUtilities.GetPathWithoutPostFix(assetBundleName);
+				var assetBundleVariant = assetBundleBuildInfo.AssetBundleVariant;
+				foreach (var assetBuildInfoData in assetBundleBuildInfo.AssetBuildInfoMap)
+				{
+					// 仅导出需要从代码主动加载的Asset打包信息，其他Asset通过依赖加载还原即可(优化Asset打包信息Asset数据量)
+					var assetBuildInfo = assetBuildInfoData.Value;
+					if(!assetBuildInfo.IsAllowLoadFromScript)
+					{
+						continue;
+					}
 					// 不剔除后缀，确保AssetDatabase模式可以全路径(带后缀)加载
-					var assetPath = assetName;
-					// Note:
-					// 1. 记录的Asset对应AB路径要不带AB后缀，AB后缀在运行加载时根据平台自动添加
-					var assetBundleNameNoPostFix = PathUtilities.GetPathWithoutPostFix(bi.assetBundleName);
-					var buildAssetInfo = new BuildAssetInfo(assetPath, assetBundleNameNoPostFix, bi.assetBundleVariant);
-					assetbundlebuildasset.BuildAssetInfoList.Add(buildAssetInfo);
+					var assetPath = assetBuildInfo.AssetPath;
+					var buildAssetInfo = new BuildAssetInfo(assetPath, assetBundleNameNoPostFix, assetBundleVariant);
+					var assetName = buildAssetInfo.AssetName;
+					if(dumplicatedAssetNameMap.TryGetValue(assetName, out var preAssetPath))
+					{
+						Debug.LogError($"重复的Asset名字:{assetName}，Asset路径1:{preAssetPath}和Asset路径2:{assetPath}的Asset名字同名了，请修改资源名避免重名!");
+						return false;
+					}
+					dumplicatedAssetNameMap.Add(assetName, assetPath);
+					assetBundleBuildAsset.BuildAssetInfoList.Add(buildAssetInfo);
 				}
 			}
 
-			EditorUtility.SetDirty(assetbundlebuildasset);
+			EditorUtility.SetDirty(assetBundleBuildAsset);
 			AssetDatabase.SaveAssets();
+			return true;
 		}
 
 		private void Log(string log)
@@ -396,11 +422,6 @@ namespace TResource
 		{
             // 获取所有的收集路径
             List<string> collectDirectorys = AssetBundleCollectSettingData.GetAllCollectDirectory();
-            if (collectDirectorys.Count == 0)
-            {
-                Debug.LogWarning("[BuildPatch] 配置的资源收集路径为空");
-				return false;
-            }
             int progressBarCount = 0;
             // 获取所有资源
             string[] guids = AssetDatabase.FindAssets(string.Empty, collectDirectorys.ToArray());
@@ -416,7 +437,12 @@ namespace TResource
             EditorUtility.ClearProgressBar();
 
 			UpdateAssetBundleBuildInfoAssetDatas();
-			UpdateAssetBundleBuildDatas();
+			var result = UpdateAssetBundleBuildDatas();
+			if(!result)
+			{
+				Debug.LogError("更新AssetBundle打包数据失败");
+				return false;
+			}
 
             int totalAssetBuildNum = 0;
 			foreach (var assetBundleBuildInfo in mAllAssetBundleBuildInfoList)
@@ -448,7 +474,7 @@ namespace TResource
 		/// <summary>
 		/// 更新AssetBundle打包数据
 		/// </summary>
-		private void UpdateAssetBundleBuildDatas()
+		private bool UpdateAssetBundleBuildDatas()
         {
 			foreach(var assetBundleBuildInfos in mAssetBundleBuildInfoMap)
             {
@@ -470,7 +496,8 @@ namespace TResource
 			}
 
             // 更新AB打包信息Asset(e.g.比如Asset打包信息)
-            UpdateAssetBundleBuildInfoAsset(mAllAssetBundleBuildList);
+            var result = UpdateAssetBundleBuildInfoAsset(mAllAssetBundleBuildInfoList);
+			return result;
         }
 
         /// <summary>

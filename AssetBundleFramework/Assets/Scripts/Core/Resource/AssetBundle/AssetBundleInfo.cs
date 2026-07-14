@@ -19,7 +19,7 @@ namespace TResource
         /// <summary>
         /// 当前AB依赖AB路径信息组
         /// </summary>
-        private string[] mDepAssetBundlePaths;
+        private string[] mDepABPaths;
 
         /// <summary>
         /// 所有已加载的Asset信息
@@ -80,14 +80,14 @@ namespace TResource
         protected override void ResetDatas()
         {
             base.ResetDatas();
-            mDepAssetBundlePaths = null;
+            mDepABPaths = null;
             AllLoadedAssetInfoMap.Clear();
         }
 
-        public void Init(string assetBundlePath, string[] depAssetBundlePaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        public void Init(string abPath, string[] depABPaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
-            ResourcePath = assetBundlePath;
-            mDepAssetBundlePaths = depAssetBundlePaths;
+            ResourcePath = abPath;
+            mDepABPaths = depABPaths;
             LoadType = loadType;
         }
 
@@ -125,12 +125,12 @@ namespace TResource
                 Debug.LogWarning($"正在卸载非NormalLoad的AssetBundlePath:{ResourcePath}的AssetBundleInfo信息!");
             }
             // AB模式释放指定AB时，需要减少依赖AB信息的索引计数
-            for (int i = 0, length = mDepAssetBundlePaths.Length; i < length; i++)
+            for (int i = 0, length = mDepABPaths.Length; i < length; i++)
             {
-                var depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetAssetBundleInfo(mDepAssetBundlePaths[i]);
-                depAssetBundleInfo?.Release();
+                var depABInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetAssetBundleInfo(mDepABPaths[i]);
+                depABInfo?.Release();
             }
-            mDepAssetBundlePaths = null;
+            mDepABPaths = null;
             // AssetBundleLoader和AssetBundleInfo是一一对应，
             // 在AssetBundleInfo回收时,AssetBundleLoader也应该得到回收
             // 同时回收所有应加载的AssetInfo信息

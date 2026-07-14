@@ -35,7 +35,11 @@ namespace TResource
         /// <param name="buildSuccess">打包是否成功</param>
         /// <param name="results">打包结果</param>
         /// <returns></returns>
-        public static CompatibilityAssetBundleManifest BuildAllAssetBundles(AssetBundleBuilder assetBundleBuilder, string outputDirectory, BuildTarget buildTarget, CustomBuildParameters buildParams, List<AssetBundleBuild> allAssetBundleBuildList, out bool buildSuccess, out IBundleBuildResults results)
+        public static CompatibilityAssetBundleManifest BuildAllAssetBundles(AssetBundleBuilder assetBundleBuilder,
+                                                                            string outputDirectory, BuildTarget buildTarget,
+                                                                            CustomBuildParameters buildParams,
+                                                                            List<AssetBundleBuild> allAssetBundleBuildList,
+                                                                            out bool buildSuccess, out IBundleBuildResults results)
         {
             ScriptableBuildPipeline.slimWriteResults = true;
             ScriptableBuildPipeline.useDetailedBuildLog = false;
@@ -64,7 +68,11 @@ namespace TResource
         /// <param name="results">打包结果</param>
         /// <param name="buildSuccess">打包是否成功</param>
         /// <returns></returns>
-        private static CompatibilityAssetBundleManifest CreateAndBuildAssetBundleManifest(AssetBundleBuilder assetBundleBuilder, string outputDirectory, CustomBuildParameters buildParams, IBundleBuildResults results, out bool buildSuccess)
+        private static CompatibilityAssetBundleManifest CreateAndBuildAssetBundleManifest(AssetBundleBuilder assetBundleBuilder,
+                                                                                          string outputDirectory,
+                                                                                          CustomBuildParameters buildParams,
+                                                                                          IBundleBuildResults results,
+                                                                                          out bool buildSuccess)
         {
             var outputDirectoryFullPath = Path.GetFullPath(outputDirectory);
             var outputDirectoryInfo = new DirectoryInfo(outputDirectoryFullPath);
@@ -138,7 +146,8 @@ namespace TResource
         /// <param name="visited"></param>
         /// <param name="stack"></param>
         /// <returns></returns>
-        private static bool CheckCycleSBP(CompatibilityAssetBundleManifest unityManifest, string element, List<string> visited, List<string> stack)
+        private static bool CheckCycleSBP(CompatibilityAssetBundleManifest unityManifest, string element,
+                                          List<string> visited, List<string> stack)
         {
             if (visited.Contains(element) == false)
             {

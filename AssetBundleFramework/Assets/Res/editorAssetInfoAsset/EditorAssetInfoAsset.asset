@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7d6c942eddf9e4db382ceb218edc49, type: 3}
+  m_Name: EditorAssetInfoAsset
+  m_EditorClassIdentifier: 
+  EditorAssetInfoList:
+  - AssetPath: Assets/Res/actors/cube/pre_Cube.prefab
+    AssetName: pre_Cube.prefab
+  - AssetPath: Assets/Res/actors/sphere/pre_Sphere.prefab
+    AssetName: pre_Sphere.prefab
+  - AssetPath: Assets/Res/actors/TestByFileAndSubFolder.prefab
+    AssetName: TestByFileAndSubFolder.prefab
+  - AssetPath: Assets/Res/actors/zombunny/Materials/EyesMaterial.mat
+    AssetName: EyesMaterial.mat
+  - AssetPath: Assets/Res/actors/zombunny/Materials/ZombunnyMaterial.mat
+    AssetName: ZombunnyMaterial.mat
+  - AssetPath: Assets/Res/actors/zombunny/pre_Zombunny.prefab
+    AssetName: pre_Zombunny.prefab
+  - AssetPath: Assets/Res/actors/zombunny/Textures/ZomBunnyDiffuse.tif
+    AssetName: ZomBunnyDiffuse.tif
+  - AssetPath: Assets/Res/actors/zombunny/Textures/ZomBunnyNormals.tif
+    AssetName: ZomBunnyNormals.tif
+  - AssetPath: Assets/Res/actors/zombunny/Zombunny.fbx
+    AssetName: Zombunny.fbx
+  - AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Death.anim
+    AssetName: Death.anim
+  - AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Idle.anim
+    AssetName: Idle.anim
+  - AssetPath: Assets/Res/actors/zombunny/ZombunnyAnimations/Move.anim
+    AssetName: Move.anim
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/playerpreview.spriteatlas
+    AssetName: playerpreview.spriteatlas
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/playerpreviewvariant.spriteatlas
+    AssetName: playerpreviewvariant.spriteatlas
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAichiPreview.png
+    AssetName: SDAichiPreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview/SDAkitaPreview.png
+    AssetName: SDAkitaPreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/playerpreview2.spriteatlas
+    AssetName: playerpreview2.spriteatlas
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDAomoriPreview.png
+    AssetName: SDAomoriPreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview2/SDBlackPreview.png
+    AssetName: SDBlackPreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/playerpreview3.spriteatlas
+    AssetName: playerpreview3.spriteatlas
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/SDNagasakiPreview.png
+    AssetName: SDNagasakiPreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/SpriteAtlas/playerpreview3/SDNaraPreview.png
+    AssetName: SDNaraPreview.png
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Ambient.PNG
+    AssetName: Ambient.PNG
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/BasicTexture.PNG
+    AssetName: BasicTexture.PNG
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Diffuse.PNG
+    AssetName: Diffuse.PNG
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Light_Off.PNG
+    AssetName: Light_Off.PNG
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/Light_On.PNG
+    AssetName: Light_On.PNG
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/LoadingScreen.jpg
+    AssetName: LoadingScreen.jpg
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/MouseAndKeyboardStudy.PNG
+    AssetName: MouseAndKeyboardStudy.PNG
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/MultipleTexture.PNG
+    AssetName: MultipleTexture.PNG
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Draw_Call_Result_Picture.PNG
+    AssetName: OpenGL_Draw_Call_Result_Picture.PNG
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/OpenGL_Instanced_Draw_Call.PNG
+    AssetName: OpenGL_Instanced_Draw_Call.PNG
+  - AssetPath: Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet.png
+    AssetName: TutorialCellSpriteSheet.png
+  - AssetPath: Assets/Res/audios/music/backgroundmusic.mp3
+    AssetName: backgroundmusic.mp3
+  - AssetPath: Assets/Res/audios/music/df_bg_music.mp3
+    AssetName: df_bg_music.mp3
+  - AssetPath: Assets/Res/audios/sfx/sfx1/coins.wav
+    AssetName: coins.wav
+  - AssetPath: Assets/Res/audios/sfx/sfx1/correct.wav
+    AssetName: correct.wav
+  - AssetPath: Assets/Res/audios/sfx/sfx1/explosion.wav
+    AssetName: explosion.wav
+  - AssetPath: Assets/Res/prefabs/imagebuildin.prefab
+    AssetName: imagebuildin.prefab
+  - AssetPath: Assets/Res/prefabs/rawimagebuildin.prefab
+    AssetName: rawimagebuildin.prefab
+  - AssetPath: Assets/Res/prefabs/SFXTemplate.prefab
+    AssetName: SFXTemplate.prefab
+  - AssetPath: Assets/Res/prefabs/VideoPlayerRoot.prefab
+    AssetName: VideoPlayerRoot.prefab
+  - AssetPath: Assets/Res/rendertextures/VideoRenderTexture.renderTexture
+    AssetName: VideoRenderTexture.renderTexture
+  - AssetPath: Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants
+    AssetName: DIYShaderVariantsCollection.shadervariants
+  - AssetPath: Assets/Res/sharematerials/sharebluematerial.mat
+    AssetName: sharebluematerial.mat
+  - AssetPath: Assets/Res/sharematerials/sharematerial.mat
+    AssetName: sharematerial.mat
+  - AssetPath: Assets/Res/sharematerials/shareredmaterial.mat
+    AssetName: shareredmaterial.mat
+  - AssetPath: Assets/Res/sharematerials/Standlone/Particle/Default-Particle.mat
+    AssetName: Default-Particle.mat
+  - AssetPath: Assets/Res/sharematerials/Standlone/Particle/Default-ParticleSystem.mat
+    AssetName: Default-ParticleSystem.mat
+  - AssetPath: Assets/Res/sharematerials/UI/UI-Default.mat
+    AssetName: UI-Default.mat
+  - AssetPath: Assets/Res/textures/chaichaifengjing.jpg
+    AssetName: chaichaifengjing.jpg
+  - AssetPath: Assets/Res/textures/chaichainingwang.jpg
+    AssetName: chaichainingwang.jpg
+  - AssetPath: Assets/Res/textures/chaichaishenqingzhushi.jpg
+    AssetName: chaichaishenqingzhushi.jpg
+  - AssetPath: Assets/Res/videos/XueZhiHua.mp4
+    AssetName: XueZhiHua.mp4
+  - AssetPath: Assets/Res/windows/MainWindow.prefab
+    AssetName: MainWindow.prefab

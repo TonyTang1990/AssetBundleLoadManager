@@ -158,7 +158,7 @@ namespace TResource
                         Debug.unityLogger.logEnabled = mLoggerSwitch;
                     }
                     ResourceLogger.LogSwitch = GUILayout.Toggle(ResourceLogger.LogSwitch, "是否开启资源Log", GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
-                    GUILayout.Label("资源回收开关:" + ResourceModuleManager.Singleton.CurrentResourceModule.EnableResourceRecyclingUnloadUnsed, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
+                    GUILayout.Label("资源回收开关:" + ResourceModuleManager.Singleton.CurrentResourceModule.EnableRecyclingUnloadUnsed, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
                     var preresourceloadmodeindex = ResourceLoadModeIndex;
                     var newresourceloadmodeindex = EditorGUILayout.Popup(preresourceloadmodeindex, ResourceLoadModeChoices, GUILayout.MaxWidth(120.0f), GUILayout.MaxHeight(30.0f));
                     if (preresourceloadmodeindex != newresourceloadmodeindex)
@@ -363,7 +363,7 @@ namespace TResource
             GUILayout.Label($"当前时间 : {Time.time}", GUILayout.Width(200f), GUILayout.Height(20f));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label($"资源回收检测时间间隔 : {assetBundleResourceModule.CheckUnsedResourceTimeInterval}s", GUILayout.Width(200f), GUILayout.Height(20f));
+            GUILayout.Label($"资源回收检测时间间隔 : {assetBundleResourceModule.CheckUnsedResTimeInterval}s", GUILayout.Width(200f), GUILayout.Height(20f));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
             if (IsAssetBundleModule())
@@ -389,13 +389,13 @@ namespace TResource
             var assetBundleResourceModule = ResourceModuleManager.Singleton.CurrentResourceModule;
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label($"资源最短生存时长 : {assetBundleResourceModule.ResourceMinimumLifeTime}s", GUILayout.Width(200f), GUILayout.Height(20f));
+            GUILayout.Label($"资源最短生存时长 : {assetBundleResourceModule.ResMinimumLifeTime}s", GUILayout.Width(200f), GUILayout.Height(20f));
             GUILayout.Label($"单帧最大卸载AB数量 : {assetBundleResourceModule.MaxUnloadABNumberPerFrame}", GUILayout.Width(200f), GUILayout.Height(20f));
-            GUILayout.Label($"AssetBundle资源回收FPS门槛 : {assetBundleResourceModule.ResourceRecycleFPSThreshold}", GUILayout.Width(200f), GUILayout.Height(20f));
+            GUILayout.Label($"AssetBundle资源回收FPS门槛 : {assetBundleResourceModule.ResRecycleFPSThreshold}", GUILayout.Width(200f), GUILayout.Height(20f));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
-            var normalLoadedAssetBundleInfoMap = assetBundleResourceModule.GetSpecificLoadTypeAssetBundleInfoMap(ResourceLoadType.NormalLoad);
-            var permanentLoadedAssetBundleInfoMap = assetBundleResourceModule.GetSpecificLoadTypeAssetBundleInfoMap(ResourceLoadType.PermanentLoad);
+            var normalLoadedAssetBundleInfoMap = assetBundleResourceModule.GetLoadTypeAssetBundleInfoMap(ResourceLoadType.NormalLoad);
+            var permanentLoadedAssetBundleInfoMap = assetBundleResourceModule.GetLoadTypeAssetBundleInfoMap(ResourceLoadType.PermanentLoad);
             if (!mTextFilter.Equals(string.Empty))
             {
                 if (mFilterTextChanged)
@@ -624,7 +624,7 @@ namespace TResource
             EditorGUILayout.LabelField(string.Format("加载方式 : {0}", bundleLoader.LoadMethod), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("加载类型 : {0}", bundleLoader.LoadType), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("依赖资源数量 : {0}", bundleLoader.DepABPaths?.Length), GUILayout.Width(150.0f));
-            EditorGUILayout.LabelField(string.Format("已加载AssetBundle资源数量 : {0}", bundleLoader.LoadCompletedAssetBundleNumer - 1), GUILayout.Width(200.0f));
+            EditorGUILayout.LabelField(string.Format("已加载AssetBundle资源数量 : {0}", bundleLoader.LoadCompletedABNumer - 1), GUILayout.Width(200.0f));
             EditorGUILayout.EndHorizontal();
             var depCount = bundleLoader.DepAssetBundleInfoList.Count;
             if (depCount > 0)
@@ -705,8 +705,8 @@ namespace TResource
         private void DisplayAssetDatabaseReferenceInfoUI()
         {
             var assetBundleResourceModule = ResourceModuleManager.Singleton.CurrentResourceModule;
-            var normalLoadedAssetInfoMap = assetBundleResourceModule.GetSpecificLoadTypeAssetInfoMap(ResourceLoadType.NormalLoad);
-            var permanentLoadedAssetInfoMap = assetBundleResourceModule.GetSpecificLoadTypeAssetInfoMap(ResourceLoadType.PermanentLoad);
+            var normalLoadedAssetInfoMap = assetBundleResourceModule.GetLoadTypeAssetInfoMap(ResourceLoadType.NormalLoad);
+            var permanentLoadedAssetInfoMap = assetBundleResourceModule.GetLoadTypeAssetInfoMap(ResourceLoadType.PermanentLoad);
             if (!mTextFilter.Equals(string.Empty))
             {
                 if (mFilterTextChanged)

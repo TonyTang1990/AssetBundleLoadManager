@@ -1,6 +1,6 @@
-# 工具
+工具
 
-1. Unity版本(202.3.62f3)
+1. Unity版本(2022.3.62f3)
 2. Visual Studio 2022 或 Visual Studio Code
 
 # 功能模块
@@ -13,15 +13,16 @@
 
 资源加载管理设计:
 
-1. 面向Asset级别加载管理，支持Asset和AssetBundle级别的同步异步加载。
-2. 支持资源导入后AssetDatabase模式马上就能配置全路径加载
-3. 资源加载类型只提供普通和常驻两种(且不支持运行时切换相同Asset或AssetBundle的加载类型，意味着一旦第一次加载设定了类型，就再也不能改变，同时第一次因为加载Asset而加载某个AssetBundle的加载类型和Asset一致)，同时提供统一的加载管理策略，细节管理策略由上层自己设计(比如对象池，预加载)
-4. 异步加载准备采用监听回调的方式来实现，保证流程清晰易懂
-5. 设计请求UID的概念来支持加载打断设计(仅逻辑层面的打断，资源加载不会打断，当所有逻辑回调都取消时，加载完成时会返还索引计数确保资源正确卸载)
-6. 设计上支持动态AB下载(未来填坑)
-7. 加载流程重新设计，让代码更清晰
-8. **保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)**
-9. **支持非回调式的同步加载返回(通过抽象Loader支持LoadImmediately的方式实现)**
+1. **支持Asset名字(含后缀)的资源名加载方式。**
+2. 面向Asset级别加载管理，支持Asset和AssetBundle级别的同步异步加载。
+3. 支持资源导入后**配置打包策略**+**更新EditorAssetInfoAsset**后AssetDatabase模式马上就能通过Asset名(含后缀)代码加载
+4. 资源加载类型只提供普通和常驻两种(且不支持运行时切换相同Asset或AssetBundle的加载类型，一旦第一次加载设定了类型，除非卸载后再次加载否则无法修改资源加载类型(**常驻资源推荐一开始就手动加载**)。提供统一的加载管理策略，细节管理策略由上层自己设计(比如对象池，预加载)
+5. 异步加载准备采用监听回调的方式来实现，保证流程清晰易懂
+6. 设计请求UID的概念来支持加载打断设计(仅逻辑层面的打断，资源加载不会打断，当所有逻辑回调都取消时，加载完成时会返还索引计数确保资源正确卸载)
+7. 设计上支持动态AB下载(**未支持，未来填坑**)
+8. 加载流程重新设计，让代码更清晰
+9. **保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)**
+10. **支持非回调式的同步加载返回(通过抽象Loader支持LoadImmediately的方式实现)**
 
 Note:
 
@@ -39,7 +40,7 @@ Note:
 
 加载管理方案：
 
-1. 加载指定资源
+1. 加载指定资源名(含后缀)
 2. 加载自身AB(自身AB加载完通知资源加载层移除该AB加载任务避免重复的加载任务被创建)，自身AB加载完判定是否有依赖AB
 3. 有则加载依赖AB(增加依赖AB的引用计数)(依赖AB采用和自身AB相同的加载方式(ResourceLoadMethod),但依赖AB统一采用ResourceLoadType.NormalLoad加载类型)
 4. 自身AB和所有依赖AB加载完回调通知逻辑层可以开始加载Asset资源(AB绑定对象在这一步)
@@ -80,7 +81,7 @@ Tools->Debug->资源调试工具
 
    ```CS
    ResourceManager.Singleton.getPrefabInstance(
-       "Assets/Res/windows/MainWindow.prefab",
+       "MainWindow.prefab",
        (prefabInstance, requestUid) =>
        {
            mMainWindow = prefabInstance;
@@ -107,7 +108,7 @@ public void onAsynToSyncLoadWindow()
     }
     AssetLoader assetLoader;
     var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
-        "Assets/Res/windows/MainWindow.prefab",
+        "MainWindow.prefab",
         out assetLoader,
         (prefabInstance, requestUid) =>
         {
@@ -151,7 +152,7 @@ Note:
 public void onLoadPermanentShaderList()
 {
     DIYLog.Log("onLoadPermanentShaderList()");
-    ResourceManager.Singleton.loadAllShader("shaderlist", () =>
+    ResourceManager.Singleton.loadAllShader(() =>
     {
     },
     ResourceLoadType.PermanentLoad);
@@ -165,14 +166,11 @@ public void onLoadPermanentShaderList()
 **AB打包设计:**
 
 1. **打包AB的策略由抽象的目录打包策略设定决定**
-
 2. **打包后的AB保留目录结构，确保AB模式和AssetDatabase模式加载都面向Asset路径保持一致性**
-
 3. **支持打包策略级别的AB压缩格式设置(Note: 仅限使用ScriptableBuildPipeline打包模式)。老版AB打包流程AB压缩格式默认由打包面板压缩格式设置决定。**
-
 4. **不支持AB变体功能(ScriptableBuildPipeline也不支持变体功能)，AB后缀名统一由打包和加载平台统一添加**
-
 5. **老版AB依赖信息采用原始打包输出的*Manifest文件。新版ScriptableBuildPipeline采用自定义输出打包的CompatibilityAssetBundleManifest文件。**
+6. **打包面板里支持了是否支持代码加载的勾选(用于支持文件名(含后缀)的资源加载和优化需要支持代码主动加载而生成的AssetBuildInfoAsset.asset(AB模式)和EditorAssetInfoAsset.asset(AssetDatabase模式)的数据量问题)**
 
 #### 打包策略支持
 
@@ -194,13 +192,17 @@ public void onLoadPermanentShaderList()
 
 ![AssetBundleBuildWindow](./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG)
 
-关于Asset路径与AB路径关联信息存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbuildinfo的AB里)，通过Asset路径如何加载到对应AB的关键就在这里。这里和MotionFramework自定义Manifest文件输出不一样，assetbundlebuildinfo.asset只记录AssetPath和AB相关信息映射，不记录AB依赖信息，依赖信息依然采用AB打包生成的*Manifest文件，同时assetbundlebuildinfo.asset采用打包AB的方式（方便和热更新AB走一套机制）
+**AB模式**下关于Asset名，Asset路径和AB路径关联信息存在一个叫**AssetBuildInfoAndroid.asset**(不同平台名字不一样)的ScriptableObejct里(单独打包到assetBuildInfo的AB里)，通过Asset名如何加载到对应AB的关键就在这里。这里和MotionFramework自定义Manifest文件输出不一样，AssetBuildInfoAndroid.asset只记录Asset名，Asset路径和AB相关信息映射，不记录AB依赖信息，依赖信息依然采用AB打包生成的*Manifest文件，同时AssetBuildInfoAndroid.asset采用打包AB的方式（方便和热更新AB走一套机制）
 
 让我们先来看下大致数据信息结构:
 
 ![AssetBundleBuildInfoView1](./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG)
 
-![AssetBundleBuildInfoView2](./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG)
+**AssetDatabase模式**下关于Asset名，Asset路径信息存储在**EditorAssetInfoAsset.asset**的ScriptableObject里(通过**Tools>AssetBundle->更新EditorAssetInfoAsset**触发更新)
+
+![EditorAssetInfoAssetMenuUI](./img/Unity/AssetBundle-Framework/EditorAssetInfoAssetMenuUI.PNG)
+
+![EditorAssetInfoAssetInspector](./img/Unity/AssetBundle-Framework/EditorAssetInfoAssetInspector.PNG)
 
 **2022/1/26支持了资源打包后缀名黑名单可视化配置+资源名黑名单可视化配置**
 
@@ -234,7 +236,7 @@ Note:
 
 1. 支持游戏内版本强更(完成 -- 暂时限Android，IOS待测试)
 2. 支持游戏内资源热更(完成 -- 暂时限Android， IOS待测试)
-3. 支持游戏内代码热更(未做)
+3. 支持游戏内代码热更(未支持，**HybridCLR**待学习)
 
 ### 热更测试说明
 
@@ -340,11 +342,7 @@ Tools->AssetBundle->AssetBundle操作工具
 
 Tools->Assets->Asset相关处理
 
-1. AB删除判定工具
-
-   ![DeleteRemovedAssetBundle](/img/Unity/AssetBundle-Framework/DeleteRemovedAssetBundle.png)
-
-2. 资源依赖查看工具
+1. 资源依赖查看工具
 
    ![AssetDependenciesBrowser](./img/Unity/AssetBundle-Framework/AssetDependenciesBrowser.png)
 
@@ -368,16 +366,17 @@ Tools->Assets->Asset相关处理
 
 1. **Unity Hub启动时记着Window添加-force-gles命令，因为默认是打包的Android平台AB，不然AB模式会显示粉色**
 2. **AB打包和加载默认使用SBP，修改成老版打包需添加OLD_ASSET_BUILD_PIPELINE宏**
-3. **老版AB打包只支持AssetName小写全路径，所以针对老版AB打包和加载AssetName本人都统一成了小写处理**
+3. **老版AB打包只支持Asset小写全路径，所以针对老版AB打包和加载Asset本人都统一成了小写处理**
 4. **SpriteAtlas的打包方式，在2022.3.62f3版本测试打包AB，只打包SpriteAtlas才能避免小图纹理打包冗余问题**
 
 # 重大问题修复
 
 1. **修复资源打包在2020和2021版本会报错(BuildPipeline error is thrown when building Asset Bundles](https://issuetracker.unity3d.com/issues/buildpipeline-error-is-thrown-when-building-asset-bundles))问题(2022/06/03)**
+2. **将面向Asset路径加载的方式改造成支持Asset名(含后缀)的加载方式(2026/07/14)**
 
 # 待做事项
 
-**1. 支持类似Multiple Sprite这种SubAsset的加载(设计之初考虑的不够全面(无论是打包还是加载都是面向Asset路径级别的，导致SubAsset这种无论是打包还是加载都给不出有效Asset路径)，导致SubAsset这种资源无法主动加载到)⭐⭐⭐⭐⭐**
+**1. 支持类似Multiple Sprite这种SubAsset的加载(设计之初考虑的不够全面(无论是打包还是加载都是面向Asset级别的，导致SubAsset这种无论是打包还是加载都给不出有效Asset路径)，导致SubAsset这种资源无法主动加载到)⭐⭐⭐⭐⭐**
 
 ​		大框架不改的前提下，目前想到的最快速的方案是AssetLoader和AssetInfo都支持获取SubAsset的相关**同步接口**，**将计数和对象绑定都绑在主Asset身上**
 

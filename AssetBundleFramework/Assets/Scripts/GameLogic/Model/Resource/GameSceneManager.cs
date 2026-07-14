@@ -20,7 +20,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// <summary>
     /// 当前场景的Asset加载器信息
     /// </summary>
-    private TResource.BundleLoader mCurrentSceneAssetLoader;
+    private TResource.BundleLoader mCurrentSceneBundleLoader;
 
     /// <summary>
     /// 初始化
@@ -35,32 +35,32 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// <summary>
     /// 同步加载场景
     /// </summary>
-    /// <param name="scenePath"></param>
-    public void LoadSceneSync(string scenePath)
+    /// <param name="sceneName"></param>
+    public void LoadSceneSync(string sceneName)
     {
         // 场景资源计数采用手动管理计数的方式
         // 切场景时手动计数减1
         // 加载时手动计数加1，不绑定对象
         // 减掉场景计数后，切换场景完成后再强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
-        if (mCurrentSceneAssetLoader != null)
+        if (mCurrentSceneBundleLoader != null)
         {
-            mCurrentSceneAssetLoader.ReleaseAssetBundle();
-            mCurrentSceneAssetLoader = null;
+            mCurrentSceneBundleLoader.ReleaseAssetBundle();
+            mCurrentSceneBundleLoader = null;
         }
 
-        var sceneAssetBundlePath = scenePath.Replace(".unity", string.Empty);
         TResource.BundleLoader bundleLoader;
         // 场景Asset比较特别，不是作为Asset加载，所以这里只加载所在AssetBundle
-        TResource.ResourceModuleManager.Singleton.RequstAssetBundleSync(
-        sceneAssetBundlePath,
+        TResource.ResourceModuleManager.Singleton.RequstAssetABSync(
+        sceneName,
         out bundleLoader,
-        (loader, requestUid) =>
+        (Action<TResource.BundleLoader, int>)((loader, requestUid) =>
         {
-            mCurrentSceneAssetLoader = loader;
-            mCurrentSceneAssetLoader?.RetainAssetBundle();
-            var sceneName = Path.GetFileNameWithoutExtension(scenePath);
+            mCurrentSceneBundleLoader = loader;
+            // 非AB模式会返回null
+            mCurrentSceneBundleLoader?.RetainAssetBundle();
+            sceneName = Path.GetFileNameWithoutExtension(sceneName);
             SceneManager.LoadScene(sceneName);
-        },
+        }),
         TResource.ResourceLoadType.NormalLoad);
     }
 
@@ -69,32 +69,32 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// TODO:
     /// 异步加载完成回调
     /// </summary>
-    /// <param name="scenePath"></param>
-    public void LoadSceneAsync(string scenePath)
+    /// <param name="sceneName"></param>
+    public void LoadSceneAsync(string sceneName)
     {
         // 场景资源计数采用手动管理计数的方式
         // 切场景时手动计数减1
         // 加载时手动计数加1，不绑定对象
         // 减掉场景计数后，切换场景完成后再强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
-        if (mCurrentSceneAssetLoader != null)
+        if (mCurrentSceneBundleLoader != null)
         {
-            mCurrentSceneAssetLoader.ReleaseAssetBundle();
-            mCurrentSceneAssetLoader = null;
+            mCurrentSceneBundleLoader.ReleaseAssetBundle();
+            mCurrentSceneBundleLoader = null;
         }
 
-        var sceneAssetBundlePath = Path.GetPathRoot(scenePath);
         TResource.BundleLoader bundleLoader;
         // 场景Asset比较特别，不是作为Asset加载，所以这里只加载所在AssetBundle
-        TResource.ResourceModuleManager.Singleton.RequstAssetBundleAsync(
-        sceneAssetBundlePath,
+        TResource.ResourceModuleManager.Singleton.RequstAssetABAsync(
+        sceneName,
         out bundleLoader,
-        (loader, requestUid) =>
+        (Action<TResource.BundleLoader, int>)((loader, requestUid) =>
         {
-            mCurrentSceneAssetLoader = loader;
-            mCurrentSceneAssetLoader.RetainAssetBundle();
-            var sceneName = Path.GetFileNameWithoutExtension(scenePath);
+            mCurrentSceneBundleLoader = loader;
+            // 非AB模式会返回null
+            mCurrentSceneBundleLoader?.RetainAssetBundle();
+            sceneName = Path.GetFileNameWithoutExtension(sceneName);
             SceneManager.LoadSceneAsync(sceneName);
-        },
+        }),
         TResource.ResourceLoadType.NormalLoad);
     }
 
@@ -108,15 +108,15 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         Debug.Log(string.Format("场景:{0}被加载!", scene.name));
         //新场景加载后DO Something
 #if UNITY_EDITOR
-        var rootGameObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
-        for (int i = 0, length = rootGameObjects.Length; i < length; i++)
-        {
-            ResourceUtility.FindMeshRenderShaderBack(rootGameObjects[i]);
-        }
-        if(RenderSettings.skybox != null && RenderSettings.skybox.shader != null)
-        {
-            RenderSettings.skybox.shader = Shader.Find(RenderSettings.skybox.shader.name);
-        }
+        // var rootGameObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
+        // for (int i = 0, length = rootGameObjects.Length; i < length; i++)
+        // {
+        //     ResourceUtility.FindMeshRenderShaderBack(rootGameObjects[i]);
+        // }
+        // if(RenderSettings.skybox != null && RenderSettings.skybox.shader != null)
+        // {
+        //     RenderSettings.skybox.shader = Shader.Find(RenderSettings.skybox.shader.name);
+        // }
 #endif
         // 在新场景加载后再回收资源是为了避免不同场景引用相同资源导致频繁加载卸载
         TResource.ResourceModuleManager.Singleton.UnloadAllUnsedNormalLoadedResources();

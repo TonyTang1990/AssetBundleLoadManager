@@ -22,6 +22,11 @@ namespace TResource
         public const string ShaderABName = "shaderlist";
 
         /// <summary>
+        /// Shader变体搜集Asset名
+        /// </summary>
+        public const string ShaderVariantsAssetName = "DIYShaderVariantsCollection.shadervariants";
+
+        /// <summary>
         /// Shader变体搜集Asset路径
         /// </summary>
         public const string ShaderVariantsAssetRelativePath = "Assets/Res/shadervariants/DIYShaderVariantsCollection.shadervariants";
@@ -29,7 +34,7 @@ namespace TResource
         /// <summary>
         /// Asset打包信息Asset相对存储目录
         /// </summary>
-        public const string AssetBuildInfoAssetRelativeFolderPath = "Res/assetbuildinfo";
+        public const string AssetBuildInfoAssetRelativeFolderPath = "Res/assetBuildInfo";
 
         /// <summary>
         /// 依赖文件Manifest的Asset名

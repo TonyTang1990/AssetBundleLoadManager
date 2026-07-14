@@ -42,7 +42,7 @@ namespace TResource
         /// <summary>
         /// 当前AB依赖的AB对应的AB信息列表(用于构建当前AssetBundleInfo)
         /// </summary>
-        protected List<AssetBundleInfo> mDepAssetBundleInfoList;
+        protected List<AssetBundleInfo> mDepABInfoList;
 
         /// <summary>
         /// 所在AB是否加载完成
@@ -64,7 +64,7 @@ namespace TResource
             MainAssetBundlePath = null;
             DepABPaths = null;
             mABInfo = null;
-            mDepAssetBundleInfoList = new List<AssetBundleInfo>();
+            mDepABInfoList = new List<AssetBundleInfo>();
             mIsABLoaded = false;
             mMainBundleLoader = null;
         }
@@ -75,7 +75,7 @@ namespace TResource
             MainAssetBundlePath = null;
             DepABPaths = null;
             mABInfo = null;
-            mDepAssetBundleInfoList.Clear();
+            mDepABInfoList.Clear();
             mIsABLoaded = false;
             mMainBundleLoaderUID = 0;
             mMainBundleLoader = null;
@@ -87,7 +87,7 @@ namespace TResource
             MainAssetBundlePath = null;
             DepABPaths = null;
             mABInfo = null;
-            mDepAssetBundleInfoList.Clear();
+            mDepABInfoList.Clear();
             mIsABLoaded = false;
             mMainBundleLoaderUID = 0;
             mMainBundleLoader = null;
@@ -96,12 +96,12 @@ namespace TResource
         /// <summary>
         /// 初始化Bundle路径信息
         /// </summary>
-        /// <param name="ownerAssetBundlePath"></param>
-        /// <param name="depAssetBundlePaths"></param>
-        public void InitBundleInfo(string ownerAssetBundlePath, string[] depAssetBundlePaths)
+        /// <param name="ownerABPath"></param>
+        /// <param name="depABPaths"></param>
+        public void InitBundleInfo(string ownerABPath, string[] depABPaths)
         {
-            MainAssetBundlePath = ownerAssetBundlePath;
-            DepABPaths = depAssetBundlePaths;
+            MainAssetBundlePath = ownerABPath;
+            DepABPaths = depABPaths;
             mIsABLoaded = false;
             // 创建加载器时就添加相关AssetBundle计数，确保资源加载管理正确
             // 后续加载取消时会返还对应计数，AB的计数会在AB加载完成后返还(因为AB的计数会在AB加载器创建时添加计数)
@@ -116,7 +116,7 @@ namespace TResource
                 for (int i = 0, length = DepABPaths.Length; i < length; i++)
                 {
                     depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetOrCreateAssetBundleInfo(DepABPaths[i], ResourceLoadType.NormalLoad);
-                    mDepAssetBundleInfoList.Add(depAssetBundleInfo);
+                    mDepABInfoList.Add(depAssetBundleInfo);
                     depAssetBundleInfo.Retain();
                 }
             }
@@ -135,7 +135,7 @@ namespace TResource
                 if(mMainBundleLoader == null && !mIsABLoaded)
                 {
                     // BundlerLoader会负责加载自身AB和依赖AB，这里只需触发主AB加载即可
-                    mMainBundleLoaderUID = ResourceModuleManager.Singleton.RequstAssetBundleSync(MainAssetBundlePath, out mMainBundleLoader, OnAssetBundleLoadComplete, LoadType);
+                    mMainBundleLoaderUID = ResourceModuleManager.Singleton.RequstABSync(MainAssetBundlePath, out mMainBundleLoader, OnABLoadComplete, LoadType);
                 }
                 else if(mMainBundleLoader != null && !mIsABLoaded)
                 {
@@ -156,7 +156,7 @@ namespace TResource
             }
             else if(LoadMethod == ResourceLoadMethod.Async)
             {
-                mMainBundleLoaderUID = ResourceModuleManager.Singleton.RequstAssetBundleAsync(MainAssetBundlePath, out mMainBundleLoader, OnAssetBundleLoadComplete, LoadType);
+                mMainBundleLoaderUID = ResourceModuleManager.Singleton.RequstABAsync(MainAssetBundlePath, out mMainBundleLoader, OnABLoadComplete, LoadType);
             }
             else
             {
@@ -168,17 +168,17 @@ namespace TResource
         /// <summary>
         /// 响应AB加载完成
         /// </summary>
-        /// <param name="assetBundleLader"></param>
-        protected void OnAssetBundleLoadComplete(BundleLoader assetBundleLader, int requestUid)
+        /// <param name="assetBundleLoader"></param>
+        protected void OnABLoadComplete(BundleLoader assetBundleLoader, int requestUid)
         {
             mIsABLoaded = true;
-            OnAssetBundleLoadComplete();
+            OnABLoadComplete();
         }
 
         /// <summary>
         /// 响应所属AB加载完成
         /// </summary>
-        protected void OnAssetBundleLoadComplete()
+        protected void OnABLoadComplete()
         {
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}的所在AB:{MainAssetBundlePath}加载完成!");
             DoLoadAsset();
@@ -259,9 +259,9 @@ namespace TResource
             // 返还提前添加的Asset以及AssetBundle计数信息，确保正确的资源管理
             // 依赖AB的真正计数添加由BundleLoader去负责(确保单个AB的依赖AB计数只添加一次)
             mABInfo?.Release();
-            for (int i = 0, length = mDepAssetBundleInfoList.Count; i < length; i++)
+            for (int i = 0, length = mDepABInfoList.Count; i < length; i++)
             {
-                mDepAssetBundleInfoList[i].Release();
+                mDepABInfoList[i].Release();
             }
         }
     }
