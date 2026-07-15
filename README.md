@@ -367,7 +367,7 @@ Tools->Assets->Asset相关处理
 1. **Unity Hub启动时记着Window添加-force-gles命令，因为默认是打包的Android平台AB，不然AB模式会显示粉色**
 2. **AB打包和加载默认使用SBP，修改成老版打包需添加OLD_ASSET_BUILD_PIPELINE宏**
 3. **老版AB打包只支持Asset小写全路径，所以针对老版AB打包和加载Asset本人都统一成了小写处理**
-4. **SpriteAtlas的打包方式，在2022.3.62f3版本测试打包AB，只打包SpriteAtlas才能避免小图纹理打包冗余问题**
+4. **为了支持SpriteAtla和Sprite都能直接通过代码加载，需要将SpriteAtlas和参与打包的Sprite打包到一起**
 
 # 重大问题修复
 
