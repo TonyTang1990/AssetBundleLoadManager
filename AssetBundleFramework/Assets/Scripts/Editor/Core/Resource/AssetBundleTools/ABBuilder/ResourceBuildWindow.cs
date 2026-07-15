@@ -266,7 +266,7 @@ namespace TResource
                     mAssetBuilder.CompressOption = (AssetBundleBuilder.ECompressOption)EditorGUILayout.EnumPopup("Compression", mAssetBuilder.CompressOption);
                     mAssetBuilder.IsAppendHash = EditorGUILayout.ToggleLeft("Append Hash", mAssetBuilder.IsAppendHash, GUILayout.MaxWidth(120));
                     mAssetBuilder.IsDisableWriteTypeTree = EditorGUILayout.ToggleLeft("Disable Write Type Tree", mAssetBuilder.IsDisableWriteTypeTree, GUILayout.MaxWidth(200));
-                    mAssetBuilder.IsIgnoreTypeTreeChanges = EditorGUILayout.ToggleLeft("Ignore Type Tree Changes(SBP不支持)", mAssetBuilder.IsIgnoreTypeTreeChanges, GUILayout.MaxWidth(200));
+                    mAssetBuilder.IsIgnoreTypeTreeChanges = EditorGUILayout.ToggleLeft("Ignore Type Tree Changes(SBP不支持)", mAssetBuilder.IsIgnoreTypeTreeChanges, GUILayout.MaxWidth(300));
                     EditorGUI.indentLevel = indent;
                 }
             }
