@@ -21,7 +21,7 @@ namespace TResource
     /// ResourceBuildWindow.cs
     /// 资源打包工具
     /// </summary>
-    public class ResourceBuildWindow : BaseEditorWindow
+    public class ResourceBuildWindow : EditorWindow
     {
         /// <summary>
         /// 操作类型
@@ -69,12 +69,26 @@ namespace TResource
             resourceBuildWindow.Show();
         }
 
+        protected void OnEnable()
+        {
+            LoadAllData();
+        }
+
+        protected void OnDisable()
+        {
+            SaveAllData();
+        }
+
+        protected void OnDestroy()
+        {
+            SaveAllData();
+        }
+
         /// <summary>
         /// 初始化数据
         /// </summary>
-        protected override void InitData()
+        protected void LoadAllData()
         {
-            base.InitData();
             mOperationTypeNameArray = Enum.GetNames(typeof(EOperationType));
             mToolBarSelectIndex = 0;
             CurrentOperationType = (EOperationType)Enum.Parse(typeof(EOperationType), mOperationTypeNameArray[mToolBarSelectIndex]);
@@ -92,10 +106,8 @@ namespace TResource
         /// <summary>
         /// 保存数据
         /// </summary>
-        protected override void SaveData()
+        protected void SaveAllData()
         {
-            base.SaveData();
-
             SaveResourceData();
         }
 
