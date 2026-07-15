@@ -104,11 +104,11 @@ namespace TResource
 			var result = UpdateEditorAssetInfoDatas();
 			if(!result)
 			{
-				Debug.LogError("更新AssetBundle打包数据失败");
+				Debug.LogError("更新EditorAssetInfoBuilder数据失败");
 				return false;
 			}
 
-			Debug.Log($"构建列表里总共有{mAllEditorAssetInfoMap.Count}个Asset信息需要搜集，更新AssetBundle打包数据成功！");
+			Debug.Log($"构建列表里总共有{mAllEditorAssetInfoMap.Count}个Asset信息需要搜集，更新EditorAssetInfoBuilder数据成功！");
             return true;
         }
 
