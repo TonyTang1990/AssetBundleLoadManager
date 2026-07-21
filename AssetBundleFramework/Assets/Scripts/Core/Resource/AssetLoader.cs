@@ -172,12 +172,11 @@ namespace TResource
         /// <returns></returns>
         public T GetAsset<T>() where T : UnityEngine.Object
         {
-            if (!IsDone)
+            var asset = ObtainAsset<T>();
+            if(asset != null)
             {
-                LoadImmediately();
+                mAssetInfo.Retain();
             }
-            var asset = mAssetInfo.GetResource<T>();
-            mAssetInfo.Retain();
             return asset;
         }
 
@@ -192,6 +191,11 @@ namespace TResource
             {
                 LoadImmediately();
             }
+            if (IsError)
+            {
+                Debug.LogError($"Asset:{ResourcePath}加载失败，无法获取主Asset!");
+                return null;
+            }
             var asset = mAssetInfo.GetResource<T>();
             return asset;
         }
@@ -205,14 +209,97 @@ namespace TResource
         /// <returns></returns>
         public T BindAsset<T>(UnityEngine.Object owner) where T : UnityEngine.Object
         {
+            var asset = ObtainAsset<T>();
+            if(asset != null)
+            {
+                mAssetInfo.RetainOwner(owner);
+            }
+            return asset;
+        }
+
+        /// <summary>
+        /// 获取指定SubAsset(会为主Asset加索引计数)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="subAssetName"></param>
+        /// <returns></returns>
+        public T GetSubAsset<T>(string subAssetName) where T : UnityEngine.Object
+        {
+            var subAsset = ObtainSubAsset<T>(subAssetName);
+            if (subAsset != null)
+            {
+                mAssetInfo.Retain();
+            }
+            return subAsset;
+        }
+
+        /// <summary>
+        /// 获取指定SubAsset(不会为主Asset加索引计数)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="subAssetName"></param>
+        /// <returns></returns>
+        public T ObtainSubAsset<T>(string subAssetName) where T : UnityEngine.Object
+        {
+            if (string.IsNullOrEmpty(subAssetName))
+            {
+                Debug.LogError($"Asset:{ResourcePath}不允许获取空名称SubAsset!");
+                return null;
+            }
             if (!IsDone)
             {
                 LoadImmediately();
             }
-            T asset = mAssetInfo.GetResource<T>();
-            mAssetInfo.RetainOwner(owner);
-            return asset;
+            if (IsError)
+            {
+                Debug.LogError($"Asset:{ResourcePath}加载失败，无法获取SubAsset:{subAssetName}!");
+                return null;
+            }
+
+            T subAsset;
+            if (mAssetInfo.TryGetSubAsset<T>(subAssetName, out subAsset))
+            {
+                return subAsset;
+            }
+
+            subAsset = DoLoadSubAsset<T>(subAssetName);
+            if (subAsset == null)
+            {
+                Debug.LogError($"Asset:{ResourcePath}找不到SubAsset:{subAssetName}({typeof(T).Name})!");
+            }
+            return subAsset;
         }
+
+        /// <summary>
+        /// 为主Asset添加指定Owner引用并返回SubAsset
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="subAssetName"></param>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public T BindSubAsset<T>(string subAssetName, UnityEngine.Object owner) where T : UnityEngine.Object
+        {
+            if (owner == null)
+            {
+                Debug.LogError($"Asset:{ResourcePath}绑定SubAsset:{subAssetName}时Owner为空!");
+                return null;
+            }
+
+            var subAsset = ObtainSubAsset<T>(subAssetName);
+            if (subAsset != null)
+            {
+                mAssetInfo.RetainOwner(owner);
+            }
+            return subAsset;
+        }
+
+        /// <summary>
+        /// 由具体资源加载模式加载指定SubAsset，加载结果需要写入AssetInfo缓存
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="subAssetName"></param>
+        /// <returns></returns>
+        protected abstract T DoLoadSubAsset<T>(string subAssetName) where T : UnityEngine.Object;
 
         /// <summary>
         /// 添加资源引用，引用计数+1(用于不需要获取指定Asset直接添加计数的情况)

@@ -115,8 +115,8 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// <param name="loadType">加载类型</param>
     /// <returns></returns>
     public AssetRequestHandle PlaySFXSound(string resName, out AssetLoader assetLoader,
-                            Action<AudioClip, AssetRequestHandle> callBack = null,
-                            ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+                                           Action<AudioClip, AssetRequestHandle> callBack = null,
+                                           ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
         var sfxgo = mAudioGoPool.Pop(mSFXGoTemplate);
         return ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
@@ -124,6 +124,12 @@ public class AudioManager : SingletonTemplate<AudioManager>
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
+                DIYLog.Log($"PlaySFXSound加载resName:{resName}完成!");
+                if (loader == null || !assetRequestHandle.IsComplete)
+                {
+                    callBack?.Invoke(null, assetRequestHandle);
+                    return;
+                }
                 var sfxaudioinfo = ObjectPool.Singleton.Pop<SFXAudioInfo>();
                 var ac = loader.BindAsset<AudioClip>(sfxgo);
                 var audiosource = sfxgo.GetComponent<AudioSource>();
@@ -171,6 +177,12 @@ public class AudioManager : SingletonTemplate<AudioManager>
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
+                DIYLog.Log($"PlayBGM加载resName:{resName}完成!");
+                if (loader == null || !assetRequestHandle.IsComplete)
+                {
+                    callBack?.Invoke(null, assetRequestHandle);
+                    return;
+                }
                 mCurrentBGMAssetLoader = loader;
                 var clip = loader.BindAsset<AudioClip>(mBGMAudioSource);
                 mBGMAudioSource.clip = clip;

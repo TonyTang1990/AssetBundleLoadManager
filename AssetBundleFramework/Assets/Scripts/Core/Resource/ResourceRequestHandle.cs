@@ -50,6 +50,11 @@ namespace TResource
         /// </summary>
         public bool IsDone => State != ResourceRequestState.Pending;
 
+        /// <summary>
+        /// 是否处于完成状态
+        /// </summary>
+        public bool IsComplete => State == ResourceRequestState.Completed;
+
         protected ResourceRequestHandle(int requestUID, Func<int, bool> cancelHandler)
         {
             RequestUID = requestUID;

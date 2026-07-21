@@ -32,6 +32,12 @@ public class ModelManager : SingletonTemplate<ModelManager>
         out assetLoader,
         (loader, assetRequestHandle) =>
         {
+            DIYLog.Log($"GetModelInstance加载resName:{resName}完成!");
+            if (loader == null || !assetRequestHandle.IsComplete)
+            {
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
             var modelPrefab = loader.ObtainAsset<GameObject>();
             var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
             loader.BindAsset<GameObject>(modelinstance);
@@ -58,6 +64,12 @@ public class ModelManager : SingletonTemplate<ModelManager>
         out assetLoader,
         (loader, assetRequestHandle) =>
         {
+            DIYLog.Log($"GetModelInstanceAsync异步加载resName:{resName}完成!");
+            if (loader == null || !assetRequestHandle.IsComplete)
+            {
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
             var modelPrefab = loader.ObtainAsset<GameObject>();
             var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
             loader.BindAsset<GameObject>(modelinstance);

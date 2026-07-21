@@ -107,7 +107,7 @@ public void onAsynToSyncLoadWindow()
         onDestroyWindowInstance();
     }
     AssetLoader assetLoader;
-    var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
+    var assetRequestHandle = ResourceManager.Singleton.getPrefabInstanceAsync(
         "MainWindow.prefab",
         out assetLoader,
         (prefabInstance, assetRequestHandle) =>
@@ -373,6 +373,7 @@ Tools->Assets->Asset相关处理
 
 1. **修复资源打包在2020和2021版本会报错(BuildPipeline error is thrown when building Asset Bundles](https://issuetracker.unity3d.com/issues/buildpipeline-error-is-thrown-when-building-asset-bundles))问题(2022/06/03)**
 2. **将面向Asset路径加载的方式改造成支持Asset名(含后缀)的加载方式(2026/07/14)**
+3. **支持SubAsset的加载(比如Multiple Sprite)通过计数和对象绑定到主Asset实现SubAsset的加载和计数，详情参考AtlasManager.SetTImageSubSprite()方法(2026/07/21)**
 
 # 待做事项
 

@@ -404,7 +404,6 @@ namespace TResource
             GameObject.Destroy(mActorInstance);
         }
 
-
         /// <summary>
         /// 预加载图集资源
         /// </summary>
@@ -417,7 +416,6 @@ namespace TResource
             AtlasManager.Singleton.LoadAtlas(param1, out assetLoader, null, ResourceLoadType.PermanentLoad);
             // 如果像释放计数，需要调用assetLoader.ReleaseAsset()
         }
-
 
         /// <summary>
         /// 加载常驻Shader

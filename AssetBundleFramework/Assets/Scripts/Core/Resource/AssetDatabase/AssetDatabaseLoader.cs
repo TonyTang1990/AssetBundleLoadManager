@@ -124,5 +124,27 @@ namespace TResource
             base.OnComplete();
             mAssetDatabaseAsyncRequest = null;
         }
+
+        /// <summary>
+        /// AssetDatabase模式加载指定SubAsset
+        /// AssetDatabase接口会一次加载当前路径下所有SubAsset，因此全部写入缓存
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="subAssetName"></param>
+        /// <returns></returns>
+        protected override T DoLoadSubAsset<T>(string subAssetName)
+        {
+#if UNITY_EDITOR
+            var subAssets = AssetDatabase.LoadAllAssetRepresentationsAtPath(mAssetInfo.ResourcePath);
+            mAssetInfo.CacheSubAssets(subAssets);
+
+            T subAsset;
+            if (mAssetInfo.TryGetSubAsset<T>(subAssetName, out subAsset))
+            {
+                return subAsset;
+            }
+#endif
+            return null;
+        }
     }
 }

@@ -88,6 +88,11 @@ namespace TResource
         /// 默认不筛选需要展示的最大索引信息的AB最大数量(避免不筛选是过多导致过卡)
         /// </summary>
         private const int MaxDepABInfoNumber = 100;
+        
+        /// <summary>
+        /// 默认间隔宽度
+        /// </summary>
+        private const float DefaultSpaceWidth = 20f;
 
         /// <summary>
         /// 符合展示引用信息筛选条件的AB加载信息列表
@@ -125,6 +130,11 @@ namespace TResource
         /// 所有等待加载的AssetDatabaseLoader
         /// </summary>
         private List<AssetLoader> mAllAssetDatabaseLoader = new List<AssetLoader>();
+
+        /// <summary>
+        /// 显示的SubAsset列表(用于显示SubAsset)
+        /// </summary>
+        private List<UnityEngine.Object> mDisplaySubAssetsList = new List<UnityEngine.Object>();
         #endregion
 
         [MenuItem("Tools/AssetBundle/Debug/资源调试工具", false, 103)]
@@ -535,20 +545,51 @@ namespace TResource
         /// <param name="assetInfo"></param>
         private void DisplayOneAssetInfoUI(AssetInfo assetInfo)
         {
+            EditorGUILayout.BeginVertical("box");
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(string.Format("Asset路径 : {0}", assetInfo.ResourcePath), GUILayout.Width(600.0f));
             EditorGUILayout.LabelField(string.Format("是否就绪 : {0}", assetInfo.IsReady), GUILayout.Width(100.0f));
             EditorGUILayout.LabelField(string.Format("引用计数 : {0}", assetInfo.RefCount), GUILayout.Width(100.0f));
             EditorGUILayout.LabelField(string.Format("最近使用时间 : {0}", assetInfo.LastUsedTime), GUILayout.Width(150.0f));
-            EditorGUILayout.LabelField(string.Format("依赖引用对象列表 : {0}", assetInfo.ReferenceOwnerList.Count == 0 ? "无" : string.Empty), GUILayout.Width(150.0f));
-            foreach (var refowner in assetInfo.ReferenceOwnerList)
-            {
-                if (refowner.Target != null)
-                {
-                    EditorGUILayout.ObjectField((UnityEngine.Object)refowner.Target, typeof(UnityEngine.Object), true, GUILayout.Width(200.0f));
-                }
-            }
             EditorGUILayout.EndHorizontal();
+            var referenceOwnerCount = assetInfo.ReferenceOwnerList.Count;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Space(DefaultSpaceWidth, false);
+            EditorGUILayout.LabelField(string.Format("依赖引用对象列表 : {0}", referenceOwnerCount == 0 ? "无" : string.Empty), GUILayout.Width(150.0f));
+            EditorGUILayout.EndHorizontal();
+            if(referenceOwnerCount > 0)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.Space(DefaultSpaceWidth, false);
+                foreach (var refowner in assetInfo.ReferenceOwnerList)
+                {
+                    if (refowner.Target != null)
+                    {
+                        EditorGUILayout.ObjectField((UnityEngine.Object)refowner.Target, typeof(UnityEngine.Object), true, GUILayout.Width(200.0f));
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            assetInfo.GetAllSubAssetsOut(ref mDisplaySubAssetsList);
+            var subAssetCount = mDisplaySubAssetsList.Count;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Space(DefaultSpaceWidth, false);
+            EditorGUILayout.LabelField(string.Format("缓存SubAsset列表 : {0}", subAssetCount == 0 ? "无" : string.Empty), GUILayout.Width(150.0f));
+            EditorGUILayout.EndHorizontal();
+            if(subAssetCount > 0)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.Space(DefaultSpaceWidth, false);
+                foreach (var subAsset in mDisplaySubAssetsList)
+                {
+                    if (subAsset != null)
+                    {
+                        EditorGUILayout.ObjectField(subAsset, subAsset.GetType(), true, GUILayout.Width(200.0f));
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndVertical();
         }
 
         /// <summary>

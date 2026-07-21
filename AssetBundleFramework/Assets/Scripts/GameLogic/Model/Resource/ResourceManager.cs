@@ -38,10 +38,11 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
         return ResourceModuleManager.Singleton.RequstABSync(
         ResourceConstData.ShaderABName,
         out bundleLoader,
-        (loader, requestUid) =>
+        (loader, assetRequestHandle) =>
         {
             // 非AB模式会返回null
-            if(loader == null)
+            DIYLog.Log($"LoadAllShader加载完成!");
+            if (loader == null || !assetRequestHandle.IsComplete)
             {
                 callback?.Invoke();
                 return;
@@ -61,6 +62,11 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                         out assetLoader,
                         (loader2, assetRequestHandle2) =>
                         {
+                            DIYLog.Log($"LoadAllShader加载assetName:{assetName}完成!");
+                            if (loader2 == null || !assetRequestHandle2.IsComplete)
+                            {
+                                return;
+                            }
                             // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
                             loader2.ObtainAsset<Shader>();
                         },
@@ -73,6 +79,11 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                         out assetLoader,
                         (loader3, assetRequestHandle3) =>
                         {
+                            DIYLog.Log($"LoadAllShader加载assetName:{assetName}完成!");
+                            if (loader3 == null || !assetRequestHandle3.IsComplete)
+                            {
+                                return;
+                            }
                             var shaderVariants = loader3.GetAsset<ShaderVariantCollection>();
                             // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
                             shaderVariants?.WarmUp();
@@ -102,6 +113,12 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
+                DIYLog.Log($"GetPrefabInstance加载resName:{resName}完成!");
+                if (loader == null || !assetRequestHandle.IsComplete)
+                {
+                    callback?.Invoke(null, assetRequestHandle);
+                    return;
+                }
                 var prefab = loader.ObtainAsset<GameObject>();
                 var prefabInstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
                 //不修改实例化后的名字，避免上层逻辑名字对不上
@@ -133,6 +150,12 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
+                DIYLog.Log($"GetPrefabInstanceAsync异步加载resName:{resName}完成!");
+                if (loader == null || !assetRequestHandle.IsComplete)
+                {
+                    callback?.Invoke(null, assetRequestHandle);
+                    return;
+                }
                 var prefab = loader.ObtainAsset<GameObject>();
                 var prefabInstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
                 //不修改实例化后的名字，避免上层逻辑名字对不上
@@ -166,6 +189,12 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
+                DIYLog.Log($"GetMaterial加载resName:{resName}完成!");
+                if (loader == null || !assetRequestHandle.IsComplete)
+                {
+                    callback?.Invoke(null, assetRequestHandle);
+                    return;
+                }
                 var material = loader.BindAsset<Material>(owner);
     #if UNITY_EDITOR
                 // ResourceUtility.FindMaterialShaderBack(material);
@@ -185,7 +214,8 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="callback">资源回调</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public AssetRequestHandle GetMaterialAsync(UnityEngine.Object owner, string resName, out AssetLoader assetLoader,
+    public AssetRequestHandle GetMaterialAsync(UnityEngine.Object owner, string resName,
+                                               out AssetLoader assetLoader,
                                                Action<Material, AssetRequestHandle> callback = null,
                                                ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
@@ -194,6 +224,12 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
+                DIYLog.Log($"GetMaterialAsync异步加载resName:{resName}完成!");
+                if (loader == null || !assetRequestHandle.IsComplete)
+                {
+                    callback?.Invoke(null, assetRequestHandle);
+                    return;
+                }
                 var material = loader.BindAsset<Material>(owner);
 #if UNITY_EDITOR
                 // ResourceUtility.FindMaterialShaderBack(material);
@@ -221,6 +257,12 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
+                DIYLog.Log($"GetAudioClip加载resName:{resName}完成!");
+                if (loader == null || !assetRequestHandle.IsComplete)
+                {
+                    callback?.Invoke(null, assetRequestHandle);
+                    return;
+                }
                 var audioClip = loader.BindAsset<AudioClip>(owner);
                 callback?.Invoke(audioClip, assetRequestHandle);
             },
@@ -240,11 +282,17 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                                                 Action<AudioClip, AssetRequestHandle> callback = null,
                                                 ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        return ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+        return ResourceModuleManager.Singleton.RequstAssetAsync<AudioClip>(
             resName,
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
+                DIYLog.Log($"GetAudioClipAsync异步加载resName:{resName}完成!");
+                if (loader == null || !assetRequestHandle.IsComplete)
+                {
+                    callback?.Invoke(null, assetRequestHandle);
+                    return;
+                }
                 var audioClip = loader.BindAsset<AudioClip>(owner);
                 callback?.Invoke(audioClip, assetRequestHandle);
             },
@@ -268,7 +316,11 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             null,
             loadtype
         );
-        var videoClip = assetLoader.GetAsset<VideoClip>();
+        VideoClip videoClip = null;
+        if(assetLoader != null)
+        {
+            videoClip = assetLoader.GetAsset<VideoClip>();
+        }
         return videoClip;
     }
 }

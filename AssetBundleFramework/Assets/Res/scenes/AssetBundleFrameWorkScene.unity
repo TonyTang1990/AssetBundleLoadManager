@@ -5807,7 +5807,7 @@ GameObject:
   - component: {fileID: 1018985467}
   - component: {fileID: 1018985466}
   m_Layer: 5
-  m_Name: btnTButton
+  m_Name: btnLoadTImageSubSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5886,8 +5886,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1230477527}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: onTButtonClick
+        m_TargetAssemblyTypeName: TResource.GameLauncher, Assembly-CSharp
+        m_MethodName: onLoadTImageSubSprite
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8211,6 +8211,7 @@ RectTransform:
   - {fileID: 1565462832}
   - {fileID: 847500242}
   - {fileID: 1241780959}
+  - {fileID: 1018985464}
   - {fileID: 1782517733}
   - {fileID: 1796948947}
   - {fileID: 1726808324}
@@ -8251,7 +8252,6 @@ RectTransform:
   - {fileID: 1358069363}
   - {fileID: 1535262113}
   - {fileID: 1605690183}
-  - {fileID: 1018985464}
   - {fileID: 203959508}
   m_Father: {fileID: 846597153}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11053,7 +11053,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u81EA\u5B9A\u4E49\u6309\u94AE1"
+  m_Text: "\u5207\u6362TSprite SubSprite"
 --- !u!222 &1932890244
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -264,5 +264,31 @@ namespace TResource
                 mDepABInfoList[i].Release();
             }
         }
+
+        /// <summary>
+        /// AssetBundle模式加载指定SubAsset
+        /// Unity接口会返回主Asset下指定类型的所有Asset和SubAsset，因此全部写入缓存
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="subAssetName"></param>
+        /// <returns></returns>
+        protected override T DoLoadSubAsset<T>(string subAssetName)
+        {
+            var assetBundle = mMainBundleLoader?.ObtainAssetBundle();
+            if (assetBundle == null)
+            {
+                return null;
+            }
+
+            var subAssets = assetBundle.LoadAssetWithSubAssets<T>(mAssetInfo.ResourcePath);
+            mAssetInfo.CacheSubAssets(subAssets);
+
+            T subAsset;
+            if (mAssetInfo.TryGetSubAsset<T>(subAssetName, out subAsset))
+            {
+                return subAsset;
+            }
+            return null;
+        }
     }
 }
