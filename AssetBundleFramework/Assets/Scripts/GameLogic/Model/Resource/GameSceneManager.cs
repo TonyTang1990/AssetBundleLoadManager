@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TResource;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,7 +21,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// <summary>
     /// 当前场景的Asset加载器信息
     /// </summary>
-    private TResource.BundleLoader mCurrentSceneBundleLoader;
+    private BundleLoader mCurrentSceneBundleLoader;
 
     /// <summary>
     /// 初始化
@@ -48,12 +49,12 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
             mCurrentSceneBundleLoader = null;
         }
 
-        TResource.BundleLoader bundleLoader;
+        BundleLoader bundleLoader;
         // 场景Asset比较特别，不是作为Asset加载，所以这里只加载所在AssetBundle
-        TResource.ResourceModuleManager.Singleton.RequstAssetABSync(
+        ResourceModuleManager.Singleton.RequstAssetABSync(
         sceneName,
         out bundleLoader,
-        (Action<TResource.BundleLoader, int>)((loader, requestUid) =>
+        (Action<BundleLoader, AssetBundleRequestHandle>)((loader, requestHandle) =>
         {
             mCurrentSceneBundleLoader = loader;
             // 非AB模式会返回null
@@ -61,7 +62,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
             sceneName = Path.GetFileNameWithoutExtension(sceneName);
             SceneManager.LoadScene(sceneName);
         }),
-        TResource.ResourceLoadType.NormalLoad);
+        ResourceLoadType.NormalLoad);
     }
 
     /// <summary>
@@ -82,12 +83,12 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
             mCurrentSceneBundleLoader = null;
         }
 
-        TResource.BundleLoader bundleLoader;
+        BundleLoader bundleLoader;
         // 场景Asset比较特别，不是作为Asset加载，所以这里只加载所在AssetBundle
-        TResource.ResourceModuleManager.Singleton.RequstAssetABAsync(
+        ResourceModuleManager.Singleton.RequstAssetABAsync(
         sceneName,
         out bundleLoader,
-        (Action<TResource.BundleLoader, int>)((loader, requestUid) =>
+        (Action<BundleLoader, AssetBundleRequestHandle>)((loader, requestHandle) =>
         {
             mCurrentSceneBundleLoader = loader;
             // 非AB模式会返回null
@@ -95,7 +96,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
             sceneName = Path.GetFileNameWithoutExtension(sceneName);
             SceneManager.LoadSceneAsync(sceneName);
         }),
-        TResource.ResourceLoadType.NormalLoad);
+        ResourceLoadType.NormalLoad);
     }
 
     /// <summary>
@@ -119,7 +120,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
         // }
 #endif
         // 在新场景加载后再回收资源是为了避免不同场景引用相同资源导致频繁加载卸载
-        TResource.ResourceModuleManager.Singleton.UnloadAllUnsedNormalLoadedResources();
+        ResourceModuleManager.Singleton.UnloadAllUnsedNormalLoadedResources();
     }
 
     /// <summary>

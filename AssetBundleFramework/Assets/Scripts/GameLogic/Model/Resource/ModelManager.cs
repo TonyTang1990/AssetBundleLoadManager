@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TResource;
 using UnityEngine;
 
 /// <summary>
@@ -22,14 +23,14 @@ public class ModelManager : SingletonTemplate<ModelManager>
     /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callBack"></param>
     /// <param name="loadType"></param>
-    public int GetModelInstance(string resName, Action<GameObject, int> callBack = null,
-                                TResource.ResourceLoadType loadType = TResource.ResourceLoadType.NormalLoad)
+    public AssetRequestHandle GetModelInstance(string resName, Action<GameObject, AssetRequestHandle> callBack = null,
+                                               ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
-        TResource.AssetLoader assetLoader;
-        return TResource.ResourceModuleManager.Singleton.RequstAssetSync<GameObject>(
+        AssetLoader assetLoader;
+        return ResourceModuleManager.Singleton.RequstAssetSync<GameObject>(
         resName,
         out assetLoader,
-        (loader, requestUid) =>
+        (loader, assetRequestHandle) =>
         {
             var modelPrefab = loader.ObtainAsset<GameObject>();
             var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
@@ -37,7 +38,7 @@ public class ModelManager : SingletonTemplate<ModelManager>
 #if UNITY_EDITOR
             // ResourceUtility.FindMeshRenderShaderBack(modelinstance);
 #endif
-            callBack?.Invoke(modelinstance, requestUid);
+            callBack?.Invoke(modelinstance, assetRequestHandle);
         },
         loadType);
     }
@@ -48,14 +49,14 @@ public class ModelManager : SingletonTemplate<ModelManager>
     /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callBack"></param>
     /// <param name="loadType"></param>
-    public int GetModelInstanceAsync(string resName, Action<GameObject, int> callBack = null,
-                                     TResource.ResourceLoadType loadType = TResource.ResourceLoadType.NormalLoad)
+    public AssetRequestHandle GetModelInstanceAsync(string resName, Action<GameObject, AssetRequestHandle> callBack = null,
+                                                    ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
-        TResource.AssetLoader assetLoader;
-        return TResource.ResourceModuleManager.Singleton.RequstAssetAsync<GameObject>(
+        AssetLoader assetLoader;
+        return ResourceModuleManager.Singleton.RequstAssetAsync<GameObject>(
         resName,
         out assetLoader,
-        (loader, requestUid) =>
+        (loader, assetRequestHandle) =>
         {
             var modelPrefab = loader.ObtainAsset<GameObject>();
             var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
@@ -63,7 +64,7 @@ public class ModelManager : SingletonTemplate<ModelManager>
 #if UNITY_EDITOR
             // ResourceUtility.FindMeshRenderShaderBack(modelinstance);
 #endif
-            callBack?.Invoke(modelinstance, requestUid);
+            callBack?.Invoke(modelinstance, assetRequestHandle);
         },
         loadType);
     }

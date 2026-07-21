@@ -52,7 +52,7 @@ namespace TResource
         /// <summary>
         /// 主Bundle请求UID
         /// </summary>
-        protected int mMainBundleLoaderUID;
+        protected AssetBundleRequestHandle mMainBundleLoadRequest;
 
         /// <summary>
         /// 主Bundle加载器
@@ -77,7 +77,7 @@ namespace TResource
             mABInfo = null;
             mDepABInfoList.Clear();
             mIsABLoaded = false;
-            mMainBundleLoaderUID = 0;
+            mMainBundleLoadRequest = null;
             mMainBundleLoader = null;
         }
 
@@ -89,7 +89,7 @@ namespace TResource
             mABInfo = null;
             mDepABInfoList.Clear();
             mIsABLoaded = false;
-            mMainBundleLoaderUID = 0;
+            mMainBundleLoadRequest = null;
             mMainBundleLoader = null;
         }
 
@@ -135,7 +135,7 @@ namespace TResource
                 if(mMainBundleLoader == null && !mIsABLoaded)
                 {
                     // BundlerLoader会负责加载自身AB和依赖AB，这里只需触发主AB加载即可
-                    mMainBundleLoaderUID = ResourceModuleManager.Singleton.RequstABSync(MainAssetBundlePath, out mMainBundleLoader, OnABLoadComplete, LoadType);
+                    mMainBundleLoadRequest = ResourceModuleManager.Singleton.RequstABSync(MainAssetBundlePath, out mMainBundleLoader, OnABLoadComplete, LoadType);
                 }
                 else if(mMainBundleLoader != null && !mIsABLoaded)
                 {
@@ -156,7 +156,7 @@ namespace TResource
             }
             else if(LoadMethod == ResourceLoadMethod.Async)
             {
-                mMainBundleLoaderUID = ResourceModuleManager.Singleton.RequstABAsync(MainAssetBundlePath, out mMainBundleLoader, OnABLoadComplete, LoadType);
+                mMainBundleLoadRequest = ResourceModuleManager.Singleton.RequstABAsync(MainAssetBundlePath, out mMainBundleLoader, OnABLoadComplete, LoadType);
             }
             else
             {
@@ -169,7 +169,7 @@ namespace TResource
         /// 响应AB加载完成
         /// </summary>
         /// <param name="assetBundleLoader"></param>
-        protected void OnABLoadComplete(BundleLoader assetBundleLoader, int requestUid)
+        protected void OnABLoadComplete(BundleLoader assetBundleLoader, AssetBundleRequestHandle requestHandle)
         {
             mIsABLoaded = true;
             OnABLoadComplete();

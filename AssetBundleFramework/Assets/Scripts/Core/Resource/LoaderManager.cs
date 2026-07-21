@@ -155,6 +155,24 @@ namespace TResource
         }
 
         /// <summary>
+        /// 创建Asset请求句柄
+        /// </summary>
+        /// <returns></returns>
+        public AssetRequestHandle CreateAssetRequestHandle()
+        {
+            return new AssetRequestHandle(GetNextRequestUID(), CancelAssetRequest);
+        }
+
+        /// <summary>
+        /// 创建AssetBundle请求句柄
+        /// </summary>
+        /// <returns></returns>
+        public AssetBundleRequestHandle CreateAssetBundleRequestHandle()
+        {
+            return new AssetBundleRequestHandle(GetNextRequestUID(), CancelABRequest);
+        }
+
+        /// <summary>
         /// 创建AssetDatabase模式指定Asset路径的Asset加载器
         /// </summary>
         /// <typeparam name="T"></typeparam>

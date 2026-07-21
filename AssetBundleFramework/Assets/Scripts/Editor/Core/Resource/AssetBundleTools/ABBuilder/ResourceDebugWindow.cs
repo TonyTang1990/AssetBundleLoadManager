@@ -814,7 +814,7 @@ namespace TResource
             if (IsAssetBundleModule())
             {
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-                assetbundleresourcemodule.ForceUnloadSpecificAssetBundle(abnPath);
+                assetbundleresourcemodule.ForceUnloadAssetBundle(abnPath);
             }
             else
             {

@@ -18,7 +18,7 @@
 3. 支持资源导入后**配置打包策略**+**更新EditorAssetInfoAsset**后AssetDatabase模式马上就能通过Asset名(含后缀)代码加载
 4. 资源加载类型只提供普通和常驻两种(且不支持运行时切换相同Asset或AssetBundle的加载类型，一旦第一次加载设定了类型，除非卸载后再次加载否则无法修改资源加载类型(**常驻资源推荐一开始就手动加载**)。提供统一的加载管理策略，细节管理策略由上层自己设计(比如对象池，预加载)
 5. 异步加载准备采用监听回调的方式来实现，保证流程清晰易懂
-6. 设计请求UID的概念来支持加载打断设计(仅逻辑层面的打断，资源加载不会打断，当所有逻辑回调都取消时，加载完成时会返还索引计数确保资源正确卸载)
+6. 设计请求UID(通过**资源请求句柄**封装)的概念来支持加载打断设计(仅逻辑层面的打断，资源加载不会打断，当所有逻辑回调都取消时，加载完成时会返还索引计数确保资源正确卸载)
 7. 设计上支持动态AB下载(**未支持，未来填坑**)
 8. 加载流程重新设计，让代码更清晰
 9. **保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)**
@@ -82,7 +82,7 @@ Tools->Debug->资源调试工具
    ```CS
    ResourceManager.Singleton.getPrefabInstance(
        "MainWindow.prefab",
-       (prefabInstance, requestUid) =>
+       (prefabInstance, assetRequestHandle) =>
        {
            mMainWindow = prefabInstance;
            mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
@@ -110,7 +110,7 @@ public void onAsynToSyncLoadWindow()
     var requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(
         "MainWindow.prefab",
         out assetLoader,
-        (prefabInstance, requestUid) =>
+        (prefabInstance, assetRequestHandle) =>
         {
             mMainWindow = prefabInstance;
             mMainWindow.transform.SetParent(UIRootCanvas.transform, false);

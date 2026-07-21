@@ -97,7 +97,7 @@ namespace TResource
         /// <summary>
         /// 资源管理单例对象(快速访问)
         /// </summary>
-        private TResource.ResourceModuleManager mRMM;
+        private ResourceModuleManager mRMM;
 
         /// <summary>
         /// 背景音乐音效组件
@@ -190,7 +190,7 @@ namespace TResource
         /// </summary>
         private void initilization()
         {
-            mRMM = TResource.ResourceModuleManager.Singleton;
+            mRMM = ResourceModuleManager.Singleton;
 
             // 资源模块初始化
             mRMM.Init();
@@ -228,7 +228,7 @@ namespace TResource
             DIYLog.Log("onLoadWindowPrefab()");
             ResourceManager.Singleton.GetPrefabInstance(
                 "MainWindow.prefab",
-                (prefabInstance, requestUid) =>
+                (prefabInstance, assetRequestHandle) =>
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
@@ -336,7 +336,7 @@ namespace TResource
             DIYLog.Log("onPlayBGM()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            TResource.AssetLoader assetLoader;
+            AssetLoader assetLoader;
             AudioManager.Singleton.PlayBGM(
                 param1,
                 out assetLoader
@@ -351,7 +351,7 @@ namespace TResource
             DIYLog.Log("onPlaySound()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            TResource.AssetLoader assetLoader;
+            AssetLoader assetLoader;
             AudioManager.Singleton.PlaySFXSound(
                 param1,
                 out assetLoader
@@ -372,7 +372,7 @@ namespace TResource
             ResourceManager.Singleton.GetMaterial(
                 image,
                 param1,
-                (material, requestUid) =>
+                (material, assetRequestHandle) =>
                 {
                     Material mat = material;
                     image.material = mat;
@@ -388,7 +388,7 @@ namespace TResource
             DIYLog.Log("onLoadActorPrefab()");
             ModelManager.Singleton.GetModelInstance(
                 "pre_Zombunny.prefab",
-                (instance, requestUid) =>
+                (instance, assetRequestHandle) =>
                 {
                     mActorInstance = instance;
                 }
@@ -440,11 +440,11 @@ namespace TResource
         {
             DIYLog.Log("onPreloadShaderVariants()");
             // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
-            TResource.AssetLoader assetLoader;
-            TResource.ResourceModuleManager.Singleton.RequstAssetSync<ShaderVariantCollection>(
+            AssetLoader assetLoader;
+            ResourceModuleManager.Singleton.RequstAssetSync<ShaderVariantCollection>(
                 ResourceConstData.ShaderVariantsAssetName,
                 out assetLoader,
-                (loader, requestUid) =>
+                (loader, assetRequestHandle) =>
                 {
                     var svc = loader.GetAsset<ShaderVariantCollection>();
                     // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
@@ -461,7 +461,7 @@ namespace TResource
         public void onAsynLoadWindowPrefab()
         {
             DIYLog.Log("onAsynLoadWindowPrefab()");
-            if (mMainWindow == null)
+            if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
@@ -469,7 +469,7 @@ namespace TResource
             ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
                 out assetLoader,
-                (prefabInstance, requestUid) =>
+                (prefabInstance, assetRequestHandle) =>
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
@@ -483,15 +483,15 @@ namespace TResource
         public void onAsynToSyncLoadWindow()
         {
             DIYLog.Log("onAsynToSyncLoadWindow()");
-            if (mMainWindow == null)
+            if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
                 out assetLoader,
-                (prefabInstance, requestUid) =>
+                (prefabInstance, assetRequestHandle) =>
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
@@ -501,22 +501,21 @@ namespace TResource
             assetLoader.LoadImmediately();
         }
 
-
         /// <summary>
         /// 测试异步转同步窗口加载2
         /// </summary>
         public void onAsynToSyncLoadWindow2()
         {
             DIYLog.Log("onAsynToSyncLoadWindow2()");
-            if (mMainWindow == null)
+            if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
                 out assetLoader,
-                (prefabInstance, requestUid) =>
+                (prefabInstance, assetRequestHandle) =>
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
@@ -542,15 +541,15 @@ namespace TResource
         public void onAsynToSyncLoadWindow3()
         {
             DIYLog.Log("onAsynToSyncLoadWindow3()");
-            if (mMainWindow == null)
+            if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
                 out assetLoader,
-                (prefabInstance, requestUid) =>
+                (prefabInstance, assetRequestHandle) =>
                 {
                     DIYLog.Log($"ResourceManager.Singleton.getPrefabInstanceAsync()");
                     // 避免出现两个主界面窗口
@@ -561,7 +560,7 @@ namespace TResource
             );
             // 异步未开始时触发同步加载2
             ResourceManager.Singleton.GetPrefabInstance("MainWindow.prefab",
-                (instance, uid)=>
+                (instance, assetRequestHandle)=>
                 {
                     DIYLog.Log($"ResourceManager.Singleton.getPrefabInstance()");
                     // 避免出现两个主界面窗口
@@ -610,22 +609,22 @@ namespace TResource
         public void onCancelAsynLoadWindow()
         {
             DIYLog.Log("onCancelAsynLoadWindow()");
-            if (mMainWindow == null)
+            if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
                 out assetLoader,
-                (prefabInstance, requestUid) =>
+                (prefabInstance, assetRequestHandle) =>
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 }
             );
             // 取消异步加载请求
-            assetLoader.CancelRequest(requestUID);
+            assetRequestHandle.Cancel();
         }
 
         /// <summary>
@@ -670,10 +669,10 @@ namespace TResource
                 onDestroyWindowInstance();
             }
             AssetLoader assetLoader;
-            var requestUID = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
                 out assetLoader,
-                (prefabInstance, requestUid) =>
+                (prefabInstance, assetRequestHandle) =>
                 {
                     // 第二次加载因为已经加载过可能出现立刻回到的情况
                     // 必须确保清理干净避免两个MainWindow出现
@@ -684,10 +683,10 @@ namespace TResource
                 }
             );
             // 取消异步加载请求后同步加载窗口
-            assetLoader.CancelRequest(requestUID);
+            assetRequestHandle.Cancel();
             ResourceManager.Singleton.GetPrefabInstance(
                 "MainWindow.prefab",
-                (prefabInstance, requestUid) =>
+                (prefabInstance, assetRequestHandle) =>
                 {
                     // 第二次加载因为已经加载过可能出现立刻回到的情况
                     // 必须确保清理干净避免两个MainWindow出现
@@ -1078,7 +1077,7 @@ namespace TResource
                 var param1 = InputParam1.text;
                 DIYLog.Log("Param1 = " + param1);
                 var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-                assetbundleresourcemodule.ForceUnloadSpecificAssetBundle(param1);
+                assetbundleresourcemodule.ForceUnloadAssetBundle(param1);
             }
             else
             {

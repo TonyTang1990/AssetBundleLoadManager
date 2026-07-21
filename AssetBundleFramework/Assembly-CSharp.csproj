@@ -96,6 +96,7 @@
     <Compile Include="Assets\Scripts\Core\Resource\ResourceLogger.cs" />
     <Compile Include="Assets\Scripts\DebugTools\MonoMemoryProfiler.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateAssetBundleInfo.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\ResourceRequestHandle.cs" />
     <Compile Include="Assets\Scripts\Utilities\Utilities.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabase\AssetDatabaseAsyncRequest.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceModule.cs" />

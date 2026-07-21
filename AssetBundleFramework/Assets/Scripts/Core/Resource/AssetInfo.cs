@@ -79,7 +79,8 @@ namespace TResource
         /// <param name="assetType">Asset类型</param>
         /// <param name="assetBundlePath">所属AB路径</param>
         /// <param name="loadType">加载类型</param>
-        public void Init(string assetPath, Type assetType, string assetBundlePath = null, ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+        public void Init(string assetPath, Type assetType, string assetBundlePath = null,
+                         ResourceLoadType loadType = ResourceLoadType.NormalLoad)
         {
             ResourcePath = assetPath;
             AssetType = assetType;

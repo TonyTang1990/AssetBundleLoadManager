@@ -255,20 +255,20 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected override int RealRequestAsset<T>(string assetPath, out AssetLoader assetLoader,
-                                                   Action<AssetLoader, int> completeHandler,
+        protected override AssetRequestHandle RealRequestAsset<T>(string assetPath, AssetRequestHandle requestHandle,
+                                                   out AssetLoader assetLoader,
+                                                   Action<AssetLoader, AssetRequestHandle> completeHandler,
                                                    ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                                    ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
-            var requestUID = LoaderManager.Singleton.GetNextRequestUID();
             var ownerAssetBundlePath = GetABPathDelegate(assetPath);
             var depABPaths = GetABDpInfoDelegate(ownerAssetBundlePath);
             var bundleAssetLoader = LoaderManager.Singleton.CreateBundleAssetLoader<T>(assetPath, ownerAssetBundlePath, loadType, loadMethod) as BundleAssetLoader;
             bundleAssetLoader.InitBundleInfo(ownerAssetBundlePath, depABPaths);
-            bundleAssetLoader.AddRequest(requestUID, completeHandler);
+            bundleAssetLoader.AddRequest(requestHandle, completeHandler);
             assetLoader = bundleAssetLoader as AssetLoader;
             bundleAssetLoader.Load();
-            return requestUID;
+            return requestHandle;
         }
         
         /// <summary>
@@ -280,17 +280,19 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public override int RequstAssetAB(string assetName, out BundleLoader abLoader,
-                                          Action<BundleLoader, int> completeHandler,
+        public override AssetBundleRequestHandle RequstAssetAB(string assetName, out BundleLoader abLoader,
+                                          Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
                                           ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                           ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             if (string.IsNullOrEmpty(assetName))
             {
+                var failedHandle = LoaderManager.Singleton.CreateAssetBundleRequestHandle();
                 abLoader = null;
                 Debug.LogError($"不允许传空Asset名，请求加载Asset所在AssetBundle失败!");
-                completeHandler?.Invoke(abLoader, 0);
-                return 0;
+                failedHandle.MarkFailed();
+                completeHandler?.Invoke(abLoader, failedHandle);
+                return failedHandle;
             }
             var abPath = GetAssetNameAssetBundlePath(assetName);
             return RequstAssetBundle(abPath, out abLoader, completeHandler, loadType, loadMethod);
@@ -309,17 +311,19 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public override int RequstAssetBundle(string abPath, out BundleLoader abLoader,
-                                              Action<BundleLoader, int> completeHandler,
+        public override AssetBundleRequestHandle RequstAssetBundle(string abPath, out BundleLoader abLoader,
+                                              Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
                                               ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                               ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
+            var requestHandle = LoaderManager.Singleton.CreateAssetBundleRequestHandle();
             if (string.IsNullOrEmpty(abPath))
             {
                 abLoader = null;
                 Debug.LogError($"不允许传空AB路径名，请求加载AssetBundle失败!");
-                completeHandler?.Invoke(abLoader, 0);
-                return 0;
+                requestHandle.MarkFailed();
+                completeHandler?.Invoke(abLoader, requestHandle);
+                return requestHandle;
             }
             // AB统一小写
             abPath = abPath.ToLower();
@@ -328,24 +332,24 @@ namespace TResource
             {
                 if (abLoader.IsDone)
                 {
-                    completeHandler?.Invoke(abLoader, 0);
-                    return 0;
+                    requestHandle.MarkCompleted();
+                    completeHandler?.Invoke(abLoader, requestHandle);
+                    return requestHandle;
                 }
                 else
                 {
-                    var requestUID = LoaderManager.Singleton.GetNextRequestUID();
-                    abLoader.AddRequest(requestUID, completeHandler);
+                    abLoader.AddRequest(requestHandle, completeHandler);
                     // 异步转同步加载的情况
                     if (loadMethod == ResourceLoadMethod.Sync)
                     {
                         abLoader.LoadImmediately();
                     }
-                    return requestUID;
+                    return requestHandle;
                 }
             }
             else
             {
-                return RealRequestAssetBundle(abPath, out abLoader, completeHandler, loadType, loadMethod);
+                return RealRequestAssetBundle(abPath, requestHandle, out abLoader, completeHandler, loadType, loadMethod);
             }
         }
 
@@ -358,18 +362,18 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected int RealRequestAssetBundle(string abPath, out BundleLoader bundleLoader,
-                                             Action<BundleLoader, int> completeHandler,
+        protected AssetBundleRequestHandle RealRequestAssetBundle(string abPath, AssetBundleRequestHandle requestHandle,
+                                             out BundleLoader bundleLoader,
+                                             Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
                                              ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                              ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             // TODO: 支持动态AB资源下载
-            var requestUID = LoaderManager.Singleton.GetNextRequestUID();
             var depABPaths = GetABDpInfoDelegate(abPath);
             bundleLoader = LoaderManager.Singleton.CreateAssetBundleLoader<AssetBundleLoader>(abPath, depABPaths, loadType, loadMethod);
-            bundleLoader.AddRequest(requestUID, completeHandler);
+            bundleLoader.AddRequest(requestHandle, completeHandler);
             bundleLoader.Load();
-            return requestUID;
+            return requestHandle;
         }
 
         /// <summary>
@@ -498,7 +502,7 @@ namespace TResource
         /// 强制卸载指定AB(只支持NormalLoad的AB资源强制卸载)
         /// </summary>
         /// <param name="assetBundelPath"></param>
-        public void ForceUnloadSpecificAssetBundle(string assetBundelPath)
+        public void ForceUnloadAssetBundle(string assetBundelPath)
         {
             AssetBundleInfo assetBundleInfo = GetAssetBundleInfo(assetBundelPath);
             if(assetBundleInfo != null)

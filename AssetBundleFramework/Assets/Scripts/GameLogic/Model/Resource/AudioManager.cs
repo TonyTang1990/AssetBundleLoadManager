@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TResource;
 using UnityEngine;
 
 /// <summary>
@@ -24,7 +25,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
         /// <summary>
         /// Asset加载器
         /// </summary>
-        public TResource.AssetLoader Loader
+        public AssetLoader Loader
         {
             get;
             set;
@@ -89,7 +90,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// <summary>
     /// 当前背景音乐的Asset加载器
     /// </summary>
-    private TResource.AssetLoader mCurrentBGMAssetLoader;
+    private AssetLoader mCurrentBGMAssetLoader;
 
     public AudioManager()
     {
@@ -113,15 +114,15 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// <param name="callBack">回调</param>
     /// <param name="loadType">加载类型</param>
     /// <returns></returns>
-    public int PlaySFXSound(string resName, out TResource.AssetLoader assetLoader,
-                            Action<AudioClip, int> callBack = null,
-                            TResource.ResourceLoadType loadType = TResource.ResourceLoadType.NormalLoad)
+    public AssetRequestHandle PlaySFXSound(string resName, out AssetLoader assetLoader,
+                            Action<AudioClip, AssetRequestHandle> callBack = null,
+                            ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
         var sfxgo = mAudioGoPool.Pop(mSFXGoTemplate);
-        return TResource.ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+        return ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
             resName,
             out assetLoader,
-            (loader, requestUid) =>
+            (loader, assetRequestHandle) =>
             {
                 var sfxaudioinfo = ObjectPool.Singleton.Pop<SFXAudioInfo>();
                 var ac = loader.BindAsset<AudioClip>(sfxgo);
@@ -139,7 +140,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
                     mAudioGoPool.Push(mSFXInstanceID, sfxaudioinfo.SFXAudioGo);
                     ObjectPool.Singleton.Push<SFXAudioInfo>(sfxaudioinfo);
                 }, ac.length);
-                callBack?.Invoke(ac, requestUid);
+                callBack?.Invoke(ac, assetRequestHandle);
             },
             loadType
         );
@@ -154,9 +155,9 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// <param name="callBack">回调</param>
     /// <param name="loadType">加载类型</param>
     /// <returns></returns>
-    public int PlayBGM(string resName, out TResource.AssetLoader assetLoader,
-                       bool loop = true, Action<AudioClip, int> callBack = null,
-                       TResource.ResourceLoadType loadType = TResource.ResourceLoadType.NormalLoad)
+    public AssetRequestHandle PlayBGM(string resName, out AssetLoader assetLoader,
+                                      bool loop = true, Action<AudioClip, AssetRequestHandle> callBack = null,
+                                      ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
         //背景音效是挂载DontDestroyOnLoad上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
         if (mCurrentBGMAssetLoader != null)
@@ -165,17 +166,17 @@ public class AudioManager : SingletonTemplate<AudioManager>
             mCurrentBGMAssetLoader = null;
         }
 
-        return TResource.ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+        return ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
             resName,
             out assetLoader,
-            (loader, requestUid) =>
+            (loader, assetRequestHandle) =>
             {
                 mCurrentBGMAssetLoader = loader;
                 var clip = loader.BindAsset<AudioClip>(mBGMAudioSource);
                 mBGMAudioSource.clip = clip;
                 mBGMAudioSource.loop = loop;
                 mBGMAudioSource.Play();
-                callBack?.Invoke(clip, requestUid);
+                callBack?.Invoke(clip, assetRequestHandle);
             },
             loadType
         );

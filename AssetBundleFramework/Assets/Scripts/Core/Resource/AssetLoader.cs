@@ -24,7 +24,7 @@ namespace TResource
             /// <summary>
             /// 请求Uid
             /// </summary>
-            public int RequestUid
+            public AssetRequestHandle RequestHandle
             {
                 get;
                 protected set;
@@ -33,7 +33,7 @@ namespace TResource
             /// <summary>
             /// 请求回调
             /// </summary>
-            public Action<AssetLoader, int> RequestCallBack
+            public Action<AssetLoader, AssetRequestHandle> RequestCallBack
             {
                 get;
                 protected set;
@@ -44,9 +44,9 @@ namespace TResource
             /// </summary>
             /// <param name="requestUid"></param>
             /// <param name="requestCallBack"></param>
-            public void init(int requestUid, Action<AssetLoader, int> requestCallBack)
+            public void init(AssetRequestHandle requestHandle, Action<AssetLoader, AssetRequestHandle> requestCallBack)
             {
-                RequestUid = requestUid;
+                RequestHandle = requestHandle;
                 RequestCallBack = requestCallBack;
             }
 
@@ -65,7 +65,7 @@ namespace TResource
             /// </summary>
             protected virtual void ResetDatas()
             {
-                RequestUid = 0;
+                RequestHandle = null;
                 RequestCallBack = null;
             }
         }
@@ -298,7 +298,15 @@ namespace TResource
                 AssetRequestInfo assetRequestInfo;
                 if(mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
                 {
-                    assetRequestInfo.RequestCallBack?.Invoke(this, requestUID);
+                    if (LoadState == ResourceLoadState.Error)
+                    {
+                        assetRequestInfo.RequestHandle.MarkFailed();
+                    }
+                    else
+                    {
+                        assetRequestInfo.RequestHandle.MarkCompleted();
+                    }
+                    assetRequestInfo.RequestCallBack?.Invoke(this, assetRequestInfo.RequestHandle);
                     RemoveRequest(requestUID);
                 }
             }
@@ -316,13 +324,14 @@ namespace TResource
         /// <param name="requestUID"></param>
         /// <param name="loadAssetCompleteCallBack"></param>
         /// <returns></returns>
-        public bool AddRequest(int requestUID, Action<AssetLoader, int> loadAssetCompleteCallBack)
+        public bool AddRequest(AssetRequestHandle requestHandle, Action<AssetLoader, AssetRequestHandle> loadAssetCompleteCallBack)
         {
+            var requestUID = requestHandle.RequestUID;
             if (!mRequestUidAndInfoMap.ContainsKey(requestUID))
             {
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}绑定Asset:{ResourcePath}加载请求UID:{requestUID}成功!");
                 var assetRequestInfo = ObjectPool.Singleton.Pop<AssetRequestInfo>();
-                assetRequestInfo.init(requestUID, loadAssetCompleteCallBack);
+                assetRequestInfo.init(requestHandle, loadAssetCompleteCallBack);
                 mRequestUIDList.Add(requestUID);
                 mRequestUidAndInfoMap.Add(requestUID, assetRequestInfo);
                 LoaderManager.Singleton.AddAssetRequestUID(requestUID, ResourcePath);
@@ -343,8 +352,11 @@ namespace TResource
         public override bool CancelRequest(int requestUID)
         {
             base.CancelRequest(requestUID);
-            if(RemoveRequest(requestUID))
+            AssetRequestInfo assetRequestInfo;
+            if(mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
             {
+                assetRequestInfo.RequestHandle.MarkCancelled();
+                RemoveRequest(requestUID);
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}取消请求UID:{requestUID}成功!");
                 // 所有请求都取消表示没人再请求此Asset了
                 if (mRequestUidAndInfoMap.Count == 0)

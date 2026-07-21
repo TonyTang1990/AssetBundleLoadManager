@@ -561,25 +561,29 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public int RequstAsset<T>(string assetName, out AssetLoader assetLoader,
-                                  Action<AssetLoader, int> completeHandler,
+        public AssetRequestHandle RequstAsset<T>(string assetName, out AssetLoader assetLoader,
+                                  Action<AssetLoader, AssetRequestHandle> completeHandler,
                                   ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                   ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
                                   where T : UnityEngine.Object
         {
+            var requestHandle = LoaderManager.Singleton.CreateAssetRequestHandle();
             if (string.IsNullOrEmpty(assetName))
             {
                 assetLoader = null;
+                requestHandle.MarkFailed();
+                completeHandler?.Invoke(assetLoader, requestHandle);
                 Debug.LogError($"不允许传空Asset路径!");
-                return 0;
+                return requestHandle;
             }
             var assetPath = GetAssetPath(assetName);
             if(string.IsNullOrEmpty(assetPath))
             {
                 assetLoader = null;
-                completeHandler?.Invoke(assetLoader, 0);
+                requestHandle.MarkFailed();
+                completeHandler?.Invoke(assetLoader, requestHandle);
                 Debug.LogError($"无法获取Asset:{assetName}的路径，加载Asset:{assetName}失败!");
-                return 0;
+                return requestHandle;
             }
 #if OLD_ASSET_BUILD_PIPELINE
             // 老版BuildPipeline.BuildAssetBundles打包指定AssetBundleBuild.assetNames为含大写
@@ -591,24 +595,24 @@ namespace TResource
             {
                 if (assetLoader.IsDone)
                 {
-                    completeHandler?.Invoke(assetLoader, 0);
-                    return 0;
+                    requestHandle.MarkCompleted();
+                    completeHandler?.Invoke(assetLoader, requestHandle);
+                    return requestHandle;
                 }
                 else
                 {
-                    var requestUID = LoaderManager.Singleton.GetNextRequestUID();
-                    assetLoader.AddRequest(requestUID, completeHandler);
+                    assetLoader.AddRequest(requestHandle, completeHandler);
                     // 异步转同步加载的情况
                     if (loadMethod == ResourceLoadMethod.Sync)
                     {
                         assetLoader.LoadImmediately();
                     }
-                    return requestUID;
+                    return requestHandle;
                 }
             }
             else
             {
-                return RealRequestAsset<T>(assetPath, out assetLoader, completeHandler, loadType, loadMethod);
+                return RealRequestAsset<T>(assetPath, requestHandle, out assetLoader, completeHandler, loadType, loadMethod);
             }
         }
 
@@ -621,8 +625,9 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected abstract int RealRequestAsset<T>(string assetPath, out AssetLoader assetLoader,
-                                                   Action<AssetLoader, int> completeHandler,
+        protected abstract AssetRequestHandle RealRequestAsset<T>(string assetPath, AssetRequestHandle requestHandle,
+                                                   out AssetLoader assetLoader,
+                                                   Action<AssetLoader, AssetRequestHandle> completeHandler,
                                                    ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                                    ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
                                                    where T : UnityEngine.Object;
@@ -639,8 +644,8 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public abstract int RequstAssetAB(string assetName, out BundleLoader abLoader,
-                                          Action<BundleLoader, int> completeHandler,
+        public abstract AssetBundleRequestHandle RequstAssetAB(string assetName, out BundleLoader abLoader,
+                                          Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
                                           ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                           ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
 
@@ -657,8 +662,8 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public abstract int RequstAssetBundle(string abPath, out BundleLoader abLoader,
-                                              Action<BundleLoader, int> completeHandler,
+        public abstract AssetBundleRequestHandle RequstAssetBundle(string abPath, out BundleLoader abLoader,
+                                              Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
                                               ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                               ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
 

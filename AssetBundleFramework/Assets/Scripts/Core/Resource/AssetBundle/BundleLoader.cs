@@ -26,7 +26,7 @@ namespace TResource
             /// <summary>
             /// 请求Uid
             /// </summary>
-            public int RequestUid
+            public AssetBundleRequestHandle RequestHandle
             {
                 get;
                 protected set;
@@ -35,7 +35,7 @@ namespace TResource
             /// <summary>
             /// 请求回调
             /// </summary>
-            public Action<BundleLoader, int> RequestCallBack
+            public Action<BundleLoader, AssetBundleRequestHandle> RequestCallBack
             {
                 get;
                 protected set;
@@ -46,9 +46,9 @@ namespace TResource
             /// </summary>
             /// <param name="requestUid"></param>
             /// <param name="requestCallBack"></param>
-            public void Init(int requestUid, Action<BundleLoader, int> requestCallBack)
+            public void Init(AssetBundleRequestHandle requestHandle, Action<BundleLoader, AssetBundleRequestHandle> requestCallBack)
             {
-                RequestUid = requestUid;
+                RequestHandle = requestHandle;
                 RequestCallBack = requestCallBack;
             }
 
@@ -67,7 +67,7 @@ namespace TResource
             /// </summary>
             protected virtual void ResetDatas()
             {
-                RequestUid = 0;
+                RequestHandle = null;
                 RequestCallBack = null;
             }
         }
@@ -310,13 +310,13 @@ namespace TResource
                 {
                     LoadABSync();
                     BundleLoader assetBundleLoader;
-                    int assetBundleLoadUID;
+                    AssetBundleRequestHandle assetBundleLoadRequest;
                     // 等于null的话意味着上层已经出问题了，这里只是避免阻断
                     if (DepABPaths != null)
                     {
                         for (int i = 0, length = DepABPaths.Length; i < length; i++)
                         {
-                            assetBundleLoadUID = ResourceModuleManager.Singleton.RequstABSync(DepABPaths[i], out assetBundleLoader, OnAssetBundleLoadComplete, ResourceLoadType.NormalLoad);
+                            assetBundleLoadRequest = ResourceModuleManager.Singleton.RequstABSync(DepABPaths[i], out assetBundleLoader, OnAssetBundleLoadComplete, ResourceLoadType.NormalLoad);
                             mABPathAndBundleLoaderMap.Add(DepABPaths[i], assetBundleLoader);
                         }
                     }
@@ -346,13 +346,13 @@ namespace TResource
             {
                 LoadABAsync();
                 BundleLoader assetBundleLoader;
-                int assetBundleLoadUID;
+                AssetBundleRequestHandle assetBundleLoadRequest;
                 // 等于null的话意味着上层已经出问题了，这里只是避免阻断
                 if (DepABPaths != null)
                 {
                     for (int i = 0, length = DepABPaths.Length; i < length; i++)
                     {
-                        assetBundleLoadUID = ResourceModuleManager.Singleton.RequstABAsync(DepABPaths[i], out assetBundleLoader, OnAssetBundleLoadComplete, ResourceLoadType.NormalLoad);
+                        assetBundleLoadRequest = ResourceModuleManager.Singleton.RequstABAsync(DepABPaths[i], out assetBundleLoader, OnAssetBundleLoadComplete, ResourceLoadType.NormalLoad);
                         mABPathAndBundleLoaderMap.Add(DepABPaths[i], assetBundleLoader);
                     }
                 }
@@ -444,7 +444,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetBundleLader"></param>
         /// <param name="requestUid">请求Uid</param>
-        protected void OnAssetBundleLoadComplete(BundleLoader assetBundleLader, int requestUid = 0)
+        protected void OnAssetBundleLoadComplete(BundleLoader assetBundleLader, AssetBundleRequestHandle requestHandle = null)
         {
             ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{ResourcePath}的AssetBundle:{assetBundleLader.ResourcePath}加载完成!");
             assetBundleLader.AssetBundleInfo.UpdateLastUsedTime();
@@ -500,8 +500,17 @@ namespace TResource
             // 通知上层ab加载完成
             for(int i = 0; i < mRequestInfoList.Count; i++)
             {
-                mRequestInfoList[i].RequestCallBack?.Invoke(this, mRequestInfoList[i].RequestUid);
-                RemoveRequest(mRequestInfoList[i].RequestUid);
+                var requestInfo = mRequestInfoList[i];
+                if (LoadState == ResourceLoadState.Error)
+                {
+                    requestInfo.RequestHandle.MarkFailed();
+                }
+                else
+                {
+                    requestInfo.RequestHandle.MarkCompleted();
+                }
+                requestInfo.RequestCallBack?.Invoke(this, requestInfo.RequestHandle);
+                RemoveRequest(requestInfo.RequestHandle.RequestUID);
                 i--;
             }
             mRequestUidAndInfoMap.Clear();
@@ -517,13 +526,14 @@ namespace TResource
         /// <param name="requestUID"></param>
         /// <param name="loadABCompleteCallBack"></param>
         /// <returns></returns>
-        public bool AddRequest(int requestUID, Action<BundleLoader, int> loadABCompleteCallBack)
+        public bool AddRequest(AssetBundleRequestHandle requestHandle, Action<BundleLoader, AssetBundleRequestHandle> loadABCompleteCallBack)
         {
+            var requestUID = requestHandle.RequestUID;
             if (!mRequestUidAndInfoMap.ContainsKey(requestUID))
             {
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}绑定AssetBundle:{ResourcePath}加载请求UID:{requestUID}成功!");
                 var bundleRequestInfo = ObjectPool.Singleton.Pop<BundleRequestInfo>();
-                bundleRequestInfo.Init(requestUID, loadABCompleteCallBack);
+                bundleRequestInfo.Init(requestHandle, loadABCompleteCallBack);
                 mRequestInfoList.Add(bundleRequestInfo);
                 mRequestUidAndInfoMap.Add(requestUID, bundleRequestInfo);
                 LoaderManager.Singleton.AddABRequestUID(requestUID, ResourcePath);
@@ -544,8 +554,11 @@ namespace TResource
         public override bool CancelRequest(int requestUID)
         {
             base.CancelRequest(requestUID);
-            if (RemoveRequest(requestUID))
+            BundleRequestInfo bundleRequestInfo;
+            if (mRequestUidAndInfoMap.TryGetValue(requestUID, out bundleRequestInfo))
             {
+                bundleRequestInfo.RequestHandle.MarkCancelled();
+                RemoveRequest(requestUID);
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{ResourcePath}取消请求UID:{requestUID}成功!");
                 // 所有请求都取消表示没人再请求此Asset了
                 if (mRequestUidAndInfoMap.Count == 0)

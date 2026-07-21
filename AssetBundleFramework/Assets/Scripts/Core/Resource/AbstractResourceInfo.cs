@@ -82,14 +82,14 @@ namespace TResource
         /// 引用对象列表
         /// 用于判定引用AB的对象是否依然有效(还在使用未销毁)
         /// </summary>
-        public List<System.WeakReference> ReferenceOwnerList
+        public List<WeakReference> ReferenceOwnerList
         {
             get
             {
                 return mReferenceOwnerList;
             }
         }
-        protected List<System.WeakReference> mReferenceOwnerList;
+        protected List<WeakReference> mReferenceOwnerList;
 
         /// <summary>
         /// 资源
@@ -199,7 +199,7 @@ namespace TResource
                 }
             }
 
-            System.WeakReference wr = new System.WeakReference(owner);
+            WeakReference wr = new WeakReference(owner);
             mReferenceOwnerList.Add(wr);
         }
 

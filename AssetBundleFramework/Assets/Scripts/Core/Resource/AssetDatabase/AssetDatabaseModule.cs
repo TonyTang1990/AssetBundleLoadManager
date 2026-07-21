@@ -88,14 +88,17 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        protected override int RealRequestAsset<T>(string assetPath, out AssetLoader assetLoader, Action<AssetLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        protected override AssetRequestHandle RealRequestAsset<T>(string assetPath, AssetRequestHandle requestHandle,
+                                                   out AssetLoader assetLoader,
+                                                   Action<AssetLoader, AssetRequestHandle> completeHandler,
+                                                   ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                                   ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
-            var requestUID = LoaderManager.Singleton.GetNextRequestUID();
             var assetDatabaseLoader = LoaderManager.Singleton.CreateAssetDatabaseLoader<T>(assetPath, loadType, loadMethod) as AssetDatabaseLoader;
-            assetDatabaseLoader.AddRequest(requestUID, completeHandler);
+            assetDatabaseLoader.AddRequest(requestHandle, completeHandler);
             assetLoader = assetDatabaseLoader as AssetDatabaseLoader;
             assetDatabaseLoader.Load();
-            return requestUID;
+            return requestHandle;
         }
 
         /// <summary>
@@ -110,12 +113,17 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public override int RequstAssetAB(string assetName, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        public override AssetBundleRequestHandle RequstAssetAB(string assetName, out BundleLoader abLoader,
+                                          Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
+                                          ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                          ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             // AssetDatabase模式不支持AssetBundle加载，直接返回逻辑回调
             abLoader = null;
-            completeHandler?.Invoke(abLoader, 0);
-            return 0;
+            var requestHandle = LoaderManager.Singleton.CreateAssetBundleRequestHandle();
+            requestHandle.MarkFailed();
+            completeHandler?.Invoke(abLoader, requestHandle);
+            return requestHandle;
         }
 
         /// <summary>
@@ -131,12 +139,17 @@ namespace TResource
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
-        public override int RequstAssetBundle(string abPath, out BundleLoader abLoader, Action<BundleLoader, int> completeHandler, ResourceLoadType loadType = ResourceLoadType.NormalLoad, ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+        public override AssetBundleRequestHandle RequstAssetBundle(string abPath, out BundleLoader abLoader,
+                                              Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
+                                              ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                              ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             // AssetDatabase模式不支持AssetBundle加载，直接返回逻辑回调
             abLoader = null;
-            completeHandler?.Invoke(abLoader, 0);
-            return 0;
+            var requestHandle = LoaderManager.Singleton.CreateAssetBundleRequestHandle();
+            requestHandle.MarkFailed();
+            completeHandler?.Invoke(abLoader, requestHandle);
+            return requestHandle;
         }
 
         /// <summary>
