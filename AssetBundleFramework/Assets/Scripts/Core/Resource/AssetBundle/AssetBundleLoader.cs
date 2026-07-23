@@ -24,12 +24,11 @@ namespace TResource
         /// <returns></returns>
         public override AssetBundle GetAssetBundle()
         {
-            if (!IsDone)
+            var assetBundle = ObtainAssetBundle();
+            if(assetBundle != null)
             {
-                LoadImmediately();
+                AssetBundleInfo.Retain();
             }
-            var assetBundle = AssetBundleInfo.GetResource<AssetBundle>();
-            AssetBundleInfo.Retain();
             return assetBundle;
         }
 
@@ -44,6 +43,11 @@ namespace TResource
             {
                 LoadImmediately();
             }
+            if (IsError)
+            {
+                Debug.LogError($"AssetBundle:{ResourcePath}加载失败，无法获取AssetBundle!");
+                return null;
+            }
             var assetBundle = AssetBundleInfo.GetResource<AssetBundle>();
             return assetBundle;
         }
@@ -56,11 +60,12 @@ namespace TResource
         /// <returns></returns>
         public override AssetBundle BindAssetBundle(UnityEngine.Object owner)
         {
-            if (!IsDone)
+            var assetBundle = ObtainAssetBundle();
+            if(assetBundle == null)
             {
-                LoadImmediately();
+                Debug.LogError($"AssetBundle:{ResourcePath}加载失败，无法为owner:{owner.name}绑定AssetBundle!");
+                return null;
             }
-            var assetBundle = AssetBundleInfo.GetResource<AssetBundle>();
             AssetBundleInfo.RetainOwner(owner);
             return assetBundle;
         }
