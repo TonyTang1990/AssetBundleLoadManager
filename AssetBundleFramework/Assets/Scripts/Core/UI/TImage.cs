@@ -63,6 +63,28 @@ namespace TUI
             base.Start();
             UpdateAlphaHitTestMinimumThreshold();
         }
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        public bool ReleaseRes()
+        {
+            if(string.IsNullOrEmpty(SpritePath))
+            {
+                return true;
+            }
+            if(Loader != null)
+            {
+                var result = Loader.ReleaseOwner(this);
+                Loader = null;
+                if(!result)
+                {
+                    DIYLog.LogError($"TImage.ReleaseRes失败，SpritePath = {SpritePath}");
+                    return false;
+                }
+            }
+            return true;
+        }
         
         /// <summary>
         /// 更新透明Alpha可点击阈值

@@ -237,7 +237,7 @@ namespace TResource
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        public AssetInfo GetAssetInfo(string assetPath)
+        protected AssetInfo GetAssetInfo(string assetPath)
         {
             AssetInfo assetInfo;
             if (mAllLoadedNormalAssetInfoMap.TryGetValue(assetPath, out assetInfo))
@@ -492,28 +492,49 @@ namespace TResource
         }
 
         /// <summary>
-        /// 释放指定AssetPath的计数
+        /// 释放指定Asset名(含后缀)的计数
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public bool ReleaseAsset(string assetPath)
+        public bool ReleaseAsset(string assetName)
         {
-            var assetInfo = GetAssetInfo(assetPath);
-            assetInfo?.Release();
-            return assetInfo != null;
+            var assetPath = GetAssetPath(assetName);
+            var assetLoader = LoaderManager.Singleton.GetAssetLoader(assetPath);
+            if(assetLoader == null)
+            {
+                Debug.LogError($"无法获取Asset:{assetPath}的加载器信息,释放计数失败!");
+                return false;
+            }
+            assetLoader.ReleaseAsset();
+            return true;
         }
 
         /// <summary>
-        /// 为AssetPath解除指定owner的引用
+        /// 为Asset名(含后缀)解除指定对象绑定的引用
         /// </summary>
-        /// <param name="assetPath"></param>
+        /// <param name="assetName"></param>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public bool UnbindAsset(string assetPath, UnityEngine.Object owner)
+        public bool UnbindAsset(string assetName, UnityEngine.Object owner)
         {
-            var assetInfo = GetAssetInfo(assetPath);
-            assetInfo?.ReleaseOwner(owner);
-            return assetInfo != null;
+            if(owner == null)
+            {
+                Debug.LogError($"引用对象不能为空!无法为Asset:{assetName}解除对象绑定!");
+                return false;
+            }
+            var assetPath = GetAssetPath(assetName);
+            var assetLoader = LoaderManager.Singleton.GetAssetLoader(assetPath);
+            if(assetLoader == null)
+            {
+                Debug.LogError($"无法获取Asset:{assetPath}的加载器信息,释放对象绑定:{owner.name}失败!");
+                return false;
+            }
+            var result = assetLoader.ReleaseOwner(owner);
+            if(!result)
+            {
+                Debug.LogError($"Asset:{assetPath}找不到指定绑定对象:{owner.name},解除绑定失败!");
+            }
+            return result;
         }
 
         /// <summary>

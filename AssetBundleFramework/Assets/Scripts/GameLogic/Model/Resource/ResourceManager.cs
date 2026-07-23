@@ -278,7 +278,8 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="assetLoader"></param>
     /// <param name="callback"></param>
     /// <param name="loadtype"></param>
-    public AssetRequestHandle GetAudioClipAsync(UnityEngine.Object owner, string resName, out AssetLoader assetLoader,
+    public AssetRequestHandle GetAudioClipAsync(UnityEngine.Object owner, string resName,
+                                                out AssetLoader assetLoader,
                                                 Action<AudioClip, AssetRequestHandle> callback = null,
                                                 ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {

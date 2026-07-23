@@ -208,6 +208,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 {
                     timg.Loader.ReleaseOwner(timg);
                     timg.Loader = null;
+                    timg.SpritePath = null;
                 }
                 var sprite = loader.BindAsset<Sprite>(timg);
                 timg.sprite = sprite;
@@ -250,6 +251,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 {
                     timg.Loader.ReleaseOwner(timg);
                     timg.Loader = null;
+                    timg.SpritePath = null;
                 }
                 var sprite = loader.BindAsset<Sprite>(timg);
                 timg.sprite = sprite;
@@ -293,6 +295,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 {
                     timg.Loader.ReleaseOwner(timg);
                     timg.Loader = null;
+                    timg.SpritePath = null;
                 }
                 var atlasname = Path.GetFileNameWithoutExtension(atlasName);
                 DIYLog.Log("加载SpriteAtlas之前!");
@@ -342,6 +345,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 {
                     timg.Loader.ReleaseOwner(timg);
                     timg.Loader = null;
+                    timg.SpritePath = null;
                 }
                 var atlasname = Path.GetFileNameWithoutExtension(atlasName);
                 DIYLog.Log("加载SpriteAtlas之前!");
@@ -390,6 +394,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 {
                     timg.Loader.ReleaseOwner(timg);
                     timg.Loader = null;
+                    timg.SpritePath = null;
                 }
                 var sprite = loader.BindSubAsset<Sprite>(spriteName, timg);
                 timg.sprite = sprite;
@@ -435,6 +440,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 {
                     timg.Loader.ReleaseOwner(timg);
                     timg.Loader = null;
+                    timg.SpritePath = null;
                 }
                 var sprite = loader.BindSubAsset<Sprite>(spriteName, timg);
                 timg.sprite = sprite;
@@ -477,6 +483,8 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 if (trawimg.Loader != null && !string.IsNullOrEmpty(trawimg.TexturePath))
                 {
                     trawimg.Loader.ReleaseOwner(trawimg);
+                    trawimg.Loader = null;
+                    trawimg.TexturePath = null;
                 }
                 var texture = loader.BindAsset<Texture>(trawimg);
                 trawimg.texture = texture;
@@ -519,6 +527,8 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
                 if (trawimg.Loader != null && !string.IsNullOrEmpty(trawimg.TexturePath))
                 {
                     trawimg.Loader.ReleaseOwner(trawimg);
+                    trawimg.Loader = null;
+                    trawimg.TexturePath = null;
                 }
                 var texture = loader.BindAsset<Texture>(trawimg);
                 trawimg.texture = texture;

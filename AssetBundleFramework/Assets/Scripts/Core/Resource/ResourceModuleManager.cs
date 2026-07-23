@@ -212,8 +212,7 @@ namespace TResource
         /// <param name="assetName">资源名(带后缀)</param>
         public void ReleaseAsset(string assetName)
         {
-            var assetPath = CurrentResourceModule.GetAssetPath(assetName);
-            CurrentResourceModule.ReleaseAsset(assetPath);
+            CurrentResourceModule.ReleaseAsset(assetName);
         }
 
         public void Update()
