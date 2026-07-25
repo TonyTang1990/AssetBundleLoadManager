@@ -219,7 +219,7 @@ namespace TResource
         public BundleLoader CreateAssetBundleLoader<T>(string abPath, string[] depABPaths,
                                                        ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                                        ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
-                                                       where T : BundleLoader
+                                                       where T : BundleLoader, new()
         {
             BundleLoader bundleLoader = ObjectPool.Singleton.Pop<T>();
             AssetBundleInfo assetBundleInfo = ResourceModuleManager.Singleton.GetOrCreateAssetBundleInfo(abPath, loadType);

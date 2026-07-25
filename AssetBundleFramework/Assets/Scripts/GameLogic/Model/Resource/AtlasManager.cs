@@ -37,9 +37,8 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     //}
 
     /// <summary>
-    /// 加载指定图集
+    /// 加载指定图集(加计数)
     /// Note:
-    /// 只加载AB不加载Sprite且不添加计数和绑定
     /// 一般用于加载常驻图集
     /// </summary>
     /// <param name="atlasName">图集名(含后缀)</param>
