@@ -36,7 +36,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// <summary>
     /// 初始化
     /// </summary>
-    public void init()
+    public void Init()
     {
         // hook场景加载与切换回调
         SceneManager.sceneLoaded += onSceneLoaded;

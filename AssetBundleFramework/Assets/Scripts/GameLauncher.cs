@@ -223,7 +223,7 @@ namespace TResource
             GameDataManager.Singleton.loadAll();
 
             // 初始化逻辑层Manager
-            GameSceneManager.Singleton.init();
+            GameSceneManager.Singleton.Init();
 
             mBGMAudioSource = GetComponent<AudioSource>();
         }
