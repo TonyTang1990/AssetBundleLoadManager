@@ -258,9 +258,9 @@ namespace TResource
         {
             if (IsAssetBundleModule())
             {
-                var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
+                var assetBundleResourceModule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
                 GUILayout.BeginVertical();
-                var allDepInfoMap = assetbundleresourcemodule.AssetBundleDependencyMap;
+                var allDepInfoMap = assetBundleResourceModule.AssetBundleDependencyMap;
                 if (!mTextFilter.Equals(string.Empty))
                 {
                     if (mFilterTextChanged)
@@ -303,13 +303,13 @@ namespace TResource
                 else
                 {
                     int num = 0;
-                    foreach (var depinfo in allDepInfoMap)
+                    foreach (var depInfo in allDepInfoMap)
                     {
                         num++;
                         if (num < MaxDepABInfoNumber)
                         {
                             EditorGUILayout.BeginHorizontal();
-                            DisplayOneAssetBundleDepInfoUI(depinfo.Key, depinfo.Value);
+                            DisplayOneAssetBundleDepInfoUI(depInfo.Key, depInfo.Value);
                             EditorGUILayout.EndHorizontal();
                         }
                         else
@@ -508,11 +508,11 @@ namespace TResource
             EditorGUILayout.LabelField(string.Format("最近使用时间 : {0}", assetBundleInfo.LastUsedTime), GUILayout.Width(150.0f));
             EditorGUILayout.LabelField(string.Format("依赖引用对象列表 : {0}", assetBundleInfo.ReferenceOwnerList.Count == 0 ? "无" : string.Empty), GUILayout.Width(150.0f));
             EditorGUILayout.EndHorizontal();
-            foreach (var refowner in assetBundleInfo.ReferenceOwnerList)
+            foreach (var refOwner in assetBundleInfo.ReferenceOwnerList)
             {
-                if (refowner.Target != null)
+                if (refOwner.Target != null)
                 {
-                    EditorGUILayout.ObjectField((UnityEngine.Object)refowner.Target, typeof(UnityEngine.Object), true, GUILayout.Width(200.0f));
+                    EditorGUILayout.ObjectField((UnityEngine.Object)refOwner.Target, typeof(UnityEngine.Object), true, GUILayout.Width(200.0f));
                 }
             }
             EditorGUILayout.BeginHorizontal();
@@ -834,16 +834,16 @@ namespace TResource
         /// <returns></returns>
         private string GetDepDes(string[] deps)
         {
-            var depdes = string.Empty;
+            var depDes = string.Empty;
             for (int i = 0, length = deps.Length; i < length; i++)
             {
-                depdes += deps[i];
+                depDes += deps[i];
                 if (i != length - 1)
                 {
-                    depdes += " & ";
+                    depDes += " & ";
                 }
             }
-            return depdes;
+            return depDes;
         }
 
         /// <summary>
@@ -854,8 +854,8 @@ namespace TResource
         {
             if (IsAssetBundleModule())
             {
-                var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-                assetbundleresourcemodule.ForceUnloadAssetBundle(abnPath);
+                var assetBundleResourceModule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
+                assetBundleResourceModule.ForceUnloadAssetBundle(abnPath);
             }
             else
             {
