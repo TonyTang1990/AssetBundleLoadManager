@@ -28,6 +28,30 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     // 2. 返回给上层AssetLoader和AssetRequestHandle,AssetLoader.CancelRequest(AssetRequestHandle.RequestUID)
 
     /// <summary>
+    /// 全局资源计数释放+请求打断管理器
+    /// Note:
+    /// 用于管理全局常驻资源的加载和释放
+    /// </summary>
+    public ResourceScope GlobalResourceScope
+    {
+        get;
+        private set;
+    }
+
+    public ResourceManager()
+    {
+        GlobalResourceScope = new ResourceScope();
+    }
+
+    /// <summary>
+    /// 清理全局资源计数释放+请求打断管理器
+    /// </summary>
+    public void ClearGlobalResourceScope()
+    {
+        GlobalResourceScope.Clear();
+    }
+
+    /// <summary>
     /// 加载所有Shader
     /// </summary>
     /// <param name="callback">资源会动啊</param>
