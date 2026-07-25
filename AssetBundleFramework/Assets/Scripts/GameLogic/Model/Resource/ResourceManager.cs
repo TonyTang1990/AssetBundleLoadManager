@@ -120,10 +120,11 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callBack">资源回调</param>
     /// <param name="resourceScope">请求打断管理器(目前要求必传)</param>
+    /// <param name="parent">实例化对象的父节点</param>
     /// <param name="loadType">资源加载类型</param>
     /// <returns></returns>
     public AssetRequestHandle GetPrefabInstance(string resName, Action<GameObject, AssetRequestHandle> callBack,
-                                                ResourceScope resourceScope,
+                                                ResourceScope resourceScope, Transform parent = null,
                                                 ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
         AssetLoader assetLoader;
@@ -140,7 +141,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                 return;
             }
             var modelPrefab = loader.ObtainAsset<GameObject>();
-            var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
+            var modelinstance = UnityEngine.Object.Instantiate(modelPrefab, parent);
             resourceScope.BindAsset<GameObject>(loader, modelinstance);
 #if UNITY_EDITOR
             // ResourceUtility.FindMeshRenderShaderBack(modelinstance);
@@ -160,10 +161,11 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callBack">资源回调</param>
     /// <param name="resourceScope">请求打断管理器(目前要求必传)</param>
+    /// <param name="parent">实例化对象的父节点</param>
     /// <param name="loadType">资源加载类型</param>
     /// <returns></returns>
     public AssetRequestHandle GetPrefabInstanceAsync(string resName, Action<GameObject, AssetRequestHandle> callBack,
-                                                     ResourceScope resourceScope,
+                                                     ResourceScope resourceScope, Transform parent = null,
                                                      ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
         AssetLoader assetLoader;
@@ -180,7 +182,7 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                 return;
             }
             var modelPrefab = resourceScope.ObtainAsset<GameObject>(loader);
-            var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
+            var modelinstance = UnityEngine.Object.Instantiate(modelPrefab, parent);
             resourceScope.BindAsset<GameObject>(loader, modelinstance);
 #if UNITY_EDITOR
             // ResourceUtility.FindMeshRenderShaderBack(modelinstance);
