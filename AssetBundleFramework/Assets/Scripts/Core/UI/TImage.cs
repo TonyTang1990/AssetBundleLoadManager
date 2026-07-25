@@ -75,7 +75,7 @@ namespace TUI
         }
 
         /// <summary>
-        /// 设置图集精灵
+        /// 设置Sprite
         /// </summary>
         /// <param name="spriteName"></param>
         /// <param name="async">是否异步</param>
@@ -94,13 +94,43 @@ namespace TUI
         }
 
         /// <summary>
+        /// 设置图集精灵
+        /// </summary>
+        /// <param name="atlasName"></param>
+        /// <param name="spriteName"></param>
+        /// <param name="async"></param>
+        /// <returns></returns>
+        public AssetRequestHandle SetSpriteAtlasSprite(string atlasName, string spriteName, bool async = false)
+        {
+            if(string.IsNullOrEmpty(atlasName) || string.IsNullOrEmpty(spriteName))
+            {
+                Debug.LogError("TImage.SetSpriteAtlasSprite失败，atlasName或spriteName为空!");
+                return null;
+            }
+            if(!async)
+            {
+                return AtlasManager.Singleton.SetTImageSpriteAtlas(this, atlasName, spriteName);
+            }
+            return AtlasManager.Singleton.SetTImageSpriteAtlasAsync(this, atlasName, spriteName);
+        }
+
+        /// <summary>
         /// 设置子图集精灵
         /// </summary>
         /// <param name="spriteName"></param>
         /// <param name="subAssetName"></param>
-        public bool SetSubSprite(string spriteName, string subAssetName)
+        public AssetRequestHandle SetSubSprite(string spriteName, string subAssetName, bool async = false)
         {
-            return true;
+            if(string.IsNullOrEmpty(spriteName) || string.IsNullOrEmpty(subAssetName))
+            {
+                Debug.LogError("TImage.SetSubSprite失败，spriteName或subAssetName为空!");
+                return null;
+            }
+            if(!async)
+            {
+                return AtlasManager.Singleton.SetTImageSubSprite(this, spriteName, subAssetName);
+            }
+            return AtlasManager.Singleton.SetTImageSubSpriteAsync(this, spriteName, subAssetName);
         }
 
         /// <summary>

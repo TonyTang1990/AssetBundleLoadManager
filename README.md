@@ -375,6 +375,7 @@ Tools->Assets->Asset相关处理
 2. **AB打包和加载默认使用SBP，修改成老版打包需添加OLD_ASSET_BUILD_PIPELINE宏**
 3. **老版AB打包只支持Asset小写全路径，所以针对老版AB打包和加载Asset本人都统一成了小写处理**
 4. **为了支持SpriteAtla和Sprite都能直接通过代码加载，需要将SpriteAtlas和参与打包的Sprite打包到一起**
+5. **TImage和TRawImage提供了快速设置Sprite和Texture的相关接口(比如TImage.SetSingleSprite()和TRawImage.SetRawImage())**
 
 # 重大问题修复
 

@@ -280,7 +280,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AtlasManager.Singleton.SetTImageSingleSprite(TImgBG, param1);
+            TImgBG.SetSingleSprite(param1);
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AtlasManager.Singleton.SetTImageSpriteAtlas(TImgBG, param1, param2);
+            TImgBG.SetSpriteAtlasSprite(param1, param2);
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AtlasManager.Singleton.SetTImageSubSprite(TImgBG, param1, param2);
+            TImgBG.SetSubSprite(param1, param2);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AtlasManager.Singleton.SetTImageSpriteAtlas(TImgBG, param1, param2);
+            TImgBG.SetSpriteAtlasSprite(param1, param2);
         }
 
         /// <summary>
@@ -331,7 +331,7 @@ namespace TResource
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
             TRawImgBG.PrintTRawImageInfo();
-            AtlasManager.Singleton.SetRawImage(TRawImgBG, param1);
+            TRawImgBG.SetRawImage(param1);
             TRawImgBG.PrintTRawImageInfo();
         }
 
