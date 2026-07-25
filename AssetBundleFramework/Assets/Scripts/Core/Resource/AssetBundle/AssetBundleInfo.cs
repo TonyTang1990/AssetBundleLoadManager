@@ -127,7 +127,7 @@ namespace TResource
             // AB模式释放指定AB时，需要减少依赖AB信息的索引计数
             for (int i = 0, length = mDepABPaths.Length; i < length; i++)
             {
-                var depABInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetAssetBundleInfo(mDepABPaths[i]);
+                var depABInfo = ResourceModuleManager.Singleton.GetAssetBundleInfo(mDepABPaths[i]);
                 depABInfo?.Release();
             }
             mDepABPaths = null;
@@ -136,7 +136,7 @@ namespace TResource
             // 同时回收所有应加载的AssetInfo信息
             foreach (var assetInfo in AllLoadedAssetInfoMap)
             {
-                ResourceModuleManager.Singleton.CurrentResourceModule.DeleteAssetInfo(assetInfo.Key);
+                ResourceModuleManager.Singleton.DeleteAssetInfo(assetInfo.Key);
             }
             AllLoadedAssetInfoMap.Clear();
             LoaderManager.Singleton.DeleteLoaderByPath(ResourcePath);

@@ -105,9 +105,14 @@ namespace TResource
         private AudioSource mBGMAudioSource;
 
         /// <summary>
-        /// 当前播放视频路径
+        /// 当前播放视频名(含后缀)
         /// </summary>
-        private string mCurrentPlayVideoPath = null;
+        private string mCurrentPlayVideoName = null;
+        
+        /// <summary>
+        /// GameLuancher生命周期的资源计数释放+请求打断管理器
+        /// </summary>
+        private ResourceScope mResourceScope = new ResourceScope();
 
         private void Awake()
         {
@@ -152,6 +157,7 @@ namespace TResource
 
         private void OnDestroy()
         {
+            mResourceScope.Clear();
         }
 
         /// <summary>
@@ -232,7 +238,8 @@ namespace TResource
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                }
+                },
+                mResourceScope
             );
         }
 
@@ -260,7 +267,7 @@ namespace TResource
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
             var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-            AtlasManager.Singleton.SetImageSingleSprite(image, param1);
+            AtlasManager.Singleton.SetImageSingleSprite(image, param1, mResourceScope);
         }
 
         /// <summary>
@@ -336,11 +343,16 @@ namespace TResource
             DIYLog.Log("onPlayBGM()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            AssetLoader assetLoader;
-            AudioManager.Singleton.PlayBGM(
-                param1,
-                out assetLoader
-            );
+            AudioManager.Singleton.PlayBGM(param1);
+        }
+
+        /// <summary>
+        /// 停止背景音乐
+        /// </summary>
+        public void onStopBGM()
+        {
+            DIYLog.Log("onStopBGM()");
+            AudioManager.Singleton.StopBGM();
         }
 
         /// <summary>
@@ -370,13 +382,13 @@ namespace TResource
             var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
             var image = btnloadmat.GetComponent<Image>();
             ResourceManager.Singleton.GetMaterial(
-                image,
                 param1,
                 (material, assetRequestHandle) =>
                 {
                     Material mat = material;
                     image.material = mat;
-                }
+                },
+                mResourceScope
             );
         }
 
@@ -386,12 +398,13 @@ namespace TResource
         public void onLoadActorPrefab()
         {
             DIYLog.Log("onLoadActorPrefab()");
-            ModelManager.Singleton.GetModelInstance(
+            ResourceManager.Singleton.GetPrefabInstance(
                 "pre_Zombunny.prefab",
                 (instance, assetRequestHandle) =>
                 {
                     mActorInstance = instance;
-                }
+                },
+                mResourceScope
             );
         }
 
@@ -412,8 +425,7 @@ namespace TResource
             DIYLog.Log("onPreloadAtlas()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            AssetLoader assetLoader;
-            AtlasManager.Singleton.LoadAtlas(param1, out assetLoader, null, ResourceLoadType.PermanentLoad);
+            AtlasManager.Singleton.LoadAtlas(param1, mResourceScope, null, ResourceLoadType.PermanentLoad);
             // 如果像释放计数，需要调用assetLoader.ReleaseAsset()
         }
 
@@ -428,6 +440,7 @@ namespace TResource
 
 
             },
+            mResourceScope,
             ResourceLoadType.PermanentLoad);
         }
 
@@ -463,15 +476,14 @@ namespace TResource
             {
                 onDestroyWindowInstance();
             }
-            AssetLoader assetLoader;
             ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
-                out assetLoader,
                 (prefabInstance, assetRequestHandle) =>
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                }
+                },
+                mResourceScope
             );
         }
 
@@ -485,18 +497,17 @@ namespace TResource
             {
                 onDestroyWindowInstance();
             }
-            AssetLoader assetLoader;
             var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
-                out assetLoader,
                 (prefabInstance, assetRequestHandle) =>
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                }
+                },
+                mResourceScope
             );
             // 未开始加载时将异步转同步加载
-            assetLoader.LoadImmediately();
+            assetRequestHandle.LoadImmediately();
         }
 
         /// <summary>
@@ -509,28 +520,27 @@ namespace TResource
             {
                 onDestroyWindowInstance();
             }
-            AssetLoader assetLoader;
             var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
-                out assetLoader,
                 (prefabInstance, assetRequestHandle) =>
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                }
+                },
+                mResourceScope
             );
-            StartCoroutine(WaitLoadCoroutine(assetLoader));
+            StartCoroutine(WaitLoadCoroutine(assetRequestHandle));
         }
 
         /// <summary>
         /// 等待加载携程
         /// </summary>
         /// <returns></returns>
-        private IEnumerator WaitLoadCoroutine(AssetLoader assetLoader)
+        private IEnumerator WaitLoadCoroutine(AssetRequestHandle assetRequestHandle)
         {
             yield return new WaitForEndOfFrame();
             // 开始异步加载后转同步加载
-            assetLoader.LoadImmediately();
+            assetRequestHandle.LoadImmediately();
         }
 
         /// <summary>
@@ -543,10 +553,8 @@ namespace TResource
             {
                 onDestroyWindowInstance();
             }
-            AssetLoader assetLoader;
             var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
-                out assetLoader,
                 (prefabInstance, assetRequestHandle) =>
                 {
                     DIYLog.Log($"ResourceManager.Singleton.getPrefabInstanceAsync()");
@@ -554,7 +562,8 @@ namespace TResource
                     onDestroyWindowInstance();
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                }
+                },
+                mResourceScope
             );
             // 异步未开始时触发同步加载2
             ResourceManager.Singleton.GetPrefabInstance("MainWindow.prefab",
@@ -565,7 +574,8 @@ namespace TResource
                     onDestroyWindowInstance();
                     mMainWindow = instance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                }
+                },
+                mResourceScope
             );
         }
 
@@ -611,15 +621,14 @@ namespace TResource
             {
                 onDestroyWindowInstance();
             }
-            AssetLoader assetLoader;
             var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
-                out assetLoader,
                 (prefabInstance, assetRequestHandle) =>
                 {
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                }
+                },
+                mResourceScope
             );
             // 取消异步加载请求
             assetRequestHandle.Cancel();
@@ -633,10 +642,8 @@ namespace TResource
             DIYLog.Log("onMultipleAsyncLoadTSprite()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            AssetLoader assetLoader1;
-            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
-            AssetLoader assetLoader2;
-            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param1, out assetLoader2);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param1);
         }
 
         /// <summary>
@@ -649,10 +656,8 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AssetLoader assetLoader1;
-            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1, out assetLoader1);
-            AssetLoader assetLoader2;
-            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param2, out assetLoader2);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param2);
         }
 
 
@@ -666,10 +671,8 @@ namespace TResource
             {
                 onDestroyWindowInstance();
             }
-            AssetLoader assetLoader;
             var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
-                out assetLoader,
                 (prefabInstance, assetRequestHandle) =>
                 {
                     // 第二次加载因为已经加载过可能出现立刻回到的情况
@@ -678,7 +681,8 @@ namespace TResource
                     Debug.Log($"getPrefabInstanceAsync()");
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                }
+                },
+                mResourceScope
             );
             // 取消异步加载请求后同步加载窗口
             assetRequestHandle.Cancel();
@@ -692,7 +696,8 @@ namespace TResource
                     Debug.Log($"getPrefabInstance()");
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                }
+                },
+                mResourceScope
             );
         }
 
@@ -1065,6 +1070,15 @@ namespace TResource
         }
 
         /// <summary>
+        /// 清理ResourceScope所有资源
+        /// </summary>
+        public void onClearResourceScope()
+        {
+            DIYLog.Log("onClearResourceScope()");
+            mResourceScope.Clear();
+        }
+
+        /// <summary>
         /// 强制卸载指定AB
         /// </summary>
         public void onForceUnloadSpecificAB()
@@ -1089,8 +1103,7 @@ namespace TResource
         public void onForceUnloadAllResources()
         {
             DIYLog.Log("onForceUnloadAllResources()");
-            var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule;
-            assetbundleresourcemodule.ForceUnloadAllResources();
+            ResourceModuleManager.Singleton.ForceUnloadAllResources();
             Resources.UnloadUnusedAssets();
         }
 
@@ -1114,19 +1127,27 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             ReleasePlayedVideoRes();
             // TOOD: 封装视频播放组件，关闭视频播放时释放资源
-            var videoClip = ResourceManager.Singleton.GetVideoClip(param1);
-            if(VideoPlayerComponent.targetTexture != null &&
-               !VideoPlayerComponent.targetTexture.IsCreated())
+            var videoClip = ResourceManager.Singleton.GetVideoClip(param1, (videoClip, assetRequestHandle) =>
             {
-                VideoPlayerComponent.targetTexture.Create();
-            }
-            VideoPlayerComponent.clip = videoClip;
-            if(videoClip != null)
-            {
-                VideoPlayerComponent.Play();
-                mCurrentPlayVideoPath = param1;
-            }
-            VideoRawImage.enabled = true;
+                if(videoClip == null)
+                {
+                    return;
+                }
+                if(VideoPlayerComponent.targetTexture != null &&
+                !VideoPlayerComponent.targetTexture.IsCreated())
+                {
+                    VideoPlayerComponent.targetTexture.Create();
+                }
+                VideoPlayerComponent.clip = videoClip;
+                if(videoClip != null)
+                {
+                    VideoPlayerComponent.Play();
+                    mCurrentPlayVideoName = param1;
+                }
+                VideoRawImage.enabled = true;
+            },
+            mResourceScope
+            );
         }
 
         /// <summary>
@@ -1147,12 +1168,12 @@ namespace TResource
         /// </summary>
         private void ReleasePlayedVideoRes()
         {
-            if(string.IsNullOrEmpty(mCurrentPlayVideoPath))
+            if(string.IsNullOrEmpty(mCurrentPlayVideoName))
             {
                 return;
             }
-            ResourceModuleManager.Singleton.ReleaseAsset(mCurrentPlayVideoPath);
-            mCurrentPlayVideoPath = null;
+            mResourceScope.ReleaseResourceByName(mCurrentPlayVideoName);
+            mCurrentPlayVideoName = null;
         }
 
         /// <summary>
@@ -1170,14 +1191,6 @@ namespace TResource
                 RenderTexture.active = prev;
                 videioRenderTexture.DiscardContents();
             }            
-        }
-
-        /// <summary>
-        /// 自定义按钮点击挂载指定响应
-        /// </summary>
-        public void onTButtonClick()
-        {
-            DIYLog.Log("onTButtonClick()");
         }
 
         /// <summary>

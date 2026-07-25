@@ -228,7 +228,7 @@ namespace TResource
                 for (int i = 0, length = DepABPaths.Length; i < length; i++)
                 {
                     mLoadUnCompleteABPathMap.Add(DepABPaths[i], true);
-                    depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetOrCreateAssetBundleInfo(DepABPaths[i], ResourceLoadType.NormalLoad);
+                    depAssetBundleInfo = ResourceModuleManager.Singleton.GetOrCreateAssetBundleInfo(DepABPaths[i], ResourceLoadType.NormalLoad);
                     DepAssetBundleInfoList.Add(depAssetBundleInfo);
                     depAssetBundleInfo.Retain();
                 }

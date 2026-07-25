@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TResource;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -45,19 +46,64 @@ namespace TUI
         public float AlphaHitTestMinimumThreshold = 0f;
 
         /// <summary>
-        /// Asset加载器
-        /// </summary>
-        public TResource.AssetLoader Loader
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// 当前图片路径
         /// </summary>
         [HideInInspector]
         public string TexturePath;
+
+        /// <summary>
+        /// 资源计数作用域
+        /// </summary>
+        public ResourceScope ResourceScope
+        {
+            get;
+            private set;
+        } = new ResourceScope();
+
+        /// <summary>
+        /// 响应销毁
+        /// </summary>
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            ResourceScope.Clear();
+        }
+
+        /// <summary>
+        /// 设置图集精灵
+        /// </summary>
+        /// <param name="textureName"></param>
+        /// <param name="async">是否异步</param>
+        public AssetRequestHandle SetRawImage(string textureName, bool async = false)
+        {
+            if(string.IsNullOrEmpty(textureName))
+            {
+                Debug.LogError("TRawImage.SetRawImage失败，textureName为空!");
+                return null;
+            }
+            if(!async)
+            {
+                return AtlasManager.Singleton.SetRawImage(this, textureName);
+            }
+            return AtlasManager.Singleton.SetRawImageAsync(this, textureName);
+        }
+
+        /// <summary>
+        /// 释放当前正在使用的Texture资源
+        /// </summary>
+        public bool ReleaseTextureRes()
+        {
+            if(string.IsNullOrEmpty(TexturePath))
+            {
+                return true;
+            }
+            var result = ResourceScope.ReleaseResource(TexturePath);
+            if(result)
+            {
+                TexturePath = null;
+            }
+            return result;
+        }
 
         /// <summary>
         /// See IMaterialModifier.GetModifiedMaterial
@@ -170,7 +216,7 @@ namespace TUI
         public void PrintTRawImageInfo()
         {
             DIYLog.Log($"TexturePath = {TexturePath}");
-            var refcount = Loader != null ? Loader.GetReferenceCount().ToString() : "无";
+            var refcount = ResourceScope.TotalReferenceCount;
             DIYLog.Log($"TexturePath引用计数 = {refcount}");
         }
     }

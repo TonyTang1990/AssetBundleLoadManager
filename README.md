@@ -53,6 +53,10 @@ Note:
 2. 依赖AB通过索引计数管理，只要原始AB不被卸载，依赖AB就不会被卸载
 3. 已加载的AB资源加载类型不允许改变(直到加载后被卸载再次加载才能切换)
 
+上层逻辑资源加载计数，资源释放和请求取消统一封装设计:
+
+1. 提供上层特定上下文资源加载计数统计和统一的资源释放和资源加载请求取消机制(**ResourceScope类**)。
+
 #### Demo使用说明
 
 先打开资源调试工具
@@ -86,7 +90,8 @@ Tools->Debug->资源调试工具
        {
            mMainWindow = prefabInstance;
            mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-       }
+       },
+       mResourceScope
    );
    ```
    
@@ -114,7 +119,8 @@ public void onAsynToSyncLoadWindow()
         {
             mMainWindow = prefabInstance;
             mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-        }
+        },
+        mResourceScope
     );
     // 将异步转同步加载
     assetLoader.loadImmediately();
@@ -155,6 +161,7 @@ public void onLoadPermanentShaderList()
     ResourceManager.Singleton.loadAllShader(() =>
     {
     },
+    mResourceScope,
     ResourceLoadType.PermanentLoad);
 }
 ```
@@ -374,6 +381,7 @@ Tools->Assets->Asset相关处理
 1. **修复资源打包在2020和2021版本会报错(BuildPipeline error is thrown when building Asset Bundles](https://issuetracker.unity3d.com/issues/buildpipeline-error-is-thrown-when-building-asset-bundles))问题(2022/06/03)**
 2. **将面向Asset路径加载的方式改造成支持Asset名(含后缀)的加载方式(2026/07/14)**
 3. **支持SubAsset的加载(比如Multiple Sprite)通过计数和对象绑定到主Asset实现SubAsset的加载和计数，详情参考AtlasManager.SetTImageSubSprite()方法(2026/07/21)**
+4. **支持了特定上下文(比如窗口生命周期)的资源加载计数统计+资源计数释放+资源请求取消机制(ResourceScope类)。(2026/07/25)**
 
 # 待做事项
 

@@ -64,6 +64,7 @@
     <Analyzer Include="G:\Software\UnityAllVersions\2022.3.62f3\2022.3.62f3\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Core\Resource\ResourceScope\ResourceScope.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_language_cn.cs" />
     <Compile Include="Assets\Scripts\DebugTools\VisibleLogUtility.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_s.cs" />

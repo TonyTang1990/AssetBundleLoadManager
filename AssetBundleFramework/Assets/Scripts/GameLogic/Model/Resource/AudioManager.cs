@@ -23,9 +23,9 @@ public class AudioManager : SingletonTemplate<AudioManager>
     public class SFXAudioInfo : IRecycle
     {
         /// <summary>
-        /// Asset加载器
+        /// 资源名(含后缀)
         /// </summary>
-        public AssetLoader Loader
+        public string AudioResName
         {
             get;
             set;
@@ -56,7 +56,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
 
         public void OnDispose()
         {
-            Loader = null;
+            AudioResName = null;
             SFXAudioGo = null;
             SFXAudioSource = null;
         }
@@ -83,14 +83,29 @@ public class AudioManager : SingletonTemplate<AudioManager>
     private int mSFXInstanceID;
 
     /// <summary>
+    /// 声音父节点Transform(包含所有音效+背景音乐)
+    /// </summary>
+    private Transform mSoundParentTransform;
+
+    /// <summary>
     /// 背景音效组件
     /// </summary>
     private AudioSource mBGMAudioSource;
 
     /// <summary>
-    /// 当前背景音乐的Asset加载器
+    /// 资源计数释放+请求打断管理器
     /// </summary>
-    private AssetLoader mCurrentBGMAssetLoader;
+    private ResourceScope mResourceScope;
+
+    /// <summary>
+    /// 当前背景音乐资源名(含后缀)
+    /// </summary>
+    private string mCurrentBGMResName;
+
+    /// <summary>
+    /// 是否静音所有声音(含所有音效+背景音乐)
+    /// </summary>
+    private bool mIsMuteAllSound = false;
 
     public AudioManager()
     {
@@ -99,9 +114,12 @@ public class AudioManager : SingletonTemplate<AudioManager>
         mSFXInstanceID = mSFXGoTemplate.GetInstanceID();
         mSFXGoTemplate.AddComponent<AudioSource>();
         mAudioGoPool.Init(mSFXGoTemplate, 5);
-        var bgmgo = new GameObject("BGMAudio");
-        UnityEngine.Object.DontDestroyOnLoad(bgmgo);
-        mBGMAudioSource = bgmgo.AddComponent<AudioSource>();
+        mSoundParentTransform = new GameObject("SoundParent").transform;
+        var bgmGo = new GameObject("BGMAudio");
+        UnityEngine.Object.DontDestroyOnLoad(bgmGo);
+        bgmGo.transform.SetParent(mSoundParentTransform, false);
+        mBGMAudioSource = bgmGo.AddComponent<AudioSource>();
+        mResourceScope = new ResourceScope();
 
         ObjectPool.Singleton.Initialize<SFXAudioInfo>(5);
     }
@@ -118,38 +136,44 @@ public class AudioManager : SingletonTemplate<AudioManager>
                                            Action<AudioClip, AssetRequestHandle> callBack = null,
                                            ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
-        var sfxgo = mAudioGoPool.Pop(mSFXGoTemplate);
-        return ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+        var sfxGo = mAudioGoPool.Pop(mSFXGoTemplate);
+        sfxGo.transform.SetParent(mSoundParentTransform, false);
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
             resName,
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
                 DIYLog.Log($"PlaySFXSound加载resName:{resName}完成!");
+                mResourceScope.RemoveRequest(assetRequestHandle);
                 if (loader == null || !assetRequestHandle.IsComplete)
                 {
+                    mAudioGoPool.Push(mSFXInstanceID, sfxGo);
                     callBack?.Invoke(null, assetRequestHandle);
                     return;
                 }
-                var sfxaudioinfo = ObjectPool.Singleton.Pop<SFXAudioInfo>();
-                var ac = loader.BindAsset<AudioClip>(sfxgo);
-                var audiosource = sfxgo.GetComponent<AudioSource>();
-                sfxaudioinfo.SFXAudioGo = sfxgo;
-                sfxaudioinfo.SFXAudioSource = audiosource;
-                sfxaudioinfo.Loader = loader;
-                audiosource.clip = ac;
-                audiosource.Play();
+                var sfxAudioInfo = ObjectPool.Singleton.Pop<SFXAudioInfo>();
+                var ac = mResourceScope.GetAsset<AudioClip>(loader);
+                var audioSource = sfxGo.GetComponent<AudioSource>();
+                sfxAudioInfo.SFXAudioGo = sfxGo;
+                sfxAudioInfo.SFXAudioSource = audioSource;
+                sfxAudioInfo.AudioResName = resName;
+                audioSource.clip = ac;
+                audioSource.mute = mIsMuteAllSound;
+                audioSource.Play();
                 TimerManager.Singleton.addUpdateTimer(() =>
                 {
-                    // 手动释放音效资源绑定，因为音效绑定对象会进池会导致无法满足释放条件
-                    sfxaudioinfo.SFXAudioSource.clip = null;
-                    sfxaudioinfo.Loader.ReleaseOwner(sfxaudioinfo.SFXAudioGo);
-                    mAudioGoPool.Push(mSFXInstanceID, sfxaudioinfo.SFXAudioGo);
-                    ObjectPool.Singleton.Push<SFXAudioInfo>(sfxaudioinfo);
+                    // 手动释放音效资源
+                    sfxAudioInfo.SFXAudioSource.clip = null;
+                    mResourceScope.ReleaseResourceByName(sfxAudioInfo.AudioResName);
+                    mAudioGoPool.Push(mSFXInstanceID, sfxAudioInfo.SFXAudioGo);
+                    ObjectPool.Singleton.Push<SFXAudioInfo>(sfxAudioInfo);
                 }, ac.length);
                 callBack?.Invoke(ac, assetRequestHandle);
             },
             loadType
         );
+        mResourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
     }
 
     /// <summary>
@@ -161,36 +185,76 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// <param name="callBack">回调</param>
     /// <param name="loadType">加载类型</param>
     /// <returns></returns>
-    public AssetRequestHandle PlayBGM(string resName, out AssetLoader assetLoader,
-                                      bool loop = true, Action<AudioClip, AssetRequestHandle> callBack = null,
+    public AssetRequestHandle PlayBGM(string resName, bool loop = true,
+                                      Action<AudioClip, AssetRequestHandle> callBack = null,
                                       ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
-        //背景音效是挂载DontDestroyOnLoad上会导致永远无法满足卸载条件，所以需要手动移除对象绑定
-        if (mCurrentBGMAssetLoader != null)
-        {
-            mCurrentBGMAssetLoader.ReleaseOwner(mBGMAudioSource);
-            mCurrentBGMAssetLoader = null;
-        }
-
-        return ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+        AssetLoader assetLoader;
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
             resName,
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
                 DIYLog.Log($"PlayBGM加载resName:{resName}完成!");
+                mResourceScope.RemoveRequest(assetRequestHandle);
                 if (loader == null || !assetRequestHandle.IsComplete)
                 {
                     callBack?.Invoke(null, assetRequestHandle);
                     return;
                 }
-                mCurrentBGMAssetLoader = loader;
-                var clip = loader.BindAsset<AudioClip>(mBGMAudioSource);
+                //背景音效是挂载DontDestroyOnLoad上会导致永远无法满足卸载条件，所以需要手动移除资源计数
+                ReleaseCurrentBgmRes();
+                mCurrentBGMResName = resName;
+                var clip = mResourceScope.GetAsset<AudioClip>(loader);
                 mBGMAudioSource.clip = clip;
                 mBGMAudioSource.loop = loop;
+                mBGMAudioSource.mute = mIsMuteAllSound;
                 mBGMAudioSource.Play();
                 callBack?.Invoke(clip, assetRequestHandle);
             },
             loadType
         );
+        mResourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
+    }
+
+    /// <summary>
+    /// 静音或取消静音所有声音(含所有音效+背景音乐)
+    /// </summary>
+    /// <param name="mute"></param>
+    public void MuteAllSound(bool mute)
+    {
+        mIsMuteAllSound = mute;
+        for(int index = 0, length = mSoundParentTransform.childCount; index < length; index++)
+        {
+            var child = mSoundParentTransform.GetChild(index);
+            var audioSource = child.GetComponent<AudioSource>();
+            if(audioSource != null)
+            {
+                audioSource.mute = mute;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 停止播放背景音乐
+    /// </summary>
+    public void StopBGM()
+    {
+        mBGMAudioSource.Stop();
+        mBGMAudioSource.clip = null;
+        ReleaseCurrentBgmRes();
+    }
+
+    /// <summary>
+    /// 释放当前背景音乐资源
+    /// </summary>
+    private void ReleaseCurrentBgmRes()
+    {
+        if (!string.IsNullOrEmpty(mCurrentBGMResName))
+        {
+            mResourceScope.ReleaseResourceByName(mCurrentBGMResName);
+            mCurrentBGMResName = null;
+        }
     }
 }

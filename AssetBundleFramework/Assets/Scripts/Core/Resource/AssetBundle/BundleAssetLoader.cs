@@ -106,7 +106,7 @@ namespace TResource
             // 创建加载器时就添加相关AssetBundle计数，确保资源加载管理正确
             // 后续加载取消时会返还对应计数，AB的计数会在AB加载完成后返还(因为AB的计数会在AB加载器创建时添加计数)
             // 仅主AB采取和Asset加载方式一致的方式，依赖AB采用NormalLoad方式
-            mABInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetOrCreateAssetBundleInfo(MainAssetBundlePath, LoadType);
+            mABInfo = ResourceModuleManager.Singleton.GetOrCreateAssetBundleInfo(MainAssetBundlePath, LoadType);
             mABInfo?.Retain();
             // 关联AssetInfo和AssetBundleInfo
             mABInfo?.AddAssetInfo(mAssetInfo);
@@ -115,7 +115,7 @@ namespace TResource
                 AssetBundleInfo depAssetBundleInfo;
                 for (int i = 0, length = DepABPaths.Length; i < length; i++)
                 {
-                    depAssetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetOrCreateAssetBundleInfo(DepABPaths[i], ResourceLoadType.NormalLoad);
+                    depAssetBundleInfo = ResourceModuleManager.Singleton.GetOrCreateAssetBundleInfo(DepABPaths[i], ResourceLoadType.NormalLoad);
                     mDepABInfoList.Add(depAssetBundleInfo);
                     depAssetBundleInfo.Retain();
                 }

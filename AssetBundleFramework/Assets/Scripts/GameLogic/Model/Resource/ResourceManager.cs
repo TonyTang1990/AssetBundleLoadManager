@@ -31,60 +31,41 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// 加载所有Shader
     /// </summary>
     /// <param name="callback">资源会动啊</param>
+    /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
     /// <param name="loadtype">加载方式</param>
-    public AssetBundleRequestHandle LoadAllShader(Action callback, ResourceLoadType loadtype = ResourceLoadType.PermanentLoad)
+    public AssetBundleRequestHandle LoadAllShader(Action callback, ResourceScope resourceScope,
+                                                  ResourceLoadType loadtype = ResourceLoadType.PermanentLoad)
     {
         BundleLoader bundleLoader;
-        return ResourceModuleManager.Singleton.RequstABSync(
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstABSync(
         ResourceConstData.ShaderABName,
         out bundleLoader,
-        (loader, assetRequestHandle) =>
+        (bundleLoader, assetRequestHandle) =>
         {
             // 非AB模式会返回null
             DIYLog.Log($"LoadAllShader加载完成!");
-            if (loader == null || !assetRequestHandle.IsComplete)
+            resourceScope.RemoveRequest(assetRequestHandle);
+            if (bundleLoader == null || !assetRequestHandle.IsComplete)
             {
                 callback?.Invoke();
                 return;
             }
-            var bundle = loader?.GetAssetBundle();
+            var bundle = resourceScope.GetAssetBundle(bundleLoader);
             var allAssetNames = bundle?.GetAllAssetNames();
             if(allAssetNames != null)
             {
-                AssetLoader assetLoader;
                 for (int i = 0, length = allAssetNames.Length; i < length; i++)
                 {
                     var assetName = Path.GetFileName(allAssetNames[i]);
                     if (!assetName.EndsWith(".shadervariants"))
                     {
-                        ResourceModuleManager.Singleton.RequstAssetSync<Shader>(
-                        assetName,
-                        out assetLoader,
-                        (loader2, assetRequestHandle2) =>
-                        {
-                            DIYLog.Log($"LoadAllShader加载assetName:{assetName}完成!");
-                            if (loader2 == null || !assetRequestHandle2.IsComplete)
-                            {
-                                return;
-                            }
-                            // SVC的WarmUp就会触发相关Shader的预编译，触发预编译之后再加载Shader Asset即可
-                            loader2.ObtainAsset<Shader>();
-                        },
-                        loadtype);
+                        LoadShader<Shader>(assetName, resourceScope, null, loadtype);
                     }
                     else
                     {
-                        ResourceModuleManager.Singleton.RequstAssetSync<ShaderVariantCollection>(
-                        assetName,
-                        out assetLoader,
-                        (loader3, assetRequestHandle3) =>
+                        LoadShader<ShaderVariantCollection>(assetName, resourceScope,
+                        (shaderVariants) =>
                         {
-                            DIYLog.Log($"LoadAllShader加载assetName:{assetName}完成!");
-                            if (loader3 == null || !assetRequestHandle3.IsComplete)
-                            {
-                                return;
-                            }
-                            var shaderVariants = loader3.GetAsset<ShaderVariantCollection>();
                             // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
                             shaderVariants?.WarmUp();
                         },
@@ -95,107 +76,148 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             callback?.Invoke();
         },
         loadtype);
+        resourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
+    }
+
+    /// <summary>
+    /// 加载指定Shader
+    /// </summary>
+    /// <param name="shaderName">Shader资源名(含后缀)</param>
+    /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
+    /// <param name="callBack">加载完成回调</param>
+    /// <param name="loadType">加载方式</param>
+    public AssetRequestHandle LoadShader<T>(string shaderName, ResourceScope resourceScope,
+                                         Action<T> callBack = null,
+                                         ResourceLoadType loadType = ResourceLoadType.PermanentLoad)
+                                         where T : UnityEngine.Object
+    {
+        AssetLoader assetLoader;
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<T>(
+        shaderName,
+        out assetLoader,
+        (loader, assetRequestHandle) =>
+        {
+            DIYLog.Log($"LoadShader加载shaderName:{shaderName}完成!");
+            resourceScope.RemoveRequest(assetRequestHandle);
+            if (loader == null || !assetRequestHandle.IsComplete)
+            {
+                return;
+            }
+            var asset = resourceScope.GetAsset<T>(loader);
+            callBack?.Invoke(asset as T);
+        },
+        loadType);
+        resourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
     }
 
     /// <summary>
     /// 获取一个实例资源对象
+    /// Note:
+    /// 像GameObject这类型资源直接走对象绑定GameObject，ResourceScrop只负责资源请求取消不负责资源计数清理
     /// </summary>
     /// <param name="resName">资源名(含后缀)</param>
-    /// <param name="callback">资源回调</param>
-    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="callBack">资源回调</param>
+    /// <param name="resourceScope">请求打断管理器(目前要求必传)</param>
+    /// <param name="loadType">资源加载类型</param>
     /// <returns></returns>
-    public AssetRequestHandle GetPrefabInstance(string resName, Action<GameObject, AssetRequestHandle> callback = null,
-                                                ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
+    public AssetRequestHandle GetPrefabInstance(string resName, Action<GameObject, AssetRequestHandle> callBack,
+                                                ResourceScope resourceScope,
+                                                ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
         AssetLoader assetLoader;
-        return ResourceModuleManager.Singleton.RequstAssetSync<GameObject>(
-            resName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<GameObject>(
+        resName,
+        out assetLoader,
+        (loader, assetRequestHandle) =>
+        {
+            DIYLog.Log($"GetPrefabInstance加载resName:{resName}完成!");
+            resourceScope.RemoveRequest(assetRequestHandle);
+            if (loader == null || !assetRequestHandle.IsComplete)
             {
-                DIYLog.Log($"GetPrefabInstance加载resName:{resName}完成!");
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callback?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-                var prefab = loader.ObtainAsset<GameObject>();
-                var prefabInstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
-                //不修改实例化后的名字，避免上层逻辑名字对不上
-                //goinstance.name = goasset.name;
-                // 绑定owner对象，用于判定是否还有有效对象引用AB资源
-                loader.BindAsset<GameObject>(prefabInstance);
-    #if UNITY_EDITOR
-                // ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
-    #endif
-                callback?.Invoke(prefabInstance, assetRequestHandle);
-            },
-            loadtype
-        );
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            var modelPrefab = loader.ObtainAsset<GameObject>();
+            var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
+            resourceScope.BindAsset<GameObject>(loader, modelinstance);
+#if UNITY_EDITOR
+            // ResourceUtility.FindMeshRenderShaderBack(modelinstance);
+#endif
+            callBack?.Invoke(modelinstance, assetRequestHandle);
+        },
+        loadType);
+        resourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
     }
 
     /// <summary>
     /// 异步获取一个实例资源对象
+    /// Note:
+    /// 像GameObject这类型资源直接走对象绑定GameObject，ResourceScrop只负责资源请求取消不负责资源计数清理
     /// </summary>
     /// <param name="resName">资源名(含后缀)</param>
-    /// <param name="callback">资源回调</param>
-    /// <param name="loadtype">资源加载类型</param>
+    /// <param name="callBack">资源回调</param>
+    /// <param name="resourceScope">请求打断管理器(目前要求必传)</param>
+    /// <param name="loadType">资源加载类型</param>
     /// <returns></returns>
-    public AssetRequestHandle GetPrefabInstanceAsync(string resName, out AssetLoader assetLoader,
-                                                     Action<GameObject, AssetRequestHandle> callback = null,
-                                                     ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
+    public AssetRequestHandle GetPrefabInstanceAsync(string resName, Action<GameObject, AssetRequestHandle> callBack,
+                                                     ResourceScope resourceScope,
+                                                     ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
-        return ResourceModuleManager.Singleton.RequstAssetAsync<GameObject>(
-            resName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
+        AssetLoader assetLoader;
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetAsync<GameObject>(
+        resName,
+        out assetLoader,
+        (loader, assetRequestHandle) =>
+        {
+            DIYLog.Log($"GetPrefabInstanceAsync异步加载resName:{resName}完成!");
+            resourceScope.RemoveRequest(assetRequestHandle);
+            if (loader == null || !assetRequestHandle.IsComplete)
             {
-                DIYLog.Log($"GetPrefabInstanceAsync异步加载resName:{resName}完成!");
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callback?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-                var prefab = loader.ObtainAsset<GameObject>();
-                var prefabInstance = UnityEngine.Object.Instantiate<GameObject>(prefab);
-                //不修改实例化后的名字，避免上层逻辑名字对不上
-                //goinstance.name = goasset.name;
-                // 绑定owner对象，用于判定是否还有有效对象引用AB资源
-                loader.BindAsset<GameObject>(prefabInstance);
-    #if UNITY_EDITOR
-                // ResourceUtility.FindMeshRenderShaderBack(prefabinstance);
-    #endif
-                callback?.Invoke(prefabInstance, assetRequestHandle);
-            },
-            loadtype
-        );
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            var modelPrefab = resourceScope.ObtainAsset<GameObject>(loader);
+            var modelinstance = UnityEngine.Object.Instantiate(modelPrefab);
+            resourceScope.BindAsset<GameObject>(loader, modelinstance);
+#if UNITY_EDITOR
+            // ResourceUtility.FindMeshRenderShaderBack(modelinstance);
+#endif
+            callBack?.Invoke(modelinstance, assetRequestHandle);
+        },
+        loadType);
+        resourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
     }
 
     /// <summary>
     /// 获取一个材质
     /// </summary>
-    /// <param name="owner">资源绑定对象</param>
     /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callback">资源回调</param>
+    /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public AssetRequestHandle GetMaterial(UnityEngine.Object owner, string resName,
-                                          Action<Material, AssetRequestHandle> callback = null,
+    public AssetRequestHandle GetMaterial(string resName, Action<Material, AssetRequestHandle> callback,
+                                          ResourceScope resourceScope,
                                           ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
         AssetLoader assetLoader;
-        return ResourceModuleManager.Singleton.RequstAssetSync<Material>(
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<Material>(
             resName,
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
                 DIYLog.Log($"GetMaterial加载resName:{resName}完成!");
+                resourceScope.RemoveRequest(assetRequestHandle);
                 if (loader == null || !assetRequestHandle.IsComplete)
                 {
                     callback?.Invoke(null, assetRequestHandle);
                     return;
                 }
-                var material = loader.BindAsset<Material>(owner);
+                var material = resourceScope.GetAsset<Material>(loader);
     #if UNITY_EDITOR
                 // ResourceUtility.FindMaterialShaderBack(material);
     #endif
@@ -203,34 +225,36 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             },
             loadtype
         );
+        resourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
     }
 
     /// <summary>
     /// 异步获取一个材质
     /// </summary>
-    /// <param name="owner">资源绑定对象</param>
     /// <param name="resName">资源名(含后缀)</param>
-    /// <param name="assetLoader">Asset加载器</param>
     /// <param name="callback">资源回调</param>
+    /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
     /// <param name="loadtype">资源加载类型</param>
     /// <returns></returns>
-    public AssetRequestHandle GetMaterialAsync(UnityEngine.Object owner, string resName,
-                                               out AssetLoader assetLoader,
-                                               Action<Material, AssetRequestHandle> callback = null,
+    public AssetRequestHandle GetMaterialAsync(string resName, Action<Material, AssetRequestHandle> callback,
+                                               ResourceScope resourceScope,
                                                ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        return ResourceModuleManager.Singleton.RequstAssetAsync<Material>(
+        AssetLoader assetLoader;
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetAsync<Material>(
             resName,
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
                 DIYLog.Log($"GetMaterialAsync异步加载resName:{resName}完成!");
+                resourceScope.RemoveRequest(assetRequestHandle);
                 if (loader == null || !assetRequestHandle.IsComplete)
                 {
                     callback?.Invoke(null, assetRequestHandle);
                     return;
                 }
-                var material = loader.BindAsset<Material>(owner);
+                var material = resourceScope.GetAsset<Material>(loader);
 #if UNITY_EDITOR
                 // ResourceUtility.FindMaterialShaderBack(material);
 #endif
@@ -238,67 +262,74 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
             },
             loadtype
         );
+        resourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
     }
 
     /// <summary>
     /// 获取指定音效
     /// </summary>
-    /// <param name="owner"></param>
     /// <param name="resName">资源名(含后缀)</param>
     /// <param name="callback"></param>
+    /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
     /// <param name="loadtype"></param>
-    public AssetRequestHandle GetAudioClip(UnityEngine.Object owner, string resName,
-                                           Action<AudioClip, AssetRequestHandle> callback = null,
+    public AssetRequestHandle GetAudioClip(string resName, Action<AudioClip, AssetRequestHandle> callback,
+                                           ResourceScope resourceScope,
                                            ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
         AssetLoader assetLoader;
-        return ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
             resName,
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
                 DIYLog.Log($"GetAudioClip加载resName:{resName}完成!");
+                resourceScope.RemoveRequest(assetRequestHandle);
                 if (loader == null || !assetRequestHandle.IsComplete)
                 {
                     callback?.Invoke(null, assetRequestHandle);
                     return;
                 }
-                var audioClip = loader.BindAsset<AudioClip>(owner);
+                var audioClip = resourceScope.GetAsset<AudioClip>(null);
                 callback?.Invoke(audioClip, assetRequestHandle);
             },
             loadtype
         );
+        resourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
     }
 
     /// <summary>
     /// 异步获取指定音效
     /// </summary>
-    /// <param name="owner"></param>
     /// <param name="resName">资源名(含后缀)</param>
-    /// <param name="assetLoader"></param>
     /// <param name="callback"></param>
+    /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
     /// <param name="loadtype"></param>
-    public AssetRequestHandle GetAudioClipAsync(UnityEngine.Object owner, string resName,
-                                                out AssetLoader assetLoader,
-                                                Action<AudioClip, AssetRequestHandle> callback = null,
+    public AssetRequestHandle GetAudioClipAsync(string resName, Action<AudioClip, AssetRequestHandle> callback,
+                                                ResourceScope resourceScope,
                                                 ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
-        return ResourceModuleManager.Singleton.RequstAssetAsync<AudioClip>(
+        AssetLoader assetLoader;
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetAsync<AudioClip>(
             resName,
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
                 DIYLog.Log($"GetAudioClipAsync异步加载resName:{resName}完成!");
+                resourceScope.RemoveRequest(assetRequestHandle);
                 if (loader == null || !assetRequestHandle.IsComplete)
                 {
                     callback?.Invoke(null, assetRequestHandle);
                     return;
                 }
-                var audioClip = loader.BindAsset<AudioClip>(owner);
+                var audioClip = resourceScope.GetAsset<AudioClip>(loader);
                 callback?.Invoke(audioClip, assetRequestHandle);
             },
             loadtype
         );
+        resourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
     }
 
     /// <summary>
@@ -306,22 +337,32 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     /// </summary>
     /// <param name="videoName"></param>
     /// <param name="callback"></param>
+    /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
     /// <param name="loadtype"></param>
     /// <returns></returns>
-    public VideoClip GetVideoClip(string videoName, ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
+    public AssetRequestHandle GetVideoClip(string videoName, Action<VideoClip, AssetRequestHandle> callback,
+                                           ResourceScope resourceScope,
+                                           ResourceLoadType loadtype = ResourceLoadType.NormalLoad)
     {
         AssetLoader assetLoader;
-        ResourceModuleManager.Singleton.RequstAssetSync<VideoClip>(
+        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<VideoClip>(
             videoName,
             out assetLoader,
-            null,
+            (loader, assetRequestHandle) =>
+            {
+                DIYLog.Log($"GetVideoClip加载videoName:{videoName}完成!");
+                resourceScope.RemoveRequest(assetRequestHandle);
+                if (loader == null || !assetRequestHandle.IsComplete)
+                {
+                    callback?.Invoke(null, assetRequestHandle);
+                    return;
+                }
+                var videoClip = resourceScope.GetAsset<VideoClip>(loader);
+                callback?.Invoke(videoClip, assetRequestHandle);
+            },
             loadtype
         );
-        VideoClip videoClip = null;
-        if(assetLoader != null)
-        {
-            videoClip = assetLoader.GetAsset<VideoClip>();
-        }
-        return videoClip;
+        resourceScope.RecordRequest(assetRequestHandle);
+        return assetRequestHandle;
     }
 }

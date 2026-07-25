@@ -160,7 +160,7 @@ namespace TResource
         /// <returns></returns>
         public AssetRequestHandle CreateAssetRequestHandle()
         {
-            return new AssetRequestHandle(GetNextRequestUID(), CancelAssetRequest);
+            return new AssetRequestHandle(GetNextRequestUID(), CancelAssetRequest, LoadAssetRequestImmediately);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace TResource
         /// <returns></returns>
         public AssetBundleRequestHandle CreateAssetBundleRequestHandle()
         {
-            return new AssetBundleRequestHandle(GetNextRequestUID(), CancelABRequest);
+            return new AssetBundleRequestHandle(GetNextRequestUID(), CancelABRequest, LoadABRequestImmediately);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace TResource
                                                                 where T : UnityEngine.Object
         {
             AssetDatabaseLoader assetDatabaseLoader = ObjectPool.Singleton.Pop<AssetDatabaseLoader>();
-            AssetInfo assetInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetOrCreateAssetInfo<T>(assetPath);
+            AssetInfo assetInfo = ResourceModuleManager.Singleton.GetOrCreateAssetInfo<T>(assetPath);
             assetDatabaseLoader.Init(assetPath, typeof(T), assetInfo, loadType, loadMethod);
             return assetDatabaseLoader;
         }
@@ -204,7 +204,7 @@ namespace TResource
                                                       where T : UnityEngine.Object
         {
             BundleAssetLoader assetLoader = ObjectPool.Singleton.Pop<BundleAssetLoader>();
-            AssetInfo assetInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetOrCreateAssetInfo<T>(assetPath, ownerABPath, loadType);
+            AssetInfo assetInfo = ResourceModuleManager.Singleton.GetOrCreateAssetInfo<T>(assetPath, ownerABPath, loadType);
             assetLoader.Init(assetPath, typeof(T), assetInfo, loadType, loadMethod);
             return assetLoader;
         }
@@ -222,7 +222,7 @@ namespace TResource
                                                        where T : BundleLoader
         {
             BundleLoader bundleLoader = ObjectPool.Singleton.Pop<T>();
-            AssetBundleInfo assetBundleInfo = ResourceModuleManager.Singleton.CurrentResourceModule.GetOrCreateAssetBundleInfo(abPath, loadType);
+            AssetBundleInfo assetBundleInfo = ResourceModuleManager.Singleton.GetOrCreateAssetBundleInfo(abPath, loadType);
             bundleLoader.Init(abPath, assetBundleInfo, depABPaths, loadType, loadMethod);
             return bundleLoader;
         }
@@ -438,6 +438,28 @@ namespace TResource
         }
 
         /// <summary>
+        /// 将指定请求UID的Asset加载任务转为同步加载
+        /// </summary>
+        /// <param name="requestUID"></param>
+        /// <returns></returns>
+        private bool LoadAssetRequestImmediately(int requestUID)
+        {
+            string assetPath = GetAssetByRequestUID(requestUID);
+            if (string.IsNullOrEmpty(assetPath))
+            {
+                Debug.LogError($"找不到请求UID:{requestUID}的Asset路径,Asset请求异步转同步失败!");
+                return false;
+            }
+            var assetLoader = GetAssetLoader(assetPath);
+            if (assetLoader == null || assetLoader.IsDone)
+            {
+                return false;
+            }
+            assetLoader.LoadImmediately();
+            return true;
+        }
+
+        /// <summary>
         /// 获取指定请求UID的AssetBundle路径
         /// </summary>
         /// <param name="requestUID"></param>
@@ -509,6 +531,28 @@ namespace TResource
             }
             var assetBundleLoader = GetAssetBundleLoader(assetBundlePath);
             return assetBundleLoader != null ? assetBundleLoader.CancelRequest(requestUID) : false;
+        }
+
+        /// <summary>
+        /// 将指定请求UID的AssetBundle加载任务转为同步加载
+        /// </summary>
+        /// <param name="requestUID"></param>
+        /// <returns></returns>
+        private bool LoadABRequestImmediately(int requestUID)
+        {
+            string assetBundlePath = GetABByRequestUID(requestUID);
+            if (string.IsNullOrEmpty(assetBundlePath))
+            {
+                Debug.LogError($"找不到请求UID:{requestUID}的AssetBundle路径,AssetBundle请求异步转同步失败!");
+                return false;
+            }
+            var assetBundleLoader = GetAssetBundleLoader(assetBundlePath);
+            if (assetBundleLoader == null || assetBundleLoader.IsDone)
+            {
+                return false;
+            }
+            assetBundleLoader.LoadImmediately();
+            return true;
         }
 
         #region 调试用

@@ -6,6 +6,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using TResource;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -44,19 +45,19 @@ namespace TUI
         public float AlphaHitTestMinimumThreshold = 0.1f;
 
         /// <summary>
-        /// 资源加载器(默认采用对象绑定所以不需要再OnDestroy时返还计数)
-        /// </summary>
-        public TResource.AssetLoader Loader
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// 当前图片名
         /// </summary>
         [HideInInspector]
         public string SpritePath;
+
+        /// <summary>
+        /// 资源计数作用域
+        /// </summary>
+        public ResourceScope ResourceScope
+        {
+            get;
+            private set;
+        } = new ResourceScope();
 
         protected override void Start()
         {
@@ -65,25 +66,58 @@ namespace TUI
         }
 
         /// <summary>
-        /// 释放资源
+        /// 响应销毁
         /// </summary>
-        public bool ReleaseRes()
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            ResourceScope.Clear();
+        }
+
+        /// <summary>
+        /// 设置图集精灵
+        /// </summary>
+        /// <param name="spriteName"></param>
+        /// <param name="async">是否异步</param>
+        public AssetRequestHandle SetSingleSprite(string spriteName, bool async = false)
+        {
+            if(string.IsNullOrEmpty(spriteName))
+            {
+                Debug.LogError("TImage.SetSingleSprite失败，spriteName为空!");
+                return null;
+            }
+            if(!async)
+            {
+                return AtlasManager.Singleton.SetTImageSingleSprite(this, spriteName);
+            }
+            return AtlasManager.Singleton.SetTImageSingleSpriteAsync(this, spriteName);
+        }
+
+        /// <summary>
+        /// 设置子图集精灵
+        /// </summary>
+        /// <param name="spriteName"></param>
+        /// <param name="subAssetName"></param>
+        public bool SetSubSprite(string spriteName, string subAssetName)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// 释放当前正在使用的Sprite资源
+        /// </summary>
+        public bool ReleaseSpriteRes()
         {
             if(string.IsNullOrEmpty(SpritePath))
             {
                 return true;
             }
-            if(Loader != null)
+            var result = ResourceScope.ReleaseResource(SpritePath);
+            if(result)
             {
-                var result = Loader.ReleaseOwner(this);
-                Loader = null;
-                if(!result)
-                {
-                    DIYLog.LogError($"TImage.ReleaseRes失败，SpritePath = {SpritePath}");
-                    return false;
-                }
+                SpritePath = null;
             }
-            return true;
+            return result;
         }
         
         /// <summary>
@@ -146,7 +180,7 @@ namespace TUI
         public void PrintTImageInfo()
         {
             DIYLog.Log($"SpritePath = {SpritePath}");
-            var refcount = Loader != null ? Loader.GetReferenceCount().ToString() : "无";
+            var refcount = ResourceScope.TotalReferenceCount;
             DIYLog.Log($"SpritePath引用计数 = {refcount}");
         }
     }
