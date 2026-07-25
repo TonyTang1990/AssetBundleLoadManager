@@ -15,9 +15,6 @@ using UnityEngine.UI;
 /// <summary>
 /// AtlasManager.cs
 /// 图集管理单例类
-/// Note:
-/// 绑定Image后因为没有挂载相关绑定信息，无法逆推Image资源绑定信息
-/// 请勿随意缓存Image，Image缓存会导致切换过的图集资源不满足资源释放条件
 /// </summary>
 public class AtlasManager : SingletonTemplate<AtlasManager>
 {
