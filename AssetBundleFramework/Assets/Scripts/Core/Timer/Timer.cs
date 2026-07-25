@@ -31,7 +31,7 @@ public class Timer : IRecycle
     /// <summary>
     /// 需要触发的回调
     /// </summary>
-    protected Action mCallBack;
+    protected Action<float> mCallBack;
 
     /// <summary>
     /// 延时时间
@@ -78,7 +78,7 @@ public class Timer : IRecycle
     /// <param name="delaytime"></param>
     /// <param name="useupdate"></param>
     /// <param name="triggeercondition"></param>
-    public void setData(long uid, Action callback, float delaytime = 0, bool useupdate = true, Func<bool> triggeercondition = null)
+    public void SetData(long uid, Action<float> callback, float delaytime = 0, bool useupdate = true, Func<bool> triggeercondition = null)
     {
         UID = uid;
         mCallBack = callback;
@@ -93,7 +93,7 @@ public class Timer : IRecycle
     /// <summary>
     /// 暂停Timer
     /// </summary>
-    public void pause()
+    public void Pause()
     {
         mIsPause = true;
     }
@@ -101,7 +101,7 @@ public class Timer : IRecycle
     /// <summary>
     /// 继续Timer
     /// </summary>
-    public void resume()
+    public void Resume()
     {
         mIsPause = false;
     }
@@ -109,7 +109,7 @@ public class Timer : IRecycle
     /// <summary>
     /// 停止计时器
     /// </summary>
-    public void stop()
+    public void Stop()
     {
         mIsOver = true;
     }
@@ -133,14 +133,14 @@ public class Timer : IRecycle
                         if (mTriggerCondition.Invoke())
                         {
                             mIsOver = true;
-                            mCallBack.Invoke();
+                            mCallBack.Invoke(mTimePassed);
                             return;
                         }
                     }
                     else
                     {
                         mIsOver = true;
-                        mCallBack.Invoke();
+                        mCallBack.Invoke(mTimePassed);
                         return;
                     }
                 }
@@ -151,15 +151,15 @@ public class Timer : IRecycle
     /// <summary>
     /// FixedUpdate更新TimerData
     /// </summary>
-    /// <param name="timepassed"></param>
+    /// <param name="timePassed"></param>
     /// <returns></returns>
-    public void fixedUpdate(float timepassed)
+    public void FixedUpdate(float timePassed)
     {
         if(!mIsUpdate)
         {
             if (!mIsPause)
             {
-                mTimePassed += timepassed;
+                mTimePassed += timePassed;
                 if (mTimePassed >= mDelayTime)
                 {
                     if (mTriggerCondition != null)
@@ -167,14 +167,14 @@ public class Timer : IRecycle
                         if (mTriggerCondition.Invoke())
                         {
                             mIsOver = true;
-                            mCallBack.Invoke();
+                            mCallBack.Invoke(timePassed);
                             return;
                         }
                     }
                     else
                     {
                         mIsOver = true;
-                        mCallBack.Invoke();
+                        mCallBack.Invoke(timePassed);
                         return;
                     }
                 }
@@ -201,7 +201,7 @@ public class Timer : IRecycle
     /// 是否暂停
     /// </summary>
     /// <returns></returns>
-    public bool isPaused()
+    public bool IsPaused()
     {
         return mIsPause;
     }
@@ -210,7 +210,7 @@ public class Timer : IRecycle
     /// 是否结束
     /// </summary>
     /// <returns></returns>
-    public bool isOver()
+    public bool IsOver()
     {
         return mIsOver;
     }

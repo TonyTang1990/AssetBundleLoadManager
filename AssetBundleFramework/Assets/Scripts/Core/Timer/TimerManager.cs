@@ -76,12 +76,12 @@ public class TimerManager
     /// <param name="delaytime"></param>
     /// <param name="triggeercondition"></param>
     /// <returns></returns>
-    public Timer AddUpdateTimer(Action callback, float delaytime = 0, Func<bool> triggeercondition = null)
+    public Timer AddUpdateTimer(Action<float> callback, float delaytime = 0, Func<bool> triggeercondition = null)
     {
         var newtimeruid = GetNewTimerUID();
         //DIYLog.Log(string.Format("添加UID定时器:{0}", newtimeruid));
         var timer = ObjectPool.Singleton.Pop<Timer>();
-        timer.setData(newtimeruid, callback, delaytime, true, triggeercondition);
+        timer.SetData(newtimeruid, callback, delaytime, true, triggeercondition);
         mLaterAddedUpdateTimerMap.Add(newtimeruid, timer);
         return timer;
     }
@@ -93,12 +93,12 @@ public class TimerManager
     /// <param name="delaytime"></param>
     /// <param name="triggeercondition"></param>
     /// <returns></returns>
-    public Timer AddFixedUpdateTimer(Action callback, float delaytime = 0, Func<bool> triggeercondition = null)
+    public Timer AddFixedUpdateTimer(Action<float> callback, float delaytime = 0, Func<bool> triggeercondition = null)
     {
         var newTimerUid = GetNewTimerUID();
         //DIYLog.Log(string.Format("添加UID定时器:{0}", newTimerUid));
         var timer = ObjectPool.Singleton.Pop<Timer>();
-        timer.setData(newTimerUid, callback, delaytime, false, triggeercondition);
+        timer.SetData(newTimerUid, callback, delaytime, false, triggeercondition);
         mLaterAddedFixedUpdateTimerMap.Add(newTimerUid, timer);
         return timer;
     }
@@ -147,20 +147,20 @@ public class TimerManager
         if (TimerMap.ContainsKey(uid))
         {
             //DIYLog.Log(string.Format("暂停UID定时器:{0}", uid));
-            TimerMap[uid].pause();
+            TimerMap[uid].Pause();
             return true;
         }
         else if (mLaterAddedUpdateTimerMap.ContainsKey(uid))
         {
             //DIYLog.Log(string.Format("暂停待添加UID Update定时器:{0}", uid));
-            mLaterAddedUpdateTimerMap[uid].pause();
+            mLaterAddedUpdateTimerMap[uid].Pause();
             return true;
         }
 
         else if (mLaterAddedFixedUpdateTimerMap.ContainsKey(uid))
         {
             //DIYLog.Log(string.Format("暂停待添加UID FixedUpdate定时器:{0}", uid));
-            mLaterAddedFixedUpdateTimerMap[uid].pause();
+            mLaterAddedFixedUpdateTimerMap[uid].Pause();
             return true;
         }
         else
@@ -180,19 +180,19 @@ public class TimerManager
         if (TimerMap.ContainsKey(uid))
         {
             //DIYLog.Log(string.Format("继续UID定时器:{0}", uid));
-            TimerMap[uid].resume();
+            TimerMap[uid].Resume();
             return true;
         }
         else if (mLaterAddedUpdateTimerMap.ContainsKey(uid))
         {
             //DIYLog.Log(string.Format("继续待添加UID Update定时器:{0}", uid));
-            mLaterAddedUpdateTimerMap[uid].resume();
+            mLaterAddedUpdateTimerMap[uid].Resume();
             return true;
         }
         else if (mLaterAddedFixedUpdateTimerMap.ContainsKey(uid))
         {
             //DIYLog.Log(string.Format("继续待添加UID FixedUpdate定时器:{0}", uid));
-            mLaterAddedFixedUpdateTimerMap[uid].resume();
+            mLaterAddedFixedUpdateTimerMap[uid].Resume();
             return true;
         }
         else
@@ -229,7 +229,7 @@ public class TimerManager
             {
                 foreach (var addedtimer in mLaterAddedUpdateTimerMap)
                 {
-                    if (!addedtimer.Value.isOver())
+                    if (!addedtimer.Value.IsOver())
                     {
                         TimerMap.Add(addedtimer.Value.UID, addedtimer.Value);
                     }
@@ -242,7 +242,7 @@ public class TimerManager
             }
             foreach (var timer in TimerMap.Values)
             {
-                if (!timer.isOver())
+                if (!timer.IsOver())
                 {
                     timer.update(deltatime);
                 }
@@ -272,7 +272,7 @@ public class TimerManager
             {
                 foreach (var addedtimer in mLaterAddedFixedUpdateTimerMap)
                 {
-                    if (!addedtimer.Value.isOver())
+                    if (!addedtimer.Value.IsOver())
                     {
                         TimerMap.Add(addedtimer.Value.UID, addedtimer.Value);
                     }
@@ -285,9 +285,9 @@ public class TimerManager
             }
             foreach (var timer in TimerMap.Values)
             {
-                if (!timer.isOver())
+                if (!timer.IsOver())
                 {
-                    timer.fixedUpdate(fixeddeltatime);
+                    timer.FixedUpdate(fixeddeltatime);
                 }
                 else
                 {

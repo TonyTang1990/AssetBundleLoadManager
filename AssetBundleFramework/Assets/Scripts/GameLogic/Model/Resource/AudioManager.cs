@@ -160,7 +160,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
                 audioSource.clip = ac;
                 audioSource.mute = mIsMuteAllSound;
                 audioSource.Play();
-                TimerManager.Singleton.AddUpdateTimer(() =>
+                TimerManager.Singleton.AddUpdateTimer((deltaTime) =>
                 {
                     // 手动释放音效资源
                     sfxAudioInfo.SFXAudioSource.clip = null;
