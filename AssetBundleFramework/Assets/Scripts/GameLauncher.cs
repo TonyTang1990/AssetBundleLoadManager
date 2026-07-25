@@ -365,11 +365,7 @@ namespace TResource
             DIYLog.Log("onPlaySound()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            AssetLoader assetLoader;
-            AudioManager.Singleton.PlaySFXSound(
-                param1,
-                out assetLoader
-            );
+            AudioManager.Singleton.PlaySFXSound(param1);
         }
 
 

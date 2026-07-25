@@ -128,16 +128,15 @@ public class AudioManager : SingletonTemplate<AudioManager>
     /// 播放音效
     /// </summary>
     /// <param name="resName">资源名(含后缀)</param>
-    /// <param name="assetLoader">Asset加载器</param>
     /// <param name="callBack">回调</param>
     /// <param name="loadType">加载类型</param>
     /// <returns></returns>
-    public AssetRequestHandle PlaySFXSound(string resName, out AssetLoader assetLoader,
-                                           Action<AudioClip, AssetRequestHandle> callBack = null,
+    public AssetRequestHandle PlaySFXSound(string resName, Action<AudioClip, AssetRequestHandle> callBack = null,
                                            ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
         var sfxGo = mAudioGoPool.Pop(mSFXGoTemplate);
         sfxGo.transform.SetParent(mSoundParentTransform, false);
+        AssetLoader assetLoader;
         var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
             resName,
             out assetLoader,
