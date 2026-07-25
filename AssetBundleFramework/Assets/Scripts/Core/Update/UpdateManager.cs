@@ -30,7 +30,7 @@ public class UpdateManager : SingletonTemplate<UpdateManager>
     /// 注册Update委托
     /// </summary>
     /// <param name="updatedelegate"></param>
-    public void registerUpdate(Action<float> updatedelegate)
+    public void RegisterUpdate(Action<float> updatedelegate)
     {
         mUpdateDelegates += updatedelegate;
     }
@@ -39,7 +39,7 @@ public class UpdateManager : SingletonTemplate<UpdateManager>
     /// 取消注册Update委托
     /// </summary>
     /// <param name="updatedelegate"></param>
-    public void unregisterUpdate(Action<float> updatedelegate)
+    public void UnregisterUpdate(Action<float> updatedelegate)
     {
         mUpdateDelegates -= updatedelegate;
     }
@@ -48,7 +48,7 @@ public class UpdateManager : SingletonTemplate<UpdateManager>
     /// 注册FixedUpdate委托
     /// </summary>
     /// <param name="fixedupdatedelegate"></param>
-    public void registerFixedUpdate(Action<float> fixedupdatedelegate)
+    public void RegisterFixedUpdate(Action<float> fixedupdatedelegate)
     {
         mFixedUpdateDelegates += fixedupdatedelegate;
     }
@@ -57,7 +57,7 @@ public class UpdateManager : SingletonTemplate<UpdateManager>
     /// 取消注册FixedUpdate委托
     /// </summary>
     /// <param name="fixedupdatedelegate"></param>
-    public void unregisterFixedUpdate(Action<float> fixedupdatedelegate)
+    public void UnregisterFixedUpdate(Action<float> fixedupdatedelegate)
     {
         mFixedUpdateDelegates -= fixedupdatedelegate;
     }
@@ -66,7 +66,7 @@ public class UpdateManager : SingletonTemplate<UpdateManager>
     /// Update
     /// </summary>
     /// <param name="deltatime"></param>
-    public void update(float deltatime)
+    public void Update(float deltatime)
     {
         mUpdateDelegates?.Invoke(deltatime);
     }
@@ -75,7 +75,7 @@ public class UpdateManager : SingletonTemplate<UpdateManager>
     /// FixedUpdate
     /// </summary>
     /// <param name="fixeddeltatime"></param>
-    public void fixedUpdate(float fixeddeltatime)
+    public void FixedUpdate(float fixeddeltatime)
     {
         mFixedUpdateDelegates?.Invoke(fixeddeltatime);
     }

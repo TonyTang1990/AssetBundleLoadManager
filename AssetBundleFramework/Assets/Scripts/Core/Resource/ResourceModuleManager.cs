@@ -93,9 +93,13 @@ namespace TResource
             CurrentResourceModule.Init();
         }
 
-        public void Update()
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        public void Update(float deltaTime)
         {
-            CurrentResourceModule.Update();
+            CurrentResourceModule.Update(deltaTime);
         }
 
         /// <summary>

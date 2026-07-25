@@ -144,15 +144,17 @@ namespace TResource
 
         private void Update()
         {
-            ResourceModuleManager.Singleton.Update();
-            TimerManager.Singleton.update(Time.deltaTime);
-            UpdateManager.Singleton.update(Time.deltaTime);
+            var deltaTime = Time.deltaTime;
+            ResourceModuleManager.Singleton.Update(deltaTime);
+            TimerManager.Singleton.Update(deltaTime);
+            UpdateManager.Singleton.Update(deltaTime);
         }
 
         private void FixedUpdate()
         {
-            TimerManager.Singleton.fixedUpdate(Time.fixedDeltaTime);
-            UpdateManager.Singleton.fixedUpdate(Time.fixedDeltaTime);
+            var fixedDeltaTime = Time.fixedDeltaTime;
+            TimerManager.Singleton.FixedUpdate(fixedDeltaTime);
+            UpdateManager.Singleton.FixedUpdate(fixedDeltaTime);
         }
 
         private void OnDestroy()

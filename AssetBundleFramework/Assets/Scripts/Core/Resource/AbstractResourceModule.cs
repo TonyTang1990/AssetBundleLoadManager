@@ -691,12 +691,13 @@ namespace TResource
         /// <summary>
         /// 更新入口
         /// </summary>
-        public virtual void Update()
+        /// <param name="deltaTime"></param>
+        public virtual void Update(float deltaTime)
         {
             Frame++;
             mFPSFrameCount++;
             LoaderManager.Singleton.Update();
-            mTotalDeltaTime += Time.deltaTime;
+            mTotalDeltaTime += deltaTime;
             if (mTotalDeltaTime >= mFPSUpdateInterval)
             {
                 CurrentFPS = (int)(mFPSFrameCount / mTotalDeltaTime);

@@ -76,9 +76,9 @@ public class TimerManager
     /// <param name="delaytime"></param>
     /// <param name="triggeercondition"></param>
     /// <returns></returns>
-    public Timer addUpdateTimer(Action callback, float delaytime = 0, Func<bool> triggeercondition = null)
+    public Timer AddUpdateTimer(Action callback, float delaytime = 0, Func<bool> triggeercondition = null)
     {
-        var newtimeruid = getNewTimerUID();
+        var newtimeruid = GetNewTimerUID();
         //DIYLog.Log(string.Format("添加UID定时器:{0}", newtimeruid));
         var timer = ObjectPool.Singleton.Pop<Timer>();
         timer.setData(newtimeruid, callback, delaytime, true, triggeercondition);
@@ -93,13 +93,13 @@ public class TimerManager
     /// <param name="delaytime"></param>
     /// <param name="triggeercondition"></param>
     /// <returns></returns>
-    public Timer addFixedUpdateTimer(Action callback, float delaytime = 0, Func<bool> triggeercondition = null)
+    public Timer AddFixedUpdateTimer(Action callback, float delaytime = 0, Func<bool> triggeercondition = null)
     {
-        var newtimeruid = getNewTimerUID();
-        //DIYLog.Log(string.Format("添加UID定时器:{0}", newtimeruid));
+        var newTimerUid = GetNewTimerUID();
+        //DIYLog.Log(string.Format("添加UID定时器:{0}", newTimerUid));
         var timer = ObjectPool.Singleton.Pop<Timer>();
-        timer.setData(newtimeruid, callback, delaytime, false, triggeercondition);
-        mLaterAddedFixedUpdateTimerMap.Add(newtimeruid, timer);
+        timer.setData(newTimerUid, callback, delaytime, false, triggeercondition);
+        mLaterAddedFixedUpdateTimerMap.Add(newTimerUid, timer);
         return timer;
     }
 
@@ -108,7 +108,7 @@ public class TimerManager
     /// </summary>
     /// <param name="uid"></param>
     /// <returns></returns>
-    public bool removeTimer(long uid)
+    public bool RemoveTimer(long uid)
     {
         if (TimerMap.ContainsKey(uid))
         {
@@ -142,7 +142,7 @@ public class TimerManager
     /// </summary>
     /// <param name="uid"></param>
     /// <returns></returns>
-    public bool pauseTimer(long uid)
+    public bool PauseTimer(long uid)
     {
         if (TimerMap.ContainsKey(uid))
         {
@@ -175,7 +175,7 @@ public class TimerManager
     /// </summary>
     /// <param name="uid"></param>
     /// <returns></returns>
-    public bool resumeTimer(long uid)
+    public bool ResumeTimer(long uid)
     {
         if (TimerMap.ContainsKey(uid))
         {
@@ -205,7 +205,7 @@ public class TimerManager
     /// <summary>
     /// 清除所有定时器
     /// </summary>
-    public void clearAllTimer()
+    public void ClearAllTimer()
     {
         //DIYLog.Log("清除所有定时器");
         TimerMap.Clear();
@@ -219,7 +219,7 @@ public class TimerManager
     /// Update更新所有定时器
     /// </summary>
     /// <param name="deltatime"></param>
-	public void update(float deltatime)
+	public void Update(float deltatime)
     {
         if (!IsPauseAllTimer)
         {
@@ -253,7 +253,7 @@ public class TimerManager
             }
             foreach (var cleartimeruid in mClearUpdateTimerList)
             {
-                removeTimer(cleartimeruid);
+                RemoveTimer(cleartimeruid);
             }
         }
     }
@@ -262,7 +262,7 @@ public class TimerManager
     /// fixedUpdate更新所有定时器
     /// </summary>
     /// <param name="fixeddeltatime"></param>
-	public void fixedUpdate(float fixeddeltatime)
+	public void FixedUpdate(float fixeddeltatime)
     {
         if (!IsPauseAllTimer)
         {
@@ -296,7 +296,7 @@ public class TimerManager
             }
             foreach (var cleartimeruid in mClearFixedUpdateTimerList)
             {
-                removeTimer(cleartimeruid);
+                RemoveTimer(cleartimeruid);
             }
         }
     }
@@ -305,7 +305,7 @@ public class TimerManager
     /// 得到一个最新的定时器UID
     /// </summary>
     /// <returns></returns>
-    private long getNewTimerUID()
+    private long GetNewTimerUID()
     {
         return ++mNeextValideTimerUID;
     }

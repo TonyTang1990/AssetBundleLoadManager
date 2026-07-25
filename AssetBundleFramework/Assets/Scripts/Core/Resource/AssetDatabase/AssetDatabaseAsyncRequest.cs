@@ -92,7 +92,7 @@ namespace TResource
             AssetPath = assetPath;
             AssetType = assetType;
             mLoadAssetTime = UnityEngine.Random.Range(0f, 3f);
-            UpdateManager.Singleton.registerFixedUpdate(OnFixedUpdate);
+            UpdateManager.Singleton.RegisterFixedUpdate(OnFixedUpdate);
             ResourceLogger.log($"AssetDatabase:{AssetPath}资源异步加载时长:{mLoadAssetTime}!");
         }
 
@@ -114,7 +114,7 @@ namespace TResource
         /// </summary>
         protected void OnAssetLoadComplete()
         {
-            UpdateManager.Singleton.unregisterFixedUpdate(OnFixedUpdate);
+            UpdateManager.Singleton.UnregisterFixedUpdate(OnFixedUpdate);
             IsDone = true;
 #if UNITY_EDITOR
             Asset = AssetDatabase.LoadAssetAtPath(AssetPath, AssetType);
