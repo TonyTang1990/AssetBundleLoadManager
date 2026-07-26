@@ -54,7 +54,7 @@ public class AudioManager : SingletonTemplate<AudioManager>
 
         }
 
-        public void OnDispose()
+        public void OnRecycle()
         {
             AudioResName = null;
             SFXAudioGo = null;

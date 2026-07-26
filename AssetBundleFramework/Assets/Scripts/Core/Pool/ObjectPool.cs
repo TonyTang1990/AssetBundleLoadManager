@@ -22,7 +22,7 @@ public interface IRecycle
     /// <summary>
     /// 回收时调用接口
     /// </summary>
-    void OnDispose();
+    void OnRecycle();
 }
 
 /// <summary>
@@ -72,7 +72,7 @@ public class ObjectPool
     /// <param name="obj"></param>
     public void Push<T>(T obj) where T : IRecycle
     {
-        obj.OnDispose();
+        obj.OnRecycle();
         var hashcode = obj.GetType().GetHashCode();
         if (!ObjectPoolMap.ContainsKey(hashcode))
         {

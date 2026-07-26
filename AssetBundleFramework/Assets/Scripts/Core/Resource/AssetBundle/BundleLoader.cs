@@ -57,7 +57,7 @@ namespace TResource
                 ResetDatas();
             }
 
-            public void OnDispose()
+            public void OnRecycle()
             {
                 ResetDatas();
             }
@@ -178,9 +178,9 @@ namespace TResource
             base.OnCreate();
         }
 
-        public override void OnDispose()
+        public override void OnRecycle()
         {
-            base.OnDispose();
+            base.OnRecycle();
         }
 
         /// <summary>

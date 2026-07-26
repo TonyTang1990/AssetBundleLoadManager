@@ -81,9 +81,9 @@ namespace TResource
             mMainBundleLoader = null;
         }
 
-        public override void OnDispose()
+        public override void OnRecycle()
         {
-            base.OnDispose();
+            base.OnRecycle();
             MainAssetBundlePath = null;
             DepABPaths = null;
             mABInfo = null;

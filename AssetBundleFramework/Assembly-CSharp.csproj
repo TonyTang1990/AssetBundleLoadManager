@@ -79,7 +79,6 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\AssetBundleLoader.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabase\EditorAssetInfoAsset.cs" />
-    <Compile Include="Assets\Scripts\Core\Pool\ObjectFactory.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\EffectManager.cs" />
     <Compile Include="Assets\Scripts\Core\GameConfig\GameConfigModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\Pool\GameObjectPool.cs" />

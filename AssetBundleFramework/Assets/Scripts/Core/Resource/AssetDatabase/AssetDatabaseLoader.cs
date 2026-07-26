@@ -33,9 +33,9 @@ namespace TResource
             base.OnCreate();
         }
 
-        public override void OnDispose()
+        public override void OnRecycle()
         {
-            base.OnDispose();
+            base.OnRecycle();
         }
 
         /// <summary>

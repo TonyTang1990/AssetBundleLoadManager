@@ -218,7 +218,7 @@ public class Timer : IRecycle
     /// <summary>
     /// 对象池回收时
     /// </summary>
-    public void OnDispose()
+    public void OnRecycle()
     {
         UID = 0;
         mCallBack = null;

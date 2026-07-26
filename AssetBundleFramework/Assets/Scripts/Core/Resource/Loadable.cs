@@ -140,7 +140,7 @@ namespace TResource
             ResetDatas();
         }
 
-        public virtual void OnDispose()
+        public virtual void OnRecycle()
         {
             ResetDatas();
         }
