@@ -88,8 +88,8 @@ namespace TResource
             }
             var manifestAssetFilePath = Path.Combine(manifestAssetFolderPath, $"{manifestName}.asset");
             AssetDatabase.CreateAsset(manifest, manifestAssetFilePath);
+            EditorUtility.SetDirty(manifest);
             AssetDatabase.SaveAssets();
-            AssetDatabase.ImportAsset(manifestAssetFilePath);
             var buildContent = new BundleBuildContent(new[]
             {
                 new AssetBundleBuild()

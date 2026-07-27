@@ -1,5 +1,5 @@
-Android|a6778616ed106a8404c56300aa9d7dd6
-buildlogtep.json|c8873167ef7235935949a4ee4571dc7b
+Android|b8b4e5592658d9880078c19156071f84
+buildlogtep.json|34d1b9b0dda45d660f014d592ffde0d5
 shaderlist.android|65c5f8baff1b6a1155966b4d18ac625b
 assets/res/actors/cube.android|d7456253c83f22e20c320ca4c8f2e5b1
 assets/res/actors/sphere.android|a635beb64f9aed75b1b58c92ae22c25e
@@ -11,7 +11,7 @@ assets/res/prefabs/rawimagebuildin.android|c6665acda68905fc5f30e3fbe9274cec
 assets/res/prefabs/sfxtemplate.android|e2dd5714e006596a766a421c22490b7e
 assets/res/prefabs/videoplayerroot.android|0bd14f426a5237e174fe10a8435eb4ce
 assets/res/rendertextures/videorendertexture.android|5bf0cef94dac6ff23904beebd7818bb0
-assets/res/scenes/assetbundleframeworkscene.android|9c62648f7cef7136c8de4e993a28525d
+assets/res/scenes/assetbundleframeworkscene.android|336a501c9f74449f2f615e1697082341
 assets/res/scenes/testscene2.android|737ac7e62d5f0d2ec5ccc15a71fea96b
 assets/res/scenes/testscene2settings.android|b2605a50be2ee0724eb793f194d7e40f
 assets/res/scenes/testscene3.android|461d6838bd9d8e149b8a44249d9c2796

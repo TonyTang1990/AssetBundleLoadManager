@@ -137,8 +137,8 @@ MonoBehaviour:
     m_Hash: 9f924bcfc2e08d6a4c1c6aee82cd2917
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets/StreamingAssets/Android//assets/res/scenes/assetbundleframeworkscene.android
-    m_Crc: 2720953053
-    m_Hash: c61f045669b1e12ae22b165b4b581e21
+    m_Crc: 3015588085
+    m_Hash: a90615bf8bb2ebcc295a98444fd79b70
     m_Dependencies:
     - assets/res/rendertextures/videorendertexture.android
     - assets/res/textures/chaichainingwang.android
