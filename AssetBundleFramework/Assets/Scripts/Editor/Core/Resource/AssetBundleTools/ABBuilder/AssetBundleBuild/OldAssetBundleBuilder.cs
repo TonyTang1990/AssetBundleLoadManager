@@ -41,14 +41,19 @@ namespace TResource
                 return null;
             }
             // 检测循环依赖
-            CheckCycleDepend(unityManifest);
+            var cycleDependResult = CheckCycleDepend(unityManifest);
+            if(!cycleDependResult)
+            {
+                Debug.LogError($"[BuildPatch] 检测到循环依赖，打包终止！");
+                buildSuccess = false;
+            }
             return unityManifest;
         }
 
         /// <summary>
         /// 检测循环依赖
         /// </summary>
-        private static void CheckCycleDepend(AssetBundleManifest unityManifest)
+        private static bool CheckCycleDepend(AssetBundleManifest unityManifest)
         {
             List<string> visited = new List<string>(100);
             List<string> stack = new List<string>(100);
@@ -64,11 +69,13 @@ namespace TResource
                 {
                     foreach (var ele in stack)
                     {
-                        UnityEngine.Debug.LogWarning(ele);
+                        Debug.LogWarning(ele);
                     }
-                    throw new Exception($"Found cycle assetbundle : {element}");
+                    Debug.LogError($"Found cycle assetbundle : {element}");
+                    return false;
                 }
             }
+            return true;
         }
 
         /// <summary>

@@ -4,6 +4,7 @@
  * Create Date:             2021//12/26
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -52,6 +53,68 @@ public static class FileUtilities
     }
 
     /// <summary>
+    /// 转换Sha256的Bytes值(字节数组为空返回null)
+    /// </summary>
+    /// <param name="bytes"></param>
+    /// <returns></returns>
+    public static string ConvertSha256Bytes(byte[] bytes)
+    {
+        if(bytes == null || bytes.Length == 0)
+        {
+            Debug.LogError($"字节数组为空，转换Sha256失败，请检查代码!");
+            return null;
+        }
+        return BitConverter.ToString(bytes).Replace("-", string.Empty).ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// 获取指定文件的Sha256值(文件不能存在返回null)
+    /// </summary>
+    /// <param name="filePath">文件路径</param>
+    /// <param name="sha256Hash">Sha256算法</param>
+    /// <returns></returns>
+    public static string GetFileSha256(string filePath, SHA256 sha256Hash = null)
+    {
+        if(!File.Exists(filePath))
+        {
+            Debug.LogError($"文件路径:{filePath}不存在，获取Sha256失败，请检查代码!");
+            return null;
+        }
+        if(sha256Hash == null)
+        {
+            sha256Hash = SHA256.Create();
+        }
+        mCacheStringBuilder.Clear();
+        using (var fileFS = File.OpenRead(filePath))
+        {
+            var hash = sha256Hash.ComputeHash(fileFS);
+            return ConvertSha256Bytes(hash);
+        }
+    }
+
+    /// <summary>
+    /// 获取指定字节数组的Sha256值(字节数组为空返回null)
+    /// </summary>
+    /// <param name="bytes"></param>
+    /// <param name="sha256Hash"></param>
+    /// <returns></returns>
+    public static string GetBytesSha256(byte[] bytes, SHA256 sha256Hash = null)
+    {
+        if(bytes == null || bytes.Length == 0)
+        {
+            Debug.LogError($"字节数组为空，获取Sha256失败，请检查代码!");
+            return null;
+        }
+        if(sha256Hash == null)
+        {
+            sha256Hash = SHA256.Create();
+        }
+        mCacheStringBuilder.Clear();
+        var hash = sha256Hash.ComputeHash(bytes);
+        return ConvertSha256Bytes(hash);
+    }
+
+    /// <summary>
     /// 确保文件删除
     /// </summary>
     /// <param name="filePath"></param>
@@ -65,13 +128,38 @@ public static class FileUtilities
     }
 
     /// <summary>
+    /// 复制文件到指定文件路径
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <param name="targetFilePath"></param>
+    /// <returns></returns>
+    public static bool CopyFileToFile(string filePath, string targetFilePath)
+    {
+        if(!File.Exists(filePath))
+        {
+            Debug.LogError($"文件:{filePath}不存在,复制到目标文件:{targetFilePath}失败!");
+            return false;
+        }
+        if(string.IsNullOrEmpty(targetFilePath))
+        {
+            Debug.LogError($"无法复制文件:{filePath}空目标文件路径,请传递有效目录!");
+            return false;
+        }
+        var targetFolderPath = Path.GetDirectoryName(targetFilePath);
+        FolderUtilities.CheckAndCreateSpecificFolder(targetFolderPath);
+        File.Copy(filePath, targetFilePath, true);
+        return true;
+    }
+
+    /// <summary>
     /// 复制文件到指定目录
     /// </summary>
     /// <param name="filePath"></param>
     /// <param name="targetFolderPath"></param>
     /// <returns></returns>
-    public static bool CopyFileToFolder(string filePath, string targetFolderPath)
+    public static bool CopyFileToFolder(string filePath, string targetFolderPath, out string newFilePath)
     {
+        newFilePath = string.Empty;
         if(!File.Exists(filePath))
         {
             Debug.LogError($"文件:{filePath}不存在,复制到目标目录:{targetFolderPath}失败!");
@@ -84,11 +172,10 @@ public static class FileUtilities
         }
         FolderUtilities.CheckAndCreateSpecificFolder(targetFolderPath);
         var fileName = Path.GetFileName(filePath);
-        var targetFilePath = Path.Combine(targetFolderPath, fileName);
-        File.Copy(filePath, targetFilePath, true);
+        newFilePath = Path.Combine(targetFolderPath, fileName);
+        File.Copy(filePath, newFilePath, true);
         return true;
     }
-
 
     /// <summary>
     /// 复制指定目录到指定目录
@@ -134,5 +221,65 @@ public static class FileUtilities
                 file.CopyTo(Path.Combine(target.FullName, file.Name));
             }
         }
+    }
+
+    /// <summary>
+    /// 获取指定文件路径重命名后的路径
+    /// </summary>
+    /// <param name="oldFilePath"></param>
+    /// <param name="newFileName"></param>
+    /// <returns></returns>
+    public static string GetFileRenameNewPath(string oldFilePath, string newFileName)
+    {
+        if(string.IsNullOrEmpty(oldFilePath))
+        {
+            Debug.LogError($"无法获取重命名空文件路径:{oldFilePath}的重命名路径!");
+            return null;
+        }
+        string directoryPath = Path.GetDirectoryName(oldFilePath);
+        string newFilePath = Path.Combine(directoryPath, newFileName);
+        return newFilePath;
+    }
+
+    /// <summary>
+    /// 重命名指定文件路径到指定文件路径
+    /// </summary>
+    /// <param name="oldFilePath"></param>
+    /// <param name="newFileName"></param>
+    /// <returns>返回null表示改名失败</returns>
+    public static string RenameFile(string oldFilePath, string newFileName)
+    {
+        if(string.IsNullOrEmpty(oldFilePath))
+        {
+            Debug.LogError($"无法重命名空文件路径:{oldFilePath}!");
+            return null;
+        }
+        if(!File.Exists(oldFilePath))
+        {
+            Debug.LogError($"文件路径:{oldFilePath}不存在,无法重命名!");
+            return null;
+        }
+        string newFilePath = GetFileRenameNewPath(oldFilePath, newFileName);
+        if(string.Equals(oldFilePath, newFilePath))
+        {
+            Debug.LogWarning($"文件路径:{oldFilePath}和新文件路径:{newFilePath}相同,无需重命名!");
+            return newFilePath;
+        }
+        File.Move(oldFilePath, newFilePath);
+        return newFilePath;
+    }
+
+    /// <summary>
+    /// 检查指定文件的Sha256值是否与目标Sha256值一致
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <param name="targetSha256"></param>
+    /// <param name="sha256"></param>
+    /// <returns></returns>
+    public static (bool, string) CheckFileSha256(string filePath, string targetSha256, SHA256 sha256 = null)
+    {
+        var fileSha256 = GetFileSha256(filePath, sha256);
+        var result = string.Equals(fileSha256, targetSha256);
+        return (result, fileSha256);
     }
 }

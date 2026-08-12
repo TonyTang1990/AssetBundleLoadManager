@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: tongyong256
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: Standalone64
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 4
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: iPhone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 48
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 48
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: Standalone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 4
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: StandaloneOS
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 4
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 09b7868f041020b4994c4a9f0490b964, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - b0908fe13fbf82c4580b3eeb1e61b150: 21300000
+    - 3702a514f13ab82409f8c809ff936831: 21300000
+    - 887a96143ac78e1408737b89f13b954d: 21300000
+    - 2b554ab90e0372b4bb30cbf37b60e928: 21300000
+    - 9456a01a2fd43724a944c590f5038fdf: 21300000
+    - f3b315bb54f9d7141aa295798223b332: 21300000
+    - a5a14b5c496ae344d98817fe0fe5e16d: 21300000
+    - a71b127cd9bf8cc48ae37710f6e89858: 21300000
+    - 62cdbd7efb1516b478be644940a89db6: 21300000
+    - 0657cfae21b99204b9df8413700b4fd2: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: b0908fe13fbf82c4580b3eeb1e61b150, type: 3}
+  - {fileID: 21300000, guid: 3702a514f13ab82409f8c809ff936831, type: 3}
+  - {fileID: 21300000, guid: 887a96143ac78e1408737b89f13b954d, type: 3}
+  - {fileID: 21300000, guid: 2b554ab90e0372b4bb30cbf37b60e928, type: 3}
+  - {fileID: 21300000, guid: 9456a01a2fd43724a944c590f5038fdf, type: 3}
+  - {fileID: 21300000, guid: f3b315bb54f9d7141aa295798223b332, type: 3}
+  - {fileID: 21300000, guid: a5a14b5c496ae344d98817fe0fe5e16d, type: 3}
+  - {fileID: 21300000, guid: a71b127cd9bf8cc48ae37710f6e89858, type: 3}
+  - {fileID: 21300000, guid: 62cdbd7efb1516b478be644940a89db6, type: 3}
+  - {fileID: 21300000, guid: 0657cfae21b99204b9df8413700b4fd2, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - icons_default38_256px
+  - icons_default5_256px
+  - icons_default25_256px
+  - icons_outline25_256px
+  - icons_outline5_256px
+  - icons_default19_256px
+  - icons_default39_256px
+  - icons_outline37_256px
+  - icons_outline38_256px
+  - icons_outline19_256px
+  m_RenderDataMap: {}
+  m_Tag: tongyong256
+  m_IsVariant: 0

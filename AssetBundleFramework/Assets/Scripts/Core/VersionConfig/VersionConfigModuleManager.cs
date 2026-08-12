@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using TResource;
 using UnityEngine;
 
 /// <summary>
@@ -19,9 +20,9 @@ using UnityEngine;
 public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleManager>
 {
     /// <summary>
-    /// 包内版本信息文件存储路径
+    /// 包内版本信息文件存储相对Resources路径
     /// </summary>
-    public string InnerVersionConfigFilePath
+    public string InnerVersionConfigFileRelativePath
     {
         get;
         private set;
@@ -49,16 +50,6 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
         get;
         private set;
     }
-
-    /// <summary>
-    /// 游戏版本信息配置文件名
-    /// </summary>
-    private const string mVersionConfigFileName = "VersionConfig";
-
-    /// <summary>
-    /// 配置文件目录路径
-    /// </summary>
-    private const string ConfigFolderPath = "Config/";
 
     /// <summary>
     /// 游戏版本信息
@@ -94,12 +85,12 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
 
     public VersionConfigModuleManager()
     {
-        InnerVersionConfigFilePath = ConfigFolderPath + mVersionConfigFileName;
+        InnerVersionConfigFileRelativePath = ResourcePath.GetInnerVersionConfigRelativePath();
 #if UNITY_EDITOR
-        InnerVersionConfigSaveFileFullPath = Application.dataPath + Path.DirectorySeparatorChar + "Resources" + Path.DirectorySeparatorChar + InnerVersionConfigFilePath + ".json";
+        InnerVersionConfigSaveFileFullPath = ResourcePath.GetInnerVersionConfigFullPath();
 #endif
-        OutterVersionConfigSaveFileFolderPath = Application.persistentDataPath + "/" + ConfigFolderPath;
-        OutterVersionConfigSaveFileFullPath = OutterVersionConfigSaveFileFolderPath + mVersionConfigFileName + ".json";
+        OutterVersionConfigSaveFileFolderPath = ResourcePath.GetOutterVersionConfigFolderPath();
+        OutterVersionConfigSaveFileFullPath = ResourcePath.GetOtterVersionConfigFullPath();
         GameVersionConfig = null;
         InnerGameVersionConfig = null;
         OuterGameVersionConfig = null;
@@ -108,11 +99,11 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     /// <summary>
     /// 存储最新版本号信息到包外
     /// </summary>
-    /// <param name="versioncode">版本号</param>
-    public void saveNewVersionCodeOuterConfig(double versioncode)
+    /// <param name="versionCode">版本号</param>
+    public void SaveNewVersionCodeOuterConfig(double versionCode)
     {
         //TODO:包外版本信息存储
-        Debug.Log(string.Format("VersionConfigSaveFileFullPath : {0}", OutterVersionConfigSaveFileFullPath));
+        Debug.Log($"OutterVersionConfigSaveFileFullPath : {OutterVersionConfigSaveFileFullPath}");
 
         if (GameVersionConfig == null)
         {
@@ -125,26 +116,24 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
             Directory.CreateDirectory(OutterVersionConfigSaveFileFolderPath);
         }
 
-        GameVersionConfig.VersionCode = versioncode;
-        Debug.Log("newverisoncode = " + versioncode);
+        GameVersionConfig.VersionCode = versionCode;
+        Debug.Log("versionCode = " + versionCode);
 
-        var versionconfigdata = JsonUtility.ToJson(GameVersionConfig);
-        using (var verisionconfigfs = File.Open(OutterVersionConfigSaveFileFullPath, FileMode.Create))
+        var versionConfigData = JsonUtility.ToJson(GameVersionConfig);
+        using (var verisionConfigFS = new StreamWriter(OutterVersionConfigSaveFileFullPath, false, Encoding.UTF8))
         {
-            byte[] versionconfiginfo = mUTF8Encoding.GetBytes(versionconfigdata);
-            verisionconfigfs.Write(versionconfiginfo, 0, versionconfiginfo.Length);
-            verisionconfigfs.Close();
+            verisionConfigFS.Write(versionConfigData);
         }
     }
 
     /// <summary>
     /// 存储最新资源版本号信息到包外
     /// </summary>
-    /// <param name="resourceversioncode">资源版本号</param>
-    public void saveNewResoueceCodeOuterConfig(int resourceversioncode)
+    /// <param name="resourceVersionCode">资源版本号</param>
+    public void SaveNewResoueceCodeOuterConfig(int resourceVersionCode)
     {
         //TODO:包外版本信息存储
-        Debug.Log(string.Format("VersionConfigSaveFileFullPath : {0}", OutterVersionConfigSaveFileFullPath));
+        Debug.Log($"OutterVersionConfigSaveFileFullPath : {OutterVersionConfigSaveFileFullPath}");
 
         if (GameVersionConfig == null)
         {
@@ -157,16 +146,11 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
             Directory.CreateDirectory(OutterVersionConfigSaveFileFolderPath);
         }
 
-        GameVersionConfig.ResourceVersionCode = resourceversioncode;
-        Debug.Log("newresourceversioncode = " + resourceversioncode);
-
-        var versionconfigdata = JsonUtility.ToJson(GameVersionConfig);
-        using (var verisionconfigfs = File.Open(OutterVersionConfigSaveFileFullPath, FileMode.Create))
-        {
-            byte[] versionconfiginfo = mUTF8Encoding.GetBytes(versionconfigdata);
-            verisionconfigfs.Write(versionconfiginfo, 0, versionconfiginfo.Length);
-            verisionconfigfs.Close();
-        }
+        GameVersionConfig.ResourceVersionCode = resourceVersionCode;
+        Debug.Log($"VersionCode:{GameVersionConfig.VersionCode}，ResourceVersionCode:{GameVersionConfig.ResourceVersionCode}");
+        
+        var versionConfigData = JsonUtility.ToJson(GameVersionConfig, true);
+        File.WriteAllText(OutterVersionConfigSaveFileFullPath, versionConfigData, new UTF8Encoding(false));
     }
 
     #region 限Editor使用
@@ -174,11 +158,11 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     /// <summary>
     /// 存储最新版本号信息到包内
     /// </summary>
-    /// <param name="versioncode">版本号</param>
-    public void saveNewVersionCodeInnerConfig(double versioncode)
+    /// <param name="versionCode">版本号</param>
+    public void SaveNewVersionCodeInnerConfig(double versionCode)
     {
-        Debug.Log($"存储最新版本号:{versioncode}到包内!");
-        Debug.Log(string.Format("InnerVersionConfigSaveFileFullPath : {0}", InnerVersionConfigSaveFileFullPath));
+        Debug.Log($"存储最新版本号:{versionCode}到包内!");
+        Debug.Log($"InnerVersionConfigSaveFileFullPath : {InnerVersionConfigSaveFileFullPath}");
 
         if (GameVersionConfig == null)
         {
@@ -186,16 +170,14 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
             return;
         }
 
-        GameVersionConfig.VersionCode = versioncode;
-        InnerGameVersionConfig.VersionCode = versioncode;
-        Debug.Log("newverisoncode = " + versioncode);
+        GameVersionConfig.VersionCode = versionCode;
+        InnerGameVersionConfig.VersionCode = versionCode;
+        Debug.Log("versionCode = " + versionCode);
 
-        var versionconfigdata = JsonUtility.ToJson(GameVersionConfig);
-        using (var verisionconfigfs = File.Open(InnerVersionConfigSaveFileFullPath, FileMode.Create))
+        var versionConfigData = JsonUtility.ToJson(GameVersionConfig);
+        using (var verisionConfigFS = new StreamWriter(InnerVersionConfigSaveFileFullPath, false, Encoding.UTF8))
         {
-            byte[] versionconfiginfo = mUTF8Encoding.GetBytes(versionconfigdata);
-            verisionconfigfs.Write(versionconfiginfo, 0, versionconfiginfo.Length);
-            verisionconfigfs.Close();
+            verisionConfigFS.Write(versionConfigData);
         }
     }
 
@@ -203,10 +185,10 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     /// 存储最新资源版本号信息到包外
     /// </summary>
     /// <param name="resourceversioncode">资源版本号</param>
-    public void saveNewResoueceCodeInnerConfig(int resourceversioncode)
+    public void SaveNewResoueceCodeInnerConfig(int resourceversioncode)
     {
         Debug.Log($"存储最新资源版本号:{resourceversioncode}到包内!");
-        Debug.Log(string.Format("InnerVersionConfigSaveFileFullPath : {0}", InnerVersionConfigSaveFileFullPath));
+        Debug.Log($"InnerVersionConfigSaveFileFullPath : {InnerVersionConfigSaveFileFullPath}");
 
         if (GameVersionConfig == null)
         {
@@ -216,14 +198,12 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
 
         GameVersionConfig.ResourceVersionCode = resourceversioncode;
         InnerGameVersionConfig.ResourceVersionCode = resourceversioncode;
-        Debug.Log("newresourceversioncode = " + resourceversioncode);
+        Debug.Log("resourceversioncode = " + resourceversioncode);
 
-        var versionconfigdata = JsonUtility.ToJson(GameVersionConfig);
-        using (var verisionconfigfs = File.Open(InnerVersionConfigSaveFileFullPath, FileMode.Create))
+        var versionConfigData = JsonUtility.ToJson(GameVersionConfig);
+        using (var verisionConfigFS = new StreamWriter(InnerVersionConfigSaveFileFullPath, false, Encoding.UTF8))
         {
-            byte[] versionconfiginfo = mUTF8Encoding.GetBytes(versionconfigdata);
-            verisionconfigfs.Write(versionconfiginfo, 0, versionconfiginfo.Length);
-            verisionconfigfs.Close();
+            verisionConfigFS.Write(versionConfigData);
         }
     }
 #endif
@@ -233,12 +213,12 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     /// 初始化读取版本信息
     /// </summary>
     /// <returns></returns>
-    public void initVerisonConfigData()
+    public void InitVerisonConfigData()
     {
         InnerGameVersionConfig = null;
         OuterGameVersionConfig = null;
-        Debug.Log(string.Format("OutterVersionConfigSaveFileFullPath : {0}", OutterVersionConfigSaveFileFullPath));
-        Debug.Log(string.Format("mInnerVersionConfigFilePath : {0}", InnerVersionConfigFilePath));
+        Debug.Log($"OutterVersionConfigSaveFileFullPath : {OutterVersionConfigSaveFileFullPath}");
+        Debug.Log($"InnerVersionConfigFileRelativePath : {InnerVersionConfigFileRelativePath}");
 
         //读取包外版本信息
         if (File.Exists(OutterVersionConfigSaveFileFullPath))
@@ -247,28 +227,28 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
             Debug.Log("包外版本信息:");
             var content = mUTF8Encoding.GetString(outterbytes);
             OuterGameVersionConfig = JsonUtility.FromJson<VersionConfig>(content);
-            Debug.Log(string.Format("VersionCode : {0} ResourceVersionCode : {1}", OuterGameVersionConfig.VersionCode, OuterGameVersionConfig.ResourceVersionCode));
+            Debug.Log($"VersionCode : {OuterGameVersionConfig.VersionCode} ResourceVersionCode : {OuterGameVersionConfig.ResourceVersionCode}");
         }
         else
         {
-            Debug.Log(string.Format("包外游戏配置版本信息文件 : {0}不存在!读取包内资源版本信息!", OutterVersionConfigSaveFileFullPath));
+            Debug.Log($"包外游戏配置版本信息文件 : {OutterVersionConfigSaveFileFullPath}不存在!读取包内资源版本信息!");
         }
 
         //读取包内信息
-        Debug.Log(string.Format("包内游戏配置版本信息文件 : {0}!", InnerVersionConfigFilePath));
+        Debug.Log($"包内游戏配置版本信息文件 : {InnerVersionConfigFileRelativePath}!");
         //读取包内的版本信息
-        var versionconfigasset = Resources.Load<TextAsset>(InnerVersionConfigFilePath);
+        var versionconfigasset = Resources.Load<TextAsset>(InnerVersionConfigFileRelativePath);
         if (versionconfigasset != null)
         {
             Debug.Log("包内版本信息:");
-            var content = mUTF8Encoding.GetString(versionconfigasset.bytes);
-            Debug.Log(string.Format("content : {0}", content));
+            var content = versionconfigasset.text;
+            Debug.Log($"content : {content}");
             InnerGameVersionConfig = JsonUtility.FromJson<VersionConfig>(content);
-            Debug.Log(string.Format("VersionCode : {0} ResourceVersionCode : {1}", InnerGameVersionConfig.VersionCode, InnerGameVersionConfig.ResourceVersionCode));
+            Debug.Log($"VersionCode : {InnerGameVersionConfig.VersionCode} ResourceVersionCode : {InnerGameVersionConfig.ResourceVersionCode}");
         }
         else
         {
-            Debug.LogError(string.Format("严重错误！包内游戏配置版本信息文件 : {0}不存在!无法读取!", InnerVersionConfigFilePath));
+            Debug.LogError($"严重错误！包内游戏配置版本信息文件 : {InnerVersionConfigFileRelativePath}不存在!无法读取!");
         }
 
         //当前版本信息，如果包内比包外游戏版本号高，以包内为准
@@ -297,21 +277,21 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     /// <summary>
     /// 是否需要版本强更
     /// </summary>
-    /// <param name="newversioncode">新版本号</param>
+    /// <param name="newVersionCode">新版本号</param>
     /// <returns></returns>
-    public bool needVersionHotUpdate(double newversioncode)
+    public bool NeedVersionHotUpdate(double newVersionCode)
     {
-        return newversioncode > GameVersionConfig.VersionCode;
+        return newVersionCode > GameVersionConfig.VersionCode;
     }
 
     /// <summary>
     /// 是否需要版本强更
     /// </summary>
-    /// <param name="newresourcecode">新资源版本号</param>
+    /// <param name="newResourceCode">新资源版本号</param>
     /// <returns></returns>
-    public bool needResourceHotUpdate(int newresourcecode)
+    public bool NeedResourceHotUpdate(int newResourceCode)
     {
-        return newresourcecode > GameVersionConfig.ResourceVersionCode;
+        return newResourceCode > GameVersionConfig.ResourceVersionCode;
     }
 
     /// <summary>
@@ -319,11 +299,11 @@ public class VersionConfigModuleManager : SingletonTemplate<VersionConfigModuleM
     /// 判定包内版本号是否大于包外版本号
     /// </summary>
     /// <returns></returns>
-    public bool hasVersionHotUpdate()
+    public bool HasVersionHotUpdate()
     {
         if(OuterGameVersionConfig != null && InnerGameVersionConfig.VersionCode > OuterGameVersionConfig.VersionCode)
         {
-            Debug.Log(string.Format("包内版本号 : {0} 包外版本号 : {1}", InnerGameVersionConfig.VersionCode, OuterGameVersionConfig.VersionCode));
+            Debug.Log($"包内版本号 : {InnerGameVersionConfig.VersionCode} 包外版本号 : {OuterGameVersionConfig.VersionCode}");
             return true;
         }
         else

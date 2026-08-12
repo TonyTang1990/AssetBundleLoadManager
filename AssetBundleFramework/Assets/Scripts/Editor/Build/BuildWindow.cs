@@ -154,7 +154,7 @@ public class BuildWindow : BaseEditorWindow
         Debug.Log($"打包开发版本:{IsDevelopment}");
         Debug.Log($"游戏开发模式:{DevelopMode}");
         Debug.Log($"打包输出路径:{BuildOutputPath}");
-        VersionConfigModuleManager.Singleton.initVerisonConfigData();
+        VersionConfigModuleManager.Singleton.InitVerisonConfigData();
         Debug.Log($"包内版本号:{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode}");
         Debug.Log($"包内资源版本号:{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}");
     }

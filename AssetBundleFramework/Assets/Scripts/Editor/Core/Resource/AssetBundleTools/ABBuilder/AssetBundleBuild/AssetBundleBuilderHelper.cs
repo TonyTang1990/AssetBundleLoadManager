@@ -13,12 +13,74 @@ namespace TResource
 	public static class AssetBundleBuilderHelper
 	{
 		/// <summary>
+		/// 获取构建缓存目录路径
+		/// </summary>
+		/// <returns></returns>
+		public static string GetBuildTempFolderPath()
+		{
+			return Path.Combine(Application.dataPath, AssetBundleBuildConstData.BuildTempFolderRelativePath);
+		}
+
+		/// <summary>
+		/// 获取构建AB缓存目录路径
+		/// </summary>
+		/// <returns></returns>
+		public static string GetBuildABTempFolderPath()
+		{
+			return Path.Combine(Application.dataPath, AssetBundleBuildConstData.BuildABTempFolderRelativePath);
+		}
+
+		/// <summary>
+		/// 获取构建AB改名缓存目录路径
+		/// </summary>
+		/// <returns></returns>
+		public static string GetBuildABRenameTempFolderPath()
+		{
+			return Path.Combine(Application.dataPath, AssetBundleBuildConstData.BuildABRenameTempFolderRelativePath);
+		}
+
+		/// <summary>
+		/// 获取构建Resources缓存目录路径
+		/// </summary>	
+		public static string GetBuildResourcesTempFolderPath()
+		{
+			return Path.Combine(Application.dataPath, AssetBundleBuildConstData.BuildResourcesTempFolderRelativePath);
+		}
+
+		/// <summary>
+		/// 获取指定打包平台构建AB缓存目录路径
+		/// </summary>
+		/// <param name="buildTarget"></param>
+		public static string GetBuildTargetABTempFolderPath(BuildTarget buildTarget)
+		{
+			return Path.Combine(GetBuildABTempFolderPath(), buildTarget.ToString());
+		}
+
+		/// <summary>
+		/// 获取指定打包平台构建AB改名缓存目录路径
+		/// </summary>
+		/// <param name="buildTarget"></param>
+		/// <returns></returns>
+		public static string GetBuildTargetABRenameTempFolderPath(BuildTarget buildTarget)
+		{
+			return Path.Combine(GetBuildABRenameTempFolderPath(), buildTarget.ToString());
+		}
+
+		/// <summary>
+		/// 获取构建Resources缓存目录路径
+		/// </summary>
+		/// <returns></returns>
+		public static string GetBuildResourcesTempFolderPath(BuildTarget buildTarget)
+		{
+			return Path.Combine(GetBuildResourcesTempFolderPath(), buildTarget.ToString());
+		}
+
+		/// <summary>
 		/// 获取默认的导出根路径
 		/// </summary>
 		public static string GetOutputRootPath()
 		{
-			string projectPath = PathUtilities.GetProjectFullPath();
-			return $"{projectPath}Assets/StreamingAssets";
+			return Application.streamingAssetsPath;
 		}
 
         /// <summary>

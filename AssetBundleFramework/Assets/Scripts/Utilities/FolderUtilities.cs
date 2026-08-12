@@ -72,8 +72,10 @@ public static class FolderUtilities
     /// <param name="folderPath">要清理的文件夹路径</param>
     public static void ClearFolder(string directoryPath)
     {
-        if (Directory.Exists(directoryPath) == false)
+        if (!Directory.Exists(directoryPath))
+        {
             return;
+        }
 
         // 删除文件
         string[] allFiles = Directory.GetFiles(directoryPath);
@@ -88,5 +90,15 @@ public static class FolderUtilities
         {
             Directory.Delete(allFolders[i], true);
         }
+    }
+
+    /// <summary>
+    /// 确保目录存在并清空目录
+    /// </summary>
+    /// <param name="directoryPath"></param>
+    public static void MakeSureFolderExistAndClean(string directoryPath)
+    {
+        CheckAndCreateSpecificFolder(directoryPath);
+        ClearFolder(directoryPath);
     }
 }

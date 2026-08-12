@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Description:             AssetBundle打包工具
  * Author:                  TonyTang
  * Create Date:             2023/01/23
@@ -16,6 +16,26 @@ using System.Security.Cryptography;
 using UnityEditor.Build.Pipeline.Interfaces;
 using UnityEditor.Build.Content;
 using UnityEditor.SceneManagement;
+using System.Globalization;
+
+// 打包设计简要说明:
+
+// AB打包生成文件说明：
+// AB相关资源文件(e.g. AB依赖信息文件，资源AB文件)
+// AB打包说明文件(e.g. readme.txt, assetBuildReadme.txt)
+// 校验AB资源热更信息文件(VerifyABInfo.json)
+// AB资源热更新信息文件(ABInfo.json)
+
+// AB打包类型说明:
+// AssetBundleBuildPurpose.BuildPlayerBaseLine(构建母包，相关资源文件会放到Resources和StreammingAssets)
+// AssetBundleBuildPurpose.BuildHotUpdate(构建热更包，相关文件会直接输出到热更新目录对应位置)
+
+// AB打包生成位置说明：
+// AB打包会统一先生成到项目目录下的BuildCache/ABBuild目录
+// 然后清空BuildCache/ABBuildRename目录并将ABBuild目录打包的AB所有资源复制到BuildCache/ABBuildRename目录
+// 然后将BuildCache/ABBuildRename目录下的资源根据MD5信息进行改名
+// 然后根据BuildCache/ABBuildRename目录下的资源名生成VerifyABInfo.json和ABInfo.json到BuildCache/ResourcesCache/目录下
+// 然后根据AB打包类型会决定BuildCache/ABBuildRename和BuildCache/ResourcesCache/目录下的资源拷贝到对应目标为止
 
 namespace TResource
 {
@@ -25,60 +45,49 @@ namespace TResource
 	public class AssetBundleBuilder
 	{
 		/// <summary>
-		/// AssetBundle压缩选项
+		/// AssetBundle打包参数
 		/// </summary>
-		public enum ECompressOption
+		public AssetBundleBuildParams AssetBundleBuildParams
 		{
-			Uncompressed = 0,
-			StandardCompressionLZMA,
-			ChunkBasedCompressionLZ4,
+			get;
+			private set;
 		}
 
 		/// <summary>
-		/// 输出的根目录
+		/// 构建目标平台AB缓存目录路径
 		/// </summary>
-		private readonly string _outputRoot;
+		public string BuildTargetABTempFolderPath
+		{
+			get;
+			private set;
+		}
 
 		/// <summary>
-		/// 构建平台
+		/// 构建目标平台AB改名缓存目录路径
 		/// </summary>
-		public BuildTarget BuildTarget { private set; get; } = BuildTarget.NoTarget;
+		public string BuildTargetABRenameTempFolderPath
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		/// 构建Resources缓存目录路径
+		/// </summary>
+		public string BuildResourcesTempFolderPath
+		{
+			get;
+			private set;
+		}
 
 		/// <summary>
         /// 构建平台组
         /// </summary>
-		public BuildTargetGroup BuildTargetGroup { private set; get; } = BuildTargetGroup.Unknown;
-
-		/// <summary>
-		/// 输出目录
-		/// </summary>
-		public string OutputDirectory { private set; get; } = string.Empty;
-
-		/// <summary>
-		/// 构建选项
-		/// </summary>
-		public ECompressOption CompressOption = ECompressOption.Uncompressed;
-
-		/// <summary>
-		/// 是否强制重新打包资源
-		/// </summary>
-		public bool IsForceRebuild = false;
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public bool IsAppendHash = false;
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public bool IsDisableWriteTypeTree = false;
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public bool IsIgnoreTypeTreeChanges = false;
-
+		public BuildTargetGroup BuildTargetGroup
+		{
+	   	    get;
+			private set;
+		} = BuildTargetGroup.Unknown;
 
 		/// <summary>
 		/// 所有AssetBundle打包信息Map<AssetBundle名, <AssetBundle变体名, AssetBundle打包信息>>(避免相同AssetBundle打包信息重复New AssetBundleBuildInfo)
@@ -121,31 +130,37 @@ namespace TResource
 		{
 			AssetBundleBuildConstData.ReadmeFileName,
 			AssetBundleBuildConstData.AssetBuildReadmeFileName,
+			AssetBundleBuildConstData.BuildLogStepFileName,
 		};
 
 		/// <summary>
 		/// AssetBuilder
 		/// </summary>
 		/// <param name="buildTarget">构建平台</param>
-		public AssetBundleBuilder(BuildTarget buildTarget)
+		/// <param name="assetBundleBuildPurpose">AB打包用途</param>
+		public AssetBundleBuilder(AssetBundleBuildParams assetBundleBuildParams)
 		{
-			_outputRoot = AssetBundleBuilderHelper.GetOutputRootPath();
-			BuildTarget = buildTarget;
-			BuildTargetGroup = BuildPipeline.GetBuildTargetGroup(BuildTarget);
-			OutputDirectory = AssetBundleBuilderHelper.GetBuildTargetOutputRootPath(BuildTarget);
+			var buildTarget = assetBundleBuildParams.BuildTarget;
+			AssetBundleBuildParams = assetBundleBuildParams;
+			BuildTargetABTempFolderPath = AssetBundleBuilderHelper.GetBuildTargetABTempFolderPath(buildTarget);
+			BuildTargetABRenameTempFolderPath = AssetBundleBuilderHelper.GetBuildTargetABRenameTempFolderPath(buildTarget);
+			BuildResourcesTempFolderPath = AssetBundleBuilderHelper.GetBuildResourcesTempFolderPath(buildTarget);
+			BuildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
 		}
 
 		/// <summary>
 		/// 准备构建
 		/// </summary>
-		public void PreAssetBuild()
+		public bool PreAssetBuild()
 		{
 			Debug.Log("------------------------------OnPreAssetBuild------------------------------");
 
 			// 检测构建平台是否合法
-			if (BuildTarget == BuildTarget.NoTarget)
+			var buildTarget = AssetBundleBuildParams.BuildTarget;
+			if (buildTarget == BuildTarget.NoTarget)
             {
-                throw new Exception("[BuildPatch] 请选择目标平台");
+                Debug.LogError("[BuildPatch] 请选择目标平台");
+				return false;
             }
 
             // 检测构建版本是否合法
@@ -154,58 +169,53 @@ namespace TResource
             //if (BuildVersion < 0)
             //	throw new Exception("[BuildPatch] 请先设置版本号");
 
-            // 检测输出目录是否为空
-            if (string.IsNullOrEmpty(OutputDirectory))
-            {
-                throw new Exception("[BuildPatch] 输出目录不能为空");
-            }
-
             // 检测补丁包是否已经存在
             //string packageDirectory = GetPackageDirectory();
             //if (Directory.Exists(packageDirectory))
             //	throw new Exception($"[BuildPatch] 补丁包已经存在：{packageDirectory}");
 
             // 如果是强制重建
-            if (IsForceRebuild)
+			var isForceRebuild = AssetBundleBuildParams.IsForceRebuild;
+            if (isForceRebuild)
 			{
 				// 删除平台总目录
-				string platformDirectory = $"{_outputRoot}/{BuildTarget}";
-				if (Directory.Exists(platformDirectory))
+				if (Directory.Exists(BuildTargetABTempFolderPath))
 				{
-					Directory.Delete(platformDirectory, true);
-					Log($"删除平台总目录：{platformDirectory}");
+					Directory.Delete(BuildTargetABTempFolderPath, true);
+					Log($"删除平台总目录：{BuildTargetABTempFolderPath}");
 				}
 			}
 
 			// 如果输出目录不存在
-			if (Directory.Exists(OutputDirectory) == false)
+			if (!Directory.Exists(BuildTargetABTempFolderPath))
 			{
-				Directory.CreateDirectory(OutputDirectory);
-				Log($"创建输出目录：{OutputDirectory}");
+				Directory.CreateDirectory(BuildTargetABTempFolderPath);
+				Log($"创建输出目录：{BuildTargetABTempFolderPath}");
 			}
 
 			// Asset打包信息输出目录不存在
-			var assetbuildinfofolderpath = AssetBundlePath.GetAssetBuildInfoFolderFullPath();
+			var assetbuildinfofolderpath = ResourcePath.GetAssetBuildInfoFolderFullPath();
 			Debug.Log($"Asset打包信息输出目录:{assetbuildinfofolderpath}");
 			if (!Directory.Exists(assetbuildinfofolderpath))
 			{
 				Directory.CreateDirectory(assetbuildinfofolderpath);
 				Log($"创建打包信息Asset输出目录：{assetbuildinfofolderpath}");
 			}
+			return true;
 		}
 
 		/// <summary>
 		/// 执行构建
 		/// </summary>
-		public void PostAssetBuild()
+		public bool PostAssetBuild()
 		{
-			Debug.Log("------------------------------OnPostAssetBuild------------------------------");
+			Debug.Log("------------------------------PostAssetBuild------------------------------");
 			// 准备工作
 			var result = DoAssetBundleBuildPreparation();
 			if(!result)
 			{
 				Debug.LogError($"AB打包准备工作失败，打包终止!");
-				return;
+				return false;
 			}
 			// 开始构建
 			Log($"开始构建......");
@@ -213,22 +223,44 @@ namespace TResource
 			EditorSceneManager.SaveOpenScenes();
 			bool buildSuccess;
 #if OLD_ASSET_BUILD_PIPELINE
-			DoCustomAssetBundleBuild(OutputDirectory, out buildSuccess);
+			DoCustomAssetBundleBuild(BuildTargetABTempFolderPath, out buildSuccess);
 #else
-			DoSBPAssetBundleBuild(OutputDirectory, out buildSuccess);
+			DoSBPAssetBundleBuild(BuildTargetABTempFolderPath, out buildSuccess);
 #endif
 			if(buildSuccess == false)
             {
 				Debug.LogError($"打包AB失败!");
-				return;
+				return false;
             }
 
 			// 视频单独打包
 			//PackVideo(buildAssetInfoList);
-			// 单独生成包内的AssetBundle的MD5信息(用于热更新判定)
-			CreateAssetBundleMd5InfoFile();
 
+			// 避免生成ABInfo.json时又重新计算文件相关信息
+			Dictionary<string, RenameFileInfo> renameFileInfoMap = new Dictionary<string, RenameFileInfo>();
+			var copyAndRenameResult = CopyAndRenameAllABFiles(ref renameFileInfoMap);
+			if(!copyAndRenameResult)
+			{
+				Debug.LogError($"生成复制和改名AB失败，打包终止!");
+				return false;
+			}
+
+			// 单独生成包内的VerifyABInfo.json和ABInfo.json信息
+			var createResult = CreateVerifyAndABInfoFile(ref renameFileInfoMap);
+			if(!createResult)
+			{
+				Debug.LogError($"生成VerifyABInfo.json和ABInfo.json信息失败，打包终止!");
+				return false;
+			}
+
+			var buildPostProcessResult = DoAssetBundleBuildPostProcess();
+			if(!buildPostProcessResult)
+			{
+				Debug.LogError($"AB打包后续处理失败，打包终止!");
+				return false;
+			}
 			Log("构建完成！");
+			return true;
 		}
 
 		/// <summary>
@@ -240,7 +272,9 @@ namespace TResource
         {
             var buildParams = MakeBuildParameters();
 			IBundleBuildResults results;
-			SBPAssetBundleBuilder.BuildAllAssetBundles(this, outputDirectory, BuildTarget, buildParams, mAllAssetBundleBuildList, out buildSuccess, out results);
+			SBPAssetBundleBuilder.BuildAllAssetBundles(this, outputDirectory, AssetBundleBuildParams.BuildTarget,
+																	  buildParams, mAllAssetBundleBuildList,
+																	  out buildSuccess, out results);
 			CreateSBPReadmeFile(outputDirectory, results);
 		}
 
@@ -252,7 +286,10 @@ namespace TResource
         private void DoCustomAssetBundleBuild(string outputDirectory, out bool buildSuccess)
         {
 			BuildAssetBundleOptions options = MakeBuildOptions();
-			AssetBundleManifest unityManifest = OldAssetBundleBuilder.BuildAllAssetBundles(this, outputDirectory, BuildTarget, options, mAllAssetBundleBuildList, out buildSuccess);
+			AssetBundleManifest unityManifest = OldAssetBundleBuilder.BuildAllAssetBundles(this, outputDirectory,
+																						AssetBundleBuildParams.BuildTarget,
+																						options, mAllAssetBundleBuildList,
+																						out buildSuccess);
 			// 创建说明文件
 			CreateReadmeFile(outputDirectory, unityManifest);
 		}
@@ -279,13 +316,76 @@ namespace TResource
         }
 
 		/// <summary>
+		/// 执行AB打包完成后处理
+		/// </summary>
+		/// <returns></returns>
+		private bool DoAssetBundleBuildPostProcess()
+		{
+			// 执行根据AB打包用途的后续资源处理
+			bool buildPurposeResult = DoAssetBundleBuildPurposePostProcess();
+			if(!buildPurposeResult)
+			{
+				Debug.LogError($"AB打包用途:{AssetBundleBuildParams.AssetBundleBuildPurpose}的后续处理失败!");
+				return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// 执行根据AB打包用途的后续资源处理
+		/// </summary>
+		/// <returns></returns>
+		private bool DoAssetBundleBuildPurposePostProcess()
+		{
+			var finalABBuildTargetOutputFolderPath = GetFinalABBuildTargetOutputFolderPath();
+			var finalABBuildResourceOutputFolderPath = GetFinalABBuildResourcesOutputFolderPath();
+			// 确保资源打包目录是全新的再操作后续复制文件流程，避免有错误资源进包
+			FolderUtilities.RecreateSpecificFolder(finalABBuildTargetOutputFolderPath);
+			// 包内Resources还有别的资源不能直接全部删除
+			FolderUtilities.CheckAndCreateSpecificFolder(finalABBuildResourceOutputFolderPath);
+
+			// 复制改名后的AB资源目录和AB热更新信息文件(e.g. ABInfo.json, VerifyABInfo.json)到最终输出目录
+			FileUtilities.CopyFolderToFolder(BuildTargetABRenameTempFolderPath, finalABBuildTargetOutputFolderPath);
+
+			var verifyABInfoFileBuildTempPath = GetVerifyABInfoFileBuildTempPath();
+			var abInfoFileBuildTempPath = GetABInfoFileBuildTempPath();
+			string newVerifyABInfoFilePath;
+			var copyVerifyABInfoResule = FileUtilities.CopyFileToFolder(verifyABInfoFileBuildTempPath, finalABBuildResourceOutputFolderPath, out newVerifyABInfoFilePath);
+			if(!copyVerifyABInfoResule)
+			{
+				Debug.LogError($"复制包内资源信息文件:{verifyABInfoFileBuildTempPath}到最终输出目录:{finalABBuildResourceOutputFolderPath}失败，请检查是否有文件被占用或其他问题!");
+				return false;
+			}
+			string newABInfoFilePath;
+			var copyABInfoResult = FileUtilities.CopyFileToFolder(abInfoFileBuildTempPath, finalABBuildResourceOutputFolderPath, out newABInfoFilePath);
+			if(!copyABInfoResult)
+			{
+				Debug.LogError($"复制包内资源信息文件:{abInfoFileBuildTempPath}到最终输出目录:{finalABBuildResourceOutputFolderPath}失败，请检查是否有文件被占用或其他问题!");
+				return false;
+			}
+			var abBuildPurpose = AssetBundleBuildParams.AssetBundleBuildPurpose;
+			if(abBuildPurpose == AssetBundleBuildPurpose.BuildHotUpdate)
+			{
+				// 热更流程还需要生成热更新版本号到热更目录
+				var hotUpdateOutputFolderPath = HotUpdatePath.GetLocalHotUpdateFolderPath(AssetBundleBuildParams.BuildTarget);
+				var updateVersionConfigResult = HotUpdateTool.UpdateHotUpdateVersionConfig(hotUpdateOutputFolderPath, AssetBundleBuildParams.VersionCode, AssetBundleBuildParams.ResourceVersionCode);
+				if(!updateVersionConfigResult)
+				{
+					Debug.LogError($"更新热更新版本文件失败！版本号:{AssetBundleBuildParams.VersionCode}，资源版本号:{AssetBundleBuildParams.ResourceVersionCode}到热更目录:{hotUpdateOutputFolderPath}!");
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// <summary>
 		/// 更新AssetBundle打包编译信息Asset
 		/// </summary>
 		/// <param name="assetBundleBuildInfoList"></param>
 		private bool UpdateAssetBundleBuildInfoAsset(List<AssetBundleBuildInfo> assetBundleBuildInfoList)
 		{
 			// Note: AssetBundle打包信息统一存小写，确保和AB打包那方一致
-			var assetBundleBuildInfoAssetRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
+			var assetBundleBuildInfoAssetRelativePath = ResourcePath.GetAssetBuildInfoFileRelativePath();
 			var assetBundleBuildAsset = AssetDatabase.LoadAssetAtPath<AssetBuildInfoAsset>(assetBundleBuildInfoAssetRelativePath);
 			if (assetBundleBuildAsset == null)
 			{
@@ -305,9 +405,6 @@ namespace TResource
 					continue;
 				}
 				var assetBundleName = assetBundleBuildInfo.AssetBundleName;
-				// Note:
-				// 1. 记录的Asset对应AB路径要不带AB后缀，AB后缀在运行加载时根据平台自动添加
-				var assetBundleNameNoPostFix = PathUtilities.GetPathWithoutPostFix(assetBundleName);
 				var assetBundleVariant = assetBundleBuildInfo.AssetBundleVariant;
 				foreach (var assetBuildInfoData in assetBundleBuildInfo.AssetBuildInfoMap)
 				{
@@ -319,7 +416,7 @@ namespace TResource
 					}
 					// 不剔除后缀，确保AssetDatabase模式可以全路径(带后缀)加载
 					var assetPath = assetBuildInfo.AssetPath;
-					var buildAssetInfo = new BuildAssetInfo(assetPath, assetBundleNameNoPostFix, assetBundleVariant);
+					var buildAssetInfo = new BuildAssetInfo(assetPath, assetBundleName, assetBundleVariant);
 					var assetName = buildAssetInfo.AssetName;
 					if(dumplicatedAssetNameMap.TryGetValue(assetName, out var preAssetPath))
 					{
@@ -414,6 +511,127 @@ namespace TResource
 			return true;
 		}
 
+#region 公共部分
+		/// <summary>
+		/// 获取正确的版本号(默认保留两位小数)
+		/// </summary>
+		/// <param name="versionCode"></param>
+		/// <returns></returns>
+		public static double GetCorrectVersionCode(double versionCode)
+		{
+			// 版本号目录默认最多保留两位小数
+			return Math.Truncate(versionCode * 100) / 100;
+		}
+
+		/// <summary>
+		/// 获取指定版本号的字符串(默认保留两位小数)
+		/// </summary>
+		/// <param name="versionCode"></param>
+		/// <returns></returns>
+		private string GetVersionCodeS(double versionCode)
+		{
+			// 版本号目录默认最多保留两位小数且不显示最后位的0
+			return versionCode.ToString("0.##");
+		}
+
+		/// <summary>
+		/// 获取指定资源版本号的字符串
+		/// </summary>
+		/// <param name="resourceVersionCode"></param>
+		/// <returns></returns>
+		private string GetResourceVersionCodeS(int resourceVersionCode)
+		{
+			return resourceVersionCode.ToString();
+		}
+
+		/// <summary>
+		/// 获取校验AB打包信息打包AB临时路径
+		/// </summary>
+		/// <returns></returns>
+		private string GetVerifyABInfoFileBuildTempPath()
+		{
+			var verifyABInfoResRelativePath = ResourcePath.GetVerifyABInfoResRelativePath();
+			return Path.Combine(BuildResourcesTempFolderPath, verifyABInfoResRelativePath);
+		}
+
+		/// <summary>
+		/// 获取AB打包信息打包AB临时路径
+		/// </summary>
+		/// <returns></returns>
+		private string GetABInfoFileBuildTempPath()
+		{
+			var abInfoResRelativePath = ResourcePath.GetABInfoResRelativePath();
+			return Path.Combine(BuildResourcesTempFolderPath, abInfoResRelativePath);
+		}
+
+		/// <summary>
+		/// 获取AB打包说明文件打包AB临时路径
+		/// </summary>
+		/// <returns></returns>
+		private string GetBuildReadmeFileBuildTempPath()
+		{
+			return Path.Combine(BuildTargetABTempFolderPath, AssetBundleBuildConstData.AssetBuildReadmeFileName);
+		}
+
+		/// <summary>
+		/// 获取最终本地热更新输出目录路径
+		/// </summary>
+		/// <returns></returns>
+		private string GetFinalLocalHotUpdateOutputFolderPath()
+		{
+			var localHotUpdateOutputFolderPath = HotUpdatePath.GetLocalHotUpdateFolderPath(AssetBundleBuildParams.BuildTarget);
+			var versionCode = AssetBundleBuildParams.VersionCode;
+			var resourceVersionCode = AssetBundleBuildParams.ResourceVersionCode;
+			var versionCodeS = GetVersionCodeS(versionCode);
+			var resourceVersionCodeS = GetResourceVersionCodeS(resourceVersionCode);
+			var finalLocalHotUpdateOutputFolderPath = Path.Combine(localHotUpdateOutputFolderPath, versionCodeS, resourceVersionCodeS);
+			return finalLocalHotUpdateOutputFolderPath;
+		}
+
+		/// <summary>
+		/// 获取最终平台AB打包输出目录路径
+		/// </summary>
+		/// <returns></returns>
+		private string GetFinalABBuildTargetOutputFolderPath()
+		{
+			var buildTarget = AssetBundleBuildParams.BuildTarget;
+			if(AssetBundleBuildParams.AssetBundleBuildPurpose == AssetBundleBuildPurpose.BuildPlayerBaseLine)
+			{
+				return AssetBundleBuilderHelper.GetBuildTargetOutputRootPath(buildTarget);
+			}
+			else if(AssetBundleBuildParams.AssetBundleBuildPurpose == AssetBundleBuildPurpose.BuildHotUpdate)
+			{
+				return GetFinalLocalHotUpdateOutputFolderPath();
+			}
+			else
+			{
+				Debug.LogError($"不支持的AB打包用途:{AssetBundleBuildParams.AssetBundleBuildPurpose}，获取最终AB打包输出目录失败!");
+				return string.Empty;
+			}
+		}
+
+		/// <summary>
+		/// 获取最终平台AB打包Resources输出目录路径
+		/// </summary>
+		/// <returns></returns>
+		private string GetFinalABBuildResourcesOutputFolderPath()
+		{
+			if(AssetBundleBuildParams.AssetBundleBuildPurpose == AssetBundleBuildPurpose.BuildPlayerBaseLine)
+			{
+				return ResourcePath.GetProjectResourcesFullPath();
+			}
+			else if(AssetBundleBuildParams.AssetBundleBuildPurpose == AssetBundleBuildPurpose.BuildHotUpdate)
+			{
+				return GetFinalLocalHotUpdateOutputFolderPath();
+			}
+			else
+			{
+				Debug.LogError($"不支持的AB打包用途:{AssetBundleBuildParams.AssetBundleBuildPurpose}，获取最终AB打包输出目录失败!");
+				return string.Empty;
+			}
+		}
+#endregion
+
 #region 准备工作
 		/// <summary>
 		/// 执行AssetBundle打包分析
@@ -459,8 +677,8 @@ namespace TResource
 		private void UpdateAssetBundleBuildInfoAssetDatas()
         {
             // AssetBuildInfoAsset打包信息单独打包
-            var assetBuildInfoAssetRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
-            var assetBundleName = GetAssetBuildInfoAssetBundleName();
+            var assetBuildInfoAssetRelativePath = ResourcePath.GetAssetBuildInfoFileRelativePath();
+            var assetBundleName = ResourcePath.GetAssetBuildInfoABName();
             var assetBundleVariant = GetAssetBuildBundleVariant(assetBuildInfoAssetRelativePath);
 			var assetBuildCompression = GetAssetBuildCompression(assetBuildInfoAssetRelativePath);
             var assetBundleBuildInfo = new AssetBundleBuildInfo(assetBundleName, assetBundleVariant, assetBuildCompression);
@@ -569,42 +787,6 @@ namespace TResource
 		}
 
 		/// <summary>
-		/// 获取AB打包后缀名
-		/// </summary>
-		/// <returns></returns>
-		private string GetBuildAssetBundlePostFix()
-		{
-			if (BuildTarget == BuildTarget.StandaloneWindows || BuildTarget == BuildTarget.StandaloneWindows64)
-			{
-				return AssetBundlePath.WindowAssetBundlePostFix;
-			}
-			if (BuildTarget == BuildTarget.Android)
-			{
-				return AssetBundlePath.AndroidAssetBundlePostFix;
-			}
-			if (BuildTarget == BuildTarget.iOS)
-			{
-				return AssetBundlePath.IOSAssetBundlePostFix;
-			}
-			else
-			{
-				Debug.LogError($"不支持的打包平台:{BuildTarget},获取AB后缀名失败!");
-				return string.Empty;
-			}
-		}
-
-		/// <summary>
-		/// 获取Asset打包信息文件AB名
-		/// </summary>
-		private string GetAssetBuildInfoAssetBundleName()
-		{
-			var assetBuildInfoRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
-			var assetBuildInfoABPath = AssetBundlePath.ChangeAssetPathToABPath(assetBuildInfoRelativePath);
-			assetBuildInfoABPath = AssetBundlePath.GetABPathWithPostFix(assetBuildInfoABPath);
-			return PathUtilities.GetRegularPath(assetBuildInfoABPath.ToLower());
-		}
-
-		/// <summary>
         /// 指定Asset路径是否是有效可搜集资源
         /// </summary>
         /// <param name="assetPath"></param>
@@ -656,7 +838,7 @@ namespace TResource
 		public static string GetAssetBundleName(string assetPath)
 		{
 			string assetBundleName = AssetBundleCollectSettingData.GetAssetBundleName(assetPath);
-			assetBundleName = AssetBundlePath.GetABPathWithPostFix(assetBundleName);
+			assetBundleName = ResourcePath.GetABPathWithPostFix(assetBundleName);
 			return assetBundleName;
 		}
 
@@ -672,8 +854,7 @@ namespace TResource
 			{
 				return assetBundleName;
 			}
-			assetBundleName = AssetBundleCollectSettingData.GetAssetBundleName(assetPath);
-			assetBundleName = AssetBundlePath.GetABPathWithPostFix(assetBundleName);
+			assetBundleName = GetAssetBundleName(assetPath);
 			mAllAssetBundleNameCacheMap.Add(assetPath, assetBundleName);
 			return assetBundleName;
 		}
@@ -731,38 +912,139 @@ namespace TResource
 
 		#region AssetBundle资源热更新相关
 		/// <summary>
-		/// 创建AssetBundle的MD5信息文件
+		/// 获取临时输出目录下所有的AB文件路径
 		/// </summary>
-		private void CreateAssetBundleMd5InfoFile()
+		/// <returns></returns>
+		private IEnumerable<string> GetAllABPathUnderTempOutputFolder()
 		{
-			var assetBundleMd5FilePath = AssetBundlePath.GetInnerAssetBundleMd5FilePath();
-			// 确保创建最新的
-			FileUtilities.DeleteFile(assetBundleMd5FilePath);
-			VersionConfigModuleManager.Singleton.initVerisonConfigData();
-			var resourceversion = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
-			// Note: 
-			// 这里如果直接指定Encoding.UTF8会出现BOM文件(默认选择了带BOM的方式)
-			// 最终导致热更新文件读取比较后的路径信息带了BOM导致https识别时报错导致下载不到正确的资源
-			using (var md5SW = new StreamWriter(assetBundleMd5FilePath, false, new UTF8Encoding(false)))
+			var abFilesPath = Directory.GetFiles(BuildTargetABTempFolderPath, $"*.*", SearchOption.AllDirectories).Where(
+				f => !f.EndsWith(".meta") && !f.EndsWith(".manifest") &&
+				!mAllMD5FileNameBlackList.Contains(Path.GetFileName(f)));
+			return abFilesPath;
+		}
+
+		/// <summary>
+		/// 获取临时改名目录下所有的AB文件路径
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerable<string> GetAllABPathUnderRenameTempFolder()
+		{
+			var abFilesPath = Directory.GetFiles(BuildTargetABRenameTempFolderPath, $"*.*", SearchOption.AllDirectories).Where(
+				f => !f.EndsWith(".meta") && !f.EndsWith(".manifest") &&
+				!mAllMD5FileNameBlackList.Contains(Path.GetFileName(f)));
+			return abFilesPath;
+		}
+
+		/// <summary>
+		/// 更新AssetBundle文件名带MD5和创建AssetBundleInfo.json信息文件
+		/// </summary>
+		/// <param name="renameFileInfoMap">AB重命名信息<重命名文件全路径，重命名文件信息></param>
+		private bool CopyAndRenameAllABFiles(ref Dictionary<string, RenameFileInfo> renameFileInfoMap)
+		{
+			renameFileInfoMap.Clear();
+			// 将打包输出的AB文件复制到临时的改名目录下
+			// 避免直接在打包输出目录改名导致AB无法增量打包问题
+			// 避免目录存在旧资源导致操作到错误资源文件问题
+			FolderUtilities.MakeSureFolderExistAndClean(BuildTargetABRenameTempFolderPath);
+
+			// 有效排除不必要进包或者进入热更新的临时文件(e.g. readme.txt)
+			var abFilesFullPath = GetAllABPathUnderTempOutputFolder();
+			var abFileNumber = abFilesFullPath?.Count() ?? 0;
+			if(abFileNumber == 0)
 			{
-				var abFilesFullPath = Directory.GetFiles(OutputDirectory, "*.*", SearchOption.AllDirectories).Where(f =>
-					!f.EndsWith(".meta") && !f.EndsWith(".manifest"));
-				var md5hash = MD5.Create();
-				// 格式:AB全路径+":"+MD5值
-				foreach (var abFilePath in abFilesFullPath)
-				{
-					var abFileName = Path.GetFileName(abFilePath);
-					if(mAllMD5FileNameBlackList.Contains(abFileName))
-                    {
-						continue;
-                    }
-					var abRelativePath = abFilePath.Remove(0, OutputDirectory.Length);
-					abRelativePath = PathUtilities.GetRegularPath(abRelativePath);
-					var fileMd5 = FileUtilities.GetFileMD5(abFilePath, md5hash);
-					md5SW.WriteLine($"{abRelativePath}{ResourceConstData.AssetBundlleInfoSeparater}{fileMd5}");
-				}
-				Debug.Log($"AssetBundle的包内MD5信息计算完毕!");
+				Debug.LogWarning($"临时输出目录:{BuildTargetABTempFolderPath}下没有AB文件，无法复制到改名目录:{BuildTargetABRenameTempFolderPath}!");
+				return true;
 			}
+			string newABFilePath;
+			bool copyResult;
+			string abFileRelativePath;
+			foreach(var abFilePath in abFilesFullPath)
+			{
+				abFileRelativePath = Path.GetRelativePath(BuildTargetABTempFolderPath, abFilePath);
+				newABFilePath = Path.Combine(BuildTargetABRenameTempFolderPath, abFileRelativePath);
+				copyResult = FileUtilities.CopyFileToFile(abFilePath, newABFilePath);
+				if(!copyResult)
+				{
+					Debug.LogError($"复制AB文件:{abFilePath}到改名目录:{BuildTargetABRenameTempFolderPath}失败，请检查是否有文件被占用或其他问题!");
+					return false;
+				}
+			}
+			var md5 = MD5.Create();
+			var sha256 = SHA256.Create();
+			var renameABFilesFullPath = GetAllABPathUnderRenameTempFolder();
+			foreach(var renameABFilePath in renameABFilesFullPath)
+			{
+				// 相对于热更新目录的AB路径
+				var hotupdateABRelativePath = Path.GetRelativePath(BuildTargetABRenameTempFolderPath, renameABFilePath);
+				// 清除最前面遗留的/避免相对路径不对问题
+				hotupdateABRelativePath = hotupdateABRelativePath.TrimStart('/', '\\');
+				hotupdateABRelativePath = PathUtilities.GetRegularPath(hotupdateABRelativePath);
+				var fileMd5 = FileUtilities.GetFileMD5(renameABFilePath, md5);
+				var newABRelativePath = PathUtilities.GetFilePathWithMD5(renameABFilePath, fileMd5);
+				var newABFileName = Path.GetFileName(newABRelativePath);
+				// 修改AB文件名
+				var newFilePath = FileUtilities.RenameFile(renameABFilePath, newABFileName);
+				if(string.IsNullOrEmpty(newFilePath))
+				{
+					Debug.LogError($"AB文件名修改带MD5名失败，AB Asset相对路径:{renameABFilePath}，新AB文件名:{newABFileName}，错误信息:{newFilePath}");
+					return false;
+				}
+				var newABFileInfo = new FileInfo(newFilePath);
+				if(!newABFileInfo.Exists)
+				{
+					Debug.LogError($"新AB文件名:{newFilePath}不存在，获取文件信息失败!");
+					return false;
+				}
+				var newFileSha256 = FileUtilities.GetFileSha256(newFilePath, sha256);
+				var renameFileInfo = new RenameFileInfo(newFilePath, hotupdateABRelativePath, 
+														newABFileInfo.Length, fileMd5, newFileSha256);
+				renameFileInfoMap.Add(newFilePath, renameFileInfo);
+			}
+			Debug.Log($"复制并修改AB文件名带MD5成功，文件改名总数:{renameFileInfoMap.Count}，临时改名目录:{BuildTargetABRenameTempFolderPath}");
+			return true;
+		}
+
+		/// <summary>
+		/// 创建VerifyABInfo.json和ABInfo.json信息文件
+		/// </summary>
+		/// <param name="renameFileInfoMap"></param>
+		/// <returns></returns>
+		private bool CreateVerifyAndABInfoFile(ref Dictionary<string, RenameFileInfo> renameFileInfoMap)
+		{
+			// 避免目录存在旧的文件信息
+			FolderUtilities.MakeSureFolderExistAndClean(BuildResourcesTempFolderPath);
+
+			var hotUpdateABInfo = new HotUpdateABInfo();
+			foreach(var renameFileInfoPairs in renameFileInfoMap)
+			{
+				var renameFileInfo = renameFileInfoPairs.Value;
+				var hotUpdateSingleABInfo = new HotUpdateSingleABInfo(renameFileInfo.FileRelativePath, renameFileInfo.FileMd5,
+																	  renameFileInfo.FileSize, renameFileInfo.FileSha256);
+				hotUpdateABInfo.AddHotUpdateSingleABInfo(hotUpdateSingleABInfo);
+			}
+			var abInfoContent = JsonUtility.ToJson(hotUpdateABInfo, true);
+			var outputABInfoFilePath = GetABInfoFileBuildTempPath();
+			// 确保创建最新的
+			FileUtilities.DeleteFile(outputABInfoFilePath);
+			File.WriteAllText(outputABInfoFilePath, abInfoContent, new UTF8Encoding(false));
+			Debug.Log($"创建ABInfo.json信息文件成功，文件路径:{outputABInfoFilePath}");
+
+  			var outputABInfoFileInfo = new FileInfo(outputABInfoFilePath);
+			if(!outputABInfoFileInfo.Exists)
+			{
+				Debug.LogError($"ABInfo.json信息文件不存在，无法创建VerifyABInfo.json信息文件，文件路径:{outputABInfoFilePath}");
+				return false;
+			}
+			var abInfoFileSize = outputABInfoFileInfo.Length;
+			var abInfoFileSha256Hash = FileUtilities.GetFileSha256(outputABInfoFilePath);
+			var outputVerifyABInfoFilePath = GetVerifyABInfoFileBuildTempPath();
+			// 确保创建最新的
+			FileUtilities.DeleteFile(outputVerifyABInfoFilePath);
+			var hotUpdateVerifyABInfo = new HotUpdateVerifyABInfo(abInfoFileSize, abInfoFileSha256Hash);
+			var verifyABInfoContent = JsonUtility.ToJson(hotUpdateVerifyABInfo, true);
+			File.WriteAllText(outputVerifyABInfoFilePath, verifyABInfoContent, new UTF8Encoding(false));
+			Debug.Log($"创建VerifyABInfo.json信息文件成功，文件路径:{outputVerifyABInfoFilePath}");
+			return true;
 		}
 #endregion
 
@@ -789,14 +1071,16 @@ namespace TResource
         private void CreateAssetBuildReadmeFile()
         {
             // 删除旧文件
-            string filePath = $"{OutputDirectory}/{AssetBundleBuildConstData.AssetBuildReadmeFileName}";
+            string filePath = GetBuildReadmeFileBuildTempPath();
             if (File.Exists(filePath))
+			{
                 File.Delete(filePath);
+			}
 
             Log($"创建Asset AB打包详细说明文件：{filePath}");
 
             StringBuilder content = new StringBuilder();
-            AppendData(content, $"构建平台：{BuildTarget}");
+            AppendData(content, $"构建平台：{AssetBundleBuildParams.BuildTarget}");
             AppendData(content, $"构建时间：{DateTime.Now}");
 
             AppendData(content, "");
@@ -822,7 +1106,7 @@ namespace TResource
 		/// <param name="content"></param>
 		private void AppendBuildTargetAndTimeContent(StringBuilder content)
         {
-            AppendData(content, $"构建平台：{BuildTarget}");
+            AppendData(content, $"构建平台：{AssetBundleBuildParams.BuildTarget}");
             AppendData(content, $"构建时间：{DateTime.Now}");
             AppendData(content, "");
         }
@@ -856,10 +1140,10 @@ namespace TResource
 		private void AppendBuildParametersContent(StringBuilder content)
         {
             AppendData(content, $"--构建参数--");
-            AppendData(content, $"CompressOption：{CompressOption}");
-            AppendData(content, $"ForceRebuild：{IsForceRebuild}");
-            AppendData(content, $"DisableWriteTypeTree：{IsDisableWriteTypeTree}");
-            AppendData(content, $"IgnoreTypeTreeChanges：{IsIgnoreTypeTreeChanges}");
+            AppendData(content, $"CompressOption：{AssetBundleBuildParams.CompressOption}");
+            AppendData(content, $"ForceRebuild：{AssetBundleBuildParams.IsForceRebuild}");
+            AppendData(content, $"DisableWriteTypeTree：{AssetBundleBuildParams.IsDisableWriteTypeTree}");
+            AppendData(content, $"IgnoreTypeTreeChanges：{AssetBundleBuildParams.IsIgnoreTypeTreeChanges}");
             AppendData(content, "");
         }
 		#endregion
@@ -871,11 +1155,12 @@ namespace TResource
 		/// <returns></returns>
 		private UnityEngine.BuildCompression GetConfigBuildCompression()
         {
-			if (CompressOption == ECompressOption.Uncompressed)
+			var compressOption = AssetBundleBuildParams.CompressOption;
+			if (compressOption == ABCompressOption.Uncompressed)
 			{
 				return UnityEngine.BuildCompression.Uncompressed;
 			}
-			else if (CompressOption == ECompressOption.ChunkBasedCompressionLZ4)
+			else if (compressOption == ABCompressOption.ChunkBasedCompressionLZ4)
 			{
 				return UnityEngine.BuildCompression.LZ4;
 			}
@@ -890,26 +1175,32 @@ namespace TResource
 		/// </summary>
 		private CustomBuildParameters MakeBuildParameters()
         {
-			CustomBuildParameters bundleBuildParameters = new CustomBuildParameters(BuildTarget, BuildTargetGroup, OutputDirectory);
+			CustomBuildParameters bundleBuildParameters = new CustomBuildParameters(AssetBundleBuildParams.BuildTarget,
+																					BuildTargetGroup,
+																					BuildTargetABTempFolderPath);
 			//bundleBuildParameters.CacheServerHost = "";
 			//bundleBuildParameters.CacheServerPort = ;
             bundleBuildParameters.BundleCompression = GetConfigBuildCompression();
-            if (IsForceRebuild)
+			var isForceRebuild = AssetBundleBuildParams.IsForceRebuild;
+            if (isForceRebuild)
             {
                 // 是否增量打包
-                bundleBuildParameters.UseCache = !IsForceRebuild;
+                bundleBuildParameters.UseCache = !isForceRebuild;
             }
             bundleBuildParameters.ContiguousBundles = true;
-            if (IsAppendHash)
+			var isAppendHash = AssetBundleBuildParams.IsAppendHash;
+            if (isAppendHash)
             {
-                bundleBuildParameters.AppendHash = IsAppendHash;
+                bundleBuildParameters.AppendHash = isAppendHash;
             }
-            if (IsDisableWriteTypeTree)
+			var isDisableWriteTypeTree = AssetBundleBuildParams.IsDisableWriteTypeTree;
+            if (isDisableWriteTypeTree)
             {
                 bundleBuildParameters.ContentBuildFlags |= ContentBuildFlags.DisableWriteTypeTree;
             }
 			bundleBuildParameters.ContentBuildFlags |= ContentBuildFlags.StripUnityVersion;
-			if (IsIgnoreTypeTreeChanges)
+			var isIgnoreTypeTreeChanges = AssetBundleBuildParams.IsIgnoreTypeTreeChanges;
+			if (isIgnoreTypeTreeChanges)
             {
                 // SBP不支持BuildAssetBundleOptions.IgnoreTypeTreeChanges
             }
@@ -960,11 +1251,12 @@ namespace TResource
 		/// <returns></returns>
 		private BuildAssetBundleOptions GetConfigBuildCompressionOption()
         {
-			if (CompressOption == ECompressOption.Uncompressed)
+			var compressOption = AssetBundleBuildParams.CompressOption;
+			if (compressOption == ABCompressOption.Uncompressed)
 			{
 				return BuildAssetBundleOptions.UncompressedAssetBundle;
 			}
-			else if (CompressOption == ECompressOption.ChunkBasedCompressionLZ4)
+			else if (compressOption == ABCompressOption.ChunkBasedCompressionLZ4)
 			{
 				return BuildAssetBundleOptions.ChunkBasedCompression;
 			}
@@ -986,19 +1278,19 @@ namespace TResource
             BuildAssetBundleOptions opt = BuildAssetBundleOptions.None;
             opt |= BuildAssetBundleOptions.StrictMode; //Do not allow the build to succeed if any errors are reporting during it.
 			opt |= GetConfigBuildCompressionOption();
-			if (IsForceRebuild)
+			if (AssetBundleBuildParams.IsForceRebuild)
 			{
 				opt |= BuildAssetBundleOptions.ForceRebuildAssetBundle; //Force rebuild the asset bundles
             }
-            if (IsAppendHash)
+            if (AssetBundleBuildParams.IsAppendHash)
             {
                 opt |= BuildAssetBundleOptions.AppendHashToAssetBundleName; //Append the hash to the assetBundle name
             }
-            if (IsDisableWriteTypeTree)
+            if (AssetBundleBuildParams.IsDisableWriteTypeTree)
             {
                 opt |= BuildAssetBundleOptions.DisableWriteTypeTree; //Do not include type information within the asset bundle (don't write type tree).
             }
-            if (IsIgnoreTypeTreeChanges)
+            if (AssetBundleBuildParams.IsIgnoreTypeTreeChanges)
             {
                 opt |= BuildAssetBundleOptions.IgnoreTypeTreeChanges; //Ignore the type tree changes when doing the incremental build check.
             }

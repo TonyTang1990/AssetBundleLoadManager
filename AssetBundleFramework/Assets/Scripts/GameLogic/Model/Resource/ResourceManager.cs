@@ -61,8 +61,9 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
                                                   ResourceLoadType loadtype = ResourceLoadType.PermanentLoad)
     {
         BundleLoader bundleLoader;
+        var shaderABName = ResourcePath.GetABPathWithPostFix(ResourceConstData.ShaderABName);
         var assetRequestHandle = ResourceModuleManager.Singleton.RequstABSync(
-        ResourceConstData.ShaderABName,
+        shaderABName,
         out bundleLoader,
         (bundleLoader, assetRequestHandle) =>
         {

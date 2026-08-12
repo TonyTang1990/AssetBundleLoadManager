@@ -57,13 +57,13 @@ public static class BuildTool
             Debug.LogError($"不支持的资源版本号:{resourceVersionCode},请传入输入有效资源版本号值!");
             return false;
         }
-        VersionConfigModuleManager.Singleton.initVerisonConfigData();
+        VersionConfigModuleManager.Singleton.InitVerisonConfigData();
         var innerversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode;
         var innerresourceversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
         Debug.Log($"包内版本号从:{innerversioncode}修改成:{versionCode}");
         Debug.Log($"包内资源版本号从:{innerresourceversioncode}修改成:{resourceVersionCode}");
-        VersionConfigModuleManager.Singleton.saveNewVersionCodeInnerConfig(versionCode);
-        VersionConfigModuleManager.Singleton.saveNewResoueceCodeInnerConfig(resourceVersionCode);
+        VersionConfigModuleManager.Singleton.SaveNewVersionCodeInnerConfig(versionCode);
+        VersionConfigModuleManager.Singleton.SaveNewResoueceCodeInnerConfig(resourceVersionCode);
         return true;
     }
 
@@ -104,7 +104,7 @@ public static class BuildTool
             Debug.Log($"打包分组:{Enum.GetName(typeof(BuildTargetGroup), buildtargetgroup)}");
             if (buildtargetgroup != BuildTargetGroup.Unknown)
             {
-                VersionConfigModuleManager.Singleton.initVerisonConfigData();
+                VersionConfigModuleManager.Singleton.InitVerisonConfigData();
                 var innerversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode;
                 var innerresourceversioncode = VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode;
                 Debug.Log("打包版本信息:");
@@ -115,8 +115,8 @@ public static class BuildTool
                 PlayerSettings.bundleVersion = versionCode.ToString();
                 Debug.Log($"打包修改版本号从:{prebundleversion}到{PlayerSettings.bundleVersion}");
                 Debug.Log($"打包修改VersionConfig从:Version:{innerversioncode}到{versionCode} ResourceVersion:{innerresourceversioncode}到{resourceVersionCode}");
-                VersionConfigModuleManager.Singleton.saveNewVersionCodeInnerConfig(versionCode);
-                VersionConfigModuleManager.Singleton.saveNewResoueceCodeInnerConfig(resourceVersionCode);
+                VersionConfigModuleManager.Singleton.SaveNewVersionCodeInnerConfig(versionCode);
+                VersionConfigModuleManager.Singleton.SaveNewResoueceCodeInnerConfig(resourceVersionCode);
                 BuildPlayerOptions buildplayeroptions = new BuildPlayerOptions();
                 buildplayeroptions.locationPathName = $"{buildOutputPath}{Path.DirectorySeparatorChar}{PlayerSettings.productName}{GetCorrespondingBuildFilePostfix(buildTarget)}";
                 buildplayeroptions.scenes = GetBuildSceneArray();
@@ -132,9 +132,10 @@ public static class BuildTool
                 buildplayeroptions.targetGroup = buildtargetgroup;
                 EditorUserBuildSettings.SwitchActiveBuildTarget(buildtargetgroup, buildTarget);
                 BuildPipeline.BuildPlayer(buildplayeroptions);
-                // 拷贝AssetBundleMd5.txt到打包输出目录(未来热更新对比需要的文件)
-                var innerAssetBundleMd5FilePath = AssetBundlePath.GetInnerAssetBundleMd5FilePath();
-                FileUtilities.CopyFileToFolder(innerAssetBundleMd5FilePath, buildOutputPath);
+                // 拷贝AssetBundleInfo.txt到打包输出目录(未来热更新对比需要的文件)
+                var innerAssetBundleInfoFilePath = ResourcePath.GetInnerABInfoFilePath();
+                string newAssetBundleMd5FilePath;
+                FileUtilities.CopyFileToFolder(innerAssetBundleInfoFilePath, buildOutputPath, out newAssetBundleMd5FilePath);
             }
             else
             {

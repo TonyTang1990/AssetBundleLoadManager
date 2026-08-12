@@ -23,6 +23,7 @@
 8. 加载流程重新设计，让代码更清晰
 9. **保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)**
 10. **支持非回调式的同步加载返回(通过抽象Loader支持LoadImmediately的方式实现)**
+11. **打包输出到临时目录，然后复制到临时目录统一添加MD5改名，根据改名后的文件信息生成VerifyABInfo.json和ABInfo.json文件，最后根据打包需求再将相关文件复制到目标目录(2026/08/12)**
 
 Note:
 
@@ -56,6 +57,10 @@ Note:
 上层逻辑资源加载计数，资源释放和请求取消统一封装设计:
 
 1. 提供上层特定上下文资源加载计数统计和统一的资源释放和资源加载请求取消机制(**ResourceScope类**)。
+
+Note:
+
+1. **除了GameObject使用对象绑定(考虑到对象池的情况，不好明确释放时机)，其他支援类型都建议使用引用计数**
 
 #### Demo使用说明
 
@@ -178,6 +183,7 @@ public void onLoadPermanentShaderList()
 4. **不支持AB变体功能(ScriptableBuildPipeline也不支持变体功能)，AB后缀名统一由打包和加载平台统一添加**
 5. **老版AB依赖信息采用原始打包输出的*Manifest文件。新版ScriptableBuildPipeline采用自定义输出打包的CompatibilityAssetBundleManifest文件。**
 6. **打包面板里支持了是否支持代码加载的勾选(用于支持文件名(含后缀)的资源加载和优化需要支持代码主动加载而生成的AssetBuildInfoAsset.asset(AB模式)和EditorAssetInfoAsset.asset(AssetDatabase模式)的数据量问题)**
+7. **打包支持输出带MD5名字信息的AB文件，实际加载还是AssetBuildInfoAsset里记录的打包策略得出的AB名(带平台后缀)，同时打包会生成VerifyABInfo.json(用于校验热更的ABInfo.json文件)和ABInfo.json(存储了打包AB热更以及MD5换算相关信息)(2026/08/12)**
 
 #### 打包策略支持
 
@@ -216,6 +222,10 @@ public void onLoadPermanentShaderList()
 ![PostFixBlackListAndAssetNameBlackList](./img/Unity/AssetBundle-Framework/PostFixBlackListAndAssetNameBlackList.PNG)
 
 **2023/2/8底层支持了新版ScriptableBuildPipeline打包工具打包，加快打包速度(默认使用SBP，修改成老版打包需添加OLD_ASSET_BUILD_PIPELINE宏)**
+
+**2026/8/12支持了带MD5名字的AB名生成和加载**
+
+**2026/8/12优化了热更新的流程，利用VerifyABInfo.json和ABInfo.json保存的AB详细信息进行热更新判定和校验**
 
 Note:
 
@@ -260,35 +270,60 @@ Note:
 
 资源热更流程：
 
-   1. 初始化本地热更过的资源列表信息(暂时存储在:Application.persistentDataPath + "/ResourceUpdateList/ResourceUpdateList.txt"里)
+   1. 初始化本地ABInfo.json信息(优先包外)
 
    2. 通过资源服务器下载最新服务器版本信息(ServerVersionConfig.json)和本地资源版本号作对比，决定是否资源热更
 
 3. 结合最新版本号，最新资源版本号和资源服务器地址(Json配置)拼接出最终资源热更所在的资源服务器地址
 
-4. 下载对应地址下的AssetBundleMD5.txt(里面包含了对应详细资源MD5信息)
+4. 下载对应地址下的VerifyABInfo.json(里面包含热更下载ABInfo.json的校验信息)
 
-      AssetBundleMD5.txt
+      VerifyABInfo.json
 
-      ```tex
-      assetbuildinfo.bundle|ca830d174533e87efad18f1640e5301d
-      shaderlist.bundle|2ac2d75f7d91fda7880f447e21b2e289
-      ******
+      ```json
+      {
+          "ABInfoFileSize": 11133,
+          "ABInfoFileSha256": "ec28fd80d4a3dc44c95072555209dd22f7207e5e0d9e7456bf33ca2b69ebe44e"
+      }
       ```
 
-5. 根据比较对应地址下的AssetBundleMD5.txt里的资源MD5信息和本地资源MD5信息(优先包外的MD5文件)得出需要更新下载的资源列表
+5. VerifyABInfo.json下载成功后根据比较对应地址下载ABInfo.json文件，下载下来的ABInfo.json先写入到本地临时热更目录(Stage目录)，根据热更ABInfo.json和本地的ABInfo.json信息比较得出需要更新下载的资源列表
 
-6. 根据得出的需要更新的资源列表下载对应资源地址下的资源并存储在包外(Application.persistentDataPath + "/Android/")，同时写入最新的资源MD5信息文件(本地AssetBundleMD5.txt)到本地
+      ABInfo.json
 
-7. 直到所有资源热更完成，退出重进游戏
+      ```json
+      {
+          "HotUpdateSingleABInfoList": [
+              {
+                  "ABRelativePath": "Android",
+                  "ABMD5": "034739fc628faffa9024979c6d7d87d1",
+                  "ABSize": 4785,
+                  "ABSha256": "5d583b2dda00f5c842288e65fda0fe8aa70d9bde9d6d70f572621eef01367315"
+              },
+              ******
+          }
+      }
+      ```
+
+6. 根据得出的需要更新的资源列表下载对应资源地址下的资源下载先存储到临时热更目录(Stage目录)，通过ABInfo.json里的AB校验信息验证后移动到包外热更目录(Application.persistentDataPath + "/Android/")
+
+7. 直到所有资源热更完成，我们将ABInfo.json移动到包外热更目录以供下次使用
+
+8. 写入最新的热更版本号和资源版本号到包外。
+
+9. 最后退出重进游戏，让热更新生效(或者等玩家自己下一次打开游戏时生效)
 
 **问题:**
 
-1. **上述方案包外AssetBundleMD5.txt文件可能被篡改，其次热更下载的AB文件可能出现损坏但被记录到包外AssetBundleMD5.txt的情况，这会导致热更AB出现不可逆的热更问题。**
+1. **上述方案包外ABInfo.json文件可能被篡改，其次热更下载的AB文件可能出现损坏但被记录到包外ABInfo.json的情况，这会导致热更AB出现不可逆的热更问题。**
+2. **上述方案CDN不友好，每一次同一个资源更新都是同一个名字，CDN可能出现缓存污染。**
+3. **上述方案直接下载到Application.persistentDataPath，没有原子操作，可能出现热更下载失败出现坏文件在Application.persistentDataPath的情况。**
 
 **解决方案:**
 
-1. **包外资源采用实时计算MD5，然后结合包内AssetBundleMD5.txt数据与热更AssetBundleMD5.txt文件进行对比决定哪些资源需要热更。(TODO)**
+1. **热更信息里新增VerifyABInfo.json(记录ABInfo.json的校验相关信息)，结合本地ABInfo.json数据与热更ABInfo.json文件进行对比决定哪些资源需要热更。(TODO)**
+2. **将MD5信息添加到热更资源名字里，确保新的热更文件肯定不同从而确保不会因为CDN缓存污染出问题。**
+3. **通过生成AB名，MD5，AB+MD5，AB文件大小，AB Sha256值等信息用于校验确保热更新的资源下载完成和正确，只有校验通过才会移动到包外热更资源目录，像ABInfo.json和热更完成的包外版本修改都在所有资源热更完成后执行(确保原子操作切换新版本资源加载)。**
 
 ### 流程图
 
@@ -300,39 +335,33 @@ Tools->HotUpdate->热更新操作工具
 
 ![HotUpdateToolsUI](./img/Unity/HotUpdate/HotUpdateToolsUI.png)
 
-2. 主要分为以下2个阶段：
+主要分为以下几个步骤：
 
-   - 热更新准备阶段:
-   
-     1. 每次资源打包会在包内Resource目录生成一个AssetBundleMd5.txt文件用于记录和对比哪些资源需要热更
-   
-     ​	![AssetBundleMD5File](./img/Unity/HotUpdate/AssetBundleMD5File.png)
-   
-     2. 执行热更新准备操作，生成热更新所需服务器最新版本信息文件(ServerVersionConfig.json)并将包内对应平台资源拷贝到热更新准备目录
-   
-     ![HotUpdatePreparationFolder](./img/Unity/HotUpdate/HotUpdatePreparationFolder.png)
-   
-   - 热更新判定阶段
-   
-     1. 初始化包内(AssetBundleMd5.txt)和包外(AssetBundleMd5.txt)热更新的AssetBundle MD5信息(先读包内后读包外以包外为准)
-   
-     2. 游戏运行拉去服务器版本和资源版本信息进行比较是否需要版本强更或资源热更新
-     3. 需要资源热更新则拉去对应最新资源版本的资源MD5信息文件(AssetBundleMD5.txt)进行和本地资源MD5信息进行比较判定哪些资源需要热更新
-     4. 拉去所有需要热更新的资源并写入最新的资源MD5信息到包外，完成后进入游戏
-   
-   Note:
-   
-   1. 每次打包版本时会拷贝一份AssetBundleMD5.txt到打包输出目录(保存一份方便查看每个版本的资源MD5信息)
+1. AB打包(每次AB打包都输出到一个临时目录)
+2. 将AB打包的AB资源复制到临时改名目录
+3. 根据AB改名后的AB文件信息生成VerifyABInfo.json和ABInfo.json文件信息
+4. 根据打包用途(e.g. 母包构建和热更构建)，将AB改名文件，VerifyABInfo.json和ABInfo.json文件复制到对应目标目录(比如母包构建移动到包内和Resources。热更构建移动到热更新准备目录)
+
+打包临时目录结构:
+
+![AssetBundleBuildTempFolderStructure](./img/Unity/HotUpdate/AssetBundleBuildTempFolderStructure.png)
+
+热更新准备目录结构:
+
+![HotUpdatePreparationFolder1](./img/Unity/HotUpdate/HotUpdatePreparationFolder1.png)
+
+![HotUpdatePreparationFolder2](./img/Unity/HotUpdate/HotUpdatePreparationFolder2.png)
 
 ### 热更包外目录结构
 
 PersistentAsset -> HotUpdate -> Platform(资源热更新目录)
 
-PersistentAsset -> HotUpdate -> AssetBundleMd5.txt(记录热更新的AssetBundle路径和MD5信息--兼顾进游戏前资源热更和动态资源热更)(格式:热更AB路径:热更AB的MD5/n热更AB路径:热更AB的MD5******)
+PersistentAsset -> HotUpdate -> Stage(资源热更临时目录)
 
-PersistentAsset -> HotUpdate-> Config -> VersionConfig.json(包外版本信息--用于进游戏前强更和热更判定)
+PersistentAsset -> HotUpdate -> Platform -> ABInfo.json(**记录最新AB的资源信息(含AB相对路径(含平台后缀)，文件MD5，文件大小，文件Sha256等**)
+PersistentAsset -> Config -> VersionConfig.json(包外版本信息--用于进游戏前强更和热更判定)
 
-PersistentAsset -> HotUpdate -> Download -> 版本强更包
+PersistentAsset -> HotUpdate -> 版本强更包
 
 ## 辅助功能模块
 
@@ -383,6 +412,8 @@ Tools->Assets->Asset相关处理
 2. **将面向Asset路径加载的方式改造成支持Asset名(含后缀)的加载方式(2026/07/14)**
 3. **支持SubAsset的加载(比如Multiple Sprite)通过计数和对象绑定到主Asset实现SubAsset的加载和计数，详情参考AtlasManager.SetTImageSubSprite()方法(2026/07/21)**
 4. **支持了特定上下文(比如窗口生命周期)的资源加载计数统计+资源计数释放+资源请求取消机制(ResourceScope类)。(2026/07/25)**
+5. **支持了带MD5信息的AB名打包(解决CDN缓存问题)(2026/08/12)**
+6. **支持了带文件Sha256值校验的资源热更新校验(2026/08/12)**
 
 # 待做事项
 

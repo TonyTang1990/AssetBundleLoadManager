@@ -53,7 +53,12 @@ namespace TResource
                 return null;
             }
             CompatibilityAssetBundleManifest unityManifest = CreateAndBuildAssetBundleManifest(assetBundleBuilder, outputDirectory, buildParams, results, out buildSuccess);
-            CheckCycleDependSBP(unityManifest);
+            var cycleDependResult = CheckCycleDependSBP(unityManifest);
+            if(!cycleDependResult)
+            {
+                Debug.LogError($"[BuildPatch] 检测到循环依赖，打包终止！");
+                buildSuccess = false;
+            }
             return unityManifest;
         }
 
@@ -115,7 +120,7 @@ namespace TResource
         /// <summary>
         /// Scriptable Build Pipeline检测循环依赖
         /// </summary>
-        private static void CheckCycleDependSBP(CompatibilityAssetBundleManifest unityManifest)
+        private static bool CheckCycleDependSBP(CompatibilityAssetBundleManifest unityManifest)
         {
             List<string> visited = new List<string>(100);
             List<string> stack = new List<string>(100);
@@ -131,11 +136,13 @@ namespace TResource
                 {
                     foreach (var ele in stack)
                     {
-                        UnityEngine.Debug.LogWarning(ele);
+                        Debug.LogWarning(ele);
                     }
-                    throw new Exception($"Found cycle assetbundle : {element}");
+                    Debug.LogError($"Found cycle assetbundle : {element}");
+                    return false;
                 }
             }
+            return true;
         }
 
         /// <summary>

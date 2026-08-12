@@ -25,4 +25,20 @@ public class VersionConfig
     /// 资源版本号
     /// </summary>
     public int ResourceVersionCode;
+
+    public VersionConfig()
+    {
+        
+    }
+
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    /// <param name="versionCode"></param>
+    /// <param name="resourceVersionCode"></param>
+    public VersionConfig(double versionCode, int resourceVersionCode)
+    {
+        VersionCode = versionCode;
+        ResourceVersionCode = resourceVersionCode;
+    }
 }

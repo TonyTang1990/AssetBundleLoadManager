@@ -27,7 +27,7 @@ public class BuildAssetInfo
     public string AssetPath;
 
     /// <summary>
-    /// AB路径
+    /// AB路径(含后缀)
     /// </summary>
     public string ABPath;
 

@@ -17,7 +17,7 @@ namespace TResource
     public class AssetBundleInfo : AbstractResourceInfo
     {
         /// <summary>
-        /// 当前AB依赖AB路径信息组
+        /// 当前AB依赖AB路径信息组(带后缀)
         /// </summary>
         private string[] mDepABPaths;
 

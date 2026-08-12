@@ -5,24 +5,24 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-/// <summary>
-/// HotUpdateConfig.cs
-/// 游戏热更新地址抽象类
-/// </summary>
-[Serializable]
-public class HotUpdateConfig {
-
+namespace TResource
+{
     /// <summary>
-    /// 热更APK名字
+    /// HotUpdateConfig.cs
+    /// 游戏热更新地址抽象类
     /// </summary>
-    public string APKName;
+    [Serializable]
+    public class HotUpdateConfig {
 
-    /// <summary>
-    /// 热更新正式地址
-    /// </summary>
-    public string HotUpdateURL;
+        /// <summary>
+        /// 热更APK名字
+        /// </summary>
+        public string APKName;
+
+        /// <summary>
+        /// 热更新正式地址
+        /// </summary>
+        public string HotUpdateURL;
+    }
 }

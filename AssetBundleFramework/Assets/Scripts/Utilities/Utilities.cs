@@ -12,6 +12,8 @@ using System.Diagnostics;
 
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System;
+using System.Linq;
 
 /// <summary>
 /// 工具静态类
@@ -44,5 +46,23 @@ public static class Utilities
         System.Object obj = bf.Deserialize(s);
         s.Close();
         return obj;
+    }
+
+    /// <summary>
+    /// 组合URL
+    /// </summary>
+    /// <param name="baseUrl"></param>
+    /// <param name="pathParts"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public static string CombineUrl( string baseUrl, params string[] pathParts)
+    {
+        if (string.IsNullOrWhiteSpace(baseUrl))
+        {
+            throw new ArgumentException("基础URL不能为空", nameof(baseUrl));
+        }
+        var normalizedBaseUrl = baseUrl.TrimEnd('/') + "/";
+        var relativePath = string.Join("/", pathParts.Where(part => !string.IsNullOrWhiteSpace(part)).Select(part => part.Trim('/', '\\')));
+        return new Uri(new Uri(normalizedBaseUrl), relativePath).AbsoluteUri;
     }
 }

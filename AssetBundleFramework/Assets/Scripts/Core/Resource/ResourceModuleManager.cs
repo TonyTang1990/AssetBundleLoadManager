@@ -186,7 +186,7 @@ namespace TResource
         /// Note:
         /// 仅AssetBundle模式生效，AssetDatabase模式下直接返回null和回调null
         /// </summary>
-        /// <param name="assetBundlePath">AB资源路径</param>
+        /// <param name="assetBundlePath">AB资源路径(带平台后缀(e.g. .android))</param>
         /// <param name="assetBundleLoader">AssetBundle资源加载请求</param>
         /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>
@@ -203,7 +203,7 @@ namespace TResource
         /// Note:
         /// 仅AssetBundle模式生效，AssetDatabase模式下直接返回null和回调null
         /// </summary>
-        /// <param name="assetBundlePath">AB资源路径</param>
+        /// <param name="assetBundlePath">AB资源路径(带平台后缀(e.g. .android))</param>
         /// <param name="assetBundleLoader">AssetBundle资源加载请求</param>
         /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>

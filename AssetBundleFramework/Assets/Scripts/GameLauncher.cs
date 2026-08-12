@@ -207,10 +207,10 @@ namespace TResource
             GameConfigModuleManager.Singleton.initGameConfigData();
 
             //初始化版本信息
-            VersionConfigModuleManager.Singleton.initVerisonConfigData();
+            VersionConfigModuleManager.Singleton.InitVerisonConfigData();
 
             //热更模块初始化
-            HotUpdateModuleManager.Singleton.init();
+            HotUpdateModuleManager.Singleton.Init();
 
             // 预加载Shader
             //ResourceManager.Singleton.loadAllShader("shaderlist", () =>
@@ -578,38 +578,6 @@ namespace TResource
         }
 
         /// <summary>
-        /// 测试异步转同步加载
-        /// </summary>
-        public void onAsynToSyncLoad()
-        {
-            DIYLog.Log("onAsynToSyncLoad()");
-            if(ResourceModuleManager.Singleton.ResLoadMode != ResourceLoadMode.AssetBundle)
-            {
-                Debug.LogError("非AB模式不允许测试此接口!");
-               return; 
-            }
-            var mainWindowABPath = Application.streamingAssetsPath + "/Android/assets/res/windows/mainwindow.android";
-            DIYLog.Log("onAsynToSyncLoad1");
-            var abAsyncRequest = AssetBundle.LoadFromFileAsync(mainWindowABPath);
-            abAsyncRequest.completed += (asyncOperation)=>{
-                if(abAsyncRequest.assetBundle != null)
-                {
-                    DIYLog.Log("abAsyncRequest.assetBundle != null");
-                }
-                DIYLog.Log("ndle.LoadFromFileAsync()完成！");
-            };
-            DIYLog.Log("onAsynToSyncLoad2");
-            // Note:
-            // 异步加载LoadFromFileAsyn完成前触发同步加载LoadFromFile，同步加载会返回null
-            var ab = AssetBundle.LoadFromFile(mainWindowABPath);
-            if(ab == null)
-            {
-                DIYLog.Log("ab == null");
-            }
-            DIYLog.Log("onAsynToSyncLoad3");
-        }
-
-        /// <summary>
         /// 取消异步窗口加载请求回调
         /// </summary>
         public void onCancelAsynLoadWindow()
@@ -761,7 +729,7 @@ namespace TResource
         public void onPrintVersionInfo()
         {
             DIYLog.Log("onPrintVersionInfo()");
-            VersionConfigModuleManager.Singleton.initVerisonConfigData();
+            VersionConfigModuleManager.Singleton.InitVerisonConfigData();
             if (HotUpdateModuleManager.Singleton.ServerVersionConfig != null)
             {
                 DIYLog.Log($"服务器版本信息:VersionCode:{HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode} ResourceVersionCode : {HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode}");
@@ -769,36 +737,6 @@ namespace TResource
             else
             {
                 DIYLog.LogError("未获取服务器的版本信息!");
-            }
-        }
-
-        /// <summary>
-        /// 存储最新版本信息
-        /// </summary>
-        public void onSaveNewVersionInfo()
-        {
-            DIYLog.Log("onSaveNewVersionInfo()");
-            var param1 = InputParam1.text;
-            DIYLog.Log("Param1 = " + param1);
-            var param2 = InputParam2.text;
-            DIYLog.Log("Param2 = " + param2);
-            double newversioncode = 0.0f;
-            int newresourceversioncode = 0;
-            if (double.TryParse(param1, out newversioncode))
-            {
-                if (int.TryParse(param2, out newresourceversioncode))
-                {
-                    VersionConfigModuleManager.Singleton.saveNewVersionCodeOuterConfig(newversioncode);
-                    VersionConfigModuleManager.Singleton.saveNewResoueceCodeOuterConfig(newresourceversioncode);
-                }
-                else
-                {
-                    DIYLog.LogError("新资源版本号解析出错！");
-                }
-            }
-            else
-            {
-                DIYLog.LogError("新版本号解析出错！");
             }
         }
 
@@ -840,7 +778,7 @@ namespace TResource
         public void onPrintAllABPath()
         {
             DIYLog.Log("onPrintAllABPath()");
-            AssetBundlePath.PrintAllPathInfo();
+            ResourcePath.PrintAllPathInfo();
         }
 
         /// <summary>
@@ -858,7 +796,7 @@ namespace TResource
         public void onObtainServerVersionConfig()
         {
             DIYLog.Log("onObtainServerVersionConfig()");
-            HotUpdateModuleManager.Singleton.doObtainServerVersionConfig(serverVersionConfigHotUpdateCompleteCallBack);
+            HotUpdateModuleManager.Singleton.DoObtainServerVersionConfig(serverVersionConfigHotUpdateCompleteCallBack);
         }
 
         /// <summary>
@@ -869,9 +807,9 @@ namespace TResource
             DIYLog.Log("onTestVersionwHotUpdate()");
             if (HotUpdateModuleManager.Singleton.ServerVersionConfig != null)
             {
-                if (HotUpdateModuleManager.Singleton.checkVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
+                if (HotUpdateModuleManager.Singleton.CheckVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
                 {
-                    HotUpdateModuleManager.Singleton.doNewVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode, versionHotUpdateCompleteCallBack);
+                    HotUpdateModuleManager.Singleton.DoNewVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode, versionHotUpdateCompleteCallBack);
                 }
             }
             else
@@ -886,17 +824,7 @@ namespace TResource
         public void onTestResourceHotUpdate()
         {
             DIYLog.Log("onTestResourceHotUpdate()");
-            if (HotUpdateModuleManager.Singleton.ServerVersionConfig != null)
-            {
-                if (HotUpdateModuleManager.Singleton.checkResourceHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode))
-                {
-                    HotUpdateModuleManager.Singleton.doResourceHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode, resourceHotUpdateCompleteCallBack);
-                }
-            }
-            else
-            {
-                DIYLog.LogError("资源热更新前，请先获取服务器版本信息!");
-            }
+            HotUpdateModuleManager.Singleton.TryResourceHotUpdate(resourceHotUpdateCompleteCallBack);
         }
 
         /// <summary>
@@ -905,7 +833,7 @@ namespace TResource
         /// <param name="result"></param>
         private void serverVersionConfigHotUpdateCompleteCallBack(bool result)
         {
-            DIYLog.Log(string.Format("获取服务器版本结果 result : {0}", result));
+            DIYLog.Log($"获取服务器版本结果:{result}");
         }
 
         /// <summary>
@@ -914,16 +842,16 @@ namespace TResource
         /// <param name="result">版本强更结果</param>
         private void versionHotUpdateCompleteCallBack(bool result)
         {
-            DIYLog.Log(string.Format("版本强更结果 result : {0}", result));
+            DIYLog.Log($"版本强更结果:{result}");
         }
 
         /// <summary>
         /// 资源热更完成回调
         /// </summary>
-        /// <param name="result">资源热更结果</param>
-        private void resourceHotUpdateCompleteCallBack(bool result)
+        /// <param name="hotUpdateResult">资源热更结果</param>
+        private void resourceHotUpdateCompleteCallBack(HotUpdateResult hotUpdateResult)
         {
-            DIYLog.Log(string.Format("资源热更结果 result : {0}", result));
+            DIYLog.Log($"资源热更结果:{hotUpdateResult}");
         }
 
         /// <summary>
@@ -932,17 +860,18 @@ namespace TResource
         public void onTestHotUpdateFullWorkFlow()
         {
             DIYLog.Log("onTestHotUpdateFullWorkFlow()");
-            VersionConfigModuleManager.Singleton.initVerisonConfigData();
+            VersionConfigModuleManager.Singleton.InitVerisonConfigData();
             //检测是否强更过版本
-            HotUpdateModuleManager.Singleton.checkHasVersionHotUpdate();
+            HotUpdateModuleManager.Singleton.CheckHasVersionHotUpdate();
             //TODO:
             //拉去服务器列表信息(网络那一套待开发,暂时用本地默认数值测试)
-            HotUpdateModuleManager.Singleton.doObtainServerVersionConfig((result)=> {
+            HotUpdateModuleManager.Singleton.DoObtainServerVersionConfig((result)=> {
                 DIYLog.Log(string.Format("获取服务器版本结果 result : {0}", result));
-                if (HotUpdateModuleManager.Singleton.checkVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
+                var serverVersionConfig = HotUpdateModuleManager.Singleton.ServerVersionConfig;
+                if (HotUpdateModuleManager.Singleton.CheckVersionHotUpdate(serverVersionConfig.VersionCode))
                 {
-                    HotUpdateModuleManager.Singleton.doNewVersionHotUpdate(
-                    HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode,
+                    HotUpdateModuleManager.Singleton.DoNewVersionHotUpdate(
+                    serverVersionConfig.VersionCode,
                     (versionhotupdateresult) =>
                     {
                         if (versionhotupdateresult)
@@ -968,103 +897,7 @@ namespace TResource
 
         private void resourceHotUpdate()
         {
-            //不需要强更走后判定资源热更流程
-            if (HotUpdateModuleManager.Singleton.checkResourceHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode))
-            {
-                //单独开启一个携程打印强更进度
-                StartCoroutine(printVersionHotUpdateProgressCoroutine());
-                HotUpdateModuleManager.Singleton.doResourceHotUpdate(
-                    HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode,
-                    (resourcehotupdateresult) =>
-                    {
-                        if (resourcehotupdateresult)
-                        {
-                            DIYLog.Log("资源热更完成!请重进或重新触发热更流程！");
-                            return;
-                        }
-                        else
-                        {
-                            DIYLog.Log("资源热更出错!");
-                            return;
-                        }
-                    }
-                );
-            }
-            else
-            {
-                DIYLog.Log("无需资源热更，可以直接进入游戏！");
-            }
-        }
-
-        private IEnumerator printVersionHotUpdateProgressCoroutine()
-        {
-            Debug.Log("printVersionHotUpdateProgressCoroutine()");
-            while (HotUpdateModuleManager.Singleton.HotVersionUpdateRequest.TWRequestStatus == TWebRequest.TWebRequestStatus.TW_In_Progress)
-            {
-                yield return new WaitForSeconds(1.0f);
-                Debug.Log(string.Format("当前版本热更进度 : {0}", HotUpdateModuleManager.Singleton.HotResourceUpdateProgress));
-            }
-        }
-
-        /// <summary>
-        /// 测试URL拉去
-        /// </summary>
-        public void onRequestURLResource()
-        {
-            DIYLog.Log("onRequestURLResource()");
-            var url = InputParam1.text;
-            DIYLog.Log("Param1 = " + url);
-            TWebRequest hotResourceUpdateRequest = new TWebRequest();
-            hotResourceUpdateRequest.enqueue(url, null, resourceHotUpdateCompleteCB);
-            hotResourceUpdateRequest.startRequest();
-        }
-
-        /// <summary>
-        /// 单个资源热更下载完成回调
-        /// </summary>
-        /// <param name="url">下载地址</param>
-        /// <param name="fileMd5">文件MD5</param>
-        /// <param name="downloadhandler">下载结果信息</param>
-        /// <param name="requeststatus">请求结果</param>
-        private void resourceHotUpdateCompleteCB(string url, string fileMd5, DownloadHandler downloadhandler, TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus requeststatus)
-        {
-            DIYLog.Log($"资源URL:{url}下载结果:{requeststatus}");
-        }
-
-        /// <summary>
-        /// 尝试进游戏(验证版本强更以及资源热更相关判定)
-        /// </summary>
-        public void onTryEnterGame()
-        {
-            DIYLog.Log("onTryEnterGame()");
-            VersionConfigModuleManager.Singleton.initVerisonConfigData();
-            if (HotUpdateModuleManager.Singleton.HotUpdateSwitch)
-            {
-                if (VersionConfigModuleManager.Singleton.needVersionHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode))
-                {
-                    DIYLog.Log(string.Format("服务器版本号 : {0}高于本地版本号 : {1}，需要强更！", HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode));
-                    DIYLog.Log("不允许进游戏！");
-                }
-                else
-                {
-                    DIYLog.Log(string.Format("服务器版本号 : {0}小于或等于本地版本号 : {1}，不需要强更！", HotUpdateModuleManager.Singleton.ServerVersionConfig.VersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode));
-                    if (VersionConfigModuleManager.Singleton.needResourceHotUpdate(HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode))
-                    {
-                        DIYLog.Log(string.Format("服务器资源版本号 : {0}大于本地资源版本号 : {1}，需要资源热更！", HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode));
-                        DIYLog.Log("不允许进游戏！");
-                    }
-                    else
-                    {
-                        DIYLog.Log(string.Format("服务器资源版本号 : {0}小于或等于本地资源版本号 : {1}，不需要资源热更！", HotUpdateModuleManager.Singleton.ServerVersionConfig.ResourceVersionCode, VersionConfigModuleManager.Singleton.GameVersionConfig.ResourceVersionCode));
-                        DIYLog.Log("可以进游戏!");
-                    }
-                }
-            }
-            else
-            {
-                DIYLog.Log("热更开关未打开，不允许热更！");
-                DIYLog.Log("可以进游戏!");
-            }
+            HotUpdateModuleManager.Singleton.TryResourceHotUpdate(resourceHotUpdateCompleteCallBack);
         }
 
         /// <summary>
@@ -1086,8 +919,10 @@ namespace TResource
             {
                 var param1 = InputParam1.text;
                 DIYLog.Log("Param1 = " + param1);
-                var assetbundleresourcemodule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
-                assetbundleresourcemodule.ForceUnloadAssetBundle(param1);
+                var assetBundleResourceModule = ResourceModuleManager.Singleton.CurrentResourceModule as AssetBundleModule;
+                var abWithPostFix = ResourcePath.GetABPathWithPostFix(param1);
+                Debug.Log($"abWithPostFix:{abWithPostFix}");
+                assetBundleResourceModule.ForceUnloadAssetBundle(abWithPostFix);
             }
             else
             {

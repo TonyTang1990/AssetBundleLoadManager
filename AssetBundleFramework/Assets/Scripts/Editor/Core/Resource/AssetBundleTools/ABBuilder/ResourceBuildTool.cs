@@ -22,41 +22,58 @@ namespace TResource
         /// <summary>
         /// 执行AssetBundle打包
         /// </summary>
+        /// <param name="abBuildPurpose">AB打包用途</param>
         /// <param name="buildTarget">打包平台</param>
         /// <param name="isForceBuild">是否强制重新打包</param>
-        /// <param name="buildVersion">打包版本</param>
-        public static void DoBuildAssetBundle(BuildTarget buildTarget, bool isForceBuild = false)
+        public static bool DoBuildAssetBundle(AssetBundleBuildPurpose abBuildPurpose, BuildTarget buildTarget,
+                                              ABCompressOption compressOption = ABCompressOption.Uncompressed,
+                                              bool isForceBuild = false, bool isAppendHash = false,
+                                              bool isDisableWriteTypeTree = false, bool isIgnoreTypeTreeChanges = false,
+                                              double versionCode = 0, int resourceVersionCode = 0)
         {
-            var assetBundleBuilder = new AssetBundleBuilder(buildTarget);
-            assetBundleBuilder.CompressOption = AssetBundleBuilder.ECompressOption.ChunkBasedCompressionLZ4;
-            assetBundleBuilder.IsForceRebuild = isForceBuild;
-            assetBundleBuilder.IsAppendHash = false;
-            assetBundleBuilder.IsDisableWriteTypeTree = false;
-            assetBundleBuilder.IsIgnoreTypeTreeChanges = false;
-
-            ExecuteAssetBundleBuild(assetBundleBuilder);
+            var assetBundleBuildParams = new AssetBundleBuildParams(AssetBundleBuildPurpose.BuildPlayerBaseLine,
+                                                                    buildTarget, compressOption, isForceBuild,
+                                                                    isAppendHash, isDisableWriteTypeTree,
+                                                                    isIgnoreTypeTreeChanges, versionCode, resourceVersionCode);
+            var assetBundleBuilder = new AssetBundleBuilder(assetBundleBuildParams);
+            var abBuildResult = ExecuteAssetBundleBuild(assetBundleBuilder);
+            return abBuildResult;
         }
 
         /// <summary>
         /// 使用指定AssetBundleBuilder执行AssetBundle打包
         /// </summary>
         /// <param name="assetBundleBuilder">AssetBundle打包</param>
-        public static void DoBuildAssetBundleByBuilder(AssetBundleBuilder assetBundleBuilder)
+        public static bool DoBuildAssetBundleByBuilder(AssetBundleBuilder assetBundleBuilder)
         {
-            ExecuteAssetBundleBuild(assetBundleBuilder);
+            var abBuildResult = ExecuteAssetBundleBuild(assetBundleBuilder);
+            return abBuildResult;
         }
 
         /// <summary>
         /// 执行构建
         /// </summary>
         /// <param name="assetBundleBuilder"></param>
-        private static void ExecuteAssetBundleBuild(AssetBundleBuilder assetBundleBuilder)
+        private static bool ExecuteAssetBundleBuild(AssetBundleBuilder assetBundleBuilder)
         {
             var timecounter = new TimeCounter();
             timecounter.Start("AssetBundleBuild");
-            assetBundleBuilder.PreAssetBuild();
-            assetBundleBuilder.PostAssetBuild();
+            var preAssetBuildResult = assetBundleBuilder.PreAssetBuild();
+            if(!preAssetBuildResult)
+            {
+                timecounter.End();
+                Debug.LogError($"[BuildPatch] 资源打包前置处理失败，打包终止！");
+                return false;
+            }
+            var postAssetBuildResult = assetBundleBuilder.PostAssetBuild();
+            if(!postAssetBuildResult)
+            {
+                timecounter.End();
+                Debug.LogError($"[BuildPatch] 资源打包后置处理失败，打包终止！");
+                return false;
+            }
             timecounter.End();
+            return true;
         }
     }
 }

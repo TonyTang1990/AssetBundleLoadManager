@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Build.Pipeline;
 
@@ -18,23 +19,22 @@ namespace TResource
     /// </summary>
     public class AssetBundleModule : AbstractResourceModule
     {
+        #region AB加MD5后的映射数据
+        /// <summary>
+        /// 热更AB信息
+        /// </summary>
+        private HotUpdateABInfo mHotUpdateABInfo;
+        #endregion
 
         #region AB依赖信息部分
         /// <summary>
         /// Asset打包信息
         /// </summary>
-        public AssetBuildInfoAsset AssetBuildInfo
-        {
-            get
-            {
-                return mAssetBuildInfo;
-            }
-        }
         protected AssetBuildInfoAsset mAssetBuildInfo;
 
         /// <summary>
         /// AssetBundle依赖信息Map
-        /// Ket为AssetBundle的路径(不带后缀),Value为依赖的AssetBundle路径列表(不带后缀)
+        /// Ket为AssetBundle的路径(带后缀),Value为依赖的AssetBundle路径列表(带后缀)
         /// Note:
         /// 不带后缀是为了上层加载AssetBundle对后缀名无感知
         /// </summary>
@@ -42,6 +42,30 @@ namespace TResource
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 加载ABInfo.json文件信息(获取AB相对路径和AB带MD5名后的映射数据)
+        /// </summary>
+        private void LoadHotUpdateABInfo()
+        {
+            // 目前采用包外有优先读取包外，否则读取包内Resources目录
+            var outterABInfoFilePath = ResourcePath.GetOutterABInfoFilePath();
+            if(File.Exists(outterABInfoFilePath))
+            {
+                var outterABInfoFileContent = File.ReadAllText(outterABInfoFilePath);
+                mHotUpdateABInfo = JsonUtility.FromJson<HotUpdateABInfo>(outterABInfoFileContent);
+                Debug.Log($"热更新AB信息文件:{outterABInfoFilePath}加载成功!");
+            }
+            else
+            {
+                var innerABInfoFileResRelativePathNoE = ResourcePath.GetInnerABInfoFileResRelativePathNoE();
+                var innerABInfoAsset = Resources.Load<TextAsset>(innerABInfoFileResRelativePathNoE);
+                var innerABInfoFileContent = innerABInfoAsset.text;
+                mHotUpdateABInfo = JsonUtility.FromJson<HotUpdateABInfo>(innerABInfoFileContent);
+                Debug.Log($"包内AB信息文件:{innerABInfoFileResRelativePathNoE}加载成功!");
+            }
+            mHotUpdateABInfo.Init();
         }
 
         /// <summary>
@@ -56,7 +80,8 @@ namespace TResource
             AssetBundleDependencyMap.Clear();
             // Note:
             // 依赖AB不带后缀
-            var abPath = AssetBundlePath.GetABLoadFullPathNoPostFix(AssetBundlePath.DependencyFileName);
+            var dependencyABFilePath = mHotUpdateABInfo.GetABRealRelativePath(ResourcePath.DependencyFileName);
+            var abPath = ResourcePath.GetABLoadFullPathNoPostFix(dependencyABFilePath);
             AssetBundle ab = AssetBundle.LoadFromFile(abPath);
             if (ab != null)
             {
@@ -70,12 +95,6 @@ namespace TResource
                 {
                     var assetBundlePath = allAssetBundlePath[i];
                     var dependenciesPathes = assetBundleManifest.GetAllDependencies(assetBundlePath);
-                    assetBundlePath = PathUtilities.GetPathWithoutPostFix(assetBundlePath);
-                    for (int j = 0, length2 = dependenciesPathes.Length; j < length2; j++)
-                    {
-                        var dependenciesPath = dependenciesPathes[j];
-                        dependenciesPathes[j] = PathUtilities.GetPathWithoutPostFix(dependenciesPath);
-                    }
                     AssetBundleDependencyMap.Add(assetBundlePath, dependenciesPathes);
                 }
                 ab.Unload(true);
@@ -83,7 +102,7 @@ namespace TResource
             }
             else
             {
-                Debug.LogError($"找不到AssetBundle依赖信息文件:{AssetBundlePath.DependencyFileName}");
+                Debug.LogError($"找不到AssetBundle依赖信息文件:{ResourcePath.DependencyFileName}");
             }
         }
 
@@ -100,7 +119,7 @@ namespace TResource
             }
             // Note:
             // 因为mAssetBuildInfo还未正常加载，所以还不能使用RequestAsset接口
-            var assetBuildInfoAssetRelativePath = AssetBundlePath.GetAssetBuildInfoFileRelativePath();
+            var assetBuildInfoAssetRelativePath = ResourcePath.GetAssetBuildInfoFileRelativePath();
 #if OLD_ASSET_BUILD_PIPELINE
             // 老版BuildPipeline.BuildAssetBundles打包指定AssetBundleBuild.assetNames为含大写
             // 但不知道为什么打包出来的AB里面的加载路径依然是全小写，这里老版AB统一成全小写加载
@@ -108,8 +127,9 @@ namespace TResource
             // 1. 经测试打包时设置全小写，老版AB加载依然可以用大写路径加载
             assetBuildInfoAssetRelativePath = assetBuildInfoAssetRelativePath.ToLower();
 #endif
-            var assetBuildInfoABPath = AssetBundlePath.ChangeAssetPathToABPath(assetBuildInfoAssetRelativePath);
-            var abPath = AssetBundlePath.GetABLoadFullPath(assetBuildInfoABPath.ToLower());
+            var assetBuildInfoABPath = ResourcePath.GetAssetBuildInfoABName();
+            var assetBuildInfoABRealPath = mHotUpdateABInfo.GetABRealRelativePath(assetBuildInfoABPath);
+            var abPath = ResourcePath.GetABLoadFullPath(assetBuildInfoABRealPath);
             AssetBundle ab = null;
             ab = AssetBundle.LoadFromFile(abPath);
             if (ab != null)
@@ -126,7 +146,7 @@ namespace TResource
         }
 
         /// <summary>
-        /// 获取AssetBundle所依赖的AB信息
+        /// 获取AssetBundle所依赖的AB信息(带后缀)
         /// </summary>
         /// <param name="abPath"></param>
         /// <returns></returns>
@@ -148,7 +168,7 @@ namespace TResource
         }
 
         /// <summary>
-        /// 获取指定Asset名(含后缀)的AB路径
+        /// 获取指定Asset名(含后缀)的AB路径(含后缀)
         /// </summary>
         /// <param name="assetName"></param>
         /// <returns></returns>
@@ -159,7 +179,7 @@ namespace TResource
         }
 
         /// <summary>
-        /// 获取指定Asset路径(含后缀)的AB名
+        /// 获取指定Asset路径(含后缀)的AB名(含后缀)
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
@@ -180,6 +200,21 @@ namespace TResource
                 Debug.LogError($"找不到Asset名:{assetPath}的AB路径信息!");
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 获取指定AB相对路径的真实加载相对路径(带后缀)
+        /// </summary>
+        /// <param name="abRelativePath">AB相对路径(含后缀)</param>
+        /// <returns></returns>
+        public string GetABRealRelativePath(string abRelativePath)
+        {
+            if (mHotUpdateABInfo == null)
+            {
+                Debug.LogError($"ABInfo尚未初始化，获取AB：{abRelativePath}真实相对路径失败！");
+                return string.Empty;
+            }
+            return mHotUpdateABInfo.GetABRealRelativePath(abRelativePath);
         }
 
         /// <summary>
@@ -213,6 +248,8 @@ namespace TResource
             mUnsedAssetBundleInfoList = new List<AssetBundleInfo>();
 
             ResLoadMode = ResourceLoadMode.AssetBundle;
+            // 加载ABInfo.json文件信息(获取AB相对路径和AB带MD5名后的映射数据)
+            LoadHotUpdateABInfo();
             // 加载AssetBundle依赖信息
             LoadAssetBuildManifest();
             // 加载Asset打包信息
@@ -228,6 +265,8 @@ namespace TResource
         public override void ReloadData()
         {
             base.ReloadData();
+            // 加载ABInfo.json文件信息(获取AB相对路径和AB带MD5名后的映射数据)
+            LoadHotUpdateABInfo();
             // 重新加载AssetBundle依赖信息
             LoadAssetBuildManifest();
             // 重新加载Asset打包信息
@@ -349,7 +388,9 @@ namespace TResource
             }
             else
             {
-                return RealRequestAssetBundle(abPath, requestHandle, out abLoader, completeHandler, loadType, loadMethod);
+                return RealRequestAssetBundle(abPath, requestHandle, out abLoader,
+                                              GetABRealRelativePath, completeHandler,
+                                              loadType, loadMethod);
             }
         }
 
@@ -357,20 +398,25 @@ namespace TResource
         /// 真正的请求AssetBundle资源
         /// </summary>
         /// <param name="abPath">AssetBundle资源路径</param>
+        /// <param name="requestHandle">请求句柄</param>
         /// <param name="bundleLoader">AB资源加载器</param>
+        /// <param name="getABReadlRelativePathDelegate">获取AB真实相对路径委托</param>
         /// <param name="completeHandler">加载完成上层回调</param>
         /// <param name="loadType">资源加载类型</param>
         /// <param name="loadMethod">资源加载方式</param>
         /// <returns>请求UID</returns>
         protected AssetBundleRequestHandle RealRequestAssetBundle(string abPath, AssetBundleRequestHandle requestHandle,
-                                             out BundleLoader bundleLoader,
-                                             Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
-                                             ResourceLoadType loadType = ResourceLoadType.NormalLoad,
-                                             ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+                                                                  out BundleLoader bundleLoader,
+                                                                  Func<string, string> getABReadlRelativePathDelegate,
+                                                                  Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
+                                                                  ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                                                  ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             // TODO: 支持动态AB资源下载
             var depABPaths = GetABDpInfoDelegate(abPath);
-            bundleLoader = LoaderManager.Singleton.CreateAssetBundleLoader<AssetBundleLoader>(abPath, depABPaths, loadType, loadMethod);
+            bundleLoader = LoaderManager.Singleton.CreateAssetBundleLoader<AssetBundleLoader>(abPath, depABPaths,
+                                                                                              getABReadlRelativePathDelegate,
+                                                                                              loadType, loadMethod);
             bundleLoader.AddRequest(requestHandle, completeHandler);
             bundleLoader.Load();
             return requestHandle;

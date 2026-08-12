@@ -59,7 +59,7 @@
     <UnityVersion>2022.3.62f3</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\TonyTang\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.2.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\TonyTang\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.3.1\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="G:\Software\UnityAllVersions\2022.3.62f3\2022.3.62f3\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="G:\Software\UnityAllVersions\2022.3.62f3\2022.3.62f3\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -71,7 +71,8 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\EditorAssetInfoBuilder\EditorAssetInfoAssetEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\SpriteDrawUtility.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\HotUpdate\HotUpdateOperationWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildParams.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\ABCompressOption.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\UxmlLoader.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\EditorResourceUtilities.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Assets\Scripts\Editor\Core\UI\TButtonEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildInfo.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\ShaderVariantCollectionHelper.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\RenameFileInfo.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuilder.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\ShaderVariantCollector.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\HotUpdate\HotUpdateTool.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetBundleNameSetting.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildStyles.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildConstData.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuildPurpose.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\SBPAssetBundleBuilder.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\ShaderVariantCollector\ShaderVariantCollectorSetting.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeTool.cs" />

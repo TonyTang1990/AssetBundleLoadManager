@@ -73,13 +73,18 @@ namespace TResource
         }
 
         /// <summary>
-        /// 依赖的AB路径数组
+        /// 依赖的AB路径数组(带后缀)
         /// </summary>
         public string[] DepABPaths
         {
             get;
             protected set;
         }
+
+        /// <summary>
+        /// 获取AB真实相对路径委托
+        /// </summary>
+        protected Func<string, string> mGetABReadlRelativePathDelegate;
 
         /// <summary>
         /// 拥有资源是否不再使用
@@ -190,6 +195,7 @@ namespace TResource
         {
             base.ResetDatas();
             DepABPaths = null;
+            mGetABReadlRelativePathDelegate = null;
             AssetBundleInfo = null;
             DepAssetBundleInfoList.Clear();
             mAllRequiredABNumber = 0;
@@ -203,16 +209,20 @@ namespace TResource
         /// 初始化
         /// </summary>
         /// <param name="abPath">AB路径</param>
-        /// <param name="loadType">加载类型</param>
+        /// <param name="assetBundleInfo">AssetBundle信息</param>
         /// <param name="depABPaths">依赖AB路径组</param>
+        /// <param name="getABReadlRelativePathDelegate">获取AB真实相对路径委托</param>
+        /// <param name="loadType">加载类型</param>
         /// <param name="loadMethod">加载方法</param>
         public void Init(string abPath, AssetBundleInfo assetBundleInfo,
-                         string[] depABPaths, ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                         string[] depABPaths, Func<string, string> getABReadlRelativePathDelegate,
+                         ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                          ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
         {
             ResourcePath = abPath;
             AssetBundleInfo = assetBundleInfo;
             DepABPaths = depABPaths;
+            mGetABReadlRelativePathDelegate = getABReadlRelativePathDelegate;
             LoadType = loadType;
             LoadMethod = loadMethod;
             mLoadUnCompleteABPathMap.Add(ResourcePath, true);
@@ -369,15 +379,16 @@ namespace TResource
         /// </summary>
         protected virtual void LoadABSync()
         {
-            var abPath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
+            var readABRelativePath = mGetABReadlRelativePathDelegate.Invoke(ResourcePath);
+            var abPath = TResource.ResourcePath.GetABLoadFullPath(readABRelativePath);
             AssetBundle ab = null;
-            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始同步加载AssetBundle:{ResourcePath}");
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始同步加载AssetBundle:{readABRelativePath}");
             // Note:
             // 先异步LoadFromFileAsyn后同步LoadFromFile的情况下，LoadFromFile返回的ab为null，且Unity会提示***.AB已经被加载
             // 要想同步加载时异步能正确返回，我们需要调用AssetBundleCreateRequeust.assetBundle触发同步加载
             if(mABAsyncRequest == null)
             {
-                ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}同步加载AssetBundle:{ResourcePath}");
+                ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}同步加载AssetBundle:{readABRelativePath}");
 #if UNITY_EDITOR
                 //因为资源不全，很多资源丢失，导致直接报错
                 //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错
@@ -407,8 +418,9 @@ namespace TResource
         /// </summary>
         protected virtual void LoadABAsync()
         {
-            var abPath = AssetBundlePath.GetABLoadFullPath(ResourcePath);
-            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始异步加载AssetBundle:{ResourcePath}");
+            var readABRelativePath = mGetABReadlRelativePathDelegate.Invoke(ResourcePath);
+            var abPath = TResource.ResourcePath.GetABLoadFullPath(readABRelativePath);
+            ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}开始异步加载AssetBundle:{readABRelativePath}");
 #if UNITY_EDITOR
             //因为资源不全，很多资源丢失，导致直接报错
             //这里临时先在Editor模式下判定下文件是否存在，避免AssetBundle.LoadFromFile()直接报错

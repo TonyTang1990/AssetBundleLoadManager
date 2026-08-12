@@ -214,16 +214,19 @@ namespace TResource
         /// </summary>
         /// <param name="abPath">AB路径</param>
         /// <param name="depABPaths">依赖AB路径组</param>
+        /// <param name="getABRealRelativePathDelegate">获取AB真实相对路径委托</param>
         /// <param name="loadType">加载类型</param>
+        /// <param name="loadMethod">加载方式</param>
         /// <returns></returns>
         public BundleLoader CreateAssetBundleLoader<T>(string abPath, string[] depABPaths,
+                                                       Func<string, string> getABRealRelativePathDelegate,
                                                        ResourceLoadType loadType = ResourceLoadType.NormalLoad,
                                                        ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
                                                        where T : BundleLoader, new()
         {
             BundleLoader bundleLoader = ObjectPool.Singleton.Pop<T>();
             AssetBundleInfo assetBundleInfo = ResourceModuleManager.Singleton.GetOrCreateAssetBundleInfo(abPath, loadType);
-            bundleLoader.Init(abPath, assetBundleInfo, depABPaths, loadType, loadMethod);
+            bundleLoader.Init(abPath, assetBundleInfo, depABPaths, getABRealRelativePathDelegate, loadType, loadMethod);
             return bundleLoader;
         }
 

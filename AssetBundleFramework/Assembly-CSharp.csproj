@@ -59,7 +59,7 @@
     <UnityVersion>2022.3.62f3</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\TonyTang\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.2.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\TonyTang\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.3.1\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="G:\Software\UnityAllVersions\2022.3.62f3\2022.3.62f3\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="G:\Software\UnityAllVersions\2022.3.62f3\2022.3.62f3\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -68,12 +68,13 @@
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_language_cn.cs" />
     <Compile Include="Assets\Scripts\DebugTools\VisibleLogUtility.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_s.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\AssetBundlePath.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateConfig.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateStatus.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Native\NativeMessageHandler.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_author_InfoBuffer.cs" />
     <Compile Include="Assets\Scripts\DebugTools\TimeCounter.cs" />
     <Compile Include="Assets\Scripts\Core\Timer\Timer.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdatePath.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceInfo.cs" />
     <Compile Include="Assets\Scripts\Utilities\FileUtilities.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\AssetBundleLoader.cs" />
@@ -95,8 +96,8 @@
     <Compile Include="Assets\Scripts\Core\UI\TRawImage.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceLogger.cs" />
     <Compile Include="Assets\Scripts\DebugTools\MonoMemoryProfiler.cs" />
-    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateAssetBundleInfo.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceRequestHandle.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateABInfo.cs" />
     <Compile Include="Assets\Scripts\Utilities\Utilities.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabase\AssetDatabaseAsyncRequest.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceModule.cs" />
@@ -114,6 +115,8 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabase\AssetDatabaseModule.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateModuleManager.cs" />
     <Compile Include="Assets\Scripts\Core\UI\TButton.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateUtilities.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateVerifyABInfo.cs" />
     <Compile Include="Assets\Scripts\Core\Timer\TimerManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_global_bBuffer.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_sContainer.cs" />
@@ -135,6 +138,8 @@
     <Compile Include="Assets\Scripts\GameLogic\Model\Native\PC\PCNativeManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\FolderUtilities.cs" />
     <Compile Include="Assets\Scripts\DebugTools\FastUIEntry.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateSingleABInfo.cs" />
+    <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdateResult.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\AssetBundleInfo.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_bContainer.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_author_Info.cs" />
@@ -147,6 +152,7 @@
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_i.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\LoaderManager.cs" />
     <Compile Include="Assets\Scripts\Core\Update\UpdateManager.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\ResourcePath.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\DownloadAssetBundleLoader.cs" />
     <Compile Include="Assets\Scripts\Core\Coroutine\CoroutineManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\GameSceneManager.cs" />
@@ -156,13 +162,11 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Res\shaders\UI\UI-Default.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
-    <None Include="Assets\StreamingAssets\Android\readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\codeandweb.com\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Res\shaders\Standlone\Particle\Particle Premultiply Blend.shader" />
-    <None Include="Assets\Resources\AssetBundleMd5.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
@@ -179,7 +183,6 @@
     <None Include="Assets\Scripts\Core\Conf\Xbuffer\xbuffer_runtime.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\StreamingAssets\Android\assetBuildReadme.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Res\shaders\Standlone\Standard.shader" />

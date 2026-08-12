@@ -61,7 +61,7 @@ public static class PathUtilities
     public static string GetProjectPath()
     {
         string projectPath = Path.GetDirectoryName(Application.dataPath);
-        return PathUtilities.GetRegularPath(projectPath);
+        return GetRegularPath(projectPath);
     }
 
     /// <summary>
@@ -119,5 +119,23 @@ public static class PathUtilities
             return path;
         }
         return path.Substring(0, path.Length - postFix.Length);
+    }
+
+    /// <summary>
+    /// 获取指定路径添加MD5后的路径(带后缀)
+    /// 例如：Assets/StreammingAsset/Android/abc.android => Assets/StreammingAsset/Android/abc_hash.android
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <param name="md5"></param>
+    /// <returns></returns>
+    public static string GetFilePathWithMD5(string filePath, string md5)
+    {
+        var postFix = Path.GetExtension(filePath);
+        var hasPostFix = !string.IsNullOrEmpty(postFix);
+        if (!hasPostFix)
+        {
+            return $"{filePath}_{md5}";
+        }
+        return $"{filePath.Substring(0, filePath.Length - postFix.Length)}_{md5}{postFix}";
     }
 }
