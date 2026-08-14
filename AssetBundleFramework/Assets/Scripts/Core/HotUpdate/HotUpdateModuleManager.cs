@@ -739,7 +739,7 @@ namespace TResource
             Debug.Log(string.Format("热更校验资源信息地址 : {0}", url));
             if (requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
             {
-                Debug.Log(string.Format("热更校验资源信息文件下载成功!热更校验资源信息文件大小: {0}KB", downloadhandler.data.Length / 1024));
+                Debug.Log(string.Format("热更校验资源信息文件(VerifyABInfo.json)下载成功!热更校验资源信息文件大小: {0}KB", downloadhandler.data.Length / 1024));
                 // VerifyABInfo.json每次都重新下载确保验证本地ABInfo.json的完整性和正确性
                 var hotUpdateVerifyABInfoFileContent = downloadhandler.text;
                 mHotUpdateVerifyABInfo = JsonUtility.FromJson<HotUpdateVerifyABInfo>(hotUpdateVerifyABInfoFileContent);
@@ -827,7 +827,7 @@ namespace TResource
             Debug.Log(string.Format("热更资源信息地址 : {0}", url));
             if (requeststatus == TWebRequest.WebRequestTaskInfo.WebTaskRequestStatus.WT_Complete)
             {
-                Debug.Log(string.Format("热更资源MD5信息文件下载成功!热更资源MD5信息文件大小: {0}KB", downloadhandler.data.Length / 1024));
+                Debug.Log(string.Format("热更资源信息文件(ABInfo.json)下载成功!热更资源MD5信息文件大小: {0}KB", downloadhandler.data.Length / 1024));
                 // 存储ABInfo.json数据到临时目录
                 // 然后验证ABInfo.json文件正确性和完整性
                 // 验证通过移动开始资源热更新
