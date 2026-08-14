@@ -1,5 +1,5 @@
 ﻿/*
- * Description:             ResourceUtility.cs
+ * Description:             ResourceUtilities.cs
  * Author:                  TANGHUAN
  * Create Date:             2019/11/12
  */
@@ -10,7 +10,7 @@ using UnityEngine;
 /// <summary>
 /// 资源静态工具类
 /// </summary>
-public static class ResourceUtility
+public static class ResourceUtilities
 {
     /// <summary>
     /// Editor模式下，找回MeshRender & SkinMeshRender的Shader显示
@@ -41,6 +41,29 @@ public static class ResourceUtility
                 {
                     mt.shader = Shader.Find(mt.shader.name);
                     DIYLog.Log(string.Format("{0}对象找回Shader:{1}显示！", go.name, mt.shader.name));
+                }
+            }
+        }
+#endif
+    }
+
+    /// <summary>
+    /// Editor模式下，找回ParticleSystem的Shader显示
+    /// </summary>
+    /// <param name="go"></param>
+    public static void FindParticleSystemShaderBack(GameObject go)
+    {
+#if UNITY_EDITOR
+        var particlesystemrenders = go.GetComponentsInChildren<ParticleSystemRenderer>();
+        foreach (var particlesystemrender in particlesystemrenders)
+        {
+            var mts = particlesystemrender.sharedMaterials;
+            foreach (var mt in mts)
+            {
+                if (mt != null && mt.shader != null)
+                {
+                    mt.shader = Shader.Find(mt.shader.name);
+                    DIYLog.Log(string.Format("{0}粒子特效找回Shader:{1}显示！", go.name, mt.shader.name));
                 }
             }
         }

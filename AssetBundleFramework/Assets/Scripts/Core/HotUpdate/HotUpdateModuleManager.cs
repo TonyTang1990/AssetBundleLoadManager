@@ -406,6 +406,26 @@ namespace TResource
         }
 
         /// <summary>
+        /// 是否处于版本强更状态中
+        /// </summary>
+        /// <returns></returns>
+        public bool IsUnderVersionHotUpadtingStatus()
+        {
+            return HotUpdateStatus == HotUpdateStatus.VersionDownloading;
+        }
+
+        /// <summary>
+        /// 是否处于资源热更状态中
+        /// </summary>
+        /// <returns></returns>
+        public bool IsUnderResourceHotUpadtingStatus()
+        {
+            return HotUpdateStatus == HotUpdateStatus.VerifyABInfoDownloading ||
+                   HotUpdateStatus == HotUpdateStatus.ABInfoDownloading ||
+                   HotUpdateStatus == HotUpdateStatus.ResourceDownloading;
+        }
+
+        /// <summary>
         /// 是否处于下载状态中
         /// </summary>
         /// <returns></returns>
@@ -644,7 +664,7 @@ namespace TResource
         /// 检查资源热更
         /// </summary>
         /// <param name="newHotUpdateResourceCode">新的资源版本号</param>
-        private bool CheckResourceHotUpdate(int newHotUpdateResourceCode)
+        public bool CheckResourceHotUpdate(int newHotUpdateResourceCode)
         {
             Debug.Log("CheckResourceHotUpdate()");
             if (HotUpdateSwitch)
@@ -673,7 +693,7 @@ namespace TResource
         /// <param name="versionCode"></param>
         /// <param name="resourceVersionCode"></param>
         /// <param name="completecallback"></param>
-        private void DoResourceHotUpdate(double versionCode, int resourceVersionCode, Action<HotUpdateResult> completecallback)
+        public void DoResourceHotUpdate(double versionCode, int resourceVersionCode, Action<HotUpdateResult> completecallback)
         {
             Debug.Log("doResourceHotUpdate()");
             // 先拉去SimpleABInfo.json文件
