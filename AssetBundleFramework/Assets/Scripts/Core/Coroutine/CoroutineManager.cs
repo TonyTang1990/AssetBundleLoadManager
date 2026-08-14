@@ -1,8 +1,7 @@
 ﻿/*
- * file CoroutineManager.cs
- *
- * author: ***
- * date:   2014/10/9
+ * Description:             携程管理器
+ * Author:                  TonyTang
+ * Create Date:             2014/10/09
  */
 
 using System;
@@ -10,16 +9,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoroutineManager : MonoBehaviour
+/// <summary>
+/// CoroutineManager.cs
+/// 协程管理器
+/// </summary>
+public class CoroutineManager : SingletonMonoTemplate<CoroutineManager>
 {
     /// <summary>
     /// 内部辅助类
     /// </summary>
     private class CoroutineTask
     {
-        public long Id { get; set; }
-        public bool Running { get; set; }
-        public bool Paused { get; set; }
+        /// <summary>
+        /// 协程ID
+        /// </summary>
+        public long Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 协程是否正在运行
+        /// </summary>
+        public bool Running
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 协程是否暂停
+        /// </summary>
+        public bool Paused
+        {
+            get;
+            set;
+        }
 
         public CoroutineTask(long id)
         {
@@ -28,7 +54,12 @@ public class CoroutineManager : MonoBehaviour
             Paused = false;
         }
 
-        public IEnumerator coroutineWrapper(IEnumerator co)
+        /// <summary>
+        /// 协程包装器
+        /// </summary>
+        /// <param name="co"></param>
+        /// <returns></returns>
+        public IEnumerator CoroutineWrapper(IEnumerator co)
         {
             IEnumerator coroutine = co;
             while (Running)
@@ -47,21 +78,28 @@ public class CoroutineManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 协程管理器的协程字典
+    /// </summary>
     private static Dictionary<long, CoroutineTask> mCoroutines;
-    public static CoroutineManager Singleton { get; private set; }
+
+    /// <summary>
+    /// 当前正在使用的携程ID
+    /// </summary>
+    private long mNowId = 0;
 
     void Awake()
     {
-        Singleton = this;
         mCoroutines = new Dictionary<long, CoroutineTask>();
     }
 
-    private long mNowId = 0;
-    private long getNewId()
+    /// <summary>
+    /// 获取一个新的携程ID
+    /// </summary>
+    /// <returns></returns>
+    private long GetNewId()
     {
         mNowId++;
-        while(mCoroutines.ContainsKey(mNowId))
-            mNowId++;
         return mNowId;
     }
 
@@ -70,14 +108,13 @@ public class CoroutineManager : MonoBehaviour
     /// </summary>
     /// <param name="co"></param>
     /// <returns></returns>
-    public Int64 startCoroutine(IEnumerator co)
+    public new long StartCoroutine(IEnumerator co)
     {
-
-        if (this.gameObject.activeSelf)
+        if (gameObject.activeSelf)
         {
-            CoroutineTask task = new CoroutineTask(getNewId());
+            CoroutineTask task = new CoroutineTask(GetNewId());
             mCoroutines.Add(task.Id, task);
-            StartCoroutine(task.coroutineWrapper(co));
+            base.StartCoroutine(task.CoroutineWrapper(co));
             return task.Id;
         }
         return -1;
@@ -87,7 +124,7 @@ public class CoroutineManager : MonoBehaviour
     /// 停止一个协程
     /// </summary>
     /// <param name="id"></param>
-    public void stopCoroutine(long id)
+    public void StopCoroutine(long id)
     {
         CoroutineTask task = mCoroutines[id];
         if (task != null)
@@ -101,7 +138,7 @@ public class CoroutineManager : MonoBehaviour
     /// 暂停协程的运行
     /// </summary>
     /// <param name="id"></param>
-    public void pauseCoroutine(long id)
+    public void PauseCoroutine(long id)
     {
         CoroutineTask task = mCoroutines[id];
         if (task != null)
@@ -118,7 +155,7 @@ public class CoroutineManager : MonoBehaviour
     /// 恢复协程的运行
     /// </summary>
     /// <param name="id"></param>
-    public void resumeCoroutine(long id)
+    public void ResumeCoroutine(long id)
     {
         CoroutineTask task = mCoroutines[id];
         if (task != null)
@@ -131,25 +168,50 @@ public class CoroutineManager : MonoBehaviour
         }
     }
 
-    public long delayedCall(float delayedTime, Action callback)
+    /// <summary>
+    /// 延迟调用
+    /// </summary>
+    /// <param name="delayedTime"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    public long DelayedCall(float delayedTime, Action callback)
     {
-        return startCoroutine(delayedCallImpl(delayedTime, callback));
+        return StartCoroutine(DelayedCallImpl(delayedTime, callback));
     }
 
-    private IEnumerator delayedCallImpl(float delayedTime, Action callback)
+    /// <summary>
+    /// 延迟调用
+    /// </summary>
+    /// <param name="delayedTime"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator DelayedCallImpl(float delayedTime, Action callback)
     {
         if (delayedTime >= 0)
             yield return new WaitForSeconds(delayedTime);
         callback();
     }
 
-
-    public long delayedCall(float delayedTime, Action<object> callback, object param)
+    /// <summary>
+    /// 延迟调用
+    /// </summary>
+    /// <param name="delayedTime"></param>
+    /// <param name="callback"></param>
+    /// <param name="param"></param>
+    /// <returns></returns>
+    public long DelayedCall(float delayedTime, Action<object> callback, object param)
     {
-        return startCoroutine(delayedCallImpl(delayedTime, callback, param));
+        return StartCoroutine(DelayedCallImpl(delayedTime, callback, param));
     }
 
-    private IEnumerator delayedCallImpl(float delayedTime, Action<object> callback, object param)
+    /// <summary>
+    /// 延迟调用
+    /// </summary>
+    /// <param name="delayedTime"></param>
+    /// <param name="callback"></param>
+    /// <param name="param"></param>
+    /// <returns></returns>
+    private IEnumerator DelayedCallImpl(float delayedTime, Action<object> callback, object param)
     {
         if (delayedTime >= 0)
             yield return new WaitForSeconds(delayedTime);
@@ -164,5 +226,4 @@ public class CoroutineManager : MonoBehaviour
         }
         mCoroutines.Clear();
     }
-
 }

@@ -2,9 +2,9 @@
     "HotUpdateSingleABInfoList": [
         {
             "mABRelativePath": "Android",
-            "mABMD5": "034739fc628faffa9024979c6d7d87d1",
-            "mABSize": 4785,
-            "mABSha256": "5d583b2dda00f5c842288e65fda0fe8aa70d9bde9d6d70f572621eef01367315"
+            "mABMD5": "a485859566f03ebc884a8a85d45187de",
+            "mABSize": 4848,
+            "mABSha256": "3eb740bb8e939d2611c33910fe59f0fda6716bb35d6acd9a207e5431d31eef4f"
         },
         {
             "mABRelativePath": "shaderlist.android",
@@ -38,9 +38,9 @@
         },
         {
             "mABRelativePath": "assets/res/assetbuildinfo/assetbuildinfoandroid.android",
-            "mABMD5": "db5255bf87bbe8c03453efda7b11af20",
-            "mABSize": 4271,
-            "mABSha256": "2396dbec55e3b4ef54458c7d41db680fb9c2f9c968f63894823b8b468a392f8c"
+            "mABMD5": "8bc33675022722349cc32b091fb89969",
+            "mABSize": 4490,
+            "mABSha256": "ca5361870e9fcddd78a6d52705539044689e20468c0c5414288aba8df1f544f7"
         },
         {
             "mABRelativePath": "assets/res/prefabs/imagebuildin.android",
@@ -74,15 +74,15 @@
         },
         {
             "mABRelativePath": "assets/res/scenes/assetbundleframeworkscene.android",
-            "mABMD5": "3e082f0203107d88727f07186191751a",
-            "mABSize": 781361,
-            "mABSha256": "c283f79bc29e0f768acf7d76b592a6658097938751646268ad81a438fa4b46ed"
+            "mABMD5": "afe02a220d1dd190e638550c1606ba33",
+            "mABSize": 780902,
+            "mABSha256": "4443e1efeab4732b1d45538609d9150dc5f61b619de71eb2e81717b7978a4cd7"
         },
         {
             "mABRelativePath": "assets/res/scenes/testscene2.android",
-            "mABMD5": "737ac7e62d5f0d2ec5ccc15a71fea96b",
+            "mABMD5": "03b431c49924b3fe173a3478996180b3",
             "mABSize": 47147,
-            "mABSha256": "b4aa224fac6e95ad8b48c4a7e9bea9b062e053b61357f57459517b7447e18fd0"
+            "mABSha256": "699d5f3ad1206a19721d9b588199171b03fdd2b1de522fe31ef0a4c4881ac8ea"
         },
         {
             "mABRelativePath": "assets/res/scenes/testscene2settings.android",
@@ -146,9 +146,15 @@
         },
         {
             "mABRelativePath": "assets/res/windows/mainwindow.android",
-            "mABMD5": "a762cec61b1d9899352e484711a635c0",
+            "mABMD5": "09e09a881f9f1c5e754ef4ff72d5b317",
             "mABSize": 4159,
-            "mABSha256": "f2ef95d3406625a1e8b2fb0a63178615553dfed2e48923d427fa2900edb18f69"
+            "mABSha256": "c27b822e756930e1b299df0edd3a9ede718e661168b00772f02459714001554f"
+        },
+        {
+            "mABRelativePath": "assets/res/atlas/shareatlas/tongyong256px.android",
+            "mABMD5": "0ec0d2560307c8520d629785f10ceceb",
+            "mABSize": 110254,
+            "mABSha256": "d59608479c0a24d167009a8d54e17243a7a6842d80cd49f50f9e54d459637a1d"
         },
         {
             "mABRelativePath": "assets/res/atlas/shareatlas/tutorialatlas.android",

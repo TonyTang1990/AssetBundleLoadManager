@@ -26,7 +26,7 @@ namespace TResource
         /// <param name="buildTarget">打包平台</param>
         /// <param name="isForceBuild">是否强制重新打包</param>
         public static bool DoBuildAssetBundle(AssetBundleBuildPurpose abBuildPurpose, BuildTarget buildTarget,
-                                              ABCompressOption compressOption = ABCompressOption.Uncompressed,
+                                              ABCompressOption compressOption = ABCompressOption.ChunkBasedCompressionLZ4,
                                               bool isForceBuild = false, bool isAppendHash = false,
                                               bool isDisableWriteTypeTree = false, bool isIgnoreTypeTreeChanges = false,
                                               double versionCode = 0, int resourceVersionCode = 0)

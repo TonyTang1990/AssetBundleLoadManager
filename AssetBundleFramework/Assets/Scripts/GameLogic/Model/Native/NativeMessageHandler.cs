@@ -13,18 +13,16 @@ using UnityEngine.UI;
 /// NativeMessageHandler.cs
 /// 原生消息相应处理器
 /// </summary>
-public class NativeMessageHandler : MonoBehaviour {
-
+public class NativeMessageHandler : SingletonMonoTemplate<NativeMessageHandler>
+{
     /// <summary>
     /// 原生消息数据显示文本
     /// </summary>
     public Text TxtNativeOutput;
 
-    public static NativeMessageHandler Singleton { get; private set; }
-
     void Awake()
     {
-        Singleton = this;
+
     }
 
     /// <summary>

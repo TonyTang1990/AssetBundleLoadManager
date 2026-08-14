@@ -31,10 +31,10 @@ public static class BuildTool
             return false;
         }
 
-        GameConfigModuleManager.Singleton.initGameConfigData();
+        GameConfigModuleManager.Singleton.InitGameConfigData();
         var gameDevelopMode = GameConfigModuleManager.Singleton.GetGameDevelopMode();
         Debug.Log($"包内游戏开发模式从:{gameDevelopMode}修改成:{developMode}");
-        GameConfigModuleManager.Singleton.saveGameDevelopModel(developMode);
+        GameConfigModuleManager.Singleton.SaveGameDevelopModel(developMode);
         return true;
     }
 
@@ -68,23 +68,76 @@ public static class BuildTool
     }
 
     /// <summary>
-    /// 执行打包
+    /// 执行打包(含资源打包)
     /// </summary>
     /// <param name="buildOutputPath">打包输出目录</param>
     /// <param name="buildTarget">打包平台</param>
     /// <param name="versionCode">版本号</param>
     /// <param name="resourceVersionCode">资源版本号</param>
     /// <param name="isDevelopment">是否打开发包</param>
-    public static void DoBuild(string buildOutputPath, BuildTarget buildTarget, double versionCode, int resourceVersionCode, bool isDevelopment = false)
+    public static void DoBuild(string buildOutputPath, BuildTarget buildTarget,
+                               double versionCode, int resourceVersionCode,
+                               bool isDevelopment = false)
     {
         Debug.Log("BuildTool.DoBuild()");
-        // 版本号格式只允许*.*
-        var versionString = versionCode.ToString("N1", CultureInfo.CreateSpecificCulture("en-US"));
+        // 版本号格式只允许*.**
+        var versionString = versionCode.ToString("N2", CultureInfo.CreateSpecificCulture("en-US"));
         if (!double.TryParse(versionString, out versionCode))
         {
-            Debug.LogError($"不支持的版本号:{versionCode},请传入输入有效版本号值!");
+            Debug.LogError($"不支持的版本号:{versionCode},请传入输入有效版本号值，执行打包失败!");
             return;
         }
+        // 先打包资源再打包APK
+        var resultBuildResuilt = DoResourceBuild(buildTarget, versionCode, resourceVersionCode);
+        if(!resultBuildResuilt)
+        {
+            Debug.LogError($"[BuildPatch] 资源打包失败，打包终止！");
+            return;
+        }
+        var appBuildResuit = DoAppBuild(buildOutputPath, buildTarget, versionCode, resourceVersionCode, isDevelopment);
+        if(!appBuildResuit)
+        {
+            Debug.LogError($"[BuildPatch] App打包失败，打包终止！");
+            return;
+        }
+        Debug.Log($"[BuildPatch] 打包成功，打包终止！");
+    }
+
+    /// <summary>
+    /// 执行资源打包
+    /// </summary>
+    /// <param name="buildTarget">打包平台</param>
+    /// <param name="versionCode">版本号</param>
+    /// <param name="resourceVersionCode">资源版本号</param>
+    /// <returns></returns>
+    private static bool DoResourceBuild(BuildTarget buildTarget, double versionCode, int resourceVersionCode)
+    {
+        var abBuildParams = new AssetBundleBuildParams(AssetBundleBuildPurpose.BuildPlayerBaseLine, buildTarget,
+                                                       ABCompressOption.ChunkBasedCompressionLZ4, false,
+                                                       false, false, false, versionCode, resourceVersionCode);
+        AssetBundleBuilder abBuilder = new AssetBundleBuilder(abBuildParams);
+        var abBuildResult = ResourceBuildTool.DoBuildAssetBundleByBuilder(abBuilder);
+        if(!abBuildResult)
+        {
+            Debug.LogError($"[BuildPatch] 资源打包失败，打包终止！");
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// 执行App打包
+    /// </summary>
+    /// <param name="buildOutputPath">打包输出目录</param>
+    /// <param name="buildTarget">打包平台</param>
+    /// <param name="versionCode">版本号</param>
+    /// <param name="resourceVersionCode">资源版本号</param>
+    /// <param name="isDevelopment">是否打开发包</param>
+    /// <returns></returns>
+    private static bool DoAppBuild(string buildOutputPath, BuildTarget buildTarget,
+                                   double versionCode, int resourceVersionCode,
+                                   bool isDevelopment = false)
+    {
         if (string.IsNullOrEmpty(buildOutputPath))
         {
             buildOutputPath = $"{Application.dataPath}/../../../Build";
@@ -132,20 +185,16 @@ public static class BuildTool
                 buildplayeroptions.targetGroup = buildtargetgroup;
                 EditorUserBuildSettings.SwitchActiveBuildTarget(buildtargetgroup, buildTarget);
                 BuildPipeline.BuildPlayer(buildplayeroptions);
-                // 拷贝AssetBundleInfo.txt到打包输出目录(未来热更新对比需要的文件)
-                var innerAssetBundleInfoFilePath = ResourcePath.GetInnerABInfoFilePath();
-                string newAssetBundleMd5FilePath;
-                FileUtilities.CopyFileToFolder(innerAssetBundleInfoFilePath, buildOutputPath, out newAssetBundleMd5FilePath);
             }
             else
             {
                 Debug.LogError("不支持的打包平台选择,打包失败!");
+                return false;
             }
+            return true;
         }
-        else
-        {
-            Debug.LogError("打包输出目录为空或不存在,打包失败!");
-        }
+        Debug.LogError("打包输出目录为空或不存在,打包失败!");
+        return false;
     }
 
     /// <summary>

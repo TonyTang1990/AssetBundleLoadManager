@@ -16,12 +16,30 @@ using UnityEngine.UI;
 /// AtlasManager.cs
 /// 图集管理单例类
 /// </summary>
-public class AtlasManager : SingletonTemplate<AtlasManager>
+public class AtlasManager : SingletonBase<AtlasManager>
 {
     public AtlasManager()
     {
+    }
+
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    public override void Initialize()
+    {
+        base.Initialize();
         //DIYLog.Log("添加SpriteAtals图集延时绑定回调!");
-        //SpriteAtlasManager.atlasRequested += onAtlasRequested;
+        //SpriteAtlasManager.atlasRequested += OnAtlasRequested;
+    }
+
+    /// <summary>
+    /// 释放
+    /// </summary>
+    public override void Shutdown()
+    {
+        base.Shutdown();
+        //DIYLog.Log("移除SpriteAtals图集延时绑定回调!");
+        //SpriteAtlasManager.atlasRequested -= OnAtlasRequested;
     }
 
     ///// <summary>
@@ -29,7 +47,7 @@ public class AtlasManager : SingletonTemplate<AtlasManager>
     ///// </summary>
     ///// <param name="atlaspath"></param>
     ///// <param name="callback"></param>
-    //private void onAtlasRequested(string atlaspath, Action<SpriteAtlas> callback)
+    //private void OnAtlasRequested(string atlaspath, Action<SpriteAtlas> callback)
     //{
     //    DIYLog.Log($"加载SpriteAtlas:{atlaspath}");
     //    // Later Bind -- 依赖使用SpriteAtlas的加载都会触发这里

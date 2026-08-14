@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2026/8/14 10:28:59
+构建时间：2026/8/14 13:40:05
 
 --配置信息--
 Directory : Assets/Res/actors || CollectRule : Collect || BuildRule : ByFileOrSubFolder
@@ -20,7 +20,7 @@ Directory : Assets/Res/videos || CollectRule : Collect || BuildRule : ByFilePath
 Directory : Assets/Res/windows || CollectRule : Collect || BuildRule : ByFilePath
 
 --构建参数--
-CompressOption：Uncompressed
+CompressOption：ChunkBasedCompressionLZ4
 ForceRebuild：False
 DisableWriteTypeTree：False
 IgnoreTypeTreeChanges：False

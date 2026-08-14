@@ -13,13 +13,8 @@ using UnityEngine;
 /// 不依赖于Monobehaviour的定时器(类似携程)
 /// 支持延时+自定义条件的触发形式
 /// </summary>
-public class TimerManager
+public class TimerManager : SingletonTemplate<TimerManager>
 {
-    /// <summary>
-    /// 单例对象(相比SingletonTemplate,可以避免默认构造函数是public)
-    /// </summary>
-    public readonly static TimerManager Singleton = new TimerManager();
-
     /// <summary>
     /// 是否暂停所有计时器
     /// </summary>
@@ -59,7 +54,7 @@ public class TimerManager
     /// </summary>
     private Dictionary<long, Timer> mLaterAddedFixedUpdateTimerMap;
 
-    private TimerManager()
+    public TimerManager()
     {
         mNeextValideTimerUID = 0;
         TimerMap = new Dictionary<long, Timer>();

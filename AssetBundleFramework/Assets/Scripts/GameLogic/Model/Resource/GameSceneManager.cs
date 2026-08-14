@@ -16,7 +16,7 @@ using UnityEngine.SceneManagement;
 /// GameSceneManager.cs
 /// 游戏场景管理单例类
 /// </summary>
-public class GameSceneManager : SingletonTemplate<GameSceneManager>
+public class GameSceneManager : SingletonBase<GameSceneManager>
 {
     /// <summary>
     /// 当前场景AB路径
@@ -36,11 +36,22 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// <summary>
     /// 初始化
     /// </summary>
-    public void Init()
+    public override void Initialize()
     {
+        base.Initialize();
         // hook场景加载与切换回调
-        SceneManager.sceneLoaded += onSceneLoaded;
-        SceneManager.sceneUnloaded += onSceneUnloaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
+
+    /// <summary>
+    /// 释放
+    /// </summary>
+    public override void Shutdown()
+    {
+        base.Shutdown();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
     /// <summary>
@@ -130,7 +141,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// </summary>
     /// <param name="scene"></param>
     /// <param name="mode"></param>
-    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log(string.Format("场景:{0}被加载!", scene.name));
         //新场景加载后DO Something
@@ -153,7 +164,7 @@ public class GameSceneManager : SingletonTemplate<GameSceneManager>
     /// 场景卸载回调
     /// </summary>
     /// <param name="scene"></param>
-    private void onSceneUnloaded(Scene scene)
+    private void OnSceneUnloaded(Scene scene)
     {
         Debug.Log(string.Format("场景:{0}被卸载!", scene.name));
         if (!scene.name.Equals("Preview Scene"))

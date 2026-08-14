@@ -4,22 +4,14 @@
  * Create Date:             2018/02/26
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-
 /// <summary>
+/// FastUIEntry.cs
 /// 快速UI入口
 /// </summary>
-public class FastUIEntry : MonoBehaviour{
-
+public class FastUIEntry : SingletonMonoTemplate<FastUIEntry>
+{
     /// <summary>
     /// 操作参数1
     /// </summary>

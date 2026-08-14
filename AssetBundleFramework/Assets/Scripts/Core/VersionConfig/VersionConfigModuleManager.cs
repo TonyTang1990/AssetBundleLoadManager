@@ -1,14 +1,10 @@
 /*
- * Description:             GameVersionConfigManager.cs
+ * Description:             VersionConfigModuleManager.cs
  * Author:                  TONYTANG
  * Create Date:             2018/08/12
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using TResource;
 using UnityEngine;

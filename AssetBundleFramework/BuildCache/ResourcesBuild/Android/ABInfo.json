@@ -2,9 +2,9 @@
     "HotUpdateSingleABInfoList": [
         {
             "mABRelativePath": "Android",
-            "mABMD5": "39b594ff927a330b863224af48ac7de5",
-            "mABSize": 17952,
-            "mABSha256": "43bc07051c5efe6fe1690c2e87e19435b3c4a77947da70f418149b8e7007c94c"
+            "mABMD5": "a485859566f03ebc884a8a85d45187de",
+            "mABSize": 4848,
+            "mABSha256": "3eb740bb8e939d2611c33910fe59f0fda6716bb35d6acd9a207e5431d31eef4f"
         },
         {
             "mABRelativePath": "shaderlist.android",
@@ -38,9 +38,9 @@
         },
         {
             "mABRelativePath": "assets/res/assetbuildinfo/assetbuildinfoandroid.android",
-            "mABMD5": "61b9671e97ec56a0b6d8695a4ab86379",
-            "mABSize": 17232,
-            "mABSha256": "c830917faa07421f6ae79e4a6361198192466e323ad5c8ad2c0e489dbfb043bb"
+            "mABMD5": "8bc33675022722349cc32b091fb89969",
+            "mABSize": 4490,
+            "mABSha256": "ca5361870e9fcddd78a6d52705539044689e20468c0c5414288aba8df1f544f7"
         },
         {
             "mABRelativePath": "assets/res/prefabs/imagebuildin.android",
@@ -74,9 +74,9 @@
         },
         {
             "mABRelativePath": "assets/res/scenes/assetbundleframeworkscene.android",
-            "mABMD5": "c013ddfec0636ddfa160b623c2f91c5e",
-            "mABSize": 780895,
-            "mABSha256": "5d39856f3dcfe51eb0accdba7fe7f40159f490264d3350c32b678f63581d3344"
+            "mABMD5": "afe02a220d1dd190e638550c1606ba33",
+            "mABSize": 780902,
+            "mABSha256": "4443e1efeab4732b1d45538609d9150dc5f61b619de71eb2e81717b7978a4cd7"
         },
         {
             "mABRelativePath": "assets/res/scenes/testscene2.android",

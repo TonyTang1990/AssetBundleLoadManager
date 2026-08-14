@@ -5,7 +5,9 @@
  */
 
 using Data;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using TUI;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -114,30 +116,33 @@ namespace TResource
         /// </summary>
         private ResourceScope mResourceScope = new ResourceScope();
 
+        /// <summary>
+        /// 挂载的Mono单例列表
+        /// </summary>
+        private List<Action> mSingletonMonoList;
+        
         private void Awake()
         {
+            mSingletonMonoList = new List<Action>();
             DontDestroyOnLoad(this);
-
             DontDestroyOnLoad(UIRoot);
 
-            initSingletons();
-
-            addMonoComponents();
-
-            nativeInitilization();
-
-            initilization();
+            InitSingletonMonos();
+            InitSingletons();
+            AddMonoComponents();
+            NativeInitilization();
+            Initilization();
         }
 
         private void Start()
         {
-            addListeners();
+            AddListeners();
         }
 
         /// <summary>
         /// 添加监听
         /// </summary>
-        private void addListeners()
+        private void AddListeners()
         {
             DIYButton.LongTimePressedClick = onTButtonListenerClick;
         }
@@ -160,35 +165,47 @@ namespace TResource
         private void OnDestroy()
         {
             mResourceScope.Clear();
+            SingletonManager.ShutdownAll();
+            ReleaseAllSingletonMonoBehaviour();
         }
 
         /// <summary>
-        /// 初始化单例
+        /// 初始化Mono单例
         /// </summary>
-        private void initSingletons()
+        private void InitSingletonMonos()
         {
-            // 因为SingletonTemplate采用的是惰性初始化(即第一次调用的时候初始化)
-            // 会造成单例构造函数无法一开始被触发的问题
-            AtlasManager.Singleton.startUp();
+            //快速UI工具
+            AddSingletonMono<FastUIEntry>();
+            //携程管理类
+            AddSingletonMono<CoroutineManager>();
+            //原生消息处理器
+            AddSingletonMono<NativeMessageHandler>();
+        }
+
+        /// <summary>
+        /// 初始化单例对象
+        /// </summary>
+        private void InitSingletons()
+        {
+            SingletonManager.Register(new ResourceModuleManager());
+            SingletonManager.Register(new GameConfigModuleManager());
+            SingletonManager.Register(new HotUpdateModuleManager());
+            SingletonManager.Register(new GameSceneManager());
+            SingletonManager.Register(new AtlasManager());
         }
 
         /// <summary>
         /// 添加Mono相关的组件
         /// </summary>
-        private void addMonoComponents()
+        private void AddMonoComponents()
         {
-            gameObject.AddComponent<FastUIEntry>();
-
-            gameObject.AddComponent<CoroutineManager>();
-
-            gameObject.AddComponent<NativeMessageHandler>();
-            NativeMessageHandler.Singleton.TxtNativeOutput = TxtNativeOutput;
+            NativeMessageHandler.GetInstance().TxtNativeOutput = TxtNativeOutput;
         }
 
         /// <summary>
         /// 原生初始化
         /// </summary>
-        private void nativeInitilization()
+        private void NativeInitilization()
         {
             NativeManager.Singleton.init();
         }
@@ -196,15 +213,13 @@ namespace TResource
         /// <summary>
         /// 初始化
         /// </summary>
-        private void initilization()
+        private void Initilization()
         {
             mRMM = ResourceModuleManager.Singleton;
-
-            // 资源模块初始化
             mRMM.Init();
 
             //初始化游戏配置信息
-            GameConfigModuleManager.Singleton.initGameConfigData();
+            GameConfigModuleManager.Singleton.InitGameConfigData();
 
             //初始化版本信息
             VersionConfigModuleManager.Singleton.InitVerisonConfigData();
@@ -221,9 +236,6 @@ namespace TResource
 
             //初始化表格数据读取
             GameDataManager.Singleton.loadAll();
-
-            // 初始化逻辑层Manager
-            GameSceneManager.Singleton.Init();
 
             mBGMAudioSource = GetComponent<AudioSource>();
         }
@@ -1033,5 +1045,33 @@ namespace TResource
         {
             DIYLog.Log("onTButtonListenerClick()");
         }
+
+#region 单例Mono挂载部分
+        /// <summary>
+        /// 添加指定Mono挂载
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        private void AddSingletonMono<T>() where T : SingletonMonoTemplate<T>
+        {
+            if (gameObject.GetComponent<T>() == null)
+            {
+                T t = gameObject.AddComponent<T>();
+                t.SetInstance(t);
+                t.Init();
+                mSingletonMonoList.Add(delegate () { t.Release(); });
+            }
+        }
+
+        /// <summary>
+        /// 释放所有单例MonoBehaviour
+        /// </summary>
+        private void ReleaseAllSingletonMonoBehaviour()
+        {
+            for (int i = 0; i < mSingletonMonoList.Count; i++)
+            {
+                mSingletonMonoList[i]();
+            }
+        }
+#endregion
     }
 }

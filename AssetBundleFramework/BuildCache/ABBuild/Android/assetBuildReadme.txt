@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2026/8/14 10:28:44
+构建时间：2026/8/14 13:39:55
 
 --Asset AB打包信息--
 AssetBundleName:assets/res/actors/cube.android AssetBundleVariant: BuildCompression:Lz4HC
@@ -160,6 +160,6 @@ AssetBundleName:assets/res/videos/xuezhihua.android AssetBundleVariant: BuildCom
 AssetBundleName:assets/res/windows/mainwindow.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/windows/MainWindow.prefab
 
-AssetBundleName:assets/res/assetbuildinfo/assetbuildinfoandroid.android AssetBundleVariant: BuildCompression:None
+AssetBundleName:assets/res/assetbuildinfo/assetbuildinfoandroid.android AssetBundleVariant: BuildCompression:Lz4HC
 	AssetPath: Assets/Res/assetBuildInfo/AssetBuildInfoAndroid.asset
 

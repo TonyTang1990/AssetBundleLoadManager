@@ -55,7 +55,7 @@ namespace TResource
     /// Note:
     /// 服务器那一块待开发，所以先默认有资源可以更新，暂时只做资源热更下载这一块
     /// </summary>
-    public class HotUpdateModuleManager : SingletonTemplate<HotUpdateModuleManager>
+    public class HotUpdateModuleManager : SingletonBase<HotUpdateModuleManager>
     {
         /// <summary>
         /// 热更新资源目录名
@@ -429,8 +429,8 @@ namespace TResource
             TWebRequest twr = new TWebRequest();
             //URL = 热更新URL + 服务器版本信息文件名(ServerVersionConfig.json)
             var url = Utilities.CombineUrl(mHotUpdateURL, ServerVersionConfigFileName);
-            twr.enqueue(url, null, ServerVersionConfigCompleteCB);
-            twr.startRequest();
+            twr.Enqueue(url, null, ServerVersionConfigCompleteCB);
+            twr.StartRequest();
         }
 
         /// <summary>
@@ -530,10 +530,10 @@ namespace TResource
             VersionConfigModuleManager.Singleton.SaveNewVersionCodeOuterConfig(VersionConfigModuleManager.Singleton.GameVersionConfig.VersionCode);
             //引导版本强更
             mVersionHotUpdateCompleteCB = completecallback;
-            HotVersionUpdateRequest.resetRequest();
+            HotVersionUpdateRequest.ResetRequest();
             var versionHotUpdateFilePath = Utilities.CombineUrl(mHotUpdateURL, newHotUpdateVersionCode.ToString(), mVersionHotUpdateFileName);
-            HotVersionUpdateRequest.enqueue(versionHotUpdateFilePath, null, VersionHotUpdateCompleteCB, 1800);
-            HotVersionUpdateRequest.startRequest();
+            HotVersionUpdateRequest.Enqueue(versionHotUpdateFilePath, null, VersionHotUpdateCompleteCB, 1800);
+            HotVersionUpdateRequest.StartRequest();
         }
 
         /// <summary>
@@ -700,9 +700,9 @@ namespace TResource
             TWebRequest twr = new TWebRequest();
             //URL = 基础URL + 当前版本号 + "/" + 热更资源信息文件名(VerifyABInfo.json)
             var url = GetResHotUpdateURL(mResHotUpdateVersionCode, mResHotUpdateResourceVersionCode, ResourceConstData.VerifyABInfoFileName);
-            mResHotUpdateRequest.resetRequest();
-            twr.enqueue(url, null, OnVerifyABInfoHotUpdateCompleteCB);
-            twr.startRequest();
+            mResHotUpdateRequest.ResetRequest();
+            twr.Enqueue(url, null, OnVerifyABInfoHotUpdateCompleteCB);
+            twr.StartRequest();
         }
 
         /// <summary>
@@ -788,9 +788,9 @@ namespace TResource
             TWebRequest twr = new TWebRequest();
             //URL = 基础URL + 当前版本号 + "/" + 热更资源信息文件名(ABInfo.json)
             var url = GetResHotUpdateURL(mResHotUpdateVersionCode, mResHotUpdateResourceVersionCode, ResourceConstData.ABInfoFileName);
-            mResHotUpdateRequest.resetRequest();
-            twr.enqueue(url, mHotUpdateVerifyABInfo.ABInfoFileSha256, OnABInfoHotUpdateCompleteCB, ResourceConstData.ABInfoFileName);
-            twr.startRequest();
+            mResHotUpdateRequest.ResetRequest();
+            twr.Enqueue(url, mHotUpdateVerifyABInfo.ABInfoFileSha256, OnABInfoHotUpdateCompleteCB, ResourceConstData.ABInfoFileName);
+            twr.StartRequest();
         }
 
         /// <summary>
@@ -949,10 +949,10 @@ namespace TResource
                     var needHotUpdateSingleABInfo = needHotUpdateSingleABInfoPairs.Value;
                     var abRealRelativePath = needHotUpdateSingleABInfo.GetABRelativePathWithMD5();
                     var finalurl = GetResHotUpdateURL(ServerVersionConfig.VersionCode, ServerVersionConfig.ResourceVersionCode, abRealRelativePath);
-                    mResHotUpdateRequest.enqueue(finalurl, needHotUpdateSingleABInfo.ABSha256,
+                    mResHotUpdateRequest.Enqueue(finalurl, needHotUpdateSingleABInfo.ABSha256,
                                                 OnSingleResHotUpdateCompleteCB, needHotUpdateSingleABInfo);
                 }
-                mResHotUpdateRequest.startRequest();
+                mResHotUpdateRequest.StartRequest();
             }
             else
             {
@@ -1136,7 +1136,7 @@ namespace TResource
             mHotUpdateABInfo = null;
             mABInfoFileStageFullPath = null;
             mABInfoFileStageFullPath = null;
-            mResHotUpdateRequest?.stopRequest();
+            mResHotUpdateRequest?.StopRequest();
             mResHotUpdateCompleteCB?.Invoke(HotUpdateResult.Complete);
             mResHotUpdateCompleteCB = null;
         }
@@ -1148,7 +1148,7 @@ namespace TResource
         {
             Debug.Log($"新版本号:{ServerVersionConfig.VersionCode}，资源版本号:{ServerVersionConfig.ResourceVersionCode}的资源热更失败！");
             HotUpdateStatus = HotUpdateStatus.ResourceHotUpdateFailed;
-            mResHotUpdateRequest?.stopRequest();
+            mResHotUpdateRequest?.StopRequest();
             mResHotUpdateCompleteCB?.Invoke(HotUpdateResult.Failed);
             mResHotUpdateCompleteCB = null;
         }

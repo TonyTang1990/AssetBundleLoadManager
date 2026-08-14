@@ -11,7 +11,7 @@ using System.Collections.Generic;
 /// <summary>
 /// 简单的可视化UI Log显示
 /// </summary>
-public class VisibleLogUtility : SingletonMonoBehaviourTemplate<VisibleLogUtility> {
+public class VisibleLogUtility : SingletonMonoTemplate<VisibleLogUtility> {
 
     public bool mVisibleLogSwitch = false;
 

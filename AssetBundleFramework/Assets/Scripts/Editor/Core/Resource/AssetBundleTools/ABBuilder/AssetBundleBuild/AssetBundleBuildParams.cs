@@ -115,8 +115,8 @@ namespace TResource
             BuildTarget = buildTarget;
         }
 
-        public AssetBundleBuildParams(AssetBundleBuildPurpose assetBundleBuildPurpose,
-                                      BuildTarget buildTarget, ABCompressOption compressOption = ABCompressOption.Uncompressed,
+        public AssetBundleBuildParams(AssetBundleBuildPurpose assetBundleBuildPurpose, BuildTarget buildTarget,
+                                      ABCompressOption compressOption = ABCompressOption.ChunkBasedCompressionLZ4,
                                       bool isForceRebuild = false, bool isAppendHash = false,
                                       bool isDisableWriteTypeTree = false, bool isIgnoreTypeTreeChanges = false,
                                       double versionCode = 0, int resourceVersionCode = 0)

@@ -179,7 +179,7 @@ namespace TResource
         /// <param name="completecallback">完成回调</param>
         /// <param name="customData">自定义数据</param>
         /// <param name="timeout">超时时间</param>
-        public void enqueue(string url, string fileSha256,
+        public void Enqueue(string url, string fileSha256,
                             Action<string, string, DownloadHandler, WebRequestTaskInfo.WebTaskRequestStatus, object> completecallback,
                             object customData = null, int timeout = 300)
         {
@@ -204,14 +204,14 @@ namespace TResource
         /// <summary>
         /// 开始请求资源任务
         /// </summary>
-        public void startRequest()
+        public void StartRequest()
         {
             if(TWRequestStatus != TWebRequestStatus.TW_In_Progress)
             {
                 if (mWebRequestTaskQueue.Count > 0)
                 {
                     mTotalWebRequestNumber = mWebRequestTaskQueue.Count;
-                    CoroutineManager.Singleton.startCoroutine(requestCoroutine());
+                    CoroutineManager.GetInstance().StartCoroutine(RequestCoroutine());
                 }
                 else
                 {
@@ -227,7 +227,7 @@ namespace TResource
         /// <summary>
         /// 停止资源请求任务
         /// </summary>
-        public void stopRequest()
+        public void StopRequest()
         {
             TWRequestStatus = TWebRequestStatus.TW_Stop;
         }
@@ -235,7 +235,7 @@ namespace TResource
         /// <summary>
         /// 继续资源请求任务
         /// </summary>
-        public void resumeRequest()
+        public void ResumeRequest()
         {
             TWRequestStatus = TWebRequestStatus.TW_In_Progress;
         }
@@ -243,7 +243,7 @@ namespace TResource
         /// <summary>
         /// 重置请求
         /// </summary>
-        public void resetRequest()
+        public void ResetRequest()
         {
             mWebRequestTaskQueue.Clear();
             TWRequestStatus = TWebRequestStatus.TW_Wait_Start;
@@ -255,7 +255,7 @@ namespace TResource
         /// 任务请求携程
         /// </summary>
         /// <returns></returns>
-        private IEnumerator requestCoroutine()
+        private IEnumerator RequestCoroutine()
         {
             TWRequestStatus = TWebRequestStatus.TW_In_Progress;
 

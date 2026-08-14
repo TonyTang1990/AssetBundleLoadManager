@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\DebugTools\TimeCounter.cs" />
     <Compile Include="Assets\Scripts\Core\Timer\Timer.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\HotUpdatePath.cs" />
+    <Compile Include="Assets\Scripts\Core\Singleton\ISingleton.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceInfo.cs" />
     <Compile Include="Assets\Scripts\Utilities\FileUtilities.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\AssetBundleLoader.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Assets\Scripts\Core\Pool\GameObjectPool.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_iContainer.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\AssetBundleModule.cs" />
+    <Compile Include="Assets\Scripts\Core\Singleton\SingletonManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\BundleAssetLoader.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\GameDataManager.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="Assets\Scripts\Utilities\Utilities.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabase\AssetDatabaseAsyncRequest.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AbstractResourceModule.cs" />
+    <Compile Include="Assets\Scripts\Core\Singleton\SingletonMonoTemplate.cs" />
     <Compile Include="Assets\Scripts\Core\UI\TImage.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\BundleLoader.cs" />
     <Compile Include="Assets\Scripts\Extension\StringExtension.cs" />
@@ -124,6 +127,7 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabase\EditorAssetInfoPath.cs" />
     <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfigModuleManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ResourceManager.cs" />
+    <Compile Include="Assets\Scripts\Core\Singleton\SingletonBase.cs" />
     <Compile Include="Assets\Scripts\Core\GameConfig\GameConfig.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\Loadable.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_language_cnBuffer.cs" />
@@ -148,7 +152,6 @@
     <Compile Include="Assets\Scripts\GameLogic\Model\Native\IOS\IOSNativeManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceConstData.cs" />
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonTemplate.cs" />
-    <Compile Include="Assets\Scripts\Core\Singleton\SingletonMonoBehaviourTemplate.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_i.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\LoaderManager.cs" />
     <Compile Include="Assets\Scripts\Core\Update\UpdateManager.cs" />

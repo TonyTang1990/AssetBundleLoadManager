@@ -142,8 +142,8 @@ MonoBehaviour:
     m_Hash: 9f924bcfc2e08d6a4c1c6aee82cd2917
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets\../BuildCache/ABBuild/Android/assets/res/scenes/assetbundleframeworkscene.android
-    m_Crc: 473893394
-    m_Hash: 3ccd73d3489d6aa721d69bf8a17ac6b7
+    m_Crc: 3692139516
+    m_Hash: 8e571163ea6b053f4e1c2b96ca5061f4
     m_Dependencies:
     - assets/res/rendertextures/videorendertexture.android
     - assets/res/textures/chaichainingwang.android
@@ -246,6 +246,6 @@ MonoBehaviour:
     - assets/res/sharematerials/ui/ui-default.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets\../BuildCache/ABBuild/Android/assets/res/assetbuildinfo/assetbuildinfoandroid.android
-    m_Crc: 3546062539
+    m_Crc: 2787716097
     m_Hash: e8ef296ff0ccf5588a2a6396a3c9637a
     m_Dependencies: []

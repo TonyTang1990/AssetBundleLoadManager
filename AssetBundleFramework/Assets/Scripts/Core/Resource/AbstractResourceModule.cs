@@ -204,6 +204,14 @@ namespace TResource
         }
 
         /// <summary>
+        /// 释放
+        /// </summary>
+        public virtual void Shutdown()
+        {
+            
+        }
+
+        /// <summary>
         /// 重新加载数据(针对热更流程后需要重新加载部分数据的情况)
         /// </summary>
         public virtual void ReloadData()

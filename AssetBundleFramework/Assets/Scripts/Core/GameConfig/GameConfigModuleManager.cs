@@ -4,8 +4,6 @@
  * Create Date:             2023/02/10
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -14,7 +12,7 @@ using UnityEngine;
 /// GameConfigModuleManager.cs
 /// 游戏配置信息管理模块单例类
 /// </summary>
-public class GameConfigModuleManager : SingletonTemplate<GameConfigModuleManager>
+public class GameConfigModuleManager : SingletonBase<GameConfigModuleManager>
 {
     /// <summary>
     /// 游戏配置信息文件名
@@ -66,7 +64,7 @@ public class GameConfigModuleManager : SingletonTemplate<GameConfigModuleManager
     /// 初始化游戏配置信息
     /// </summary>
     /// <returns></returns>
-    public void initGameConfigData()
+    public void InitGameConfigData()
     {
         InnerGameConfig = null;
         Debug.Log($"游戏配置信息文件:{GameConfigFilePath}!");
@@ -123,7 +121,7 @@ public class GameConfigModuleManager : SingletonTemplate<GameConfigModuleManager
     /// 存储最新游戏开发模式到配置信息
     /// </summary>
     /// <param name="developModel">游戏开发模式</param>
-    public void saveGameDevelopModel(GameDevelopMode developModel)
+    public void SaveGameDevelopModel(GameDevelopMode developModel)
     {
         Debug.Log($"存储最新游戏开发模式:{developModel}到包内!");
         Debug.Log($"GameConfigSaveFileFullPath:{GameConfigSaveFileFullPath}");

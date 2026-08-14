@@ -21,7 +21,17 @@ public static class FileUtilities
     /// <summary>
     /// 缓存的StringBuilder
     /// </summary>
-    private static StringBuilder mCacheStringBuilder = new StringBuilder();
+    private static StringBuilder CacheStringBuilder = new StringBuilder();
+    
+    /// <summary>
+    /// MD5生成算法
+    /// </summary>
+    private static MD5 MD5 = MD5.Create();
+
+    /// <summary>
+    /// Sha256生成算法
+    /// </summary>
+    private static SHA256 SHA256 = SHA256.Create();
 
     /// <summary>
     /// 获取指定文件的MD5值(文件不能存在返回null)
@@ -36,20 +46,17 @@ public static class FileUtilities
             Debug.LogError($"文件路径:{filePath}不存在，获取MD5失败，请检查代码!");
             return null;
         }
-        if(md5Hash == null)
-        {
-            md5Hash = MD5.Create();
-        }
-        mCacheStringBuilder.Clear();
+        md5Hash = md5Hash != null ? md5Hash : MD5;
+        CacheStringBuilder.Clear();
         using (var fileFS = File.OpenRead(filePath))
         {
             var md5value = md5Hash.ComputeHash(fileFS);
             foreach (var md5byte in md5value)
             {
-                mCacheStringBuilder.Append(md5byte.ToString("x2"));
+                CacheStringBuilder.Append(md5byte.ToString("x2"));
             }
         }
-        return mCacheStringBuilder.ToString();
+        return CacheStringBuilder.ToString();
     }
 
     /// <summary>
@@ -80,11 +87,8 @@ public static class FileUtilities
             Debug.LogError($"文件路径:{filePath}不存在，获取Sha256失败，请检查代码!");
             return null;
         }
-        if(sha256Hash == null)
-        {
-            sha256Hash = SHA256.Create();
-        }
-        mCacheStringBuilder.Clear();
+        sha256Hash = sha256Hash != null ? sha256Hash :SHA256;
+        CacheStringBuilder.Clear();
         using (var fileFS = File.OpenRead(filePath))
         {
             var hash = sha256Hash.ComputeHash(fileFS);
@@ -105,11 +109,8 @@ public static class FileUtilities
             Debug.LogError($"字节数组为空，获取Sha256失败，请检查代码!");
             return null;
         }
-        if(sha256Hash == null)
-        {
-            sha256Hash = SHA256.Create();
-        }
-        mCacheStringBuilder.Clear();
+        sha256Hash = sha256Hash != null ? sha256Hash :SHA256;
+        CacheStringBuilder.Clear();
         var hash = sha256Hash.ComputeHash(bytes);
         return ConvertSha256Bytes(hash);
     }

@@ -5,8 +5,6 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -18,7 +16,7 @@ namespace TResource
     /// ResourceModuleManager.cs
     /// 资源管理模块单例类
     /// </summary>
-    public class ResourceModuleManager : SingletonTemplate<ResourceModuleManager>
+    public class ResourceModuleManager : SingletonBase<ResourceModuleManager>
     {
         /// <summary>
         /// 资源加载模式
@@ -70,7 +68,24 @@ namespace TResource
         }
 
         /// <summary>
-        /// 初始化资源加载相关的
+        /// 初始化
+        /// </summary>
+        public override void Initialize()
+        {
+            base.Initialize();
+        }
+
+        /// <summary>
+        /// 释放
+        /// </summary>
+        public override void Shutdown()
+        {
+            base.Shutdown();
+            CurrentResourceModule?.Shutdown();
+        }
+
+        /// <summary>
+        /// 自定义初始化
         /// </summary>
         public void Init()
         {
