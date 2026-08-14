@@ -342,17 +342,6 @@ namespace TResource
         private void InitLocalABHotUpdateInfo()
         {
             Debug.Log("初始化本地资源热更列表!");
-            mLocalHotUpdateSingleABInfoMap.Clear();
-            // 包内ABInfo.json要读，
-            // 但以包外已当前数据实时数据为准
-            IniLocalHotUpdateABInfos();
-        }
-
-        /// <summary>
-        /// 初始化本地热更AB信息
-        /// </summary>
-        private void IniLocalHotUpdateABInfos()
-        {
             // 但是为了性能考虑，不采用实时算包外Sha256，直接信任包外ABInfo.json
             // 后续每次热更还会单独拉去最新的ABInfo.json，即使被串改，也会根据最新的ABInfo.json进行热更新覆盖
             mLocalHotUpdateSingleABInfoMap.Clear();
@@ -372,20 +361,9 @@ namespace TResource
                 var outterABInfoFileContent = File.ReadAllText(outterABInfoFileFullPath);
                 hotUpdateABInfo = JsonUtility.FromJson<HotUpdateABInfo>(outterABInfoFileContent);
             }
-            var hotUpdateSingleABInfoNum = hotUpdateABInfo.HotUpdateSingleABInfoList?.Count ?? 0;
-            Debug.Log($"AB信息文件数量:{hotUpdateSingleABInfoNum}加载成功!");
-            InitLocalABHotUpdateInfo(hotUpdateABInfo);
-        }
-
-        /// <summary>
-        /// 初始化本地热更信息
-        /// </summary>
-        /// <param name="assetBundleMD5Info"></param>
-        private void InitLocalABHotUpdateInfo(HotUpdateABInfo hotUpdateABInfo)
-        {
             if(hotUpdateABInfo == null)
             {
-                Debug.LogError($"初始化热更信息失败,hotUpdateABInfo为null!");
+                Debug.LogError($"初始化本地资源热更列表失败,hotUpdateABInfo为null!");
                 return;
             }
             foreach (var hotUpdateSingleABInfo in hotUpdateABInfo.HotUpdateSingleABInfoList)
@@ -397,6 +375,8 @@ namespace TResource
                 }
                 AddOrUpdateHotUpdateSimpleABInfo(hotUpdateSingleABInfo);
             }
+            var hotUpdateSingleABInfoNum = hotUpdateABInfo.HotUpdateSingleABInfoList?.Count ?? 0;
+            Debug.Log($"AB信息文件数量:{hotUpdateSingleABInfoNum}加载成功!");
         }
 
         /// <summary>

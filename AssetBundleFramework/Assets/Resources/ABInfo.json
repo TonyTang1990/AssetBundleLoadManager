@@ -1,244 +1,244 @@
 {
     "HotUpdateSingleABInfoList": [
         {
-            "ABRelativePath": "Android",
-            "ABMD5": "034739fc628faffa9024979c6d7d87d1",
-            "ABSize": 4785,
-            "ABSha256": "5d583b2dda00f5c842288e65fda0fe8aa70d9bde9d6d70f572621eef01367315"
+            "mABRelativePath": "Android",
+            "mABMD5": "034739fc628faffa9024979c6d7d87d1",
+            "mABSize": 4785,
+            "mABSha256": "5d583b2dda00f5c842288e65fda0fe8aa70d9bde9d6d70f572621eef01367315"
         },
         {
-            "ABRelativePath": "shaderlist.android",
-            "ABMD5": "65c5f8baff1b6a1155966b4d18ac625b",
-            "ABSize": 206167,
-            "ABSha256": "82bfdd6d9771d4b68f35919cd97b656151ddb004a030b5887008fba3c5ecc637"
+            "mABRelativePath": "shaderlist.android",
+            "mABMD5": "65c5f8baff1b6a1155966b4d18ac625b",
+            "mABSize": 206167,
+            "mABSha256": "82bfdd6d9771d4b68f35919cd97b656151ddb004a030b5887008fba3c5ecc637"
         },
         {
-            "ABRelativePath": "assets/res/actors/cube.android",
-            "ABMD5": "d7456253c83f22e20c320ca4c8f2e5b1",
-            "ABSize": 3164,
-            "ABSha256": "a44d30745c4d9bc5fe1bb24715da0ef018d0736cae79b137ded90d27364c055e"
+            "mABRelativePath": "assets/res/actors/cube.android",
+            "mABMD5": "d7456253c83f22e20c320ca4c8f2e5b1",
+            "mABSize": 3164,
+            "mABSha256": "a44d30745c4d9bc5fe1bb24715da0ef018d0736cae79b137ded90d27364c055e"
         },
         {
-            "ABRelativePath": "assets/res/actors/sphere.android",
-            "ABMD5": "a635beb64f9aed75b1b58c92ae22c25e",
-            "ABSize": 3151,
-            "ABSha256": "82c011915aff4394c8735befdd849b712e5606180fa13c358a53bbce4284f80c"
+            "mABRelativePath": "assets/res/actors/sphere.android",
+            "mABMD5": "a635beb64f9aed75b1b58c92ae22c25e",
+            "mABSize": 3151,
+            "mABSha256": "82c011915aff4394c8735befdd849b712e5606180fa13c358a53bbce4284f80c"
         },
         {
-            "ABRelativePath": "assets/res/actors/testbyfileandsubfolder.android",
-            "ABMD5": "46da40e89b22a04d3979ca1e3fc74c60",
-            "ABSize": 93338,
-            "ABSha256": "5f5b982647d2eff405f6c9ee5c4163ea99b34510d3619ef50226a9f89cc4cb0c"
+            "mABRelativePath": "assets/res/actors/testbyfileandsubfolder.android",
+            "mABMD5": "46da40e89b22a04d3979ca1e3fc74c60",
+            "mABSize": 93338,
+            "mABSha256": "5f5b982647d2eff405f6c9ee5c4163ea99b34510d3619ef50226a9f89cc4cb0c"
         },
         {
-            "ABRelativePath": "assets/res/actors/zombunny.android",
-            "ABMD5": "fb2e416bff36a8661292fc99fb89d0d2",
-            "ABSize": 1554903,
-            "ABSha256": "4f328e2ec1731a5c5e451841240fec0877756ec20f6cb6c674b7f6422327ac79"
+            "mABRelativePath": "assets/res/actors/zombunny.android",
+            "mABMD5": "fb2e416bff36a8661292fc99fb89d0d2",
+            "mABSize": 1554903,
+            "mABSha256": "4f328e2ec1731a5c5e451841240fec0877756ec20f6cb6c674b7f6422327ac79"
         },
         {
-            "ABRelativePath": "assets/res/assetbuildinfo/assetbuildinfoandroid.android",
-            "ABMD5": "db5255bf87bbe8c03453efda7b11af20",
-            "ABSize": 4271,
-            "ABSha256": "2396dbec55e3b4ef54458c7d41db680fb9c2f9c968f63894823b8b468a392f8c"
+            "mABRelativePath": "assets/res/assetbuildinfo/assetbuildinfoandroid.android",
+            "mABMD5": "db5255bf87bbe8c03453efda7b11af20",
+            "mABSize": 4271,
+            "mABSha256": "2396dbec55e3b4ef54458c7d41db680fb9c2f9c968f63894823b8b468a392f8c"
         },
         {
-            "ABRelativePath": "assets/res/prefabs/imagebuildin.android",
-            "ABMD5": "1701fe719192dd1b58efd261482d16a1",
-            "ABSize": 3739,
-            "ABSha256": "f62a603c20421f90da34a77e6c0b32db03332504bcabfe0036952b86582989a9"
+            "mABRelativePath": "assets/res/prefabs/imagebuildin.android",
+            "mABMD5": "1701fe719192dd1b58efd261482d16a1",
+            "mABSize": 3739,
+            "mABSha256": "f62a603c20421f90da34a77e6c0b32db03332504bcabfe0036952b86582989a9"
         },
         {
-            "ABRelativePath": "assets/res/prefabs/rawimagebuildin.android",
-            "ABMD5": "c6665acda68905fc5f30e3fbe9274cec",
-            "ABSize": 3500,
-            "ABSha256": "726b515625385836016dc9b21e519ad377ea7e1cbde664106f50172475b8b088"
+            "mABRelativePath": "assets/res/prefabs/rawimagebuildin.android",
+            "mABMD5": "c6665acda68905fc5f30e3fbe9274cec",
+            "mABSize": 3500,
+            "mABSha256": "726b515625385836016dc9b21e519ad377ea7e1cbde664106f50172475b8b088"
         },
         {
-            "ABRelativePath": "assets/res/prefabs/sfxtemplate.android",
-            "ABMD5": "e2dd5714e006596a766a421c22490b7e",
-            "ABSize": 2742,
-            "ABSha256": "f0bc2ba52bb3d8a348d8105e109652fed3a592815c734c4573bbdce5ae00ba89"
+            "mABRelativePath": "assets/res/prefabs/sfxtemplate.android",
+            "mABMD5": "e2dd5714e006596a766a421c22490b7e",
+            "mABSize": 2742,
+            "mABSha256": "f0bc2ba52bb3d8a348d8105e109652fed3a592815c734c4573bbdce5ae00ba89"
         },
         {
-            "ABRelativePath": "assets/res/prefabs/videoplayerroot.android",
-            "ABMD5": "0bd14f426a5237e174fe10a8435eb4ce",
-            "ABSize": 4817,
-            "ABSha256": "088af3273f2b130a5320ce7eaa4ccc310c63ea599c8fc805d3865bfa8d37ca7a"
+            "mABRelativePath": "assets/res/prefabs/videoplayerroot.android",
+            "mABMD5": "0bd14f426a5237e174fe10a8435eb4ce",
+            "mABSize": 4817,
+            "mABSha256": "088af3273f2b130a5320ce7eaa4ccc310c63ea599c8fc805d3865bfa8d37ca7a"
         },
         {
-            "ABRelativePath": "assets/res/rendertextures/videorendertexture.android",
-            "ABMD5": "5bf0cef94dac6ff23904beebd7818bb0",
-            "ABSize": 1731,
-            "ABSha256": "72469366a25d51b195cbca3a08f0cc8f6252427a85578b750898d6cfce144c37"
+            "mABRelativePath": "assets/res/rendertextures/videorendertexture.android",
+            "mABMD5": "5bf0cef94dac6ff23904beebd7818bb0",
+            "mABSize": 1731,
+            "mABSha256": "72469366a25d51b195cbca3a08f0cc8f6252427a85578b750898d6cfce144c37"
         },
         {
-            "ABRelativePath": "assets/res/scenes/assetbundleframeworkscene.android",
-            "ABMD5": "3e082f0203107d88727f07186191751a",
-            "ABSize": 781361,
-            "ABSha256": "c283f79bc29e0f768acf7d76b592a6658097938751646268ad81a438fa4b46ed"
+            "mABRelativePath": "assets/res/scenes/assetbundleframeworkscene.android",
+            "mABMD5": "3e082f0203107d88727f07186191751a",
+            "mABSize": 781361,
+            "mABSha256": "c283f79bc29e0f768acf7d76b592a6658097938751646268ad81a438fa4b46ed"
         },
         {
-            "ABRelativePath": "assets/res/scenes/testscene2.android",
-            "ABMD5": "737ac7e62d5f0d2ec5ccc15a71fea96b",
-            "ABSize": 47147,
-            "ABSha256": "b4aa224fac6e95ad8b48c4a7e9bea9b062e053b61357f57459517b7447e18fd0"
+            "mABRelativePath": "assets/res/scenes/testscene2.android",
+            "mABMD5": "737ac7e62d5f0d2ec5ccc15a71fea96b",
+            "mABSize": 47147,
+            "mABSha256": "b4aa224fac6e95ad8b48c4a7e9bea9b062e053b61357f57459517b7447e18fd0"
         },
         {
-            "ABRelativePath": "assets/res/scenes/testscene2settings.android",
-            "ABMD5": "b2605a50be2ee0724eb793f194d7e40f",
-            "ABSize": 1365,
-            "ABSha256": "a3ede8f3ad8ff46aa18b967d97010017e6e488135f4e2c69ce97d2d2d076f878"
+            "mABRelativePath": "assets/res/scenes/testscene2settings.android",
+            "mABMD5": "b2605a50be2ee0724eb793f194d7e40f",
+            "mABSize": 1365,
+            "mABSha256": "a3ede8f3ad8ff46aa18b967d97010017e6e488135f4e2c69ce97d2d2d076f878"
         },
         {
-            "ABRelativePath": "assets/res/scenes/testscene3.android",
-            "ABMD5": "461d6838bd9d8e149b8a44249d9c2796",
-            "ABSize": 47108,
-            "ABSha256": "3428d4d1be79ec956576886f51bf3751a0fedf97919f788858a6cd065ad8a5dc"
+            "mABRelativePath": "assets/res/scenes/testscene3.android",
+            "mABMD5": "461d6838bd9d8e149b8a44249d9c2796",
+            "mABSize": 47108,
+            "mABSha256": "3428d4d1be79ec956576886f51bf3751a0fedf97919f788858a6cd065ad8a5dc"
         },
         {
-            "ABRelativePath": "assets/res/scenes/testscene3settings.android",
-            "ABMD5": "ff374800e52e3a8eb34aac3465de71bc",
-            "ABSize": 1365,
-            "ABSha256": "ef6747df4c2373b93072bc6781dc454e5231e580224aacd51c4efd22fe10844e"
+            "mABRelativePath": "assets/res/scenes/testscene3settings.android",
+            "mABMD5": "ff374800e52e3a8eb34aac3465de71bc",
+            "mABSize": 1365,
+            "mABSha256": "ef6747df4c2373b93072bc6781dc454e5231e580224aacd51c4efd22fe10844e"
         },
         {
-            "ABRelativePath": "assets/res/sharematerials/sharebluematerial.android",
-            "ABMD5": "d305f557c1c509047096842ff6daa0a8",
-            "ABSize": 2624,
-            "ABSha256": "afd812b7428a27fd5c5528b0e989208c8f208094f8e1e000513d66620748da76"
+            "mABRelativePath": "assets/res/sharematerials/sharebluematerial.android",
+            "mABMD5": "d305f557c1c509047096842ff6daa0a8",
+            "mABSize": 2624,
+            "mABSha256": "afd812b7428a27fd5c5528b0e989208c8f208094f8e1e000513d66620748da76"
         },
         {
-            "ABRelativePath": "assets/res/sharematerials/sharematerial.android",
-            "ABMD5": "722f479d244a028f57cd1fb56b04a79f",
-            "ABSize": 2612,
-            "ABSha256": "d058c43b5469e5fb700a041ce5ad2e52d5b81e2a8bfac6e984b20c86b025b8f2"
+            "mABRelativePath": "assets/res/sharematerials/sharematerial.android",
+            "mABMD5": "722f479d244a028f57cd1fb56b04a79f",
+            "mABSize": 2612,
+            "mABSha256": "d058c43b5469e5fb700a041ce5ad2e52d5b81e2a8bfac6e984b20c86b025b8f2"
         },
         {
-            "ABRelativePath": "assets/res/sharematerials/shareredmaterial.android",
-            "ABMD5": "64da89c8b825bb163dfd8f1972f2fdb3",
-            "ABSize": 2621,
-            "ABSha256": "35c8c0f32824a86d160a5b4f3ad758fc3176b799676c3c63eb7c81a43bb34f68"
+            "mABRelativePath": "assets/res/sharematerials/shareredmaterial.android",
+            "mABMD5": "64da89c8b825bb163dfd8f1972f2fdb3",
+            "mABSize": 2621,
+            "mABSha256": "35c8c0f32824a86d160a5b4f3ad758fc3176b799676c3c63eb7c81a43bb34f68"
         },
         {
-            "ABRelativePath": "assets/res/textures/chaichaifengjing.android",
-            "ABMD5": "2abbc183b70a5d7b70c4acf94db88e76",
-            "ABSize": 4233164,
-            "ABSha256": "ab72d1de3fb546ea61d2758f8eecb0820311ced381b00e83019e132f2ead9413"
+            "mABRelativePath": "assets/res/textures/chaichaifengjing.android",
+            "mABMD5": "2abbc183b70a5d7b70c4acf94db88e76",
+            "mABSize": 4233164,
+            "mABSha256": "ab72d1de3fb546ea61d2758f8eecb0820311ced381b00e83019e132f2ead9413"
         },
         {
-            "ABRelativePath": "assets/res/textures/chaichainingwang.android",
-            "ABMD5": "c46afb882ac256ba8beb8b0e4fa383e5",
-            "ABSize": 3759011,
-            "ABSha256": "65e41fd24abd8ccc69e79be320493d8c563c28f28de55e456191f7e41e426774"
+            "mABRelativePath": "assets/res/textures/chaichainingwang.android",
+            "mABMD5": "c46afb882ac256ba8beb8b0e4fa383e5",
+            "mABSize": 3759011,
+            "mABSha256": "65e41fd24abd8ccc69e79be320493d8c563c28f28de55e456191f7e41e426774"
         },
         {
-            "ABRelativePath": "assets/res/textures/chaichaishenqingzhushi.android",
-            "ABMD5": "e6b929ed84c35b6b8cac6105da0a97f2",
-            "ABSize": 3327870,
-            "ABSha256": "f5fcc8a193e7dc7d4aa42f0ce3472f3f4ada2ee3df2689468848ba15fedff8cf"
+            "mABRelativePath": "assets/res/textures/chaichaishenqingzhushi.android",
+            "mABMD5": "e6b929ed84c35b6b8cac6105da0a97f2",
+            "mABSize": 3327870,
+            "mABSha256": "f5fcc8a193e7dc7d4aa42f0ce3472f3f4ada2ee3df2689468848ba15fedff8cf"
         },
         {
-            "ABRelativePath": "assets/res/videos/xuezhihua.android",
-            "ABMD5": "7fb80c6374b9ad537192104db03c09b7",
-            "ABSize": 3133344,
-            "ABSha256": "576c25b4ad3f6649f339ae092963b5f36fda3a9feafdf5d18cec236df4219a69"
+            "mABRelativePath": "assets/res/videos/xuezhihua.android",
+            "mABMD5": "7fb80c6374b9ad537192104db03c09b7",
+            "mABSize": 3133344,
+            "mABSha256": "576c25b4ad3f6649f339ae092963b5f36fda3a9feafdf5d18cec236df4219a69"
         },
         {
-            "ABRelativePath": "assets/res/windows/mainwindow.android",
-            "ABMD5": "a762cec61b1d9899352e484711a635c0",
-            "ABSize": 4159,
-            "ABSha256": "f2ef95d3406625a1e8b2fb0a63178615553dfed2e48923d427fa2900edb18f69"
+            "mABRelativePath": "assets/res/windows/mainwindow.android",
+            "mABMD5": "a762cec61b1d9899352e484711a635c0",
+            "mABSize": 4159,
+            "mABSha256": "f2ef95d3406625a1e8b2fb0a63178615553dfed2e48923d427fa2900edb18f69"
         },
         {
-            "ABRelativePath": "assets/res/atlas/shareatlas/tutorialatlas.android",
-            "ABMD5": "c0140d115777a099e9dc9df9ab78abae",
-            "ABSize": 6643634,
-            "ABSha256": "8be8fdd31f53e750b9f9eecc78cf7902009996a673cd7db8a903fd5154e9a8ea"
+            "mABRelativePath": "assets/res/atlas/shareatlas/tutorialatlas.android",
+            "mABMD5": "c0140d115777a099e9dc9df9ab78abae",
+            "mABSize": 6643634,
+            "mABSha256": "8be8fdd31f53e750b9f9eecc78cf7902009996a673cd7db8a903fd5154e9a8ea"
         },
         {
-            "ABRelativePath": "assets/res/audios/music/backgroundmusic.android",
-            "ABMD5": "792b18ff63d238a46be5661bb3a5c3d9",
-            "ABSize": 862634,
-            "ABSha256": "ff8662250bf99504cee442c3b20079b6a69e4f3a4edbe77b8441ea6f14bbe191"
+            "mABRelativePath": "assets/res/audios/music/backgroundmusic.android",
+            "mABMD5": "792b18ff63d238a46be5661bb3a5c3d9",
+            "mABSize": 862634,
+            "mABSha256": "ff8662250bf99504cee442c3b20079b6a69e4f3a4edbe77b8441ea6f14bbe191"
         },
         {
-            "ABRelativePath": "assets/res/audios/music/df_bg_music.android",
-            "ABMD5": "f0f2e128cd0f305619e32ca9044193ea",
-            "ABSize": 5432336,
-            "ABSha256": "407291a7db2084c685bc0d3fe35f838bd8e3ca4d2603c4dfbbb9322749582f8e"
+            "mABRelativePath": "assets/res/audios/music/df_bg_music.android",
+            "mABMD5": "f0f2e128cd0f305619e32ca9044193ea",
+            "mABSize": 5432336,
+            "mABSha256": "407291a7db2084c685bc0d3fe35f838bd8e3ca4d2603c4dfbbb9322749582f8e"
         },
         {
-            "ABRelativePath": "assets/res/scenes/sceneprefabs/testscene2prefab.android",
-            "ABMD5": "07067ae426ec41c117164d5c41c37c12",
-            "ABSize": 7200,
-            "ABSha256": "b6e834bde0471f3437ac987635c83baf25ad4c3183c880f5df01c60da1f1435e"
+            "mABRelativePath": "assets/res/scenes/sceneprefabs/testscene2prefab.android",
+            "mABMD5": "07067ae426ec41c117164d5c41c37c12",
+            "mABSize": 7200,
+            "mABSha256": "b6e834bde0471f3437ac987635c83baf25ad4c3183c880f5df01c60da1f1435e"
         },
         {
-            "ABRelativePath": "assets/res/scenes/sceneprefabs/testscene2prefab2.android",
-            "ABMD5": "b5671f17e296d9ea839b87b95b57a590",
-            "ABSize": 3242,
-            "ABSha256": "3f9281d8e52bb2c125f01fe151265cce9ee4b1c1d3792b9587872b033f9824fb"
+            "mABRelativePath": "assets/res/scenes/sceneprefabs/testscene2prefab2.android",
+            "mABMD5": "b5671f17e296d9ea839b87b95b57a590",
+            "mABSize": 3242,
+            "mABSha256": "3f9281d8e52bb2c125f01fe151265cce9ee4b1c1d3792b9587872b033f9824fb"
         },
         {
-            "ABRelativePath": "assets/res/scenes/sceneprefabs/testscene3prefab.android",
-            "ABMD5": "8eecc24edcc10385dfe7eac726776446",
-            "ABSize": 6875,
-            "ABSha256": "fd4699d6d5bf3c9a72886055788c91d9962b7ec8c2be88e26a4af71134c7f2f2"
+            "mABRelativePath": "assets/res/scenes/sceneprefabs/testscene3prefab.android",
+            "mABMD5": "8eecc24edcc10385dfe7eac726776446",
+            "mABSize": 6875,
+            "mABSha256": "fd4699d6d5bf3c9a72886055788c91d9962b7ec8c2be88e26a4af71134c7f2f2"
         },
         {
-            "ABRelativePath": "assets/res/sharematerials/ui/ui-default.android",
-            "ABMD5": "0c0e8620164cf1d97a9d34c065ed1a53",
-            "ABSize": 2614,
-            "ABSha256": "cb8ec610badc15b05f859dcb0e89be81af137d980e7563e85e376a0d41888ecf"
+            "mABRelativePath": "assets/res/sharematerials/ui/ui-default.android",
+            "mABMD5": "0c0e8620164cf1d97a9d34c065ed1a53",
+            "mABSize": 2614,
+            "mABSha256": "cb8ec610badc15b05f859dcb0e89be81af137d980e7563e85e376a0d41888ecf"
         },
         {
-            "ABRelativePath": "assets/res/atlas/shareatlas/spriteatlas/playerpreview.android",
-            "ABMD5": "614305485f82defb85180c16ae24460f",
-            "ABSize": 24169,
-            "ABSha256": "5b76046ad2f052ad941f847568f6f4bada69531368c531b13b42785e6c4f9043"
+            "mABRelativePath": "assets/res/atlas/shareatlas/spriteatlas/playerpreview.android",
+            "mABMD5": "614305485f82defb85180c16ae24460f",
+            "mABSize": 24169,
+            "mABSha256": "5b76046ad2f052ad941f847568f6f4bada69531368c531b13b42785e6c4f9043"
         },
         {
-            "ABRelativePath": "assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android",
-            "ABMD5": "c3c84ffae757301abed03753dd59ed00",
-            "ABSize": 20131,
-            "ABSha256": "59f4073432dd7365fa28056647e23164562b6213dd920629457bdb3671fc929e"
+            "mABRelativePath": "assets/res/atlas/shareatlas/spriteatlas/playerpreview2.android",
+            "mABMD5": "c3c84ffae757301abed03753dd59ed00",
+            "mABSize": 20131,
+            "mABSha256": "59f4073432dd7365fa28056647e23164562b6213dd920629457bdb3671fc929e"
         },
         {
-            "ABRelativePath": "assets/res/atlas/shareatlas/spriteatlas/playerpreview3.android",
-            "ABMD5": "167e9ba8b05ca654e10060d93117b4e3",
-            "ABSize": 20418,
-            "ABSha256": "f8786fde30cd2d14a025b14f07dc28c6f2d58d69d2431f2dffb76507f75ce1cd"
+            "mABRelativePath": "assets/res/atlas/shareatlas/spriteatlas/playerpreview3.android",
+            "mABMD5": "167e9ba8b05ca654e10060d93117b4e3",
+            "mABSize": 20418,
+            "mABSha256": "f8786fde30cd2d14a025b14f07dc28c6f2d58d69d2431f2dffb76507f75ce1cd"
         },
         {
-            "ABRelativePath": "assets/res/audios/sfx/sfx1/coins.android",
-            "ABMD5": "b044edfb5c82634ba760111eebeeb2f2",
-            "ABSize": 6874,
-            "ABSha256": "46bb87f7d2125b40cbc4a589b5a7a7bbdbd4e8023734995fe4270bf5e46a1e3e"
+            "mABRelativePath": "assets/res/audios/sfx/sfx1/coins.android",
+            "mABMD5": "b044edfb5c82634ba760111eebeeb2f2",
+            "mABSize": 6874,
+            "mABSha256": "46bb87f7d2125b40cbc4a589b5a7a7bbdbd4e8023734995fe4270bf5e46a1e3e"
         },
         {
-            "ABRelativePath": "assets/res/audios/sfx/sfx1/correct.android",
-            "ABMD5": "314003ce16dd5835a58d3f82707e0004",
-            "ABSize": 109287,
-            "ABSha256": "3286257d61b7eba7ed1019e65b3bff74f725d6caccfb409015746c8277a0d040"
+            "mABRelativePath": "assets/res/audios/sfx/sfx1/correct.android",
+            "mABMD5": "314003ce16dd5835a58d3f82707e0004",
+            "mABSize": 109287,
+            "mABSha256": "3286257d61b7eba7ed1019e65b3bff74f725d6caccfb409015746c8277a0d040"
         },
         {
-            "ABRelativePath": "assets/res/audios/sfx/sfx1/explosion.android",
-            "ABMD5": "84fd043b4eb0cce52b5d9ad811ca20e2",
-            "ABSize": 18766,
-            "ABSha256": "0a98dc6b06efa41a16f14fb41119ff63b7629c86c97ab6caf13fcde7ccb2fab6"
+            "mABRelativePath": "assets/res/audios/sfx/sfx1/explosion.android",
+            "mABMD5": "84fd043b4eb0cce52b5d9ad811ca20e2",
+            "mABSize": 18766,
+            "mABSha256": "0a98dc6b06efa41a16f14fb41119ff63b7629c86c97ab6caf13fcde7ccb2fab6"
         },
         {
-            "ABRelativePath": "assets/res/sharematerials/standlone/particle/default-particle.android",
-            "ABMD5": "68c139c1085af86bfda6ae980f548753",
-            "ABSize": 12367,
-            "ABSha256": "0b08b087f16c181a3c0d46d56e899c3ef5465df7c6e8b6cd9c881fc3e50bb574"
+            "mABRelativePath": "assets/res/sharematerials/standlone/particle/default-particle.android",
+            "mABMD5": "68c139c1085af86bfda6ae980f548753",
+            "mABSize": 12367,
+            "mABSha256": "0b08b087f16c181a3c0d46d56e899c3ef5465df7c6e8b6cd9c881fc3e50bb574"
         },
         {
-            "ABRelativePath": "assets/res/sharematerials/standlone/particle/default-particlesystem.android",
-            "ABMD5": "4b6377fbc345580d558217c87f3d0399",
-            "ABSize": 9020,
-            "ABSha256": "f80ac1b20d6ba30c88989fc602a4d30e2371d6520aa85f6a23bfb8c96bd691b7"
+            "mABRelativePath": "assets/res/sharematerials/standlone/particle/default-particlesystem.android",
+            "mABMD5": "4b6377fbc345580d558217c87f3d0399",
+            "mABSize": 9020,
+            "mABSha256": "f80ac1b20d6ba30c88989fc602a4d30e2371d6520aa85f6a23bfb8c96bd691b7"
         }
     ]
 }

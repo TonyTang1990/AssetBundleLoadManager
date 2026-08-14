@@ -5,6 +5,7 @@
  */
 
 using System;
+using UnityEngine;
 
 namespace TResource
 {
@@ -18,22 +19,51 @@ namespace TResource
         /// <summary>
         /// AssetBundle文件相对路径(含后缀)
         /// </summary>
-        public string ABRelativePath;
+        public string ABRelativePath => mABRelativePath;
+
+        /// <summary>
+        /// AssetBundle文件相对路径(含后缀)
+        /// </summary>
+        [SerializeField]
+        private string mABRelativePath;
 
         /// <summary>
         /// AssetBundle的MD5
         /// </summary>
-        public string ABMD5;
+        public string ABMD5 => mABMD5;
+
+        /// <summary>
+        /// AssetBundle的MD5
+        /// </summary>
+        [SerializeField]
+        private string mABMD5;
 
         /// <summary>
         /// AssetBundle文件大小
         /// </summary>
-        public long ABSize;
+        public long ABSize => mABSize;
+
+        /// <summary>
+        /// AssetBundle文件大小
+        /// </summary>
+        [SerializeField]
+        private long mABSize;
 
         /// <summary>
         /// AssetBundle的Sha256(用于热更新AB文件的完整性和正确性验证)
         /// </summary>
-        public string ABSha256;
+        public string ABSha256 => mABSha256;
+
+        /// <summary>
+        /// AssetBundle的Sha256(用于热更新AB文件的完整性和正确性验证)
+        /// </summary>
+        [SerializeField]
+        private string mABSha256;
+
+        /// <summary>
+        /// AssetBundle文件相对路径(带MD5)(含后缀)
+        /// </summary>
+        private string ABRelativePathWithMD5;
 
         /// <summary>
         /// 构造函数
@@ -46,10 +76,10 @@ namespace TResource
         public HotUpdateSingleABInfo(string abRelativePath, string abMD5,
                                     long abSize, string abSha256)
         {
-            ABRelativePath = abRelativePath;
-            ABMD5 = abMD5;
-            ABSize = abSize;
-            ABSha256 = abSha256;
+            mABRelativePath = abRelativePath;
+            mABMD5 = abMD5;
+            mABSize = abSize;
+            mABSha256 = abSha256;
         }
 
         /// <summary>
@@ -58,7 +88,12 @@ namespace TResource
         /// <returns></returns>
         public string GetABRelativePathWithMD5()
         {
-            return PathUtilities.GetFilePathWithMD5(ABRelativePath, ABMD5);
+            // 做缓存优化，避免每次同一个AB反复加载获取真实加载路径都重新计算问题
+            if(ABRelativePathWithMD5 == null)
+            {
+                ABRelativePathWithMD5 = PathUtilities.GetFilePathWithMD5(mABRelativePath, mABMD5);
+            }
+            return ABRelativePathWithMD5;
         }
     }
 }
