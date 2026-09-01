@@ -142,8 +142,8 @@ MonoBehaviour:
     m_Hash: 9f924bcfc2e08d6a4c1c6aee82cd2917
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets\../BuildCache/ABBuild/Android/assets/res/scenes/assetbundleframeworkscene.android
-    m_Crc: 338511854
-    m_Hash: f7f1b2256f0b57f3b2f17ce660f5a6e8
+    m_Crc: 2769545030
+    m_Hash: db2134d2e106df6c995f3a20db64e50c
     m_Dependencies:
     - assets/res/rendertextures/videorendertexture.android
     - assets/res/textures/chaichainingwang.android
@@ -166,8 +166,8 @@ MonoBehaviour:
     - assets/res/sharematerials/sharematerial.android
     - shaderlist.android
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets\../BuildCache/ABBuild/Android/assets/res/scenes/testscene2.android
-    m_Crc: 4277450996
-    m_Hash: dd43d29a282d1ed68864d05b9c67a0bd
+    m_Crc: 2111444393
+    m_Hash: db31624e59039eaafea4a008c98b0deb
     m_Dependencies:
     - assets/res/scenes/testscene2settings.android
     - assets/res/sharematerials/sharematerial.android
@@ -238,8 +238,8 @@ MonoBehaviour:
     m_Hash: 277a82e3a0849937e7bf8ff1973321e5
     m_Dependencies: []
   - m_FileName: G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/AssetBundleFramework/Assets\../BuildCache/ABBuild/Android/assets/res/windows/mainwindow.android
-    m_Crc: 1250077351
-    m_Hash: 579debc106ad24d7930ca5833283d859
+    m_Crc: 2902556636
+    m_Hash: 7b28bdf48d5e833d11cfafd427ce15a1
     m_Dependencies:
     - assets/res/atlas/shareatlas/spriteatlas/playerpreview.android
     - assets/res/atlas/shareatlas/tutorialatlas.android

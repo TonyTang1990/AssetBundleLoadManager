@@ -1,9 +1,0 @@
-version: 2
-importPivots: 1
-tpsheetFileNames:
-- Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet.tpsheet
-textureFileNames:
-- Assets/Res/atlas/shareatlas/TutorialAtlas/TutorialCellSpriteSheet.png
-normalmapFileNames:
-- 
-enableDebugOutput: 0

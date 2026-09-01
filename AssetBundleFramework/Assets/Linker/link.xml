@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="UnityEngine.AnimationModule">
+    <type fullname="UnityEngine.Animation" preserve="all" />
+    <type fullname="UnityEngine.AnimationClip" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.CoreModule">
+    <type fullname="UnityEngine.SkinnedMeshRenderer" preserve="all" />
+  </assembly>
+</linker>

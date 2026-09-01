@@ -19,9 +19,9 @@ MonoBehaviour:
       CompanyName: TonyTang
       ProductName: AssetBundleFramework
       KeystoreFileRelativePath: Keystore/AssetBundleFrameworkKeyStore.keystore
-      KeystorePassword: Th13568582998
+      KeystorePassword: Th8226061
       KeyAlias: assetbundleframework
-      KeyAliasPassword: Th13568582998
+      KeyAliasPassword: Th8226061
       IconSet:
         LegacyIcons:
         - {fileID: 2800000, guid: 326c7ea3fb637cd49a3cc43ad399c71f, type: 3}

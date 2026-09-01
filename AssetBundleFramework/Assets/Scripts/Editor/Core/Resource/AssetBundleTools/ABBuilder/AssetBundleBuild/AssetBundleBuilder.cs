@@ -181,8 +181,8 @@ namespace TResource
 				// 删除平台总目录
 				if (Directory.Exists(BuildTargetABTempFolderPath))
 				{
-					Directory.Delete(BuildTargetABTempFolderPath, true);
 					Log($"删除平台总目录：{BuildTargetABTempFolderPath}");
+					Directory.Delete(BuildTargetABTempFolderPath, true);
 				}
 			}
 

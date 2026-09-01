@@ -2,9 +2,9 @@
     "HotUpdateSingleABInfoList": [
         {
             "mABRelativePath": "Android",
-            "mABMD5": "9169713d4feb50f11fb4e980693fa8e2",
-            "mABSize": 4846,
-            "mABSha256": "037c253bdb7f7b83f21c94a2db07c5b2d1d17312b4181d23335770deee1cc242"
+            "mABMD5": "12f72c2df69564f93d24647e336219db",
+            "mABSize": 4847,
+            "mABSha256": "6a11b05e1415ca9d7d91de56bcb9cc65b0e87a00bc585d3aa8e0d6ea04932cce"
         },
         {
             "mABRelativePath": "shaderlist.android",
@@ -74,15 +74,15 @@
         },
         {
             "mABRelativePath": "assets/res/scenes/assetbundleframeworkscene.android",
-            "mABMD5": "0ca101c2e90c29633baf328299635086",
-            "mABSize": 781241,
-            "mABSha256": "8d9291e74b88436a2b0ff90014c941c09b8ffd1f8aba1e5132cc7d706a36cd6d"
+            "mABMD5": "c92fbec8d2a25d0fd11724c6258dd616",
+            "mABSize": 780898,
+            "mABSha256": "4a9e8713308b043cdcc4a385903ddeaccbcd72799d8641eaf71a6ce17ec4f27a"
         },
         {
             "mABRelativePath": "assets/res/scenes/testscene2.android",
-            "mABMD5": "737ac7e62d5f0d2ec5ccc15a71fea96b",
+            "mABMD5": "03b431c49924b3fe173a3478996180b3",
             "mABSize": 47147,
-            "mABSha256": "b4aa224fac6e95ad8b48c4a7e9bea9b062e053b61357f57459517b7447e18fd0"
+            "mABSha256": "699d5f3ad1206a19721d9b588199171b03fdd2b1de522fe31ef0a4c4881ac8ea"
         },
         {
             "mABRelativePath": "assets/res/scenes/testscene2settings.android",
@@ -146,9 +146,9 @@
         },
         {
             "mABRelativePath": "assets/res/windows/mainwindow.android",
-            "mABMD5": "a762cec61b1d9899352e484711a635c0",
+            "mABMD5": "09e09a881f9f1c5e754ef4ff72d5b317",
             "mABSize": 4159,
-            "mABSha256": "f2ef95d3406625a1e8b2fb0a63178615553dfed2e48923d427fa2900edb18f69"
+            "mABSha256": "c27b822e756930e1b299df0edd3a9ede718e661168b00772f02459714001554f"
         },
         {
             "mABRelativePath": "assets/res/atlas/shareatlas/tongyong256px.android",

@@ -178,6 +178,9 @@ public abstract class PlatformBuildPipeline
         NamedBuildTarget nameBuildTarget = NamedBuildTarget.FromBuildTargetGroup(mBuildTargetGroup);
         PlayerSettings.SetIl2CppCodeGeneration(nameBuildTarget, Il2CppCodeGeneration.OptimizeSpeed);
         Debug.Log($"打包设置IL2CPP代码生成方式为:{Il2CppCodeGeneration.OptimizeSpeed}");
+        // 开启stripEngineCode
+        PlayerSettings.stripEngineCode = true;
+        Debug.Log("打包设置stripEngineCode为:true");
         // 托管代码裁剪等级
         PlayerSettings.SetManagedStrippingLevel(mBuildTargetGroup, ManagedStrippingLevel.Medium);
         Debug.Log($"打包设置托管代码裁剪等级为:{ManagedStrippingLevel.Medium}");
