@@ -137,7 +137,7 @@ namespace TResource
         /// </summary>
         public void PrintAllParams()
         {
-            Debug.Log($"打包参数:");
+            Debug.Log($"AssetBundle打包参数:");
             Debug.Log($"AssetBundleBuildParams:{AssetBundleBuildPurpose}");
             Debug.Log($"BuildTarget:{BuildTarget}");
             Debug.Log($"BuildTargetOutputFolder:{BuildTargetOutputFolder}");

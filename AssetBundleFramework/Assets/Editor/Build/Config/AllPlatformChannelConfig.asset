@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38ed1c7776622914184e6a6d8342dd45, type: 3}
+  m_Name: AllPlatformChannelConfig
+  m_EditorClassIdentifier: 
+  AndroidPlatformChannelConfig:
+    ChannelCofigs:
+    - Channel: 0
+      ApplicationIdentifier: com.TonyTang.AssetBundleFramework
+      CompanyName: TonyTang
+      ProductName: AssetBundleFramework
+      KeystoreFileRelativePath: Keystore/AssetBundleFrameworkKeyStore.keystore
+      KeystorePassword: Th13568582998
+      KeyAlias: assetbundleframework
+      KeyAliasPassword: Th13568582998
+      IconSet:
+        LegacyIcons:
+        - {fileID: 2800000, guid: 326c7ea3fb637cd49a3cc43ad399c71f, type: 3}
+        - {fileID: 2800000, guid: 973f71510887d954ba25b3b36d17faa3, type: 3}
+        - {fileID: 2800000, guid: 8e1e46f59191cbf49a2b6dad596471ba, type: 3}
+        - {fileID: 2800000, guid: 72cd37c9eda54954986d7eed226045c9, type: 3}
+        - {fileID: 2800000, guid: 76ce09a5b03e18641a1ce07a2b6b222d, type: 3}
+        - {fileID: 2800000, guid: bd59b4951a958df43b5e0de90286501f, type: 3}
+        AdaptiveBackgroundIcons:
+        - {fileID: 2800000, guid: 01c89995adf000e4d9b147c283ff9c62, type: 3}
+        - {fileID: 2800000, guid: 17e5023428555fe4c9842cff9b1c5464, type: 3}
+        - {fileID: 2800000, guid: 1a6cc2af76dc7c04692c2c9bb25b1f78, type: 3}
+        - {fileID: 2800000, guid: 17e9c601d51614e43962611d599d7339, type: 3}
+        - {fileID: 2800000, guid: e6a8ba8da54ed2d4898149f06c91b221, type: 3}
+        - {fileID: 2800000, guid: 33af1ccab3c9e6745a1559890ec42605, type: 3}
+        AdaptiveForegroundIcons:
+        - {fileID: 2800000, guid: ca78986ab30d1e5439e37ffb60e61b18, type: 3}
+        - {fileID: 2800000, guid: 940299f30796ef345b09b41dbace7c11, type: 3}
+        - {fileID: 2800000, guid: 762c48c6d66be1246b7f7d0550209e39, type: 3}
+        - {fileID: 2800000, guid: e0ccc83ceb8c3c54a95c81c5ecb33e4c, type: 3}
+        - {fileID: 2800000, guid: 467ed012a787d3947bbefd213968c9fb, type: 3}
+        - {fileID: 2800000, guid: 6de7f2c4d33ea784a9f167bb64bdb92a, type: 3}
+        RoundIcons:
+        - {fileID: 2800000, guid: efe81b2ea966c7342b4fc456c1a9bcba, type: 3}
+        - {fileID: 2800000, guid: d6c12f3ff2b5d354d9b3ca03c1977245, type: 3}
+        - {fileID: 2800000, guid: 5d832def8244afb4ab9189f0f11ec758, type: 3}
+        - {fileID: 2800000, guid: 598c75141e49b9042a2144cabd6d507d, type: 3}
+        - {fileID: 2800000, guid: d7b21dfe63a06074880b149986fadfc3, type: 3}
+        - {fileID: 2800000, guid: 03f1b46b75c6479499245128955c93bd, type: 3}
+  IOSPlatformChannelConfig:
+    ChannelCofigs:
+    - Channel: 7
+      ApplicationIdentifier: com.TonyTang.UnityNativeFramework
+      CompanyName: TonyTang
+      ProductName: UnityNativeFramework
+  WindowsPlatformChannelConfig:
+    ChannelCofigs:
+    - Channel: 8
+      ApplicationIdentifier: com.TonyTang.UnityNativeFramework
+      CompanyName: TonyTang
+      ProductName: UnityNativeFramework

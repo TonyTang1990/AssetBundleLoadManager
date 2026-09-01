@@ -11,3 +11,5 @@ AssetBundleFramework/obj/
 AssetBundleFramework/Logs/
 # 过滤MemoryCaptures目录
 AssetBundleFramework/MemoryCaptures/
+# 过滤打包APK生成目录
+AssetBundleFramework/Build/

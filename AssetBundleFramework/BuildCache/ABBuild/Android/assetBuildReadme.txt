@@ -1,5 +1,5 @@
 ﻿构建平台：Android
-构建时间：2026/8/14 13:39:55
+构建时间：2026/9/1 17:04:49
 
 --Asset AB打包信息--
 AssetBundleName:assets/res/actors/cube.android AssetBundleVariant: BuildCompression:Lz4HC

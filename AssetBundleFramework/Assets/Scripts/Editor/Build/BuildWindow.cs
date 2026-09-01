@@ -1,349 +1,305 @@
-﻿/*
+/*
  * Description:             BuildWindow.cs
  * Author:                  TONYTANG
- * Create Date:             2019/12/14
+ * Create Date:             2026/08/27
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// BuildWindow.cs
-/// 打包工具窗口
+/// 打包窗口配置数据。
+/// 使用ScriptableSingleton将配置序列化到ProjectSettings中，确保关闭并再次打开窗口时保留上次参数。
 /// </summary>
-public class BuildWindow : BaseEditorWindow
+[FilePath("ProjectSettings/BuildWindowConfig.asset", FilePathAttribute.Location.ProjectFolder)]
+internal sealed class BuildWindowConfig : ScriptableSingleton<BuildWindowConfig>
 {
-    #region 存储相关Key
     /// <summary>
-    /// 打包版本号Key
+    /// 打包平台。
     /// </summary>
-    private const string BuildVersionKey = "BuildVersionKey";
+    public BuildTarget BuildTarget = BuildTarget.Android;
 
     /// <summary>
-    /// 打包资源版本号Key
+    /// 打包渠道。
     /// </summary>
-    private const string BuildResourceVersionKey = "BuildResourceVersionKey";
+    public Channel Channel = Channel.None;
 
     /// <summary>
-    /// 打包平台Key
+    /// 是否生成开发版本。
     /// </summary>
-    private const string BuildTargetKey = "BuildTargetKey";
+    public bool IsDevelopment;
 
     /// <summary>
-    /// 打包开发版本Key
+    /// 应用版本号。
     /// </summary>
-    private const string BuildDevelopmentKey = "BuildDevelopmentKey";
+    public double VersionCode = 1.00d;
 
     /// <summary>
-    /// 开发模式Key
+    /// 资源版本号。
     /// </summary>
-    private const string DevelopModeKey = "DevelopModeKey";
+    public int ResourceVersionCode = 1;
 
     /// <summary>
-    /// 打包输出路径存储Key
+    /// 是否完全重新打包AssetBundle。
     /// </summary>
-    private const string BuildOutputPathKey = "BuildOutputPathKey";
-    #endregion
+    public bool ForceRebuildAB = true;
 
     /// <summary>
-    /// 项目路径Hash值(用于使得PlayerPrefs存储的Key值唯一)
+    /// 将当前配置保存到ProjectSettings目录。
     /// </summary>
-    private int mProjectPathHashValue;
-
-    /// <summary>
-    /// 打包版本号
-    /// </summary>
-    public string BuildVersion
+    public void SaveConfig()
     {
-        get;
-        private set;
+        Save(true);
     }
+}
+
+/// <summary>
+/// 本地打包编辑器窗口。
+/// 负责编辑、校验、确认打包参数，并调用BuildTool执行本地打包。
+/// </summary>
+/// <remarks>
+/// 通过菜单Build/打包窗口打开。
+/// </remarks>
+public sealed class BuildWindow : EditorWindow
+{
+    /// <summary>
+    /// 窗口最小宽度，确保属性名称和中文说明能够完整显示。
+    /// </summary>
+    private const float MinimumWindowWidth = 820f;
 
     /// <summary>
-    /// 打包资源版本号
+    /// 窗口最小高度。
     /// </summary>
-    public int BuildResourceVersion
-    {
-        get;
-        private set;
-    }
+    private const float MinimumWindowHeight = 460f;
 
     /// <summary>
-    /// 打包平台
+    /// 参数标签宽度，给属性名称和中文说明预留足够空间。
     /// </summary>
-    public BuildTarget BuildTarget
-    {
-        get;
-        private set;
-    }
+    private const float ParameterLabelWidth = 380f;
 
     /// <summary>
-    /// 是否是开发版本
+    /// 当前窗口的滚动位置。
     /// </summary>
-    public bool IsDevelopment
-    {
-        get;
-        set;
-    }
+    private Vector2 mScrollPosition;
 
     /// <summary>
-    /// 游戏开发模式
+    /// 当前是否正在执行打包，用于防止重复点击打包按钮。
     /// </summary>
-    public GameDevelopMode DevelopMode
-    {
-        get;
-        set;
-    }
+    private bool mIsBuilding;
 
     /// <summary>
-    /// 打包输出路径
+    /// 持久化的打包窗口配置。
     /// </summary>
-    public string BuildOutputPath
-    {
-        get;
-        private set;
-    }
+    private BuildWindowConfig Config => BuildWindowConfig.instance;
 
     /// <summary>
-    /// 整体UI滚动位置
+    /// 从Unity菜单打开打包窗口。
     /// </summary>
-    private Vector2 mWindowUiScrollPos;
-
-    [MenuItem("Tools/Build/打包工具", false, 1)]
-    public static void buildWindow()
+    [MenuItem("Build/打包窗口")]
+    public static void OpenWindow()
     {
-        var buildwindow = EditorWindow.GetWindow<BuildWindow>(false, "打包工具");
-        buildwindow.Show();
-    }
+        var window = GetWindow<BuildWindow>("打包窗口");
+        window.minSize = new Vector2(MinimumWindowWidth, MinimumWindowHeight);
 
-    [MenuItem("Tools/DevelopMode/切换本地开发模式", false, 1)]
-    public static void changeToInnerDevelopMode()
-    {
-        BuildTool.ModifyInnerGameConfig(GameDevelopMode.InnerDevelop);
-    }
-
-
-    [MenuItem("Tools/DevelopMode/切换发布模式", false, 2)]
-    public static void changeToReleaseMode()
-    {
-        BuildTool.ModifyInnerGameConfig(GameDevelopMode.Release);
-    }
-
-    /// <summary>
-    /// 初始化窗口数据
-    /// </summary>
-    protected override void InitData()
-    {
-        Debug.Log("BuildWindow:InitData()");
-        mProjectPathHashValue = Application.dataPath.GetHashCode();
-        BuildVersion = PlayerPrefs.GetString(GetProjectBuildVersionKey());
-        BuildResourceVersion = PlayerPrefs.GetInt(GetProjectBuildResourceVersionKey());
-        BuildTarget = (BuildTarget)PlayerPrefs.GetInt(GetProjectBuildTargetKey());
-        IsDevelopment = PlayerPrefs.GetInt(GetProjectBuildDevelopmentKey()) != 0;
-        DevelopMode = (GameDevelopMode)PlayerPrefs.GetInt(GetProjectBuildDevelopModeKey(), (int)GameDevelopMode.Release);
-        BuildOutputPath = PlayerPrefs.GetString(GetProjectBuildOutputPathKey());
-        Debug.Log($"打包窗口读取配置:");
-        Debug.Log($"版本号设置:{BuildVersion}");
-        Debug.Log($"资源版本号设置:{BuildResourceVersion}");
-        Debug.Log($"打包平台:{Enum.GetName(typeof(BuildTarget), BuildTarget)}");
-        Debug.Log($"打包开发版本:{IsDevelopment}");
-        Debug.Log($"游戏开发模式:{DevelopMode}");
-        Debug.Log($"打包输出路径:{BuildOutputPath}");
-        VersionConfigModuleManager.Singleton.InitVerisonConfigData();
-        Debug.Log($"包内版本号:{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode}");
-        Debug.Log($"包内资源版本号:{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}");
-    }
-
-    /// <summary>
-    /// 保存数据
-    /// </summary>
-    protected override void SaveData()
-    {
-        Debug.Log("BuildWindow:SaveData()");
-        PlayerPrefs.SetString(GetProjectBuildVersionKey(), BuildVersion);
-        PlayerPrefs.SetInt(GetProjectBuildResourceVersionKey(), BuildResourceVersion);
-        PlayerPrefs.SetInt(GetProjectBuildTargetKey(), (int)BuildTarget);
-        PlayerPrefs.SetInt(GetProjectBuildDevelopmentKey(), IsDevelopment ? 1 : 0);
-        PlayerPrefs.SetInt(GetProjectBuildDevelopModeKey(), (int)DevelopMode);
-        PlayerPrefs.SetString(GetProjectBuildOutputPathKey(), BuildOutputPath);
-        Debug.Log("打包窗口保存配置:");
-        Debug.Log("版本号设置:" + BuildVersion);
-        Debug.Log("资源版本号设置:" + BuildResourceVersion);
-        Debug.Log("打包平台:" + Enum.GetName(typeof(BuildTarget), BuildTarget));
-        Debug.Log($"打包开发版本:{IsDevelopment}");
-        Debug.Log($"游戏开发模式:{DevelopMode}");
-        Debug.Log("打包输出路径:" + BuildOutputPath);
-    }
-
-    /// <summary>
-    /// 获取项目打包版本Key
-    /// </summary>
-    /// <returns></returns>
-    private string GetProjectBuildVersionKey()
-    {
-        return $"{mProjectPathHashValue}_{BuildVersionKey}";
-    }
-
-    /// <summary>
-    /// 获取项目打包资源版本Key
-    /// </summary>
-    /// <returns></returns>
-    private string GetProjectBuildResourceVersionKey()
-    {
-        return $"{mProjectPathHashValue}_{BuildResourceVersionKey}";
-    }
-
-    /// <summary>
-    /// 获取项目打包平台Key
-    /// </summary>
-    /// <returns></returns>
-    private string GetProjectBuildTargetKey()
-    {
-        return $"{mProjectPathHashValue}_{BuildTargetKey}";
-    }
-
-    /// <summary>
-    /// 获取项目打包开发版本Key
-    /// </summary>
-    /// <returns></returns>
-    private string GetProjectBuildDevelopmentKey()
-    {
-        return $"{mProjectPathHashValue}_{BuildDevelopmentKey}";
-    }
-
-    /// <summary>
-    /// 获取项目打包开发模式Key
-    /// </summary>
-    /// <returns></returns>
-    private string GetProjectBuildDevelopModeKey()
-    {
-        return $"{mProjectPathHashValue}_{DevelopModeKey}";
-    }
-
-    /// <summary>
-    /// 获取项目打包输出目录Key
-    /// </summary>
-    /// <returns></returns>
-    private string GetProjectBuildOutputPathKey()
-    {
-        return $"{mProjectPathHashValue}_{BuildOutputPathKey}";
-    }
-
-    public void OnGUI()
-    {
-        mWindowUiScrollPos = GUILayout.BeginScrollView(mWindowUiScrollPos);
-        GUILayout.BeginVertical();
-        DisplayInnerVersionAndResourceVersionInfoArea();
-        GUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("打包版本号:", GUILayout.Width(70.0f));
-        EditorGUI.BeginChangeCheck();
-        BuildVersion = EditorGUILayout.TextField(BuildVersion, GUILayout.Width(50.0f));
-        if(EditorGUI.EndChangeCheck())
+        // 已存在的窗口可能仍使用旧尺寸，打开时主动扩宽以保证参数说明完整显示。
+        if (window.position.width < MinimumWindowWidth)
         {
-            double buildVersion = 0;
-            if (!double.TryParse(BuildVersion, out buildVersion))
+            var windowPosition = window.position;
+            windowPosition.width = MinimumWindowWidth;
+            window.position = windowPosition;
+        }
+
+        window.Show();
+    }
+
+    /// <summary>
+    /// 窗口关闭或Unity重载脚本前保存当前配置。
+    /// </summary>
+    private void OnDisable()
+    {
+        Config.SaveConfig();
+    }
+
+    /// <summary>
+    /// 绘制打包窗口界面。
+    /// </summary>
+    private void OnGUI()
+    {
+        mScrollPosition = EditorGUILayout.BeginScrollView(mScrollPosition);
+        EditorGUILayout.Space(8f);
+        EditorGUILayout.LabelField("打包参数", EditorStyles.boldLabel);
+        EditorGUILayout.HelpBox("请配置本地打包参数。字段名称后括号内为参数说明。", MessageType.Info);
+        EditorGUILayout.Space(4f);
+
+        using (new EditorGUI.DisabledScope(mIsBuilding))
+        {
+            // 修改任意参数后立即保存，即使校验失败或Unity异常退出也尽量保留最新输入。
+            EditorGUI.BeginChangeCheck();
+            DrawBuildParameters();
+            if (EditorGUI.EndChangeCheck())
             {
-                Debug.Log($"不支持的版本格式:{BuildVersion},请输入有效版本号值!");
-                BuildVersion = "1.0";
+                Config.SaveConfig();
             }
-            else
+
+            EditorGUILayout.Space(12f);
+            if (GUILayout.Button(mIsBuilding ? "正在打包..." : "开始打包", GUILayout.Height(36f)))
             {
-                BuildVersion = buildVersion.ToString("N1", CultureInfo.CreateSpecificCulture("en-US"));
+                StartBuild();
             }
         }
-        BuildVersion = string.IsNullOrEmpty(BuildVersion) ? "1.0" : BuildVersion;
-        EditorGUILayout.LabelField("打包资源版本号:", GUILayout.Width(90.0f));
-        BuildResourceVersion = EditorGUILayout.IntField(BuildResourceVersion, GUILayout.Width(50.0f));
-        BuildResourceVersion = BuildResourceVersion > 0 ? BuildResourceVersion : 1;
-        EditorGUILayout.LabelField("打包平台:", GUILayout.Width(60.0f));
-        BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(BuildTarget, GUILayout.Width(100.0f));
-        EditorGUILayout.LabelField($"开发版本:", GUILayout.Width(60f), GUILayout.Height(20f));
-        IsDevelopment = EditorGUILayout.Toggle(IsDevelopment, GUILayout.Width(20f));
-        EditorGUILayout.LabelField($"开发模式:", GUILayout.Width(60f), GUILayout.Height(20f));
-        DevelopMode = (GameDevelopMode)EditorGUILayout.EnumPopup(DevelopMode, GUILayout.Width(100f));
-        if (GUILayout.Button("修改包内版本信息", GUILayout.Width(120f), GUILayout.Height(20f)))
-        {
-            DoModifyInnerVersionConfig();
-        }
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("打包输出目录:", GUILayout.Width(80.0f));
-        BuildOutputPath = EditorGUILayout.TextField("", BuildOutputPath);
-        if (GUILayout.Button("选择打包输出目录", GUILayout.Width(150.0f)))
-        {
-            BuildOutputPath = EditorUtility.OpenFolderPanel("打包输出目录", "请选择打包输出目录!", "");
-        }
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("打包", GUILayout.ExpandWidth(true)))
-        {
-            DoBuild();
-        }
-        GUILayout.EndHorizontal();
-        GUILayout.EndVertical();
-        GUILayout.EndScrollView();
+
+        EditorGUILayout.EndScrollView();
     }
 
     /// <summary>
-    /// 显示包内版本和资源版本信息区域
+    /// 绘制BuildParameters中的全部属性配置项。
     /// </summary>
-    private void DisplayInnerVersionAndResourceVersionInfoArea()
+    private void DrawBuildParameters()
     {
-        GUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("包内版本号:", GUILayout.Width(100f));
-        GUILayout.Label($"{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.VersionCode}", "box", GUILayout.Width(100f));
-        EditorGUILayout.LabelField("包内资源版本号:", GUILayout.Width(100f));
-        GUILayout.Label($"{VersionConfigModuleManager.Singleton.InnerGameVersionConfig.ResourceVersionCode}", "box", GUILayout.Width(100f));
-        GUILayout.EndHorizontal();
+        // 临时扩大标签区域，绘制完成后恢复全局宽度，避免影响其他Editor窗口。
+        var originalLabelWidth = EditorGUIUtility.labelWidth;
+        EditorGUIUtility.labelWidth = ParameterLabelWidth;
+        try
+        {
+            Config.BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(
+                new GUIContent("BuildTarget（打包平台）", "打包平台"), Config.BuildTarget);
+            Config.Channel = (Channel)EditorGUILayout.EnumPopup(
+                new GUIContent("Channel（打包渠道）", "打包渠道"), Config.Channel);
+            Config.IsDevelopment = EditorGUILayout.Toggle(
+                new GUIContent("IsDevelopment（是否打开发版本）", "是否打开发版本"), Config.IsDevelopment);
+            Config.VersionCode = EditorGUILayout.DoubleField(
+                new GUIContent("VersionCode（版本号，格式：*.**且不小于1）", "例如1.00、2.35"), Config.VersionCode);
+            Config.ResourceVersionCode = EditorGUILayout.IntField(
+                new GUIContent($"ResourceVersionCode（资源版本号，范围：1~{VersionEditorUtilities.MaxResourceVersionCode}）",
+                    "资源版本号"), Config.ResourceVersionCode);
+            Config.ForceRebuildAB = EditorGUILayout.Toggle(
+                new GUIContent("ForceRebuildAB（是否完全重新打包AB）", "是否完全重新打包AssetBundle"),
+                Config.ForceRebuildAB);
+        }
+        finally
+        {
+            EditorGUIUtility.labelWidth = originalLabelWidth;
+        }
     }
 
     /// <summary>
-    /// 执行修改包内版本信息
+    /// 校验参数、显示二次确认窗口，并在用户确认后执行本地打包。
     /// </summary>
-    private void DoModifyInnerVersionConfig()
+    private void StartBuild()
     {
-        double buildVersion = 0;
-        if (!double.TryParse(BuildVersion, out buildVersion))
+        // 点击打包时再次保存，保证此次尝试使用的参数能够在下次打开窗口时恢复。
+        Config.SaveConfig();
+        if (!TryCreateBuildParameters(out var buildParameters, out var errorMessage))
         {
-            Debug.LogError($"解析版本号:{BuildVersion}失败,格式无效!");
+            EditorUtility.DisplayDialog("打包参数格式错误", errorMessage, "确定");
             return;
         }
-        BuildTool.ModifyInnerVersionConfig(buildVersion, BuildResourceVersion);
-    }
 
-
-    /// <summary>
-    /// 执行修改包内游戏配置信息
-    /// </summary>
-    private void DoModifyInnerGameConfig()
-    {
-        if (DevelopMode == GameDevelopMode.Invalide)
+        if (!EditorUtility.DisplayDialog("确认打包参数", BuildConfirmationMessage(buildParameters), "确认打包", "取消"))
         {
-            Debug.LogError($"不允许修改游戏开发模式到:{DevelopMode}，格式无效，修改失败!");
             return;
         }
-        BuildTool.ModifyInnerGameConfig(DevelopMode);
+
+        mIsBuilding = true;
+        Repaint();
+        try
+        {
+            var buildResult = BuildTool.DoBuild(buildParameters);
+            var resultMessage = buildResult == BuildResult.Success
+                ? "打包成功！"
+                : $"打包失败！\n\n打包结果：{buildResult}";
+            EditorUtility.DisplayDialog("打包结果", resultMessage, "确定");
+        }
+        catch (Exception exception)
+        {
+            Debug.LogException(exception);
+            EditorUtility.DisplayDialog("打包结果", $"打包过程中发生异常：\n\n{exception.Message}", "确定");
+        }
+        finally
+        {
+            mIsBuilding = false;
+            Repaint();
+        }
     }
 
     /// <summary>
-    /// 执行打包
+    /// 校验持久化配置并创建BuildParameters对象。
     /// </summary>
-    private void DoBuild()
+    /// <param name="buildParameters">校验成功后创建的打包参数。</param>
+    /// <param name="errorMessage">校验失败时的详细错误信息。</param>
+    /// <returns>所有参数有效时返回true，否则返回false。</returns>
+    private bool TryCreateBuildParameters(out BuildParameters buildParameters, out string errorMessage)
     {
-        Debug.Log("DoBuild()");
-        double buildVersion = 0;
-        if (!double.TryParse(BuildVersion, out buildVersion))
+        buildParameters = null;
+        var errors = new StringBuilder();
+
+        if (!IsSupportedBuildTarget(Config.BuildTarget))
         {
-            Debug.LogError($"解析版本号:{BuildVersion}失败,格式无效!");
-            return;
+            errors.AppendLine($"- 打包平台不受支持：{Config.BuildTarget}。仅支持Android、iOS、StandaloneWindows和StandaloneWindows64。");
         }
-        BuildVersion = buildVersion.ToString("N1", CultureInfo.CreateSpecificCulture("en-US"));
-        buildVersion = double.Parse(BuildVersion);
-        BuildTool.DoBuild(BuildOutputPath, BuildTarget, buildVersion, BuildResourceVersion, IsDevelopment);
+
+        // 统一复用版本工具中的格式化规则，并使用其返回值判断版本格式是否有效。
+        (var versionCodeFormatResult, var finalVersionCode) = VersionEditorUtilities.FormatVersionCode(Config.VersionCode);
+        if (!versionCodeFormatResult)
+        {
+            errors.AppendLine($"- 版本号“{Config.VersionCode}”格式错误，要求格式为*.**，例如1.00、2.35。");
+        }
+        else if (!VersionEditorUtilities.IsValideVersionCode(finalVersionCode))
+        {
+            errors.AppendLine($"- 版本号“{Config.VersionCode}”无效，数值必须大于等于1。");
+        }
+
+        if (!VersionEditorUtilities.IsValideResourceVersionCode(Config.ResourceVersionCode))
+        {
+            errors.AppendLine($"- 资源版本号“{Config.ResourceVersionCode}”无效，要求范围为1~{VersionEditorUtilities.MaxResourceVersionCode}。");
+        }
+
+        if (errors.Length > 0)
+        {
+            errorMessage = errors.ToString().TrimEnd();
+            return false;
+        }
+
+        buildParameters = new BuildParameters(Config.BuildTarget, Config.Channel, Config.IsDevelopment,
+                                              finalVersionCode, Config.ResourceVersionCode, Config.ForceRebuildAB);
+        errorMessage = string.Empty;
+        return true;
+    }
+
+    /// <summary>
+    /// 根据打包参数创建二次确认窗口的详细文本。
+    /// </summary>
+    /// <param name="buildParameters">即将执行的打包参数。</param>
+    /// <returns>包含全部打包参数的确认文本。</returns>
+    private static string BuildConfirmationMessage(BuildParameters buildParameters)
+    {
+        var message = new StringBuilder();
+        message.AppendLine("请确认以下打包参数：");
+        message.AppendLine();
+        message.AppendLine($"打包平台：{buildParameters.BuildTarget}");
+        message.AppendLine($"打包渠道：{buildParameters.Channel}");
+        message.AppendLine($"开发版本：{buildParameters.IsDevelopment}");
+        message.AppendLine($"版本号：{buildParameters.VersionCode.ToString("F2", CultureInfo.InvariantCulture)}");
+        message.AppendLine($"资源版本号：{buildParameters.ResourceVersionCode}");
+        message.AppendLine($"完全重建AB：{buildParameters.ForceRebuildAB}");
+        message.AppendLine();
+        message.Append("确认后将立即开始本地打包。");
+        return message.ToString();
+    }
+
+    /// <summary>
+    /// 判断BuildTool是否支持指定打包平台。
+    /// </summary>
+    /// <param name="buildTarget">待检查的打包平台。</param>
+    /// <returns>平台受支持时返回true。</returns>
+    private static bool IsSupportedBuildTarget(BuildTarget buildTarget)
+    {
+        return buildTarget == BuildTarget.Android ||
+               buildTarget == BuildTarget.iOS ||
+               buildTarget == BuildTarget.StandaloneWindows ||
+               buildTarget == BuildTarget.StandaloneWindows64;
     }
 }

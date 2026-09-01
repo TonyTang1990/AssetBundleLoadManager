@@ -20,6 +20,66 @@ namespace TResource
     public static class ResourceBuildTool
     {
         /// <summary>
+        /// 获取指定本地存储Key和项目挂钩的Key值
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetProjectPlayerPrefKey(string key)
+        {
+            return $"{ResourceBuildConst.ProjectPathHashValue}_{key}";
+        }
+
+        /// <summary>
+        /// 存储AssetBundle打包配置
+        /// </summary>
+        public static void SaveSettingsToPlayerPrefs(AssetBundleBuilder abBuilder)
+        {
+            var assetBundleBuildParams = abBuilder.AssetBundleBuildParams;
+            var compressOptionKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingCompressOptionKey);
+            PlayerPrefs.SetString(compressOptionKey, assetBundleBuildParams.CompressOption.ToString());
+            var isForceRebuildKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingIsForceRebuildKey);
+            PlayerPrefs.SetInt(isForceRebuildKey, assetBundleBuildParams.IsForceRebuild ? 1 : 0);
+            var isAppendHashKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingIsAppendHashKey);
+            PlayerPrefs.SetInt(isAppendHashKey, assetBundleBuildParams.IsAppendHash ? 1 : 0);
+            var IsDisableWriteTypeTreeKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingIsDisableWriteTypeTreeKey);
+            PlayerPrefs.SetInt(IsDisableWriteTypeTreeKey, assetBundleBuildParams.IsDisableWriteTypeTree ? 1 : 0);
+            var IsIgnoreTypeTreeChangesKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingIsIgnoreTypeTreeChangesKey);
+            PlayerPrefs.SetInt(IsIgnoreTypeTreeChangesKey, assetBundleBuildParams.IsIgnoreTypeTreeChanges ? 1 : 0);
+        }
+
+        /// <summary>
+        /// 读取AssetBundle打包配置
+        /// </summary>
+        public static void LoadSettingsFromPlayerPrefs(AssetBundleBuilder abBuilder)
+        {
+            var assetBundleBuildParams = abBuilder.AssetBundleBuildParams;
+            var compressOptionKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingCompressOptionKey);
+            var compressOptionValue = PlayerPrefs.GetString(compressOptionKey, ABCompressOption.ChunkBasedCompressionLZ4.ToString());
+            assetBundleBuildParams.CompressOption = (ABCompressOption)Enum.Parse(typeof(ABCompressOption), compressOptionValue);
+            var isForceRebuildKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingIsForceRebuildKey);
+            assetBundleBuildParams.IsForceRebuild = PlayerPrefs.GetInt(isForceRebuildKey, 0) != 0;
+            var isAppendHashKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingIsAppendHashKey);
+            assetBundleBuildParams.IsAppendHash = PlayerPrefs.GetInt(isAppendHashKey, 0) != 0;
+            var IsDisableWriteTypeTreeKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingIsDisableWriteTypeTreeKey);
+            assetBundleBuildParams.IsDisableWriteTypeTree = PlayerPrefs.GetInt(IsDisableWriteTypeTreeKey, 0) != 0;
+            var IsIgnoreTypeTreeChangesKey = GetProjectPlayerPrefKey(ResourceBuildConst.ABBuildSettingIsIgnoreTypeTreeChangesKey);
+            assetBundleBuildParams.IsIgnoreTypeTreeChanges = PlayerPrefs.GetInt(IsIgnoreTypeTreeChangesKey, 0) != 0;
+        }
+
+        /// <summary>
+        /// 获取指定打包平台的AssetBundleBuilder实例
+        /// </summary>
+        /// <param name="buildTarget"></param>
+        /// <returns></returns>
+        public static AssetBundleBuilder GetTargetAssetBundleBuilder(BuildTarget buildTarget)
+        {
+            var assetBundleBuildParams = new AssetBundleBuildParams(buildTarget);
+            var assetBundleBuilder = new AssetBundleBuilder(assetBundleBuildParams);
+            LoadSettingsFromPlayerPrefs(assetBundleBuilder);
+            return assetBundleBuilder;
+        }
+
+        /// <summary>
         /// 执行AssetBundle打包
         /// </summary>
         /// <param name="abBuildPurpose">AB打包用途</param>
@@ -56,6 +116,7 @@ namespace TResource
         /// <param name="assetBundleBuilder"></param>
         private static bool ExecuteAssetBundleBuild(AssetBundleBuilder assetBundleBuilder)
         {
+            assetBundleBuilder.AssetBundleBuildParams.PrintAllParams();
             var timecounter = new TimeCounter();
             timecounter.Start("AssetBundleBuild");
             var preAssetBuildResult = assetBundleBuilder.PreAssetBuild();

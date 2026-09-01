@@ -5,13 +5,7 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -167,46 +161,11 @@ namespace TResource
         /// </summary>
         private void InitCommonData()
         {
-            mProjectPathHashValue = Application.dataPath.GetHashCode();
+            
         }
         #endregion
 
         #region 资源打包部分
-        /// <summary>
-        /// 压缩格式设置本地存储Key
-        /// </summary>
-        private const string ABBuildSettingCompressOptionKey = "ABBuildSettingCompressOption";
-
-        /// <summary>
-        /// 是否强制重新打包设置本地存储Key
-        /// </summary>
-        private const string ABBuildSettingIsForceRebuildKey = "ABBuildSettingIsForceRebuild";
-
-        /// <summary>
-        /// 是否AppendHash设置本地存储Key
-        /// </summary>
-        private const string ABBuildSettingIsAppendHashKey = "ABBuildSettingIsAppendHash";
-
-        /// <summary>
-        /// 是否Disable Write Type Tree设置本地存储Key
-        /// </summary>
-        private const string ABBuildSettingIsDisableWriteTypeTreeKey = "ABBuildSettingIsDisableWriteTypeTree";
-
-        /// <summary>
-        /// 是否Ignore Type Tree Change设置本地存储Key
-        /// </summary>
-        private const string ABBuildSettingIsIgnoreTypeTreeChangesKey = "ABBuildSettingIsIgnoreTypeTreeChanges";
-
-        /// <summary>
-        /// 是否受用PlayerSettingVersion设置本地存储Key
-        /// </summary>
-        private const string ABBuildSettingIsUsePlayerSettingVersionKey = "ABBuildSettingIsUsePlayerSettingVersion";
-
-        /// <summary>
-        /// 项目路径Hash值(用于使得PlayerPrefs存储的Key值唯一)
-        /// </summary>
-        private int mProjectPathHashValue;
-
         /// <summary>
         /// 资源打包器
         /// </summary>
@@ -225,21 +184,7 @@ namespace TResource
             Debug.Log($"ResourceBuildWindow:InitResourceData()");
             // 创建资源打包器
             var buildTarget = EditorUserBuildSettings.activeBuildTarget;
-            var assetBundleBuildParams = new AssetBundleBuildParams(buildTarget);
-            mAssetBundleBuilder = new AssetBundleBuilder(assetBundleBuildParams);
-
-            // 读取配置
-            LoadSettingsFromPlayerPrefs(mAssetBundleBuilder);
-        }
-
-        /// <summary>
-        /// 获取指定本地存储Key和项目挂钩的Key值
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        private string GetProjectPlayerPrefKey(string key)
-        {
-            return $"{mProjectPathHashValue}_{key}";
+            mAssetBundleBuilder = ResourceBuildTool.GetTargetAssetBundleBuilder(buildTarget);
         }
 
         /// <summary>
@@ -248,43 +193,6 @@ namespace TResource
         private void SaveResourceData()
         {
 
-        }
-
-        /// <summary>
-        /// 存储配置
-        /// </summary>
-        private void SaveSettingsToPlayerPrefs(AssetBundleBuilder abBuilder)
-        {
-            var assetBundleBuildParams = abBuilder.AssetBundleBuildParams;
-            var compressOptionKey = GetProjectPlayerPrefKey(ABBuildSettingCompressOptionKey);
-            PlayerPrefs.SetString(compressOptionKey, assetBundleBuildParams.CompressOption.ToString());
-            var isForceRebuildKey = GetProjectPlayerPrefKey(ABBuildSettingIsForceRebuildKey);
-            PlayerPrefs.SetInt(isForceRebuildKey, assetBundleBuildParams.IsForceRebuild ? 1 : 0);
-            var isAppendHashKey = GetProjectPlayerPrefKey(ABBuildSettingIsAppendHashKey);
-            PlayerPrefs.SetInt(isAppendHashKey, assetBundleBuildParams.IsAppendHash ? 1 : 0);
-            var IsDisableWriteTypeTreeKey = GetProjectPlayerPrefKey(ABBuildSettingIsDisableWriteTypeTreeKey);
-            PlayerPrefs.SetInt(IsDisableWriteTypeTreeKey, assetBundleBuildParams.IsDisableWriteTypeTree ? 1 : 0);
-            var IsIgnoreTypeTreeChangesKey = GetProjectPlayerPrefKey(ABBuildSettingIsIgnoreTypeTreeChangesKey);
-            PlayerPrefs.SetInt(IsIgnoreTypeTreeChangesKey, assetBundleBuildParams.IsIgnoreTypeTreeChanges ? 1 : 0);
-        }
-
-        /// <summary>
-        /// 读取配置
-        /// </summary>
-        private void LoadSettingsFromPlayerPrefs(AssetBundleBuilder abBuilder)
-        {
-            var assetBundleBuildParams = abBuilder.AssetBundleBuildParams;
-            var compressOptionKey = GetProjectPlayerPrefKey(ABBuildSettingCompressOptionKey);
-            var compressOptionValue = PlayerPrefs.GetString(compressOptionKey, ABCompressOption.Uncompressed.ToString());
-            assetBundleBuildParams.CompressOption = (ABCompressOption)Enum.Parse(typeof(ABCompressOption), compressOptionValue);
-            var isForceRebuildKey = GetProjectPlayerPrefKey(ABBuildSettingIsForceRebuildKey);
-            assetBundleBuildParams.IsForceRebuild = PlayerPrefs.GetInt(isForceRebuildKey, 0) != 0;
-            var isAppendHashKey = GetProjectPlayerPrefKey(ABBuildSettingIsAppendHashKey);
-            assetBundleBuildParams.IsAppendHash = PlayerPrefs.GetInt(isAppendHashKey, 0) != 0;
-            var IsDisableWriteTypeTreeKey = GetProjectPlayerPrefKey(ABBuildSettingIsDisableWriteTypeTreeKey);
-            assetBundleBuildParams.IsDisableWriteTypeTree = PlayerPrefs.GetInt(IsDisableWriteTypeTreeKey, 0) != 0;
-            var IsIgnoreTypeTreeChangesKey = GetProjectPlayerPrefKey(ABBuildSettingIsIgnoreTypeTreeChangesKey);
-            assetBundleBuildParams.IsIgnoreTypeTreeChanges = PlayerPrefs.GetInt(IsIgnoreTypeTreeChangesKey, 0) != 0;
         }
 
         /// <summary>
@@ -344,7 +252,7 @@ namespace TResource
                     //mAssetBundleBuilder.AssetBundleBuildParams.BuildVersion = Application.version;
 
                     // 存储配置
-                    SaveSettingsToPlayerPrefs(mAssetBundleBuilder);
+                    ResourceBuildTool.SaveSettingsToPlayerPrefs(mAssetBundleBuilder);
 
                     mAssetBundleBuilder.AssetBundleBuildParams.AssetBundleBuildPurpose = AssetBundleBuildPurpose.BuildPlayerBaseLine;
                     EditorApplication.delayCall += ExecuteBuild;
@@ -745,13 +653,32 @@ namespace TResource
         private Vector2 mHotUpdateUiScrollPos;
 
         /// <summary>
+        /// 包内版本配置信息
+        /// </summary>
+        private VersionConfig mInnerVersionConfig;
+
+        /// <summary>
+        /// 包外版本配置信息
+        /// </summary>
+        private VersionConfig mOutterVersionConfig;
+
+        /// <summary>
         /// 初始化热更打包数据
         /// </summary>
         private void InitHotUpdateData()
         {
             Debug.Log($"ResourceBuildWindow:InitHotUpdateData()");
-            VersionConfigModuleManager.Singleton.InitVerisonConfigData();
+            InitVerisonConfigDatas();
             LoadHotUpdateSettingsFromPlayerPrefs(mAssetBundleBuilder);
+        }
+
+        /// <summary>
+        /// 初始化版本配置信息数据
+        /// </summary>
+        private void InitVerisonConfigDatas()
+        {
+            mInnerVersionConfig = VersionUtilities.ReadInnerVersionConfig();
+            mOutterVersionConfig = VersionUtilities.ReadOutterVersionConfig();
         }
 
         /// <summary>
@@ -759,9 +686,9 @@ namespace TResource
         /// </summary>
         private void SaveHotUpdateSettingsFromPlayerPrefs(AssetBundleBuilder abBuilder)
         {
-            var hotUpdateVersionCodeKey = GetProjectPlayerPrefKey(HotUpdateVersionCodeKey);
+            var hotUpdateVersionCodeKey = ResourceBuildTool.GetProjectPlayerPrefKey(HotUpdateVersionCodeKey);
             PlayerPrefs.SetString(hotUpdateVersionCodeKey, mHotUpdateVersion.ToString());
-            var hotUpdateResourceVersionCodeKey = GetProjectPlayerPrefKey(HotUpdateResourceVersionCodeKey);
+            var hotUpdateResourceVersionCodeKey = ResourceBuildTool.GetProjectPlayerPrefKey(HotUpdateResourceVersionCodeKey);
             PlayerPrefs.SetInt(hotUpdateResourceVersionCodeKey, mHotUpdateResourceVersion);
         }
 
@@ -771,10 +698,10 @@ namespace TResource
         private void LoadHotUpdateSettingsFromPlayerPrefs(AssetBundleBuilder abBuilder)
         {
             // 默认值以包外版本信息优先
-            var gameVersionConfig = VersionConfigModuleManager.Singleton.GameVersionConfig;
-            var hotUpdateVersionCodeKey = GetProjectPlayerPrefKey(HotUpdateVersionCodeKey);
+            var gameVersionConfig = mOutterVersionConfig != null ? mOutterVersionConfig : mInnerVersionConfig;
+            var hotUpdateVersionCodeKey = ResourceBuildTool.GetProjectPlayerPrefKey(HotUpdateVersionCodeKey);
             mHotUpdateVersion = PlayerPrefs.GetFloat(hotUpdateVersionCodeKey, (float)gameVersionConfig.VersionCode);
-            var hotUpdateResourceVersionCodeKey = GetProjectPlayerPrefKey(HotUpdateResourceVersionCodeKey);
+            var hotUpdateResourceVersionCodeKey = ResourceBuildTool.GetProjectPlayerPrefKey(HotUpdateResourceVersionCodeKey);
             mHotUpdateResourceVersion = PlayerPrefs.GetInt(hotUpdateResourceVersionCodeKey, gameVersionConfig.ResourceVersionCode);
         }
 
@@ -786,12 +713,20 @@ namespace TResource
             mHotUpdateUiScrollPos = GUILayout.BeginScrollView(mHotUpdateUiScrollPos);
             GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
-            var innerVersionConfig = VersionConfigModuleManager.Singleton.InnerGameVersionConfig;
             EditorGUILayout.LabelField("包内版本号:", GUILayout.Width(100f));
-            GUILayout.Label($"{innerVersionConfig.VersionCode}", "box", GUILayout.Width(120f));
+            GUILayout.Label($"{mInnerVersionConfig.VersionCode}", "box", GUILayout.Width(120f));
             EditorGUILayout.LabelField("包内资源版本号:", GUILayout.Width(120f));
-            GUILayout.Label($"{innerVersionConfig.ResourceVersionCode}", "box", GUILayout.Width(120f));
+            GUILayout.Label($"{mInnerVersionConfig.ResourceVersionCode}", "box", GUILayout.Width(120f));
             GUILayout.EndHorizontal();
+            if(mOutterVersionConfig != null)
+            {
+                GUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("包外版本号:", GUILayout.Width(100f));
+                GUILayout.Label($"{mOutterVersionConfig.VersionCode}", "box", GUILayout.Width(120f));
+                EditorGUILayout.LabelField("包外资源版本号:", GUILayout.Width(120f));
+                GUILayout.Label($"{mOutterVersionConfig.ResourceVersionCode}", "box", GUILayout.Width(120f));
+                GUILayout.EndHorizontal();
+            }
             GUILayout.BeginHorizontal();
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.LabelField("热更新版本号:", GUILayout.Width(80f));
@@ -833,6 +768,8 @@ namespace TResource
         private void DoClearOutterHotUpdateResources()
         {
             HotUpdateUtilities.DeleteAllOutterHotUpdateResources();
+            InitVerisonConfigDatas();
+            LoadHotUpdateSettingsFromPlayerPrefs(mAssetBundleBuilder);
         }
 
         /// <summary>
