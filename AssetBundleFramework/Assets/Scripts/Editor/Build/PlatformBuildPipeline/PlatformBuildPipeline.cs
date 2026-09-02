@@ -145,7 +145,11 @@ public abstract class PlatformBuildPipeline
         var assetBundleBuilder = ResourceBuildTool.GetTargetAssetBundleBuilder(mBuildParameters.BuildTarget);
         assetBundleBuilder.AssetBundleBuildParams.AssetBundleBuildPurpose = AssetBundleBuildPurpose.BuildPlayerBaseLine;
         assetBundleBuilder.AssetBundleBuildParams.IsForceRebuild = mBuildParameters.ForceRebuildAB;
-        return ResourceBuildTool.DoBuildAssetBundleByBuilder(assetBundleBuilder);
+        var result = ResourceBuildTool.DoBuildAssetBundleByBuilder(assetBundleBuilder);
+        // 强制刷新Asset，避免移动到Assets内的一些文件操作没刷新Meta导致后续打包访问出错
+        AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+        AssetDatabase.SaveAssets();
+        return result;
     }
 
     /// <summary>

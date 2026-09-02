@@ -337,6 +337,10 @@ namespace TResource
 		/// <returns></returns>
 		private bool DoAssetBundleBuildPurposePostProcess()
 		{
+			// 强制刷新Asset，避免移动到Assets内的一些文件操作没刷新Meta导致后续打包访问出错
+			AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+			AssetDatabase.SaveAssets();
+
 			var finalABBuildTargetOutputFolderPath = GetFinalABBuildTargetOutputFolderPath();
 			var finalABBuildResourceOutputFolderPath = GetFinalABBuildResourcesOutputFolderPath();
 			// 确保资源打包目录是全新的再操作后续复制文件流程，避免有错误资源进包
