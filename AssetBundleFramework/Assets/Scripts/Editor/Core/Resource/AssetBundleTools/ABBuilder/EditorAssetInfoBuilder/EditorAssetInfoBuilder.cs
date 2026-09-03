@@ -141,14 +141,15 @@ namespace TResource
 			}
             editorAssetInfoAsset.ClearAllDatas();
             // 更新EditorAssetInfo信息Asset
-            if(mAllEditorAssetInfoMap == null || mAllEditorAssetInfoMap.Count == 0)
+            if(mAllEditorAssetInfoMap != null)
             {
-                return true;
+                foreach(var editorAssetInfo in mAllEditorAssetInfoMap)
+                {
+                    editorAssetInfoAsset.AddEditorAssetInfo(editorAssetInfo.Value);
+                }
             }
-            foreach(var editorAssetInfo in mAllEditorAssetInfoMap)
-            {
-                editorAssetInfoAsset.AddEditorAssetInfo(editorAssetInfo.Value);
-            }
+            EditorUtility.SetDirty(editorAssetInfoAsset);
+            AssetDatabase.SaveAssets();
 			return true;
         }
 
