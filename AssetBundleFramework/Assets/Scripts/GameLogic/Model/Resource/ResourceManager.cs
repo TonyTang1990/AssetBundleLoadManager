@@ -105,11 +105,7 @@ public class ResourceManager : SingletonBase<ResourceManager>
                 }
             }
         };
-        var requestHandle = loadMethod == ResourceLoadMethod.Sync
-                            ? ResourceModuleManager.Singleton.RequstABSync(shaderABName, out bundleLoader,
-                            completeHandler, loadType)
-                            : ResourceModuleManager.Singleton.RequstABAsync(shaderABName, out bundleLoader,
-                            completeHandler, loadType);
+        var requestHandle = RequestABAsync(shaderABName, out bundleLoader, completeHandler, loadType, loadMethod);
         resourceScope.RecordRequest(requestHandle);
         return requestHandle;
     }
@@ -632,6 +628,25 @@ public class ResourceManager : SingletonBase<ResourceManager>
         return loadMethod == ResourceLoadMethod.Sync
                ? ResourceModuleManager.Singleton.RequstAssetSync<T>(resName, out assetLoader, completeHandler, loadType)
                : ResourceModuleManager.Singleton.RequstAssetAsync<T>(resName, out assetLoader, completeHandler, loadType);
+    }
+
+    /// <summary>
+    /// 根据加载方式创建同步或异步AssetBundle请求
+    /// </summary>
+    /// <param name="resName"></param>
+    /// <param name="bundleLoader"></param>
+    /// <param name="completeHandler"></param>
+    /// <param name="loadType"></param>
+    /// <param name="loadMethod"></param>
+    /// <returns></returns>
+    public AssetBundleRequestHandle RequestABAsync(string resName, out BundleLoader bundleLoader,
+                                                   Action<BundleLoader, AssetBundleRequestHandle> completeHandler = null,
+                                                   ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                                   ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
+    {
+        return loadMethod == ResourceLoadMethod.Sync
+               ? ResourceModuleManager.Singleton.RequstABSync(resName, out bundleLoader, completeHandler, loadType)
+               : ResourceModuleManager.Singleton.RequstABAsync(resName, out bundleLoader, completeHandler, loadType);
     }
     #endregion
 }
