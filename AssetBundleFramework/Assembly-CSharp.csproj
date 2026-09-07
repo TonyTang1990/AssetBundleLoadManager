@@ -93,6 +93,7 @@
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\GameDataManager.cs" />
     <Compile Include="Assets\Scripts\Core\Pool\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ModelManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ResourceUtilities.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\TWebRequest.cs" />
     <Compile Include="Assets\Scripts\GameLauncher.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetDatabase\AssetDatabaseLoader.cs" />
@@ -150,7 +151,6 @@
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\AssetBundleInfo.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_bContainer.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_author_Info.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ResourceUtility.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetBundle\AssetBuildInfoAsset.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Native\IOS\IOSNativeManager.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\ResourceConstData.cs" />
