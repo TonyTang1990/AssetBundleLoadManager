@@ -110,8 +110,10 @@ public class AudioManager : SingletonBase<AudioManager>
         mSFXGoTemplate = new GameObject("SfxAudio");
         mSFXInstanceID = mSFXGoTemplate.GetInstanceID();
         mSFXGoTemplate.AddComponent<AudioSource>();
+        UnityEngine.Object.DontDestroyOnLoad(mSFXGoTemplate);
         mAudioGoPool.Init(mSFXGoTemplate, 5);
         mSoundParentTransform = new GameObject("SoundParent").transform;
+        UnityEngine.Object.DontDestroyOnLoad(mSoundParentTransform);
         var bgmGo = new GameObject("BGMAudio");
         UnityEngine.Object.DontDestroyOnLoad(bgmGo);
         bgmGo.transform.SetParent(mSoundParentTransform, false);
