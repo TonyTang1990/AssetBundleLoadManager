@@ -197,8 +197,11 @@ namespace TResource
             SingletonManager.Register(new ResourceModuleManager());
             SingletonManager.Register(new GameConfigModuleManager());
             SingletonManager.Register(new HotUpdateModuleManager());
+            SingletonManager.Register(new ResourceManager());
             SingletonManager.Register(new GameSceneManager());
+            SingletonManager.Register(new AudioManager());
             SingletonManager.Register(new AtlasManager());
+            SingletonManager.Register(new EffectManager());
         }
 
         /// <summary>

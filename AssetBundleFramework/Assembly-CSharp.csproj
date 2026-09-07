@@ -92,7 +92,6 @@
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\GameDataManager.cs" />
     <Compile Include="Assets\Scripts\Core\Pool\ObjectPool.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ModelManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ResourceUtilities.cs" />
     <Compile Include="Assets\Scripts\Core\HotUpdate\TWebRequest.cs" />
     <Compile Include="Assets\Scripts\GameLauncher.cs" />

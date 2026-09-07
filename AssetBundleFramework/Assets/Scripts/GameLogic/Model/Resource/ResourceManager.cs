@@ -21,7 +21,7 @@ using UnityEngine.Video;
 /// 方法接口参数含assetname的表示该资源不是单独打包
 /// 方法接口参数不含assetname的表示该资源是单独打包
 /// </summary>
-public class ResourceManager : SingletonTemplate<ResourceManager>
+public class ResourceManager : SingletonBase<ResourceManager>
 {
     // Note:
     // 取消Asset异步加载有两种方式:
@@ -29,30 +29,10 @@ public class ResourceManager : SingletonTemplate<ResourceManager>
     // 2. 返回给上层AssetLoader和AssetRequestHandle,AssetLoader.CancelRequest(AssetRequestHandle.RequestUID)
 
     /// <summary>
-    /// 全局资源计数释放+请求打断管理器
-    /// Note:
-    /// 用于管理全局常驻资源的加载和释放
-    /// </summary>
-    public ResourceScope GlobalResourceScope
-    {
-        get;
-        private set;
-    }
-
-    /// <summary>
     /// 初始化资源管理器和全局资源作用域
     /// </summary>
     public ResourceManager()
     {
-        GlobalResourceScope = new ResourceScope();
-    }
-
-    /// <summary>
-    /// 清理全局资源计数释放+请求打断管理器
-    /// </summary>
-    public void ClearGlobalResourceScope()
-    {
-        GlobalResourceScope.Clear();
     }
 
     #region CallBack接口

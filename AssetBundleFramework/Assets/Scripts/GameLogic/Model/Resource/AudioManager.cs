@@ -5,9 +5,6 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using TResource;
 using UnityEngine;
 
@@ -15,7 +12,7 @@ using UnityEngine;
 /// AudioManager.cs
 /// 音效单例管理类
 /// </summary>
-public class AudioManager : SingletonTemplate<AudioManager>
+public class AudioManager : SingletonBase<AudioManager>
 {
     /// <summary>
     /// 音效播放信息
