@@ -24,6 +24,7 @@
 9. **保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)**
 10. **支持非回调式的同步加载返回(通过抽象Loader支持LoadImmediately的方式实现)**
 11. **打包输出到临时目录，然后复制到临时目录统一添加MD5改名，根据改名后的文件信息生成VerifyABInfo.json和ABInfo.json文件，最后根据打包需求再将相关文件复制到目标目录(2026/08/12)**
+12. **支持Unitask风格的异步等待资源加载方式(2026/09/07)**
 
 Note:
 
@@ -88,6 +89,8 @@ Tools->Debug->资源调试工具
 
 6. 点击加载窗口预制件按钮后:
 
+   回调风格加载：
+   
    ```CS
    ResourceManager.Singleton.getPrefabInstance(
        "MainWindow.prefab",
@@ -100,6 +103,43 @@ Tools->Debug->资源调试工具
    );
    ```
    
+   Unitask异步等待风格加载：
+   
+   ```csharp
+   /// <summary>
+   /// 异步Unitask异步加载窗口Prefab实例
+   /// </summary>
+   public void onAsynLoadWindowPrefab()
+   {
+       // 测试Unitask风格异步加载窗口Prefab实例
+       DIYLog.Log("onAsynLoadWindowPrefab()");
+       AsynLoadWindowPrefab().Forget();
+   }
+   
+   /// <summary>
+   /// 异步Unitask异步加载窗口Prefab实例
+   /// </summary>
+   /// <returns></returns>
+   private async UniTask AsynLoadWindowPrefab()
+   {
+       Debug.Log($"开始Unitask异步加载窗口Prefab实例");
+       if (mMainWindow != null)
+       {
+           onDestroyWindowInstance();
+       }
+       var windowInstance = await ResourceManager.Singleton.GetPrefabInstanceAsync("MainWindow.prefab",
+                                                                                   mResourceScope,
+                                                                                   out _,
+                                                                                   UIRootCanvas.transform,
+                                                                                   loadMethod: ResourceLoadMethod.Async
+                                                                                  );
+       mMainWindow = windowInstance;
+       Debug.Log($"完成Unitask异步加载窗口Prefab实例");
+   }
+   ```
+   
+   
+   
    ![AssetBundleLoadManagerUIAfterLoadWindow](./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png)
    可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)
    
@@ -107,28 +147,32 @@ Tools->Debug->资源调试工具
 
 ```CS
 /// <summary>
-/// 测试异步转同步窗口加载
+/// 测试回调异步转同步窗口加载
 /// </summary>
 public void onAsynToSyncLoadWindow()
 {
+    // 测试回调风格的异步转同步加载
     DIYLog.Log("onAsynToSyncLoadWindow()");
-    if (mMainWindow == null)
+    if (mMainWindow != null)
     {
         onDestroyWindowInstance();
     }
-    AssetLoader assetLoader;
-    var assetRequestHandle = ResourceManager.Singleton.getPrefabInstanceAsync(
+    Debug.Log($"开始回调异步转同步加载窗口实例");
+    var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstance(
         "MainWindow.prefab",
-        out assetLoader,
         (prefabInstance, assetRequestHandle) =>
         {
+            Debug.Log($"回调异步转同步加载窗口实例完成");
             mMainWindow = prefabInstance;
             mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
         },
-        mResourceScope
+        mResourceScope,
+        loadMethod: ResourceLoadMethod.Async
     );
-    // 将异步转同步加载
-    assetLoader.loadImmediately();
+    Debug.Log($"回调异步转同步加载开始！");
+    // 未开始加载时将异步转同步加载
+    assetRequestHandle.LoadImmediately();
+    Debug.Log($"回调异步转同步加载结束！");
 }
 ```
 
@@ -158,16 +202,25 @@ Note:
 
 ```CS
 /// <summary>
-/// 加载常驻Shader
+/// Unitask异步加载所有常驻Shader
 /// </summary>
 public void onLoadPermanentShaderList()
 {
     DIYLog.Log("onLoadPermanentShaderList()");
-    ResourceManager.Singleton.loadAllShader(() =>
-    {
-    },
-    mResourceScope,
-    ResourceLoadType.PermanentLoad);
+    // 测试Unitask风格加载所有常驻Shader
+    LoadPermanentShaderListAsync().Forget();
+}
+
+/// <summary>
+/// Unitask异步加载所有常驻Shader
+/// </summary>
+/// <returns></returns>
+private async UniTask LoadPermanentShaderListAsync()
+{
+    Debug.Log($"Unitask所有常驻Shader开始加载");
+    await ResourceManager.Singleton.LoadAllShaderAsync(mResourceScope, out _);
+    // 后续逻辑
+    Debug.Log($"Unitask所有常驻Shader加载完成");
 }
 ```
 
@@ -414,16 +467,12 @@ Tools->Assets->Asset相关处理
 4. **支持了特定上下文(比如窗口生命周期)的资源加载计数统计+资源计数释放+资源请求取消机制(ResourceScope类)。(2026/07/25)**
 5. **支持了带MD5信息的AB名打包(解决CDN缓存问题)(2026/08/12)**
 6. **支持了带文件Sha256值校验的资源热更新校验(2026/08/12)**
+7. **支持了类似Multiple Sprite这种SubAsset的加载(2026/08/12)**
+8. **支持了Unitask风格的资源加载方式(2026/09/07)**
 
 # 待做事项
 
-**1. 支持类似Multiple Sprite这种SubAsset的加载(设计之初考虑的不够全面(无论是打包还是加载都是面向Asset级别的，导致SubAsset这种无论是打包还是加载都给不出有效Asset路径)，导致SubAsset这种资源无法主动加载到)⭐⭐⭐⭐⭐**
-
-​		大框架不改的前提下，目前想到的最快速的方案是AssetLoader和AssetInfo都支持获取SubAsset的相关**同步接口**，**将计数和对象绑定都绑在主Asset身上**
-
-**2. 支持真机代码热更(Lua + XLua)**
-
-**3. 热更新资源正确性校验(MD5校验)**
+暂无
 
 # 个人博客
 

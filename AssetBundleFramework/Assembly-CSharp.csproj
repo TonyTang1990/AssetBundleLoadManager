@@ -126,14 +126,15 @@
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_global_bBuffer.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_global_sContainer.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\AssetLoader.cs" />
-    <Compile Include="Assets\Scripts\Core\Resource\AssetDatabase\EditorAssetInfoPath.cs" />
     <Compile Include="Assets\Scripts\Core\VersionConfig\VersionConfigModuleManager.cs" />
+    <Compile Include="Assets\Scripts\Core\Resource\AssetDatabase\EditorAssetInfoPath.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Resource\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\Core\Singleton\SingletonBase.cs" />
     <Compile Include="Assets\Scripts\Core\GameConfig\GameConfig.cs" />
     <Compile Include="Assets\Scripts\Core\Resource\Loadable.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\BufferCode\t_language_cnBuffer.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Model\Data\DataAccess.cs" />
+    <Compile Include="Assets\Scripts\Core\Exception\GlobalExceptionHandler.cs" />
     <Compile Include="Assets\Scripts\Data\CSTemplateOutput\t_language_cnContainer.cs" />
     <Compile Include="Assets\Scripts\Data\CSOutput\ClassCode\t_global_b.cs" />
     <Compile Include="Assets\Scripts\Utilities\PathUtilities.cs" />
@@ -1071,12 +1072,24 @@
       <HintPath>Library\ScriptAssemblies\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UniTask.TextMeshPro">
+      <HintPath>Library\ScriptAssemblies\UniTask.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.ScriptableBuildPipeline">
       <HintPath>Library\ScriptAssemblies\Unity.ScriptableBuildPipeline.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask.DOTween">
+      <HintPath>Library\ScriptAssemblies\UniTask.DOTween.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask.Addressables">
+      <HintPath>Library\ScriptAssemblies\UniTask.Addressables.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
@@ -1095,12 +1108,12 @@
       <HintPath>Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
@@ -1109,6 +1122,10 @@
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask.Linq">
+      <HintPath>Library\ScriptAssemblies\UniTask.Linq.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
@@ -1137,6 +1154,10 @@
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask">
+      <HintPath>Library\ScriptAssemblies\UniTask.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">

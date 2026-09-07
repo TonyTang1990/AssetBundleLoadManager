@@ -385,16 +385,28 @@ namespace TResource
                 AssetRequestInfo assetRequestInfo;
                 if(mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
                 {
+                    var requestHandle = assetRequestInfo.RequestHandle;
                     if (LoadState == ResourceLoadState.Error)
                     {
-                        assetRequestInfo.RequestHandle.MarkFailed();
+                        requestHandle.MarkFailed();
                     }
                     else
                     {
-                        assetRequestInfo.RequestHandle.MarkCompleted();
+                        requestHandle.MarkSuccess();
                     }
-                    assetRequestInfo.RequestCallBack?.Invoke(this, assetRequestInfo.RequestHandle);
-                    RemoveRequest(requestUID);
+                    try
+                    {
+                        assetRequestInfo.RequestCallBack?.Invoke(this, requestHandle);
+                    }
+                    catch (Exception exception)
+                    {
+                        Debug.LogException(exception);
+                    }
+                    finally
+                    {
+                        RemoveRequest(requestUID);
+                        requestHandle.PublishCompletion();
+                    }
                 }
             }
             mRequestUIDList.Clear();
@@ -442,8 +454,10 @@ namespace TResource
             AssetRequestInfo assetRequestInfo;
             if(mRequestUidAndInfoMap.TryGetValue(requestUID, out assetRequestInfo))
             {
-                assetRequestInfo.RequestHandle.MarkCancelled();
+                var requestHandle = assetRequestInfo.RequestHandle;
+                requestHandle.MarkCancelled();
                 RemoveRequest(requestUID);
+                requestHandle.PublishCompletion();
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}Asset:{ResourcePath}取消请求UID:{requestUID}成功!");
                 // 所有请求都取消表示没人再请求此Asset了
                 if (mRequestUidAndInfoMap.Count == 0)

@@ -513,17 +513,29 @@ namespace TResource
             for(int i = 0; i < mRequestInfoList.Count; i++)
             {
                 var requestInfo = mRequestInfoList[i];
+                var requestHandle = requestInfo.RequestHandle;
                 if (LoadState == ResourceLoadState.Error)
                 {
-                    requestInfo.RequestHandle.MarkFailed();
+                    requestHandle.MarkFailed();
                 }
                 else
                 {
-                    requestInfo.RequestHandle.MarkCompleted();
+                    requestHandle.MarkSuccess();
                 }
-                requestInfo.RequestCallBack?.Invoke(this, requestInfo.RequestHandle);
-                RemoveRequest(requestInfo.RequestHandle.RequestUID);
-                i--;
+                try
+                {
+                    requestInfo.RequestCallBack?.Invoke(this, requestHandle);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+                finally
+                {
+                    RemoveRequest(requestHandle.RequestUID);
+                    requestHandle.PublishCompletion();
+                    i--;
+                }
             }
             mRequestUidAndInfoMap.Clear();
             mRequestInfoList.Clear();
@@ -569,8 +581,10 @@ namespace TResource
             BundleRequestInfo bundleRequestInfo;
             if (mRequestUidAndInfoMap.TryGetValue(requestUID, out bundleRequestInfo))
             {
-                bundleRequestInfo.RequestHandle.MarkCancelled();
+                var requestHandle = bundleRequestInfo.RequestHandle;
+                requestHandle.MarkCancelled();
                 RemoveRequest(requestUID);
+                requestHandle.PublishCompletion();
                 ResourceLogger.log($"Frame:{AbstractResourceModule.Frame}AssetBundle:{ResourcePath}取消请求UID:{requestUID}成功!");
                 // 所有请求都取消表示没人再请求此Asset了
                 if (mRequestUidAndInfoMap.Count == 0)

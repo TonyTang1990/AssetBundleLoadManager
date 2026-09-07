@@ -5,6 +5,7 @@
  */
 
 using System;
+using Cysharp.Threading.Tasks;
 
 namespace TResource
 {
@@ -14,7 +15,7 @@ namespace TResource
     public enum ResourceRequestState
     {
         Pending,
-        Completed,
+        Success,
         Cancelled,
         Failed
     }
@@ -34,6 +35,12 @@ namespace TResource
         /// 立刻加载回调
         /// </summary>
         private Func<int, bool> mLoadImmediatelyHandler;
+
+        /// <summary>
+        /// 请求完成发布源
+        /// 仅在请求被转换为UniTask或直接await时延迟创建
+        /// </summary>
+        private UniTaskCompletionSource<ResourceRequestHandle> mCompletionSource;
 
         /// <summary>
         /// 请求UID
@@ -56,9 +63,14 @@ namespace TResource
         public bool IsDone => State != ResourceRequestState.Pending;
 
         /// <summary>
-        /// 是否处于完成状态
+        /// 是否处于成功状态
         /// </summary>
-        public bool IsComplete => State == ResourceRequestState.Completed;
+        public bool IsSuccess => State == ResourceRequestState.Success;
+
+        /// <summary>
+        /// 是否已经完成上层回调和Loader内部请求清理，可以恢复await后续逻辑
+        /// </summary>
+        public bool IsCompletionPublished { get; private set; }
 
         protected ResourceRequestHandle(int requestUID, Func<int, bool> cancelHandler,
                                         Func<int, bool> loadImmediatelyHandler)
@@ -67,6 +79,7 @@ namespace TResource
             mCancelHandler = cancelHandler;
             mLoadImmediatelyHandler = loadImmediatelyHandler;
             State = ResourceRequestState.Pending;
+            IsCompletionPublished = false;
         }
 
         /// <summary>
@@ -97,12 +110,63 @@ namespace TResource
         }
 
         /// <summary>
-        /// 标记本次请求为完成状态。请求已进入完成时安全返回false。
+        /// 获取资源请求对应的UniTask
+        /// </summary>
+        public UniTask<ResourceRequestHandle> Task => GetCompletionTask();
+
+        /// <summary>
+        /// 将资源请求转换为UniTask
+        /// </summary>
+        public UniTask<ResourceRequestHandle> ToUniTask()
+        {
+            return GetCompletionTask();
+        }
+
+        /// <summary>
+        /// 获取UniTask等待器，使请求句柄支持直接await
+        /// </summary>
+        public UniTask<ResourceRequestHandle>.Awaiter GetAwaiter()
+        {
+            return GetCompletionTask().GetAwaiter();
+        }
+
+        /// <summary>
+        /// 获取请求完成UniTask
+        /// 请求尚未完成时按需创建完成源，请求已经发布完成时直接返回完成结果
+        /// </summary>
+        private UniTask<ResourceRequestHandle> GetCompletionTask()
+        {
+            if (IsCompletionPublished)
+            {
+                return UniTask.FromResult<ResourceRequestHandle>(this);
+            }
+            if (mCompletionSource == null)
+            {
+                mCompletionSource = new UniTaskCompletionSource<ResourceRequestHandle>();
+            }
+            return mCompletionSource.Task;
+        }
+
+        /// <summary>
+        /// 在上层回调执行和Loader内部请求清理完成后发布请求完成通知
+        /// </summary>
+        internal void PublishCompletion()
+        {
+            if (!IsDone || IsCompletionPublished)
+            {
+                return;
+            }
+            IsCompletionPublished = true;
+            mCompletionSource?.TrySetResult(this);
+        }
+
+        /// <summary>
+        /// 标记本次请求为成功状态。请求已进入完成时安全返回false。
         /// </summary>
         /// <returns></returns>
-        internal bool MarkCompleted()
+        internal bool MarkSuccess()
         {
-            return TrySetTerminalState(ResourceRequestState.Completed);
+            return TrySetTerminalState(ResourceRequestState.Success);
         }
 
         /// <summary>

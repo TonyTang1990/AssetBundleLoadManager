@@ -81,11 +81,8 @@ namespace TUI
                 Debug.LogError("TRawImage.SetRawImage失败，textureName为空!");
                 return null;
             }
-            if(!async)
-            {
-                return AtlasManager.Singleton.SetRawImage(this, textureName);
-            }
-            return AtlasManager.Singleton.SetRawImageAsync(this, textureName);
+            var loadMethod = async ? ResourceLoadMethod.Async : ResourceLoadMethod.Sync;
+            return AtlasManager.Singleton.SetRawImageAsync(this, textureName, loadMethod: loadMethod);
         }
 
         /// <summary>

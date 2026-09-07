@@ -601,7 +601,18 @@ namespace TResource
             {
                 assetLoader = null;
                 requestHandle.MarkFailed();
-                completeHandler?.Invoke(assetLoader, requestHandle);
+                try
+                {
+                    completeHandler?.Invoke(assetLoader, requestHandle);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+                finally
+                {
+                    requestHandle.PublishCompletion();
+                }
                 Debug.LogError($"不允许传空Asset路径!");
                 return requestHandle;
             }
@@ -610,7 +621,18 @@ namespace TResource
             {
                 assetLoader = null;
                 requestHandle.MarkFailed();
-                completeHandler?.Invoke(assetLoader, requestHandle);
+                try
+                {
+                    completeHandler?.Invoke(assetLoader, requestHandle);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+                finally
+                {
+                    requestHandle.PublishCompletion();
+                }
                 Debug.LogError($"无法获取Asset:{assetName}的路径，加载Asset:{assetName}失败!");
                 return requestHandle;
             }
@@ -624,8 +646,19 @@ namespace TResource
             {
                 if (assetLoader.IsDone)
                 {
-                    requestHandle.MarkCompleted();
-                    completeHandler?.Invoke(assetLoader, requestHandle);
+                    requestHandle.MarkSuccess();
+                    try
+                    {
+                        completeHandler?.Invoke(assetLoader, requestHandle);
+                    }
+                    catch (Exception exception)
+                    {
+                        Debug.LogException(exception);
+                    }
+                    finally
+                    {
+                        requestHandle.PublishCompletion();
+                    }
                     return requestHandle;
                 }
                 else
@@ -676,7 +709,7 @@ namespace TResource
         public abstract AssetBundleRequestHandle RequstAssetAB(string assetName, out BundleLoader abLoader,
                                           Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
                                           ResourceLoadType loadType = ResourceLoadType.NormalLoad,
-                                          ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
+                                                                ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
 
         /// <summary>
         /// 请求AssetBundle
@@ -694,7 +727,8 @@ namespace TResource
         public abstract AssetBundleRequestHandle RequstAssetBundle(string abPath, out BundleLoader abLoader,
                                               Action<BundleLoader, AssetBundleRequestHandle> completeHandler,
                                               ResourceLoadType loadType = ResourceLoadType.NormalLoad,
-                                              ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
+                                                                    ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync);
+
 
         /// <summary>
         /// 更新入口
@@ -839,25 +873,25 @@ namespace TResource
         /// </summary>
         public void PrintAllLoadedResourceOwnersAndRefCount()
         {
-            ResourceLogger.log("Normal Loaded AssetBundle Info:");
+            Debug.Log("Normal Loaded AssetBundle Info:");
             foreach (var assetBundleInfo in mAllLoadedNormalABIMap)
             {
                 assetBundleInfo.Value.PrintAllResourceInfo();
             }
 
-            ResourceLogger.log("Permanent Loaded AssetBundle Info:");
+            Debug.Log("Permanent Loaded AssetBundle Info:");
             foreach (var assetBundleInfo in mAllLoadedPermanentABIMap)
             {
                 assetBundleInfo.Value.PrintAllResourceInfo();
             }
 
-            ResourceLogger.log("Normal Loaded Asset Info:");
+            Debug.Log("Normal Loaded Asset Info:");
             foreach (var assetBundleInfo in mAllLoadedNormalAssetInfoMap)
             {
                 assetBundleInfo.Value.PrintAllResourceInfo();
             }
 
-            ResourceLogger.log("Permanent Loaded Asset Info:");
+            Debug.Log("Permanent Loaded Asset Info:");
             foreach (var assetBundleInfo in mAllLoadedPermanentAssetInfoMap)
             {
                 assetBundleInfo.Value.PrintAllResourceInfo();

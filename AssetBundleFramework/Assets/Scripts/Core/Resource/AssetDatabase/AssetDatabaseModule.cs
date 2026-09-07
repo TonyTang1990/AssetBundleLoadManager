@@ -122,7 +122,18 @@ namespace TResource
             abLoader = null;
             var requestHandle = LoaderManager.Singleton.CreateAssetBundleRequestHandle();
             requestHandle.MarkFailed();
-            completeHandler?.Invoke(abLoader, requestHandle);
+            try
+            {
+                completeHandler?.Invoke(abLoader, requestHandle);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+            }
+            finally
+            {
+                requestHandle.PublishCompletion();
+            }
             return requestHandle;
         }
 
@@ -148,7 +159,18 @@ namespace TResource
             abLoader = null;
             var requestHandle = LoaderManager.Singleton.CreateAssetBundleRequestHandle();
             requestHandle.MarkFailed();
-            completeHandler?.Invoke(abLoader, requestHandle);
+            try
+            {
+                completeHandler?.Invoke(abLoader, requestHandle);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+            }
+            finally
+            {
+                requestHandle.PublishCompletion();
+            }
             return requestHandle;
         }
 

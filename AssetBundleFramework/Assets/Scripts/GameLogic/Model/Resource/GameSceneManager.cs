@@ -55,73 +55,73 @@ public class GameSceneManager : SingletonBase<GameSceneManager>
     }
 
     /// <summary>
-    /// 同步加载场景
-    /// </summary>
-    /// <param name="sceneName"></param>
-    public void LoadSceneSync(string sceneName)
-    {
-        BundleLoader bundleLoader;
-        // 场景Asset比较特别，不是作为Asset加载，所以这里只加载所在AssetBundle
-        var assetBundleRequestHandle = ResourceModuleManager.Singleton.RequstAssetABSync(
-        sceneName,
-        out bundleLoader,
-        (Action<BundleLoader, AssetBundleRequestHandle>)((loader, assetBundleRequestHandle) =>
-        {
-            mResourceScope.RemoveRequest(assetBundleRequestHandle);
-            if(loader == null || !assetBundleRequestHandle.IsComplete)
-            {
-                return;
-            }
-            // 场景资源计数采用手动管理计数的方式
-            // 切场景时手动计数减1
-            // 加载时手动计数加1，不绑定对象
-            // 减掉场景计数后，切换场景完成后再强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
-            ReleaseCurrentSceneRes();
-            // 场景的计数是加载所在AB上的
-            mCurrentSceneABPath = loader.ResourcePath;
-            // 非AB模式会返回null
-            mResourceScope.GetAssetBundle(loader);
-            sceneName = Path.GetFileNameWithoutExtension(sceneName);
-            SceneManager.LoadSceneAsync(sceneName);
-        }),
-        ResourceLoadType.NormalLoad);
-        mResourceScope.RecordRequest(assetBundleRequestHandle);
-    }
-
-    /// <summary>
     /// 异步加载场景
-    /// TODO:
-    /// 异步加载完成回调
     /// </summary>
     /// <param name="sceneName"></param>
-    public void LoadSceneAsync(string sceneName)
+    /// <param name="sceneLoadProgressCb">场景加载进度回调</param>
+    /// <param name="sceneLoadCompleteCb">场景加载完成回调</param>
+    public void LoadSceneAsync(string sceneName, Action<float> sceneLoadProgressCb = null,
+                              Action<AsyncOperation> sceneLoadCompleteCb = null)
     {
+        Debug.Log($"开始异步加载场景:{sceneName}");
         BundleLoader bundleLoader;
         // 场景Asset比较特别，不是作为Asset加载，所以这里只加载所在AssetBundle
         var assetBundleRequestHandle = ResourceModuleManager.Singleton.RequstAssetABAsync(
         sceneName,
         out bundleLoader,
-        (Action<BundleLoader, AssetBundleRequestHandle>)((loader, assetBundleRequestHandle) =>
+        (loader, assetBundleRequestHandle) =>
         {
+            Debug.Log($"异步加载场景AB完成！");
             mResourceScope.RemoveRequest(assetBundleRequestHandle);
-            if(loader == null || !assetBundleRequestHandle.IsComplete)
+            if(loader == null || !assetBundleRequestHandle.IsSuccess)
             {
+                Debug.LogError($"异步加载场景AB失败: {sceneName}");
                 return;
             }
-            // 场景资源计数采用手动管理计数的方式
-            // 切场景时手动计数减1
-            // 加载时手动计数加1，不绑定对象
-            // 减掉场景计数后，切换场景完成后再强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
-            ReleaseCurrentSceneRes();
-            // 场景的计数是加载所在AB上的
-            mCurrentSceneABPath = loader.ResourcePath;
             // 非AB模式会返回null
             mResourceScope.GetAssetBundle(loader);
-            sceneName = Path.GetFileNameWithoutExtension(sceneName);
-            SceneManager.LoadSceneAsync(sceneName);
-        }),
+            var coroutine = LoadSceneSyncCoroutine(sceneName, loader, sceneLoadProgressCb, sceneLoadCompleteCb);
+            CoroutineManager.GetInstance().StartCoroutine(coroutine);
+        },
         ResourceLoadType.NormalLoad);
         mResourceScope.RecordRequest(assetBundleRequestHandle);
+    }
+
+    /// <summary>
+    /// 场景同步加载协程
+    /// </summary>
+    /// <param name="sceneName"></param>
+    /// <param name="loader"></param>
+    /// <param name="sceneLoadProgressCb"></param>
+    /// <param name="sceneLoadCompleteCb"></param>
+    /// <returns></returns>
+    private IEnumerator LoadSceneSyncCoroutine(string sceneName, BundleLoader loader,
+                                               Action<float> sceneLoadProgressCb = null,
+                                               Action<AsyncOperation> sceneLoadCompleteCb = null)
+    {
+        Debug.Log($"开始加载场景:{sceneName}");
+        sceneName = Path.GetFileNameWithoutExtension(sceneName);
+        var asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+        while(!asyncOperation.isDone)
+        {
+            var progress = asyncOperation.progress;
+            Debug.Log($"场景:{sceneName}加载进度: {progress}");
+            sceneLoadProgressCb?.Invoke(progress);
+            yield return null;
+        }
+        Debug.Log($"场景:{sceneName}加载进度: {1}");
+        Debug.Log($"场景:{sceneName}加载完成，开始释放之前场景资源");
+        // 加载完成后再释放之前场景资源
+        // 场景资源计数采用手动管理计数的方式
+        // 切场景时手动计数减1
+        // 加载时手动计数加1，不绑定对象
+        // 减掉场景计数后，切换场景完成后再强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
+        ReleaseCurrentSceneRes();
+        // 场景的计数是加载所在AB上的
+        mCurrentSceneABPath = loader.ResourcePath;
+        sceneLoadProgressCb?.Invoke(1f);
+        sceneLoadCompleteCb?.Invoke(asyncOperation);
+        Debug.Log($"场景:{sceneName}加载结束！");
     }
 
     /// <summary>

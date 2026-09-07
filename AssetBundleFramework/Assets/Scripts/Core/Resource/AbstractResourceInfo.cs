@@ -274,24 +274,24 @@ namespace TResource
         /// </summary>
         public void PrintAllResourceInfo()
         {
-            ResourceLogger.log(string.Format("Resource Path: {0}", ResourcePath));
-            ResourceLogger.log(string.Format("Ref Count: {0}", RefCount));
+            Debug.Log(string.Format("Resource Path: {0}", ResourcePath));
+            Debug.Log(string.Format("Ref Count: {0}", RefCount));
             if (mReferenceOwnerList.Count == 0)
             {
-                ResourceLogger.log("    Owners Name : None");
+                Debug.Log("    Owners Name : None");
             }
             else
             {
-                ResourceLogger.log("    Owners Name :");
+                Debug.Log("    Owners Name :");
                 for (int i = 0, length = mReferenceOwnerList.Count; i < length; i++)
                 {
                     if (mReferenceOwnerList[i].Target != null)
                     {
-                        ResourceLogger.log(string.Format("      owner[{0}] : {1}", i, mReferenceOwnerList[i].Target.ToString()));
+                        Debug.Log(string.Format("      owner[{0}] : {1}", i, mReferenceOwnerList[i].Target.ToString()));
                     }
                 }
             }
-            ResourceLogger.log(string.Format("  Last Used Time: {0}", LastUsedTime));
+            Debug.Log(string.Format("  Last Used Time: {0}", LastUsedTime));
         }
         #endregion
     }

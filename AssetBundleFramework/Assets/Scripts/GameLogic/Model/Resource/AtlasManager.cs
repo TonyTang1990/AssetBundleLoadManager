@@ -61,67 +61,17 @@ public class AtlasManager : SingletonBase<AtlasManager>
     /// </summary>
     /// <param name="atlasName">图集名(含后缀)</param>
     /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
-    /// <param name="callback">资源回调</param>
-    /// <param name="loadType">资源加载类型</param>
-    public void LoadAtlas(string atlasName, ResourceScope resourceScope,
-                          Action<SpriteAtlas, AssetRequestHandle> callBack = null,
-                          ResourceLoadType loadType = ResourceLoadType.NormalLoad)
-    {
-        AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<SpriteAtlas>(
-            atlasName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
-            {
-                DIYLog.Log($"LoadAtlas加载atlasName:{atlasName}完成!");
-                resourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-                var spriteAtlas = resourceScope.GetAsset<SpriteAtlas>(loader);
-                callBack?.Invoke(spriteAtlas, assetRequestHandle);
-            },
-            loadType
-        );
-        resourceScope.RecordRequest(assetRequestHandle);
-    }
-
-    /// <summary>
-    /// 异步加载指定图集
-    /// Note:
-    /// 只加载AB不加载Sprite且不添加计数和绑定
-    /// 一般用于加载常驻图集
-    /// </summary>
-    /// <param name="atlasName">图集名(含后缀)</param>
-    /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
     /// <param name="callBack">资源回调</param>
     /// <param name="loadType">资源加载类型</param>
+    /// <param name="loadMethod">资源加载方式</param>
+    /// <returns>Asset请求句柄</returns>
     public AssetRequestHandle LoadAtlasAsync(string atlasName, ResourceScope resourceScope,
                                              Action<SpriteAtlas, AssetRequestHandle> callBack = null,
-                                             ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+                                             ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                             ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
     {
-        AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetAsync<SpriteAtlas>(
-            atlasName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
-            {
-                DIYLog.Log($"LoadAtlasAsync异步加载atlasName:{atlasName}完成!");
-                resourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-                var spriteAtlas = resourceScope.GetAsset<SpriteAtlas>(loader);
-                callBack?.Invoke(spriteAtlas, assetRequestHandle);
-            },
-            loadType
-        );
-        resourceScope.RecordRequest(assetRequestHandle);
-        return assetRequestHandle;
+        return ResourceManager.Singleton.GetAssetByCb(atlasName, callBack, resourceScope,
+                                                            loadType, loadMethod);
     }
 
     /// <summary>
@@ -132,73 +82,23 @@ public class AtlasManager : SingletonBase<AtlasManager>
     /// <param name="resourceScope">资源计数释放+请求打断管理器(目前要求必传)</param>
     /// <param name="callBack">回调</param>
     /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
-    public void SetImageSingleSprite(Image img, string spriteName,
-                                     ResourceScope resourceScope,
-                                     Action<Sprite, AssetRequestHandle> callBack = null,
-                                     ResourceLoadType loadType = ResourceLoadType.NormalLoad)
-    {
-        DIYLog.Assert(img == null, "SetImageSingleSprite不允许传空Image!");
-        AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<Sprite>(
-            spriteName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
-            {
-                DIYLog.Log($"SetImageSingleSprite加载spriteName:{spriteName}完成!");
-                resourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                var sprite = resourceScope.GetAsset<Sprite>(loader);
-                img.sprite = sprite;
-                callBack?.Invoke(sprite, assetRequestHandle);
-            },
-            loadType
-        );
-        resourceScope.RecordRequest(assetRequestHandle);
-    }
-
-    /// <summary>
-    /// 异步设置Image指定图片(单图或者SpriteAtlas里的图)
-    /// </summary>
-    /// <param name="img">Image组件</param>
-    /// <param name="spriteName">Sprite名(含后缀)</param>
-    /// <param name="resourceScope">资源资源计数释放+请求打断管理器(目前要求必传)</param>
-    /// <param name="callBack">回调</param>
-    /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
+    /// <param name="loadMethod">资源加载方式</param>
+    /// <returns>Asset请求句柄</returns>
     public AssetRequestHandle SetImageSingleSpriteAsync(Image img, string spriteName,
                                                         ResourceScope resourceScope,
                                                         Action<Sprite, AssetRequestHandle> callBack = null,
-                                                        ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+                                                        ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                                        ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
     {
         DIYLog.Assert(img == null, "setImageSingleSprite不允许传空Image!");
-        AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetAsync<Sprite>(
-            spriteName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
+        return ResourceManager.Singleton.GetAssetByCb<Sprite>(spriteName, (sprite, assetRequestHandle) =>
+        {
+            if (sprite != null)
             {
-                DIYLog.Log($"SetImageSingleSpriteAsync异步加载Sprite:{spriteName}完成!");
-                resourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                var sprite = resourceScope.GetAsset<Sprite>(loader);
                 img.sprite = sprite;
-                callBack?.Invoke(sprite, assetRequestHandle);
-            },
-            loadType
-        );
-        resourceScope.RecordRequest(assetRequestHandle);
-        return assetRequestHandle;
+            }
+            callBack?.Invoke(sprite, assetRequestHandle);
+        }, resourceScope, loadType, loadMethod);
     }
 
     /// <summary>
@@ -206,78 +106,42 @@ public class AtlasManager : SingletonBase<AtlasManager>
     /// </summary>
     /// <param name="timg">TImage组件</param>
     /// <param name="spriteName">Sprite名(含后缀)</param>
-    /// <param name="resourceScope">资源资源计数释放+请求打断管理器(目前要求必传)</param>
     /// <param name="callBack">回调</param>
     /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
-    public AssetRequestHandle SetTImageSingleSprite(TImage timg, string spriteName,
-                                                    Action<Sprite, AssetRequestHandle> callBack = null,
-                                                    ResourceLoadType loadType = ResourceLoadType.NormalLoad)
-    {
-        DIYLog.Assert(timg == null, "setTImageSingleSprite!");
-        AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<Sprite>(
-            spriteName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
-            {
-                DIYLog.Log($"SetTImageSingleSprite加载Sprite:{spriteName}完成!");
-                timg.ResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                // 清除老的资源引用
-                timg.ReleaseSpriteRes();
-                var sprite = timg.ResourceScope.GetAsset<Sprite>(loader);
-                timg.sprite = sprite;
-                timg.SpritePath = loader.ResourcePath;
-                callBack?.Invoke(sprite, assetRequestHandle);
-            },
-            loadType
-        );
-        timg.ResourceScope.RecordRequest(assetRequestHandle);
-        return assetRequestHandle;
-    }
-
-    /// <summary>
-    /// 异步设置TImage指定图片(单图或者SpriteAtlas里的图)
-    /// </summary>
-    /// <param name="timg">TImage组件</param>
-    /// <param name="callBack">回调</param>
-    /// <param name="spriteName">Sprite名(含后缀)</param>
-    /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
+    /// <param name="loadMethod">资源加载方式</param>
+    /// <returns>Asset请求句柄</returns>
     public AssetRequestHandle SetTImageSingleSpriteAsync(TImage timg, string spriteName,
                                                          Action<Sprite, AssetRequestHandle> callBack = null,
-                                                         ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+                                                         ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                                         ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
     {
         DIYLog.Assert(timg == null, "SetTImageSingleSpriteAsync!");
         AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetAsync<Sprite>(
-            spriteName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
+        Action<AssetLoader, AssetRequestHandle> completeHandler = (loader, assetRequestHandle) =>
+        {
+            DIYLog.Log($"SetTImageSingleSpriteAsync加载Sprite:{spriteName}完成!");
+            timg.ResourceScope.RemoveRequest(assetRequestHandle);
+            if (loader == null || !assetRequestHandle.IsSuccess)
             {
-                DIYLog.Log($"SetTImageSingleSpriteAsync异步加载Sprite:{spriteName}完成!");
-                timg.ResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                // 清除老的资源引用
-                timg.ReleaseSpriteRes();
-                var sprite = timg.ResourceScope.GetAsset<Sprite>(loader);
-                timg.sprite = sprite;
-                timg.SpritePath = loader.ResourcePath;
-                callBack?.Invoke(sprite, assetRequestHandle);
-            },
-            loadType
-        );
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            var sprite = timg.ResourceScope.GetAsset<Sprite>(loader);
+            if(sprite == null)
+            {
+                Debug.LogError($"SetTImageSingleSpriteAsync加载Sprite:{spriteName}失败，Sprite为null!");
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            // 清除老的资源引用
+            timg.ReleaseSpriteRes();
+            timg.sprite = sprite;
+            timg.SpritePath = loader.ResourcePath;
+            callBack?.Invoke(sprite, assetRequestHandle);
+        };
+        var assetRequestHandle = ResourceManager.Singleton.RequestAssetAsync<Sprite>(spriteName, out assetLoader,
+                                                                                     completeHandler, loadType,
+                                                                                     loadMethod);
         timg.ResourceScope.RecordRequest(assetRequestHandle);
         return assetRequestHandle;
     }
@@ -290,86 +154,51 @@ public class AtlasManager : SingletonBase<AtlasManager>
     /// <param name="spriteName">Sprite名(不含后缀)</param>
     /// <param name="callBack">回调</param>
     /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
-    public AssetRequestHandle SetTImageSpriteAtlas(TImage timg, string atlasName, string spriteName,
-                                                   Action<Sprite, AssetRequestHandle> callBack = null,
-                                                   ResourceLoadType loadType = ResourceLoadType.NormalLoad)
-    {
-        DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
-        AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<SpriteAtlas>(
-            atlasName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
-            {
-                DIYLog.Log($"SetTImageSpriteAtlas加载SpriteAtlas:{atlasName}完成!");
-                timg.ResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                // 清除老的资源引用
-                timg.ReleaseSpriteRes();
-                DIYLog.Log("加载SpriteAtlas之前!");
-                var spriteatlas = timg.ResourceScope.GetAsset<SpriteAtlas>(loader);
-                DIYLog.Log("加载SpriteAtlas之后!");
-                var sprite = spriteatlas.GetSprite(spriteName);
-                timg.sprite = sprite;
-                DIYLog.Log("SpriteAtlas.GetSprite()之后!");
-                // 计数是加载SpriteAtlas身上的
-                timg.SpritePath = loader.ResourcePath;
-                callBack?.Invoke(sprite, assetRequestHandle);
-            },
-            loadType
-        );
-        timg.ResourceScope.RecordRequest(assetRequestHandle);
-        return assetRequestHandle;
-    }
-
-    /// <summary>
-    /// 异步设置TImage指定图片(通过先加载SpriteAtlas再加载Sprite的方式)
-    /// </summary>
-    /// <param name="timg">Image组件</param>
-    /// <param name="atlasName">图集名(含后缀)</param>
-    /// <param name="spriteName">Sprite名(不含后缀)</param>
-    /// <param name="callBack">回调</param>
-    /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
+    /// <param name="loadMethod">资源加载方式</param>
+    /// <returns>Asset请求句柄</returns>
     public AssetRequestHandle SetTImageSpriteAtlasAsync(TImage timg, string atlasName, string spriteName,
                                                         Action<Sprite, AssetRequestHandle> callBack = null,
-                                                        ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+                                                        ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                                        ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
     {
         DIYLog.Assert(timg == null, "setImageSpriteAtlas不允许传空TImage!");
         AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetAsync<SpriteAtlas>(
-            atlasName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
+        Action<AssetLoader, AssetRequestHandle> completeHandler = (loader, assetRequestHandle) =>
+        {
+            DIYLog.Log($"SetTImageSpriteAtlasAsync加载SpriteAtlas:{atlasName}完成!");
+            timg.ResourceScope.RemoveRequest(assetRequestHandle);
+            if (loader == null || !assetRequestHandle.IsSuccess)
             {
-                DIYLog.Log($"SetTImageSpriteAtlasAsync异步加载SpriteAtlas:{atlasName} AB完成!");
-                timg.ResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                // 清除老的资源引用
-                timg.ReleaseSpriteRes();
-                DIYLog.Log("加载SpriteAtlas之前!");
-                var spriteatlas = timg.ResourceScope.GetAsset<SpriteAtlas>(loader);
-                DIYLog.Log("加载SpriteAtlas之后!");
-                var sprite = spriteatlas.GetSprite(spriteName);
-                timg.sprite = sprite;
-                DIYLog.Log("SpriteAtlas.GetSprite()之后!");
-                // 计数是加载SpriteAtlas身上的
-                timg.SpritePath = loader.ResourcePath;
-                callBack?.Invoke(sprite, assetRequestHandle);
-            },
-            loadType
-        );
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            var spriteAtlas = timg.ResourceScope.GetAsset<SpriteAtlas>(loader);
+            if(spriteAtlas == null)
+            {
+                DIYLog.LogError($"加载SpriteAtlas失败:{atlasName}");
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            var sprite = spriteAtlas.GetSprite(spriteName);
+            if(sprite == null)
+            {
+                Debug.LogError($"SetTImageSpriteAtlasAsync加载Sprite:{spriteName}失败，Sprite为null!");
+                // 返还spriteAtlas添加的引用
+                timg.ResourceScope.ReleaseResource(loader.ResourcePath);
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            // 清除老的资源引用
+            timg.ReleaseSpriteRes();
+            timg.sprite = sprite;
+            DIYLog.Log("SpriteAtlas.GetSprite()之后!");
+            // 计数是加载SpriteAtlas身上的
+            timg.SpritePath = loader.ResourcePath;
+            callBack?.Invoke(sprite, assetRequestHandle);
+        };
+        var assetRequestHandle = ResourceManager.Singleton.RequestAssetAsync<SpriteAtlas>(atlasName, out assetLoader,
+                                                                                          completeHandler, loadType,
+                                                                                          loadMethod);
         timg.ResourceScope.RecordRequest(assetRequestHandle);
         return assetRequestHandle;
     }
@@ -382,78 +211,42 @@ public class AtlasManager : SingletonBase<AtlasManager>
     /// <param name="spriteName">Sprite名(不含后缀)</param>
     /// <param name="callBack">回调</param>
     /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
-    public AssetRequestHandle SetTImageSubSprite(TImage timg, string multipleTextureName, string spriteName,
-                                                 Action<Sprite, AssetRequestHandle> callBack = null,
-                                                 ResourceLoadType loadType = ResourceLoadType.NormalLoad)
-    {
-        DIYLog.Assert(timg == null, "SetTImageSubSprite不允许传空TImage!");
-        AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<Texture2D>(
-            multipleTextureName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
-            {
-                DIYLog.Log($"SetTImageSubSprite加载MultipleTexture:{multipleTextureName}完成!");
-                timg.ResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                // 清除老的资源引用
-                timg.ReleaseSpriteRes();
-                var sprite = timg.ResourceScope.GetSubAsset<Sprite>(loader, spriteName);
-                timg.sprite = sprite;
-                // SubAsset默认计数和对象绑定都是绑在主Asset上的，所以记录主Asset的路径
-                timg.SpritePath = loader.ResourcePath;
-                callBack?.Invoke(sprite, assetRequestHandle);
-            },
-            loadType
-        );
-        timg.ResourceScope.RecordRequest(assetRequestHandle);
-        return assetRequestHandle;
-    }
-
-    /// <summary>
-    /// 异步设置TImage指定图片(通过Multiple Sprite加载Sprite的方式)
-    /// </summary>
-    /// <param name="timg">Image组件</param>
-    /// <param name="multipleTextureName">MultipleTexture图路径</param>
-    /// <param name="spriteName">Sprite名(不含后缀)</param>
-    /// <param name="callBack">回调</param>
-    /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
+    /// <param name="loadMethod">资源加载方式</param>
+    /// <returns>Asset请求句柄</returns>
     public AssetRequestHandle SetTImageSubSpriteAsync(TImage timg, string multipleTextureName, string spriteName,
                                                       Action<Sprite, AssetRequestHandle> callBack = null,
-                                                      ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+                                                      ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                                      ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
     {
         DIYLog.Assert(timg == null, "SetTImageSubSpriteAsync不允许传空TImage!");
         AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetAsync<Texture2D>(
-            multipleTextureName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
+        Action<AssetLoader, AssetRequestHandle> completeHandler = (loader, assetRequestHandle) =>
+        {
+            DIYLog.Log($"SetTImageSubSpriteAsync加载MultipleTexture:{multipleTextureName}完成!");
+            timg.ResourceScope.RemoveRequest(assetRequestHandle);
+            if (loader == null || !assetRequestHandle.IsSuccess)
             {
-                DIYLog.Log($"SetTImageSubSpriteAsync异步加载MultipleTetxure:{multipleTextureName}完成!");
-                timg.ResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                // 清除老的资源引用
-                timg.ReleaseSpriteRes();
-                var sprite = timg.ResourceScope.GetSubAsset<Sprite>(loader, spriteName);
-                timg.sprite = sprite;
-                // SubAsset默认计数和对象绑定都是绑在主Asset上的，所以记录主Asset的路径
-                timg.SpritePath = loader.ResourcePath;
-                callBack?.Invoke(sprite, assetRequestHandle);
-            },
-            loadType
-        );
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            var sprite = timg.ResourceScope.GetSubAsset<Sprite>(loader, spriteName);
+            if(sprite == null)
+            {
+                Debug.LogError($"SetTImageSubSpriteAsync加载Sprite:{spriteName}失败，Sprite为null!");
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            // 清除老的资源引用
+            timg.ReleaseSpriteRes();
+            timg.sprite = sprite;
+            // SubAsset默认计数和对象绑定都是绑在主Asset上的，所以记录主Asset的路径
+            timg.SpritePath = loader.ResourcePath;
+            callBack?.Invoke(sprite, assetRequestHandle);
+        };
+        var assetRequestHandle = ResourceManager.Singleton.RequestAssetAsync<Texture2D>(multipleTextureName,
+                                                                                        out assetLoader,
+                                                                                        completeHandler, loadType,
+                                                                                        loadMethod);
         timg.ResourceScope.RecordRequest(assetRequestHandle);
         return assetRequestHandle;
     }
@@ -465,75 +258,40 @@ public class AtlasManager : SingletonBase<AtlasManager>
     /// <param name="textureName">纹理名(含后缀)</param>
     /// <param name="callBack">回调</param>
     /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
-    public AssetRequestHandle SetRawImage(TRawImage trawimg, string textureName,
-                                          Action<Texture, AssetRequestHandle> callBack = null,
-                                          ResourceLoadType loadType = ResourceLoadType.NormalLoad)
-    {
-        DIYLog.Assert(trawimg == null, "SetRawImage不允许传空TRawImage!");
-        AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<Texture>(
-            textureName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
-            {
-                DIYLog.Log($"SetRawImage加载textureName:{textureName}完成!");
-                trawimg.ResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                // 清除老的资源引用
-                trawimg.ReleaseTextureRes();
-                var texture = trawimg.ResourceScope.GetAsset<Texture>(loader);
-                trawimg.texture = texture;
-                trawimg.TexturePath = loader.ResourcePath;
-                callBack?.Invoke(texture, assetRequestHandle);
-            },
-            loadType
-        );
-        trawimg.ResourceScope.RecordRequest(assetRequestHandle);
-        return assetRequestHandle;
-    }
-
-    /// <summary>
-    /// 异步设置Image指定图片
-    /// </summary>
-    /// <param name="trawimg">Image组件</param>
-    /// <param name="textureName">纹理名(含后缀)</param>
-    /// <param name="callBack">回调</param>
-    /// <param name="loadType">资源加载类型</param>
-    /// <returns></returns>
+    /// <param name="loadMethod">资源加载方式</param>
+    /// <returns>Asset请求句柄</returns>
     public AssetRequestHandle SetRawImageAsync(TRawImage trawimg, string textureName,
                                                Action<Texture, AssetRequestHandle> callBack = null,
-                                               ResourceLoadType loadType = ResourceLoadType.NormalLoad)
+                                               ResourceLoadType loadType = ResourceLoadType.NormalLoad,
+                                               ResourceLoadMethod loadMethod = ResourceLoadMethod.Sync)
     {
         DIYLog.Assert(trawimg == null, "SetRawImageAsync不允许传空TRawImage!");
         AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetAsync<Texture>(
-            textureName,
-            out assetLoader,
-            (loader, assetRequestHandle) =>
+        Action<AssetLoader, AssetRequestHandle> completeHandler = (loader, assetRequestHandle) =>
+        {
+            DIYLog.Log($"SetRawImageAsync加载textureName:{textureName}完成!");
+            trawimg.ResourceScope.RemoveRequest(assetRequestHandle);
+            if (loader == null || !assetRequestHandle.IsSuccess)
             {
-                DIYLog.Log($"SetRawImageAsync异步加载textureName:{textureName}完成!");
-                trawimg.ResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
-                {
-                    callBack?.Invoke(null, assetRequestHandle);
-                    return;
-                }
-
-                // 清除老的资源引用
-                trawimg.ReleaseTextureRes();
-                var texture = trawimg.ResourceScope.GetAsset<Texture>(loader);
-                trawimg.texture = texture;
-                trawimg.TexturePath = loader.ResourcePath;
-                callBack?.Invoke(texture, assetRequestHandle);
-            },
-            loadType
-        );
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            var texture = trawimg.ResourceScope.GetAsset<Texture>(loader);
+            if(texture == null)
+            {
+                Debug.LogError($"SetRawImageAsync加载textureName:{textureName}失败，Texture为null!");
+                callBack?.Invoke(null, assetRequestHandle);
+                return;
+            }
+            // 清除老的资源引用
+            trawimg.ReleaseTextureRes();
+            trawimg.texture = texture;
+            trawimg.TexturePath = loader.ResourcePath;
+            callBack?.Invoke(texture, assetRequestHandle);
+        };
+        var assetRequestHandle = ResourceManager.Singleton.RequestAssetAsync<Texture>(textureName, out assetLoader,
+                                                                                      completeHandler, loadType,
+                                                                                      loadMethod);
         trawimg.ResourceScope.RecordRequest(assetRequestHandle);
         return assetRequestHandle;
     }

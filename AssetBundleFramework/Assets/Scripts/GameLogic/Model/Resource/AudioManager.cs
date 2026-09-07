@@ -137,21 +137,28 @@ public class AudioManager : SingletonTemplate<AudioManager>
         var sfxGo = mAudioGoPool.Pop(mSFXGoTemplate);
         sfxGo.transform.SetParent(mSoundParentTransform, false);
         AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+        var assetRequestHandle = ResourceManager.Singleton.RequestAssetAsync<AudioClip>(
             resName,
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
                 DIYLog.Log($"PlaySFXSound加载resName:{resName}完成!");
                 mResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
+                if (loader == null || !assetRequestHandle.IsSuccess)
                 {
                     mAudioGoPool.Push(mSFXInstanceID, sfxGo);
                     callBack?.Invoke(null, assetRequestHandle);
                     return;
                 }
-                var sfxAudioInfo = ObjectPool.Singleton.Pop<SFXAudioInfo>();
                 var ac = mResourceScope.GetAsset<AudioClip>(loader);
+                if(ac == null)
+                {
+                    Debug.LogError($"加载AudioClip失败:{resName}");
+                    mAudioGoPool.Push(mSFXInstanceID, sfxGo);
+                    callBack?.Invoke(null, assetRequestHandle);
+                    return;
+                }
+                var sfxAudioInfo = ObjectPool.Singleton.Pop<SFXAudioInfo>();
                 var audioSource = sfxGo.GetComponent<AudioSource>();
                 sfxAudioInfo.SFXAudioGo = sfxGo;
                 sfxAudioInfo.SFXAudioSource = audioSource;
@@ -169,7 +176,8 @@ public class AudioManager : SingletonTemplate<AudioManager>
                 }, ac.length);
                 callBack?.Invoke(ac, assetRequestHandle);
             },
-            loadType
+            loadType,
+            ResourceLoadMethod.Sync
         );
         mResourceScope.RecordRequest(assetRequestHandle);
         return assetRequestHandle;
@@ -189,29 +197,36 @@ public class AudioManager : SingletonTemplate<AudioManager>
                                       ResourceLoadType loadType = ResourceLoadType.NormalLoad)
     {
         AssetLoader assetLoader;
-        var assetRequestHandle = ResourceModuleManager.Singleton.RequstAssetSync<AudioClip>(
+        var assetRequestHandle = ResourceManager.Singleton.RequestAssetAsync<AudioClip>(
             resName,
             out assetLoader,
             (loader, assetRequestHandle) =>
             {
                 DIYLog.Log($"PlayBGM加载resName:{resName}完成!");
                 mResourceScope.RemoveRequest(assetRequestHandle);
-                if (loader == null || !assetRequestHandle.IsComplete)
+                if (loader == null || !assetRequestHandle.IsSuccess)
                 {
+                    callBack?.Invoke(null, assetRequestHandle);
+                    return;
+                }
+                var clip = mResourceScope.GetAsset<AudioClip>(loader);
+                if(clip == null)
+                {
+                    Debug.LogError($"PlayBGM加载resName:{resName}失败，AudioClip为null!");
                     callBack?.Invoke(null, assetRequestHandle);
                     return;
                 }
                 //背景音效是挂载DontDestroyOnLoad上会导致永远无法满足卸载条件，所以需要手动移除资源计数
                 ReleaseCurrentBgmRes();
                 mCurrentBGMResName = resName;
-                var clip = mResourceScope.GetAsset<AudioClip>(loader);
                 mBGMAudioSource.clip = clip;
                 mBGMAudioSource.loop = loop;
                 mBGMAudioSource.mute = mIsMuteAllSound;
                 mBGMAudioSource.Play();
                 callBack?.Invoke(clip, assetRequestHandle);
             },
-            loadType
+            loadType,
+            ResourceLoadMethod.Sync
         );
         mResourceScope.RecordRequest(assetRequestHandle);
         return assetRequestHandle;

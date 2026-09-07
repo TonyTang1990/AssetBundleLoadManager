@@ -224,10 +224,10 @@ namespace TResource
         {
             foreach (var abinfo in AssetBundleDependencyMap)
             {
-                ResourceLogger.log(string.Format("AB Path:{0}", abinfo.Key));
+                Debug.Log(string.Format("AB Path:{0}", abinfo.Key));
                 foreach (var dpfile in abinfo.Value)
                 {
-                    ResourceLogger.log(string.Format("       DP AB Path:{0}", dpfile));
+                    Debug.Log(string.Format("       DP AB Path:{0}", dpfile));
                 }
             }
         }
@@ -330,7 +330,18 @@ namespace TResource
                 abLoader = null;
                 Debug.LogError($"不允许传空Asset名，请求加载Asset所在AssetBundle失败!");
                 failedHandle.MarkFailed();
-                completeHandler?.Invoke(abLoader, failedHandle);
+                try
+                {
+                    completeHandler?.Invoke(abLoader, failedHandle);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+                finally
+                {
+                    failedHandle.PublishCompletion();
+                }
                 return failedHandle;
             }
             var abPath = GetAssetNameAssetBundlePath(assetName);
@@ -361,7 +372,18 @@ namespace TResource
                 abLoader = null;
                 Debug.LogError($"不允许传空AB路径名，请求加载AssetBundle失败!");
                 requestHandle.MarkFailed();
-                completeHandler?.Invoke(abLoader, requestHandle);
+                try
+                {
+                    completeHandler?.Invoke(abLoader, requestHandle);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+                finally
+                {
+                    requestHandle.PublishCompletion();
+                }
                 return requestHandle;
             }
             // AB统一小写
@@ -371,8 +393,19 @@ namespace TResource
             {
                 if (abLoader.IsDone)
                 {
-                    requestHandle.MarkCompleted();
-                    completeHandler?.Invoke(abLoader, requestHandle);
+                    requestHandle.MarkSuccess();
+                    try
+                    {
+                        completeHandler?.Invoke(abLoader, requestHandle);
+                    }
+                    catch (Exception exception)
+                    {
+                        Debug.LogException(exception);
+                    }
+                    finally
+                    {
+                        requestHandle.PublishCompletion();
+                    }
                     return requestHandle;
                 }
                 else

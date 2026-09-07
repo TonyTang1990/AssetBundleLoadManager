@@ -72,8 +72,8 @@
     <Compile Include="Assets\Scripts\Editor\Build\BuildParameters.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\AssetBundleBuild\AssetBundleBuilderHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildTool.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceBuildConst.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeHelper.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\EditorAssetInfoBuilder\EditorAssetInfoAssetEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\BuildEditorUtilities.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\PlatformBuildPipeline\IOSBuildPipeline.cs" />
@@ -117,8 +117,8 @@
     <Compile Include="Assets\Scripts\Editor\Build\PlatformChannelConfig\PlatformChannelPath.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\PlatformBuildPipeline\AndroidBuildPipeline.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetOperation\AssetOrganizeTool.cs" />
-    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceDebugWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\PlatformChannelConfig\IOSChannelConfig.cs" />
+    <Compile Include="Assets\Scripts\Editor\Core\Resource\AssetBundleTools\ABBuilder\ResourceDebugWindow.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\PlatformChannelConfig\PlatformChannelConfig.cs" />
     <Compile Include="Assets\Scripts\Editor\Core\UI\TImageEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Build\PlatformChannelConfig\BuildPlatform.cs" />
@@ -1071,12 +1071,24 @@
       <HintPath>Library\ScriptAssemblies\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UniTask.TextMeshPro">
+      <HintPath>Library\ScriptAssemblies\UniTask.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.ScriptableBuildPipeline">
       <HintPath>Library\ScriptAssemblies\Unity.ScriptableBuildPipeline.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask.DOTween">
+      <HintPath>Library\ScriptAssemblies\UniTask.DOTween.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask.Addressables">
+      <HintPath>Library\ScriptAssemblies\UniTask.Addressables.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
@@ -1095,12 +1107,12 @@
       <HintPath>Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
@@ -1109,6 +1121,10 @@
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask.Linq">
+      <HintPath>Library\ScriptAssemblies\UniTask.Linq.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
@@ -1137,6 +1153,10 @@
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask">
+      <HintPath>Library\ScriptAssemblies\UniTask.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">

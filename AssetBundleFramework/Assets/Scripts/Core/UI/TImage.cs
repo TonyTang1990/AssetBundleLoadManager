@@ -86,11 +86,8 @@ namespace TUI
                 Debug.LogError("TImage.SetSingleSprite失败，spriteName为空!");
                 return null;
             }
-            if(!async)
-            {
-                return AtlasManager.Singleton.SetTImageSingleSprite(this, spriteName);
-            }
-            return AtlasManager.Singleton.SetTImageSingleSpriteAsync(this, spriteName);
+            var loadMethod = async ? ResourceLoadMethod.Async : ResourceLoadMethod.Sync;
+            return AtlasManager.Singleton.SetTImageSingleSpriteAsync(this, spriteName, loadMethod: loadMethod);
         }
 
         /// <summary>
@@ -107,11 +104,9 @@ namespace TUI
                 Debug.LogError("TImage.SetSpriteAtlasSprite失败，atlasName或spriteName为空!");
                 return null;
             }
-            if(!async)
-            {
-                return AtlasManager.Singleton.SetTImageSpriteAtlas(this, atlasName, spriteName);
-            }
-            return AtlasManager.Singleton.SetTImageSpriteAtlasAsync(this, atlasName, spriteName);
+            var loadMethod = async ? ResourceLoadMethod.Async : ResourceLoadMethod.Sync;
+            return AtlasManager.Singleton.SetTImageSpriteAtlasAsync(this, atlasName, spriteName,
+                                                                    loadMethod: loadMethod);
         }
 
         /// <summary>
@@ -126,11 +121,9 @@ namespace TUI
                 Debug.LogError("TImage.SetSubSprite失败，spriteName或subAssetName为空!");
                 return null;
             }
-            if(!async)
-            {
-                return AtlasManager.Singleton.SetTImageSubSprite(this, spriteName, subAssetName);
-            }
-            return AtlasManager.Singleton.SetTImageSubSpriteAsync(this, spriteName, subAssetName);
+            var loadMethod = async ? ResourceLoadMethod.Async : ResourceLoadMethod.Sync;
+            return AtlasManager.Singleton.SetTImageSubSpriteAsync(this, spriteName, subAssetName,
+                                                                  loadMethod: loadMethod);
         }
 
         /// <summary>

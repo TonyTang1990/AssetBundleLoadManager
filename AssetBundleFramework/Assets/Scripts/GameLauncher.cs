@@ -4,6 +4,7 @@
  * Create Date:             2021/10/13
  */
 
+using Cysharp.Threading.Tasks;
 using Data;
 using System;
 using System.Collections;
@@ -120,6 +121,12 @@ namespace TResource
         /// 挂载的Mono单例列表
         /// </summary>
         private List<Action> mSingletonMonoList;
+
+        /// <summary>
+        /// 窗口资源请求句柄
+        /// 用于测试异步转同步
+        /// </summary>
+        private ResourceRequestHandle mWindowResourceRequestHandle;
         
         private void Awake()
         {
@@ -241,7 +248,7 @@ namespace TResource
         }
 
         /// <summary>
-        /// 加载窗口预制件
+        /// 回调加载窗口预制件
         /// </summary>
         public void onLoadWindowPrefab()
         {
@@ -281,7 +288,7 @@ namespace TResource
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
             var image = mMainWindow.transform.Find("imgBG").GetComponent<Image>();
-            AtlasManager.Singleton.SetImageSingleSprite(image, param1, mResourceScope);
+            AtlasManager.Singleton.SetImageSingleSpriteAsync(image, param1, mResourceScope);
         }
 
         /// <summary>
@@ -380,42 +387,49 @@ namespace TResource
             AudioManager.Singleton.PlaySFXSound(param1);
         }
 
-
         /// <summary>
-        /// 加载材质
+        /// Unitask加载材质
         /// </summary>
         public void onLoadMaterial()
         {
             DIYLog.Log("onLoadMaterial()");
-            var param1 = InputParam1.text;
-            DIYLog.Log("Param1 = " + param1);
-            var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
-            var image = btnloadmat.GetComponent<Image>();
-            ResourceManager.Singleton.GetMaterial(
-                param1,
-                (material, assetRequestHandle) =>
-                {
-                    Material mat = material;
-                    image.material = mat;
-                },
-                mResourceScope
-            );
+            DoLoadMaterial();
         }
 
         /// <summary>
-        /// 加载角色
+        /// 执行Unitask加载材质
+        /// </summary>
+        private async void DoLoadMaterial()
+        {
+            // 测试Unitask风格加载材质
+            Debug.Log("Unitask材质加载开始");
+            var param1 = InputParam1.text;
+            DIYLog.Log("Param1 = " + param1);
+            var mat = await ResourceManager.Singleton.GetMaterialAsync(param1, mResourceScope, out _);
+            var btnloadmat = UIRoot.transform.Find("SecondUICanvas/ButtonGroups/btnLoadMaterial");
+            var image = btnloadmat.GetComponent<Image>();
+            image.material = mat;
+            Debug.Log("Unitask材质加载完成");
+        }
+
+        /// <summary>
+        /// 执行Unitask加载角色预制体实例
         /// </summary>
         public void onLoadActorPrefab()
         {
             DIYLog.Log("onLoadActorPrefab()");
-            ResourceManager.Singleton.GetPrefabInstance(
-                "pre_Zombunny.prefab",
-                (instance, assetRequestHandle) =>
-                {
-                    mActorInstance = instance;
-                },
-                mResourceScope
-            );
+            DoLoadActorPrefab();
+        }
+
+        /// <summary>
+        /// 执行Unitask加载角色预制体实例
+        /// </summary>
+        private async void DoLoadActorPrefab()
+        {
+            // 测试Unitask风格加载角色预制体实例
+            Debug.Log("Unitask角色实例加载开始");
+            mActorInstance = await ResourceManager.Singleton.GetPrefabInstanceAsync("pre_Zombunny.prefab", mResourceScope, out _);
+            Debug.Log("Unitask角色实例加载完成");
         }
 
         /// <summary>
@@ -435,23 +449,30 @@ namespace TResource
             DIYLog.Log("onPreloadAtlas()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            AtlasManager.Singleton.LoadAtlas(param1, mResourceScope, null, ResourceLoadType.PermanentLoad);
+            AtlasManager.Singleton.LoadAtlasAsync(param1, mResourceScope, null, ResourceLoadType.PermanentLoad);
             // 如果像释放计数，需要调用assetLoader.ReleaseAsset()
         }
 
         /// <summary>
-        /// 加载常驻Shader
+        /// Unitask异步加载所有常驻Shader
         /// </summary>
         public void onLoadPermanentShaderList()
         {
             DIYLog.Log("onLoadPermanentShaderList()");
-            ResourceManager.Singleton.LoadAllShader(() =>
-            {
+            // 测试Unitask风格加载所有常驻Shader
+            LoadPermanentShaderListAsync().Forget();
+        }
 
-
-            },
-            mResourceScope,
-            ResourceLoadType.PermanentLoad);
+        /// <summary>
+        /// Unitask异步加载所有常驻Shader
+        /// </summary>
+        /// <returns></returns>
+        private async UniTask LoadPermanentShaderListAsync()
+        {
+            Debug.Log($"Unitask所有常驻Shader开始加载");
+            await ResourceManager.Singleton.LoadAllShaderAsync(mResourceScope, out _);
+            // 后续逻辑
+            Debug.Log($"Unitask所有常驻Shader加载完成");
         }
 
         /// <summary>
@@ -462,7 +483,7 @@ namespace TResource
             DIYLog.Log("onPreloadShaderVariants()");
             // Shader通过预加载ShaderVariantsCollection里指定的Shader来进行预编译
             AssetLoader assetLoader;
-            ResourceModuleManager.Singleton.RequstAssetSync<ShaderVariantCollection>(
+            ResourceManager.Singleton.RequestAssetAsync<ShaderVariantCollection>(
                 ResourceConstData.ShaderVariantsAssetName,
                 out assetLoader,
                 (loader, assetRequestHandle) =>
@@ -475,141 +496,235 @@ namespace TResource
             );
         }
 
-
         /// <summary>
-        /// 异步加载窗口
+        /// 异步Unitask异步加载窗口Prefab实例
         /// </summary>
         public void onAsynLoadWindowPrefab()
         {
+            // 测试Unitask风格异步加载窗口Prefab实例
             DIYLog.Log("onAsynLoadWindowPrefab()");
+            AsynLoadWindowPrefab().Forget();
+        }
+
+        /// <summary>
+        /// 异步Unitask异步加载窗口Prefab实例
+        /// </summary>
+        /// <returns></returns>
+        private async UniTask AsynLoadWindowPrefab()
+        {
+            Debug.Log($"开始Unitask异步加载窗口Prefab实例");
             if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
-            ResourceManager.Singleton.GetPrefabInstanceAsync(
-                "MainWindow.prefab",
-                (prefabInstance, assetRequestHandle) =>
-                {
-                    mMainWindow = prefabInstance;
-                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                },
-                mResourceScope
+            var windowInstance = await ResourceManager.Singleton.GetPrefabInstanceAsync("MainWindow.prefab",
+                                                             mResourceScope,
+                                                             out _,
+                                                             UIRootCanvas.transform,
+                                                             loadMethod: ResourceLoadMethod.Async
             );
+            mMainWindow = windowInstance;
+            Debug.Log($"完成Unitask异步加载窗口Prefab实例");
         }
 
         /// <summary>
-        /// 测试异步转同步窗口加载
+        /// 测试回调异步转同步窗口加载
         /// </summary>
         public void onAsynToSyncLoadWindow()
         {
+            // 测试回调风格的异步转同步加载
             DIYLog.Log("onAsynToSyncLoadWindow()");
             if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
-            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            Debug.Log($"开始回调异步转同步加载窗口实例");
+            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstance(
                 "MainWindow.prefab",
                 (prefabInstance, assetRequestHandle) =>
                 {
+                    Debug.Log($"回调异步转同步加载窗口实例完成");
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 },
-                mResourceScope
+                mResourceScope,
+                loadMethod: ResourceLoadMethod.Async
             );
+            Debug.Log($"回调异步转同步加载开始！");
             // 未开始加载时将异步转同步加载
             assetRequestHandle.LoadImmediately();
+            Debug.Log($"回调异步转同步加载结束！");
         }
 
         /// <summary>
-        /// 测试异步转同步窗口加载2
+        /// 测试Unitask异步转同步窗口加载2
         /// </summary>
         public void onAsynToSyncLoadWindow2()
         {
+            // 测试Unitask风格的异步转同步加载
             DIYLog.Log("onAsynToSyncLoadWindow2()");
+            AsyncToSyncLoadWindow2();
+        }
+
+        /// <summary>
+        /// Unitask异步转同步加载窗口的实现
+        /// </summary>
+        private async void AsyncToSyncLoadWindow2()
+        {
+            Debug.Log($"开始Unitask异步转同步加载窗口实例");
             if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
-            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            StartCoroutine(AsyncToSyncCoroutine());
+            var windowInstance = await ResourceManager.Singleton.GetPrefabInstanceAsync(
                 "MainWindow.prefab",
-                (prefabInstance, assetRequestHandle) =>
-                {
-                    mMainWindow = prefabInstance;
-                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                },
-                mResourceScope
+                mResourceScope,
+                out mWindowResourceRequestHandle,
+                UIRootCanvas.transform,
+                loadMethod: ResourceLoadMethod.Async
             );
-            StartCoroutine(WaitLoadCoroutine(assetRequestHandle));
+            mMainWindow = windowInstance;
+            Debug.Log($"Unitask异步转同步加载窗口实例完成");
         }
 
         /// <summary>
-        /// 等待加载携程
+        /// 异步转同步加载窗口的协程
         /// </summary>
         /// <returns></returns>
-        private IEnumerator WaitLoadCoroutine(AssetRequestHandle assetRequestHandle)
+        private IEnumerator AsyncToSyncCoroutine()
         {
+            Debug.Log($"Unitask异步转同步加载协程开始");
             yield return new WaitForEndOfFrame();
+            Debug.Log($"Unitask同步加载窗口实例开始");
             // 开始异步加载后转同步加载
-            assetRequestHandle.LoadImmediately();
+            mWindowResourceRequestHandle.LoadImmediately();
+            mWindowResourceRequestHandle = null;
+            Debug.Log($"Unitask同步加载窗口实例完成");
         }
 
         /// <summary>
-        /// 测试异步转同步窗口加载3
+        /// 测试异步转同步窗口加载3（Unitask异步不等待直接转同步加载）
         /// </summary>
         public void onAsynToSyncLoadWindow3()
         {
+            // 测试回调+UniTask异步转同步加载
             DIYLog.Log("onAsynToSyncLoadWindow3()");
+            AsyncToSyncLoadWindow3();
+        }
+
+        /// <summary>
+        /// 异步转同步加载窗口3（Unitask异步不等待直接转同步加载）
+        /// </summary>
+        private async void AsyncToSyncLoadWindow3()
+        {
+            Debug.Log($"开始回调+Unitask异步转同步加载窗口3");
+            
             if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
-            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            // 第一个回调异步加载
+            Debug.Log($"开始回调异步加载窗口！");
+            _ = ResourceManager.Singleton.GetPrefabInstance(
                 "MainWindow.prefab",
-                (prefabInstance, assetRequestHandle) =>
-                {
-                    DIYLog.Log($"ResourceManager.Singleton.getPrefabInstanceAsync()");
-                    // 避免出现两个主界面窗口
-                    onDestroyWindowInstance();
-                    mMainWindow = prefabInstance;
-                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
-                },
-                mResourceScope
-            );
-            // 异步未开始时触发同步加载2
-            ResourceManager.Singleton.GetPrefabInstance("MainWindow.prefab",
                 (instance, assetRequestHandle)=>
                 {
-                    DIYLog.Log($"ResourceManager.Singleton.getPrefabInstance()");
+                    Debug.Log($"回调异步加载窗口完成！");
                     // 避免出现两个主界面窗口
                     onDestroyWindowInstance();
                     mMainWindow = instance;
-                    mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 },
-                mResourceScope
+                mResourceScope,
+                UIRootCanvas.transform,
+                ResourceLoadType.NormalLoad,
+                loadMethod: ResourceLoadMethod.Async
             );
+            // 第二个同步加载要等待
+            Debug.Log($"开始Unitask同步加载窗口2");
+            var windowInstance2 = await ResourceManager.Singleton.GetPrefabInstanceAsync("MainWindow.prefab",
+                mResourceScope,
+                out _,
+                UIRootCanvas.transform,
+                loadMethod: ResourceLoadMethod.Sync
+            );
+            // 避免出现两个主界面窗口
+            onDestroyWindowInstance();
+            mMainWindow = windowInstance2;
+            Debug.Log($"Unitask同步加载窗口2完成");
         }
 
         /// <summary>
-        /// 取消异步窗口加载请求回调
+        /// 取消回调异步窗口加载请求回调
         /// </summary>
         public void onCancelAsynLoadWindow()
         {
             DIYLog.Log("onCancelAsynLoadWindow()");
+            Debug.Log("取消回调异步窗口加载请求回调开始");
             if (mMainWindow != null)
             {
                 onDestroyWindowInstance();
             }
-            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstance(
                 "MainWindow.prefab",
                 (prefabInstance, assetRequestHandle) =>
                 {
+                    Debug.Log("回调异步加载窗口成功");
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 },
-                mResourceScope
+                mResourceScope,
+                loadMethod: ResourceLoadMethod.Async
             );
+            Debug.Log("取消回调异步窗口加载");
             // 取消异步加载请求
             assetRequestHandle.Cancel();
+        }
+
+        /// <summary>
+        /// 取消Unitask异步窗口加载请求回调
+        /// </summary>
+        public void onCancelUnitaskAsynLoadWindow()
+        {
+            DIYLog.Log("onCancelUnitaskAsynLoadWindow()");
+            CancelUnitaskAsynLoadWindow();
+        }
+
+        /// <summary>
+        /// 取消Unitask异步加载窗口请求
+        /// </summary>
+        private async void CancelUnitaskAsynLoadWindow()
+        {
+            Debug.Log("取消Unitask异步窗口加载请求回调开始");
+            if (mMainWindow != null)
+            {
+                onDestroyWindowInstance();
+            }
+            StartCoroutine(CancelUnitaskAsynLoadWindowCoroutine());
+            Debug.Log("开始Unitask异步加载窗口");
+            var windowInstance = await ResourceManager.Singleton.GetPrefabInstanceAsync(
+                "MainWindow.prefab",
+                mResourceScope,
+                out mWindowResourceRequestHandle,
+                UIRootCanvas.transform,
+                loadMethod: ResourceLoadMethod.Async
+            );
+            mMainWindow = windowInstance;
+            Debug.Log("Unitask异步窗口加载结束");
+        }
+
+        /// <summary>
+        /// 取消Unitask异步加载窗口请求协程
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator CancelUnitaskAsynLoadWindowCoroutine()
+        {
+            Debug.Log("取消Unitask异步加载窗口请求协程开始");
+            yield return new WaitForEndOfFrame();
+            Debug.Log("取消Unitask异步加载窗口开始");
+            mWindowResourceRequestHandle.Cancel();
+            mWindowResourceRequestHandle = null;
+            Debug.Log("取消Unitask异步加载窗口结束");
         }
 
         /// <summary>
@@ -620,8 +735,8 @@ namespace TResource
             DIYLog.Log("onMultipleAsyncLoadTSprite()");
             var param1 = InputParam1.text;
             DIYLog.Log("Param1 = " + param1);
-            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1);
-            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param1);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1, loadMethod: ResourceLoadMethod.Async);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param1, loadMethod: ResourceLoadMethod.Async);
         }
 
         /// <summary>
@@ -634,10 +749,9 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             var param2 = InputParam2.text;
             DIYLog.Log("Param2 = " + param2);
-            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1);
-            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param2);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG, param1, loadMethod: ResourceLoadMethod.Async);
+            AtlasManager.Singleton.SetTImageSingleSpriteAsync(TImgBG2, param2, loadMethod: ResourceLoadMethod.Async);
         }
-
 
         /// <summary>
         /// 异步+同步加载窗口但取消异步请求
@@ -649,34 +763,38 @@ namespace TResource
             {
                 onDestroyWindowInstance();
             }
-            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstanceAsync(
+            var assetRequestHandle = ResourceManager.Singleton.GetPrefabInstance(
                 "MainWindow.prefab",
                 (prefabInstance, assetRequestHandle) =>
                 {
+                    Debug.Log($"异步加载窗口回调");
                     // 第二次加载因为已经加载过可能出现立刻回到的情况
                     // 必须确保清理干净避免两个MainWindow出现
                     onDestroyWindowInstance();
-                    Debug.Log($"getPrefabInstanceAsync()");
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 },
-                mResourceScope
+                mResourceScope,
+                loadMethod: ResourceLoadMethod.Async
             );
+            Debug.Log($"取消异步加载窗口");
             // 取消异步加载请求后同步加载窗口
             assetRequestHandle.Cancel();
+            Debug.Log($"同步加载窗口开始");
             ResourceManager.Singleton.GetPrefabInstance(
                 "MainWindow.prefab",
                 (prefabInstance, assetRequestHandle) =>
                 {
+                    Debug.Log($"同步加载窗口回调");
                     // 第二次加载因为已经加载过可能出现立刻回到的情况
                     // 必须确保清理干净避免两个MainWindow出现
                     onDestroyWindowInstance();
-                    Debug.Log($"getPrefabInstance()");
                     mMainWindow = prefabInstance;
                     mMainWindow.transform.SetParent(UIRootCanvas.transform, false);
                 },
                 mResourceScope
             );
+            Debug.Log($"同步加载窗口结束");
         }
 
         /// <summary>
@@ -693,7 +811,16 @@ namespace TResource
             //切换场景前关闭所有打开窗口，测试切场景资源卸载功能
             onDestroyWindowInstance();
 
-            GameSceneManager.Singleton.LoadSceneSync(param1);
+            GameSceneManager.Singleton.LoadSceneAsync(param1, null, OnSceneLoadComplete);
+        }
+
+        /// <summary>
+        /// 场景加载完成回调
+        /// </summary>
+        /// <param name="asyncOperation"></param>
+        private void OnSceneLoadComplete(AsyncOperation asyncOperation)
+        {
+            DIYLog.Log("场景加载完成回调！");
         }
 
         /// <summary>
@@ -972,7 +1099,7 @@ namespace TResource
             DIYLog.Log("Param1 = " + param1);
             ReleasePlayedVideoRes();
             // TOOD: 封装视频播放组件，关闭视频播放时释放资源
-            var videoClip = ResourceManager.Singleton.GetVideoClip(param1, (videoClip, assetRequestHandle) =>
+            ResourceManager.Singleton.GetVideoClip(param1, (videoClip, assetRequestHandle) =>
             {
                 if(videoClip == null)
                 {
