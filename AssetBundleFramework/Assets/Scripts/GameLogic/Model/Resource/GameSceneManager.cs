@@ -73,13 +73,17 @@ public class GameSceneManager : SingletonBase<GameSceneManager>
         {
             Debug.Log($"异步加载场景AB完成！");
             mResourceScope.RemoveRequest(assetBundleRequestHandle);
-            if(loader == null || !assetBundleRequestHandle.IsSuccess)
+            // 非AB模式loader为null
+            if(!assetBundleRequestHandle.IsSuccess)
             {
                 Debug.LogError($"异步加载场景AB失败: {sceneName}");
                 return;
             }
             // 非AB模式会返回null
-            mResourceScope.GetAssetBundle(loader);
+            if(loader != null)
+            {
+                mResourceScope.GetAssetBundle(loader);
+            }
             var coroutine = LoadSceneSyncCoroutine(sceneName, loader, sceneLoadProgressCb, sceneLoadCompleteCb);
             CoroutineManager.GetInstance().StartCoroutine(coroutine);
         },
@@ -118,7 +122,7 @@ public class GameSceneManager : SingletonBase<GameSceneManager>
         // 减掉场景计数后，切换场景完成后再强制卸载所有不再使用的正常加载的Unsed资源(递归判定释放)
         ReleaseCurrentSceneRes();
         // 场景的计数是加载所在AB上的
-        mCurrentSceneABPath = loader.ResourcePath;
+        mCurrentSceneABPath = loader?.ResourcePath;
         sceneLoadProgressCb?.Invoke(1f);
         sceneLoadCompleteCb?.Invoke(asyncOperation);
         Debug.Log($"场景:{sceneName}加载结束！");

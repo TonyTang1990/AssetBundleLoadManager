@@ -121,7 +121,7 @@ namespace TResource
             // AssetDatabase模式不支持AssetBundle加载，直接返回逻辑回调
             abLoader = null;
             var requestHandle = LoaderManager.Singleton.CreateAssetBundleRequestHandle();
-            requestHandle.MarkFailed();
+            requestHandle.MarkSuccess();
             try
             {
                 completeHandler?.Invoke(abLoader, requestHandle);
@@ -158,7 +158,7 @@ namespace TResource
             // AssetDatabase模式不支持AssetBundle加载，直接返回逻辑回调
             abLoader = null;
             var requestHandle = LoaderManager.Singleton.CreateAssetBundleRequestHandle();
-            requestHandle.MarkFailed();
+            requestHandle.MarkSuccess();
             try
             {
                 completeHandler?.Invoke(abLoader, requestHandle);
